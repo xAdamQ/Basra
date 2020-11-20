@@ -1,0 +1,13 @@
+TDD cycle is red -> green -> refactor
+
+sooooo, you write the test before implementing the code.. that's why it's red
+
+the tests drive your implementation
+
+it's advantages
+think about the structure before coding
+what the code will do instead of how the code will do it
+get fast feed back
+you can create the business logic before creating the app
+will enforce you making modular code
+makes code maintainable(it's modular and you can change some modules and rerun units tests to see if something broke)

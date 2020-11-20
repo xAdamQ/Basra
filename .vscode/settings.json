@@ -1,0 +1,23 @@
+{
+    "files.exclude": {
+        "**/*.meta": true,
+        "**/*.sln": true,
+        // "**/*.csproj": true,
+        // "Basra.Client/build/": true,
+        // "Basra.Client/Build/": true,
+        // "Basra.Client/Library/": true,
+        // "Basra.Clientlibrary/": true,
+        // "Basra.Client/obj/": true,
+        // "Basra.Client/Obj/": true,
+        // "Basra.Client/ProjectSettings/": true,
+        // "Basra.Client/temp/": true,
+        // "Basra.Client/Temp/": true,
+        // "Basra.Client/Logs/": true,
+        // "Basra.Client/Packages/": true,
+        // "Basra.Client/UserSettings/": true,
+        "Basra.Client/": true,
+        ".vs/": true
+    },
+    "omnisharp.useGlobalMono": "never",
+    "workbench.colorTheme": "Night Owl",
+}
