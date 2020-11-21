@@ -77,22 +77,25 @@ namespace Basra.Server.Services
         }
 
         /// <summary>
-        /// returns the user id and if the operations wasn't successful returns null string
+        /// check if the user exist and make a new one if note
         /// </summary>
-        public async Task<string> SignInAsync(string fbUserId)
+        public async Task<bool> SignInAsync(string fbUserId)
         {
             //todo if (_userManager.FindByIdAsync(fbUserId) == null)
-            if (_masterContext.Users.FirstOrDefault(u => u.FbId == fbUserId) == null)
+            if (_masterContext.Users.Any(u => u.FbId == fbUserId))
             {
-                var signupResult = await SignUpAsync(fbUserId);
-                if (!signupResult) return null;
+                var signUpSucceeded = await SignUpAsync(fbUserId);
+                return signUpSucceeded;
+            }
+            else
+            {
+                return true;
             }
 
-            var user = _masterContext.Users.FirstOrDefault(u => u.FbId == fbUserId);
-
-            //todo _signInManager.SignInAsync()
-
-            return user.Id;
+            // todo 
+            // await _signInManager.SignInWithClaimsAsync()
+            // SignInAsync(new BasraIdentityUser(), isPersistent: false, "fbig");
+            //issues a cookie
         }
 
         private async Task<bool> SignUpAsync(string fbUserId)

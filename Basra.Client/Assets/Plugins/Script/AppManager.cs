@@ -59,6 +59,7 @@ public class AppManager : MonoBehaviour
 
         // HubConnection.On<int>(nameof(AddMoneyAsync), AddMoney);
         HubConnection.On<int, int>(nameof(LobbyManger.Current.EnterRoom), (genre, playerCount) => LobbyManger.Current.EnterRoom(genre, playerCount)/*will make it runtime evaluated*/);
+        HubConnection.On<List<int>>(nameof(RoomManager.Current.SetHand), (hand) => RoomManager.Current.SetHand(hand));
         HubConnection.On(nameof(LobbyManger.Current.RoomIsFilling), () => LobbyManger.Current.RoomIsFilling());
 
         HubConnection.ConnectAsync();

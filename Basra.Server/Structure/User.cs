@@ -1,12 +1,16 @@
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
-
-namespace Basra.Server
+namespace Basra.Server.Structure
 {
-    public class BasraIdentityUser : IdentityUser
+    public class User
     {
-        public string FbId { get; set; }
-        //some stuff are runtime
-        //so the runtime user is not the same as the stored user
+        public string Id;
+        public Room Room { get; set; }
+        public PendingRoom PendingRoom { get; set; }
+        public string ConnectionId { get; set; }
+        public bool Disconncted { get; set; }
+
+        public void PlayCard(int cardIndex)
+        {
+
+        }
     }
 }

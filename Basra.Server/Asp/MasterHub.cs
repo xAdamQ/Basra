@@ -8,21 +8,26 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using Basra.Server.Extensions;
 
-//learn about thread safety
-
+//todo learn about thread safety
 namespace Basra.Server
 {
     [Authorize]
     public class MasterHub : Hub
     {
+        // public static MasterHub Current;//I don't know if this is thread safe
         //hub life time is not even per connection, it's per request!
 
         private readonly SignInManager<BasraIdentityUser> _signInManager;
         private readonly MasterContext _masterContext;
 
-        private static List<BasraIdentityUser> ConnectedUsers { get; } = new List<BasraIdentityUser>();//filled using the conyext, isn't it loaded by default?
-        private static List<Room> WaitingRooms { get; } = new List<Room>();
+        private static List<BasraIdentityUser> ConnectedUsersIdentities { get; } = new List<BasraIdentityUser>();//filled using the conyext, isn't it loaded by default?
+        private static List<User> ConnectedUsers { get; } = new List<User>();
+
+        // public RuntimeUser GetUser(string connectionId) => RuntimeUsers.First(u => u.ConnectionId == connectionId);
+        public User GetCurrentUser() => ConnectedUsers.First(u => u.ConnectionId == Context.ConnectionId);
+        //the system will allow one connections per user
 
         public MasterHub(SignInManager<BasraIdentityUser> signInManager, MasterContext masterContext)
         {
@@ -34,7 +39,15 @@ namespace Basra.Server
         {
             System.Console.WriteLine($"connection established: {Context.ConnectionId} {Context.UserIdentifier}");
 
-            ConnectedUsers.Add(_masterContext.Users.FirstOrDefault(u => u.Id == Context.UserIdentifier));
+            // Context.GetHttpContext().RequestServices()
+
+            ConnectedUsersIdentities.Add(_masterContext.Users.FirstOrDefault(u => u.Id == Context.UserIdentifier));
+            var user = new User
+            {
+                Id = Context.UserIdentifier,
+                ConnectionId = Context.ConnectionId,
+            };
+            ConnectedUsers.Add(user);
             //the claims principle shoud pass the id here
 
             await base.OnConnectedAsync();
@@ -45,6 +58,14 @@ namespace Basra.Server
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             System.Console.WriteLine($"{Context.ConnectionId} Disconnected");
+
+            var currentUser = GetCurrentUser();
+            currentUser.Disconncted = true;
+            ConnectedUsers.Remove(currentUser);
+            //removed from groups automatically
+
+            ConnectedUsersIdentities.Remove(u => u.Id == Context.UserIdentifier);
+
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -67,53 +88,13 @@ namespace Basra.Server
             }
         }
 
+        #region rpc
         public async Task AskForRoom(int roomGenre, int roomPlayerCount)
         {
-            Room? nullableRoom = null;
-            try //find a room with this specs
-            {
-                nullableRoom = WaitingRooms.First(r => r.Genre == roomGenre && r.PlayerCount == roomPlayerCount);
-            } //otherwise make new one
-            catch (InvalidOperationException) //this wins
-            {
-                nullableRoom = MakeRoom(roomPlayerCount, roomGenre);
-                Debug.WriteLine("the exc for empty room is (InvalidOperationException)");
-            }
-
-            var room = nullableRoom.Value;
-
-            room.Players.Add(Context.UserIdentifier);
-            await Groups.AddToGroupAsync(Context.ConnectionId, "room" + room.Id);
-            System.Console.WriteLine($"player {Context.UserIdentifier} has entered room");
-
-            if (room.PlayerCount == room.Players.Count)
-            {
-                WaitingRooms.Remove(room);
-                // await Clients.Caller.SendAsync("EnterRoom");
-                await Clients.Group("room" + room.Id).SendAsync("EnterRoom", roomGenre, roomPlayerCount);
-            }
-            else
-            {
-                await Clients.Caller.SendAsync("RoomIsFilling");
-            }
+            await PendingRoom.AskForRoom(this, roomGenre, roomPlayerCount);
 
         }
-
-        private Room MakeRoom(int playerCount, int genre)
-        {
-            var room = new Room
-            {
-                Id = Room.LastId++,
-                Genre = genre,
-                Players = new List<string>(),
-                PlayerCount = playerCount,
-            };
-
-            WaitingRooms.Add(room);
-            System.Console.WriteLine($"a new room is made");
-
-            return room;
-        }
+        #endregion
 
     }
 }

@@ -7,6 +7,8 @@ public class RoomManager : MonoBehaviour
 {
     public static RoomManager Current;
 
+    private List<int> Hand;
+
     private void Awake()
     {
         Current = this;
@@ -22,5 +24,12 @@ public class RoomManager : MonoBehaviour
     private void Start()
     {
         GenreText.text = Genre.ToString();
+    }
+
+    public void SetHand(List<int> hand)
+    {
+        Hand = hand;
+        //do hand anim
+        Debug.Log($"hand cards are {hand[0]} {hand[1]} {hand[2]} {hand[3]}");
     }
 }

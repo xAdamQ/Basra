@@ -358,8 +358,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd8cb3934201eba42859aa8d100fbb4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Genre: 0
-  PlayerCount: 0
   GenreText: {fileID: 1689656879}
 --- !u!4 &874386044
 Transform:
@@ -502,7 +500,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1850383402}
   - component: {fileID: 1850383401}
-  - component: {fileID: 1850383400}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -510,14 +507,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1850383400
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1850383399}
-  m_Enabled: 1
 --- !u!20 &1850383401
 Camera:
   m_ObjectHideFlags: 0

@@ -93,15 +93,15 @@ namespace Basra.Server.Services
 
                 //2343 var fbUserId = connectBody.PlayerId;
 
-                var userId = await _fbigSecurityManager.SignInAsync(token/*the token is the fbid for testing*/);
-                if (string.IsNullOrEmpty(userId))
+                var userExists = await _fbigSecurityManager.SignInAsync(token/*the token is the fbid for testing*/);
+                if (userExists)
                 {
                     return AuthenticateResult.Fail("Unauthorized");
                 }
 
                 var genericClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, userExists.ToString()),
                      //this is the identifier used in the signalr, this claim type "NameIdentifier" could be changed with IUserIdProvider
                     new Claim(ClaimTypes.Name, "tst name"),
                     new Claim(ClaimTypes.Email, "tst mail"),
@@ -115,7 +115,7 @@ namespace Basra.Server.Services
 
                 var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
-                Debug.WriteLine($"login succeeded for player: {userId}");
+                Debug.WriteLine($"login succeeded for player: {userExists}");
 
                 return AuthenticateResult.Success(ticket);
             }
