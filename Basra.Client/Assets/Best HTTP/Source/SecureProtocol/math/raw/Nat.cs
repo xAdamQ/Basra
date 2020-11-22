@@ -1002,7 +1002,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.Raw
             ShiftUpBit(extLen, zz, zzOff, x[xOff] << 31);
         }
 
-        [Obsolete("Use 'SquareWordAddTo' instead")]
+
         public static uint SquareWordAdd(uint[] x, int xPos, uint[] z)
         {
             ulong c = 0, xVal = (ulong)x[xPos];
@@ -1017,7 +1017,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.Raw
             return (uint)c;
         }
 
-        [Obsolete("Use 'SquareWordAddTo' instead")]
+
         public static uint SquareWordAdd(uint[] x, int xOff, int xPos, uint[] z, int zOff)
         {
             ulong c = 0, xVal = (ulong)x[xOff + xPos];

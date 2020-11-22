@@ -90,6 +90,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Ocsp
             noParams.Add(X9ObjectIdentifiers.ECDsaWithSha384);
             noParams.Add(X9ObjectIdentifiers.ECDsaWithSha512);
             noParams.Add(X9ObjectIdentifiers.IdDsaWithSha1);
+            noParams.Add(OiwObjectIdentifiers.DsaWithSha1);
             noParams.Add(NistObjectIdentifiers.DsaWithSha224);
             noParams.Add(NistObjectIdentifiers.DsaWithSha256);
 		}

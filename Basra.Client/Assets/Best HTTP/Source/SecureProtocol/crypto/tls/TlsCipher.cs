@@ -3,6 +3,8 @@
 using System;
 using System.IO;
 
+using BestHTTP.PlatformSupport.Memory;
+
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 {
     public interface TlsCipher
@@ -10,10 +12,10 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
         int GetPlaintextLimit(int ciphertextLimit);
 
         /// <exception cref="IOException"></exception>
-        byte[] EncodePlaintext(long seqNo, byte type, byte[] plaintext, int offset, int len);
+        BufferSegment EncodePlaintext(long seqNo, byte type, byte[] plaintext, int offset, int len);
 
         /// <exception cref="IOException"></exception>
-        byte[] DecodeCiphertext(long seqNo, byte type, byte[] ciphertext, int offset, int len);
+        BufferSegment DecodeCiphertext(long seqNo, byte type, byte[] ciphertext, int offset, int len);
     }
 }
 #pragma warning restore

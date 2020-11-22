@@ -210,6 +210,8 @@ namespace BestHTTP
 
         void OnApplicationPause(bool isPaused)
         {
+            HTTPManager.Logger.Information("HTTPUpdateDelegator", "OnApplicationPause isPaused: " + isPaused);
+
             if (HTTPUpdateDelegator.OnApplicationForegroundStateChanged != null)
                 HTTPUpdateDelegator.OnApplicationForegroundStateChanged(isPaused);
         }

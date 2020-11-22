@@ -9,6 +9,10 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Modes
     /**
     * implements Cipher-Block-Chaining (CBC) mode on top of a simple cipher.
     */
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.NullChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.ArrayBoundsChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.DivideByZeroChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
     public class CbcBlockCipher
 		: IBlockCipher
     {
@@ -162,7 +166,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Modes
         * @exception InvalidOperationException if the cipher isn't initialised.
         * @return the number of bytes processed and produced.
         */
-        private int EncryptBlock(
+        private unsafe int EncryptBlock(
             byte[]      input,
             int         inOff,
             byte[]      outBytes,
@@ -177,9 +181,16 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Modes
             * XOR the cbcV and the input,
             * then encrypt the cbcV
             */
-            for (int i = 0; i < blockSize; i++)
+            //for (int i = 0; i < blockSize; i++)
+            //{
+            //    cbcV[i] ^= input[inOff + i];
+            //}
+            fixed (byte* pinput = input, pcbcV = cbcV)
             {
-                cbcV[i] ^= input[inOff + i];
+                ulong* pulongInput = (ulong*)&pinput[inOff], pulongcbcV = (ulong*)pcbcV;
+
+                for (int i = 0; i < blockSize / 8; i++)
+                    pulongcbcV[i] ^= pulongInput[i];
             }
 
             int length = cipher.ProcessBlock(cbcV, 0, outBytes, outOff);
@@ -204,7 +215,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Modes
         * @exception InvalidOperationException if the cipher isn't initialised.
         * @return the number of bytes processed and produced.
         */
-        private int DecryptBlock(
+        private unsafe int DecryptBlock(
             byte[]      input,
             int         inOff,
             byte[]      outBytes,
@@ -222,9 +233,16 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Modes
             /*
             * XOR the cbcV and the output
             */
-            for (int i = 0; i < blockSize; i++)
+            //for (int i = 0; i < blockSize; i++)
+            //{
+            //    outBytes[outOff + i] ^= cbcV[i];
+            //}
+            fixed (byte* poutBytes = outBytes, pcbcV = cbcV)
             {
-                outBytes[outOff + i] ^= cbcV[i];
+                ulong* pulongBytes = (ulong*)&poutBytes[outOff], pulongcbcV = (ulong*)pcbcV;
+
+                for (int i = 0; i < blockSize / 8; i++)
+                    pulongBytes[i] ^= pulongcbcV[i];
             }
 
             /*

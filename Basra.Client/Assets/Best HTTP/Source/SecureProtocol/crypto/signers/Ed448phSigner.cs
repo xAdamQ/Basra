@@ -35,10 +35,8 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Signers
 
             if (forSigning)
             {
-                // TODO Allow AsymmetricCipherKeyPair to be a CipherParameters?
-
                 this.privateKey = (Ed448PrivateKeyParameters)parameters;
-                this.publicKey = privateKey.GeneratePublicKey();
+                this.publicKey = null;
             }
             else
             {
@@ -69,7 +67,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Signers
                 throw new InvalidOperationException("Prehash digest failed");
 
             byte[] signature = new byte[Ed448PrivateKeyParameters.SignatureSize];
-            privateKey.Sign(Ed448.Algorithm.Ed448ph, publicKey, context, msg, 0, Ed448.PrehashSize, signature, 0);
+            privateKey.Sign(Ed448.Algorithm.Ed448ph, context, msg, 0, Ed448.PrehashSize, signature, 0);
             return signature;
         }
 
@@ -78,7 +76,10 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Signers
             if (forSigning || null == publicKey)
                 throw new InvalidOperationException("Ed448phSigner not initialised for verification");
             if (Ed448.SignatureSize != signature.Length)
+            {
+                prehash.Reset();
                 return false;
+            }
 
             byte[] pk = publicKey.GetEncoded();
             return Ed448.VerifyPrehash(signature, 0, pk, 0, context, prehash);

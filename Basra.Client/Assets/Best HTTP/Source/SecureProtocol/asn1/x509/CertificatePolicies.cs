@@ -8,13 +8,17 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X509
     public class CertificatePolicies
         : Asn1Encodable
     {
-        private readonly PolicyInformation[] policyInformation;
+        private static PolicyInformation[] Copy(PolicyInformation[] policyInfo)
+        {
+            return (PolicyInformation[])policyInfo.Clone();
+        }
 
         public static CertificatePolicies GetInstance(object obj)
         {
-            if (obj == null || obj is CertificatePolicies)
+            if (obj is CertificatePolicies)
                 return (CertificatePolicies)obj;
-
+            if (obj == null)
+                return null;
             return new CertificatePolicies(Asn1Sequence.GetInstance(obj));
         }
 
@@ -22,6 +26,13 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X509
         {
             return GetInstance(Asn1Sequence.GetInstance(obj, isExplicit));
         }
+
+        public static CertificatePolicies FromExtensions(X509Extensions extensions)
+        {
+            return GetInstance(X509Extensions.GetExtensionParsedValue(extensions, X509Extensions.CertificatePolicies));
+        }
+
+        private readonly PolicyInformation[] policyInformation;
 
         /**
          * Construct a CertificatePolicies object containing one PolicyInformation.
@@ -35,7 +46,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X509
 
         public CertificatePolicies(PolicyInformation[] policyInformation)
         {
-            this.policyInformation = policyInformation;
+            this.policyInformation = Copy(policyInformation);
         }
 
         private CertificatePolicies(Asn1Sequence seq)
@@ -50,7 +61,20 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X509
 
         public virtual PolicyInformation[] GetPolicyInformation()
         {
-            return (PolicyInformation[])policyInformation.Clone();
+            return Copy(policyInformation);
+        }
+
+        public virtual PolicyInformation GetPolicyInformation(DerObjectIdentifier policyIdentifier)
+        {
+            for (int i = 0; i != policyInformation.Length; i++)
+            {
+                if (policyIdentifier.Equals(policyInformation[i].PolicyIdentifier))
+                {
+                    return policyInformation[i];
+                }
+            }
+
+            return null;
         }
 
         /**

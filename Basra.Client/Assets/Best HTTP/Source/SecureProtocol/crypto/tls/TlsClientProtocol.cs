@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.IO;
 
+using BestHTTP.Logger;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Security;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
 
@@ -19,8 +20,6 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected TlsKeyExchange mKeyExchange = null;
         protected TlsAuthentication mAuthentication = null;
-
-        protected CertificateStatus mCertificateStatus = null;
         protected CertificateRequest mCertificateRequest = null;
 
         /**
@@ -82,11 +81,16 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                 throw new InvalidOperationException("'Connect' can only be called once");
 
             this.mTlsClient = tlsClient;
+            base.LoggingContext = this.mTlsClient.LoggingContext;
+
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsClientProtocol", "Connect", this.LoggingContext);
 
             this.mSecurityParameters = new SecurityParameters();
             this.mSecurityParameters.entity = ConnectionEnd.client;
 
             this.mTlsClientContext = new TlsClientContextImpl(mSecureRandom, mSecurityParameters);
+            this.mTlsClientContext.UserObject = this.LoggingContext;
 
             this.mSecurityParameters.clientRandom = CreateRandomBlock(tlsClient.ShouldUseGmtUnixTime(),
                 mTlsClientContext.NonceRandomGenerator);
@@ -115,12 +119,15 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected override void CleanupHandshake()
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsClientProtocol", "CleanupHandshake", this.LoggingContext);
+
             base.CleanupHandshake();
 
             this.mSelectedSessionID = null;
             this.mKeyExchange = null;
             this.mAuthentication = null;
-            this.mCertificateStatus = null;
+            this.mTlsClient.CertificateStatus = null;
             this.mCertificateRequest = null;
         }
 
@@ -141,6 +148,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected override void HandleHandshakeMessage(byte type, MemoryStream buf)
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsClientProtocol", "HandleHandshakeMessage " + type.ToString(), this.LoggingContext);
+
             if (this.mResumedSession)
             {
                 if (type != HandshakeType.finished || this.mConnectionState != CS_SERVER_HELLO)
@@ -186,7 +196,12 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                     this.mKeyExchange.ProcessServerCertificate(this.mPeerCertificate);
 
                     this.mAuthentication = mTlsClient.GetAuthentication();
-                    this.mAuthentication.NotifyServerCertificate(this.mPeerCertificate);
+
+                    // We are expecting a Certificate_Status message, so going to delay the NotifyServerCertificate call
+                    // until the server_hello_done. (no until CS_SERVER_CERTIFICATE as the server might not send one)
+                    // This way, we can validate both the certificate status and the received certificates.
+                    if (!this.mTlsClient.ExpectEmptyCertificateStatusExtension)
+                        this.mAuthentication.NotifyServerCertificate(this.mPeerCertificate);
 
                     break;
                 }
@@ -213,7 +228,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                         throw new TlsFatalAlert(AlertDescription.unexpected_message);
                     }
 
-                    this.mCertificateStatus = CertificateStatus.Parse(buf);
+                    this.mTlsClient.CertificateStatus = CertificateStatus.Parse(buf);
 
                     AssertEmpty(buf);
 
@@ -314,6 +329,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                 case CS_SERVER_KEY_EXCHANGE:
                 case CS_CERTIFICATE_REQUEST:
                 {
+                    if (this.mTlsClient.ExpectEmptyCertificateStatusExtension)
+                        this.mAuthentication.NotifyServerCertificate(this.mPeerCertificate);
+
                     if (mConnectionState < CS_SERVER_SUPPLEMENTAL_DATA)
                     {
                         HandleSupplementalData(null);
@@ -572,6 +590,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void HandleSupplementalData(IList serverSupplementalData)
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsClientProtocol", "HandleSupplementalData", this.LoggingContext);
+
             this.mTlsClient.ProcessServerSupplementalData(serverSupplementalData);
             this.mConnectionState = CS_SERVER_SUPPLEMENTAL_DATA;
 
@@ -581,6 +602,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void ReceiveNewSessionTicketMessage(MemoryStream buf)
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsClientProtocol", "ReceiveNewSessionTicketMessage", this.LoggingContext);
+
             NewSessionTicket newSessionTicket = NewSessionTicket.Parse(buf);
 
             AssertEmpty(buf);
@@ -606,6 +630,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                 this.mRecordStream.SetWriteVersion(server_version);
                 ContextAdmin.SetServerVersion(server_version);
                 this.mTlsClient.NotifyServerVersion(server_version);
+
+                if (HTTPManager.Logger.Level <= Loglevels.All)
+                    HTTPManager.Logger.Verbose("TlsClientProtocol", "ReceiveServerHelloMessage server_version: " + server_version.ToString(), this.LoggingContext);
             }
 
             /*
@@ -632,6 +659,10 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             {
                 throw new TlsFatalAlert(AlertDescription.illegal_parameter);
             }
+
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsClientProtocol", "ReceiveServerHelloMessage selectedCipherSuite: " + selectedCipherSuite.ToString("X"), this.LoggingContext);
+
             this.mTlsClient.NotifySelectedCipherSuite(selectedCipherSuite);
 
             /*
@@ -641,6 +672,10 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             byte selectedCompressionMethod = TlsUtilities.ReadUint8(buf);
             if (!Arrays.Contains(this.mOfferedCompressionMethods, selectedCompressionMethod))
                 throw new TlsFatalAlert(AlertDescription.illegal_parameter);
+
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsClientProtocol", "ReceiveServerHelloMessage selectedCompressionMethod: " + selectedCompressionMethod.ToString(), this.LoggingContext);
+
             this.mTlsClient.NotifySelectedCompressionMethod(selectedCompressionMethod);
 
             /*
@@ -709,6 +744,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                         // TODO[compat-polarssl] PolarSSL test server Sends server extensions e.g. ec_point_formats
     //                    throw new TlsFatalAlert(AlertDescription.illegal_parameter);
                     }
+
+                    if (HTTPManager.Logger.Level <= Loglevels.All)
+                        HTTPManager.Logger.Verbose("TlsClientProtocol", "ReceiveServerHelloMessage mServerExtensions: " + extType.ToString(), this.LoggingContext);
                 }
             }
 
@@ -806,6 +844,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void SendCertificateVerifyMessage(DigitallySigned certificateVerify)
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsClientProtocol", "SendCertificateVerifyMessage", this.LoggingContext);
+
             HandshakeMessage message = new HandshakeMessage(HandshakeType.certificate_verify);
 
             certificateVerify.Encode(message);
@@ -815,6 +856,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void SendClientHelloMessage()
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsClientProtocol", "SendClientHelloMessage", this.LoggingContext);
+
             this.mRecordStream.SetWriteVersion(this.mTlsClient.ClientHelloRecordLayerVersion);
 
             ProtocolVersion client_version = this.mTlsClient.ClientVersion;
@@ -910,6 +954,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void SendClientKeyExchangeMessage()
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsClientProtocol", "SendClientKeyExchangeMessage", this.LoggingContext);
+
             HandshakeMessage message = new HandshakeMessage(HandshakeType.client_key_exchange);
 
             this.mKeyExchange.GenerateClientKeyExchange(message);

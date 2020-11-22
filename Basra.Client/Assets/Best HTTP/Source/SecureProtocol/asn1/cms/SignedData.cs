@@ -27,16 +27,13 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Cms
         private readonly bool			certsBer;
         private readonly bool		    crlsBer;
 
-        public static SignedData GetInstance(
-            object obj)
+        public static SignedData GetInstance(object obj)
         {
             if (obj is SignedData)
-                return (SignedData) obj;
-
-            if (obj is Asn1Sequence)
-                return new SignedData((Asn1Sequence) obj);
-
-            throw new ArgumentException("Unknown object in factory: " + BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Platform.GetTypeName(obj), "obj");
+                return (SignedData)obj;
+            if (obj == null)
+                return null;
+            return new SignedData(Asn1Sequence.GetInstance(obj));
         }
 
         public SignedData(

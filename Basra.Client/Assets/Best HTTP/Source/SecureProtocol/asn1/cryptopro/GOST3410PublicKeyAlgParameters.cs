@@ -51,7 +51,8 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.CryptoPro
             this.encryptionParamSet = encryptionParamSet;
         }
 
-		public Gost3410PublicKeyAlgParameters(
+
+        public Gost3410PublicKeyAlgParameters(
             Asn1Sequence seq)
         {
             this.publicKeyParamSet = (DerObjectIdentifier) seq[0];

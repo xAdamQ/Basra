@@ -1,4 +1,4 @@
-﻿namespace BestHTTP.Connections
+namespace BestHTTP.Connections
 {
     /// <summary>
     /// Possible states of a Http Connection.
@@ -32,8 +32,13 @@
         Free,
 
         /// <summary>
-        /// If it's not a KeepAlive connection, or something happend, then we close this connection and remove from the pool.
+        /// If it's not a KeepAlive connection, or something happened, then we close this connection and remove from the pool.
         /// </summary>
-        Closed
+        Closed,
+
+        /// <summary>
+        /// Same as the Closed state, but processing this request requires resending the last processed request too.
+        /// </summary>
+        ClosedResendRequest
     }
 }

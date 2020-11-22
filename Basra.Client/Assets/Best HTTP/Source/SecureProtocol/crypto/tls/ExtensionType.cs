@@ -40,7 +40,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
         /*
          * RFC 4492 5.1.
          */
-        [Obsolete("Use 'supported_groups' instead")]
+
         public const int elliptic_curves = supported_groups;
         public const int ec_point_formats = 11;
 

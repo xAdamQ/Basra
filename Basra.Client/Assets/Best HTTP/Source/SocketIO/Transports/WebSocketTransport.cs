@@ -1,4 +1,4 @@
-﻿#if !BESTHTTP_DISABLE_SOCKETIO
+#if !BESTHTTP_DISABLE_SOCKETIO
 #if !BESTHTTP_DISABLE_WEBSOCKET
 
 using System;
@@ -56,6 +56,11 @@ namespace BestHTTP.SocketIO.Transports
                                         sendAdditionalQueryParams ? Manager.Options.BuildQueryParams() : string.Empty));
 
             Implementation = new WebSocket(uri);
+
+#if !UNITY_WEBGL || UNITY_EDITOR
+            if (this.Manager.Options.HTTPRequestCustomizationCallback != null)
+                this.Manager.Options.HTTPRequestCustomizationCallback(this.Manager, Implementation.InternalRequest);
+#endif
 
             Implementation.OnOpen = OnOpen;
             Implementation.OnMessage = OnMessage;

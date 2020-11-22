@@ -58,7 +58,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.X509
 		/// </summary>
 		/// <param name="oid">The object ID of the extension. </param>
 		/// <returns>An Asn1OctetString object if that extension is found or null if not.</returns>
-		[Obsolete("Use version taking a DerObjectIdentifier instead")]
+
 		public Asn1OctetString GetExtensionValue(
 			string oid)
 		{

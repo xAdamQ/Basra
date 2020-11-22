@@ -74,7 +74,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Smime
         }
 
 #if !(SILVERLIGHT || PORTABLE || NETFX_CORE)
-        [Obsolete("Use 'GetCapabilitiesForOid' instead")]
+
         public ArrayList GetCapabilities(
             DerObjectIdentifier capability)
         {

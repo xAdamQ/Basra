@@ -1,9 +1,10 @@
 using BestHTTP.Extensions;
 using BestHTTP.Logger;
 using BestHTTP.PlatformSupport.Memory;
+using BestHTTP.Timings;
+
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace BestHTTP.Core
 {
@@ -218,7 +219,14 @@ namespace BestHTTP.Core
                         }
 
                     case RequestEvents.StateChange:
-                        RequestEventHelper.HandleRequestStateChange(requestEvent);
+                        try
+                        {
+                            RequestEventHelper.HandleRequestStateChange(requestEvent);
+                        }
+                        catch(Exception ex)
+                        {
+                            HTTPManager.Logger.Exception("RequestEventHelper", "HandleRequestStateChange", ex, source.Context);
+                        }
                         break;
                 }
             }
@@ -306,11 +314,20 @@ namespace BestHTTP.Core
                     }
 #endif
 
+                    source.Timing.Add(TimingEventNames.Queued_For_Disptach);
+                    source.Timing.Add(TimingEventNames.Finished, DateTime.Now - source.Timing.Start);
+
                     if (source.Callback != null)
                     {
                         try
                         {
                             source.Callback(source, source.Response);
+
+                            source.Timing.Add(TimingEventNames.Callback);
+
+                            if (HTTPManager.Logger.Level <= Loglevels.Information)
+                                HTTPManager.Logger.Information("RequestEventHelper", "Finishing request. Timings: " + source.Timing.ToString(), source.Context);
+
                         }
                         catch (Exception ex)
                         {

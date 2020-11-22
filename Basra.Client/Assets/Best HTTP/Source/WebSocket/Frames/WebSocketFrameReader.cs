@@ -1,4 +1,4 @@
-﻿#if !BESTHTTP_DISABLE_WEBSOCKET && (!UNITY_WEBGL || UNITY_EDITOR)
+#if !BESTHTTP_DISABLE_WEBSOCKET && (!UNITY_WEBGL || UNITY_EDITOR)
 
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,6 @@ using System.IO;
 
 using BestHTTP.Extensions;
 using BestHTTP.PlatformSupport.Memory;
-using BestHTTP.WebSocket.Extensions;
 
 namespace BestHTTP.WebSocket.Frames
 {
@@ -53,7 +52,7 @@ namespace BestHTTP.WebSocket.Frames
 
         #region Internal & Private Functions
 
-        internal void Read(Stream stream)
+        internal unsafe void Read(Stream stream)
         {
             // For the complete documentation for this section see:
             // http://tools.ietf.org/html/rfc6455#section-5.2
@@ -140,8 +139,29 @@ namespace BestHTTP.WebSocket.Frames
 
             if (HasMask)
             {
-                for (uint i = 0; i < Length; ++i)
-                    Data[i] = (byte)(Data[i] ^ mask[i % 4]);
+                fixed (byte* pData = Data, pmask = mask)
+                {
+                    // Here, instead of byte by byte, we reinterpret cast the data as uints and apply the masking so.
+                    // This way, we can mask 4 bytes in one cycle, instead of just 1
+                    ulong localLength = this.Length / 4;
+                    if (localLength > 0)
+                    {
+                        uint* upData = (uint*)pData;
+                        uint umask = *(uint*)pmask;
+
+                        unchecked
+                        {
+                            for (ulong i = 0; i < localLength; ++i)
+                                upData[i] = upData[i] ^ umask;
+                        }
+                    }
+
+                    // Because data might not be exactly dividable by 4, we have to mask the remaining 0..3 too.
+                    ulong from = localLength * 4;
+                    localLength = from + this.Length % 4;
+                    for (ulong i = from; i < localLength; ++i)
+                        pData[i] = (byte)(pData[i] ^ pmask[i % 4]);
+                }
 
                 BufferPool.Release(mask);
             }

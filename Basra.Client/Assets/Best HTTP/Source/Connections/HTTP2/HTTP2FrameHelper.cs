@@ -153,7 +153,7 @@ namespace BestHTTP.Connections.HTTP2
                 frame.PadLength = header.Payload[payloadIdx++];
 
                 uint subLength = (uint)(1 + (frame.PadLength ?? 0));
-                if (subLength < frame.HeaderBlockFragmentLength)
+                if (subLength <= frame.HeaderBlockFragmentLength)
                     frame.HeaderBlockFragmentLength -= subLength;
                 //else
                 //    throw PROTOCOL_ERROR;
@@ -167,7 +167,7 @@ namespace BestHTTP.Connections.HTTP2
                 frame.Weight = header.Payload[payloadIdx++];
 
                 uint subLength = 5;
-                if (subLength < frame.HeaderBlockFragmentLength)
+                if (subLength <= frame.HeaderBlockFragmentLength)
                     frame.HeaderBlockFragmentLength -= subLength;
                 //else
                 //    throw PROTOCOL_ERROR;
@@ -193,7 +193,7 @@ namespace BestHTTP.Connections.HTTP2
                 frame.PadLength = header.Payload[0];
 
                 uint subLength = (uint)(1 + (frame.PadLength ?? 0));
-                if (subLength < frame.DataLength)
+                if (subLength <= frame.DataLength)
                     frame.DataLength -= subLength;
                 //else
                 //    throw PROTOCOL_ERROR;
@@ -217,14 +217,18 @@ namespace BestHTTP.Connections.HTTP2
 
         public static void StreamRead(Stream stream, byte[] buffer, int offset, uint count)
         {
-            uint readCount = 0;
+            if (count == 0)
+                return;
+
+            uint sumRead = 0;
             do
             {
-                int streamReadCount = stream.Read(buffer, (int)(offset + readCount), (int)(count - readCount));
-                if (streamReadCount < 0)
+                int readCount = (int)(count - sumRead);
+                int streamReadCount = stream.Read(buffer, (int)(offset + sumRead), readCount);
+                if (streamReadCount <= 0 && readCount > 0)
                     throw new Exception("TCP Stream closed!");
-                readCount += (uint)streamReadCount;
-            } while (readCount < count);
+                sumRead += (uint)streamReadCount;
+            } while (sumRead < count);
         }
 
         public static PooledBuffer HeaderAsBinary(HTTP2FrameHeaderAndPayload header)

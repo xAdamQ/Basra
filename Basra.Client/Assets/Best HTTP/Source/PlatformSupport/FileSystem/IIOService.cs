@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace BestHTTP.PlatformSupport.FileSystem
@@ -16,7 +16,12 @@ namespace BestHTTP.PlatformSupport.FileSystem
         /// <summary>
         /// Open an existing file for reading.
         /// </summary>
-        Open,
+        OpenRead,
+
+        /// <summary>
+        /// Open or create a file for read and write.
+        /// </summary>
+        OpenReadWrite,
 
         /// <summary>
         /// Open an existing file for writing to the end.

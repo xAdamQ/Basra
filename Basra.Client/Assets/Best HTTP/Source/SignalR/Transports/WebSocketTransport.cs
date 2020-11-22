@@ -1,4 +1,4 @@
-﻿#if !BESTHTTP_DISABLE_SIGNALR
+#if !BESTHTTP_DISABLE_SIGNALR
 #if !BESTHTTP_DISABLE_WEBSOCKET
 
 using System;
@@ -158,7 +158,8 @@ namespace BestHTTP.SignalR.Transports
             }
             else
             {
-                HTTPManager.Logger.Error("WebSocketTransport", "WSocket_OnError " + reason);
+                if (HTTPManager.Logger.Level == Logger.Loglevels.All)
+                    HTTPManager.Logger.Error("WebSocketTransport", "WSocket_OnError " + reason);
 
                 this.State = TransportStates.Closed;
                 Connection.Error(reason);

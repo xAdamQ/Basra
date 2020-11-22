@@ -42,7 +42,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Cms
             this.unprotectedAttrs = Asn1Set.GetInstance(unprotectedAttrs);
         }
 
-        [Obsolete("Use 'GetInstance' instead")]
+
         public EnvelopedData(
             Asn1Sequence seq)
         {

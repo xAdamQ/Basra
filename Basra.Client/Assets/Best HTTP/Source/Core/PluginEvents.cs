@@ -14,6 +14,8 @@ namespace BestHTTP.Core
         SaveCacheLibrary,
 
         AltSvcHeader,
+
+        HTTP2ConnectProtocol
     }
 
     public
@@ -108,6 +110,12 @@ namespace BestHTTP.Core
                         HostManager.GetHost(altSvcEventInfo.Host)
                                     .HandleAltSvcHeader(altSvcEventInfo.Response);
                         break;
+
+                    case PluginEvents.HTTP2ConnectProtocol:
+                        HTTP2ConnectProtocolInfo info = pluginEvent.Payload as HTTP2ConnectProtocolInfo;
+                        HostManager.GetHost(info.Host)
+                                    .HandleConnectProtocol(info);
+                        break;
                 }
             }
 
@@ -135,4 +143,15 @@ namespace BestHTTP.Core
         }
     }
 
+    public sealed class HTTP2ConnectProtocolInfo
+    {
+        public readonly string Host;
+        public readonly bool Enabled;
+
+        public HTTP2ConnectProtocolInfo(string host, bool enabled)
+        {
+            this.Host = host;
+            this.Enabled = enabled;
+        }
+    }
 }

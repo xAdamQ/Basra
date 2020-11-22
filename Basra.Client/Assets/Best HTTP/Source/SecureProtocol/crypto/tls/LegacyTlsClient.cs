@@ -8,15 +8,16 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
     /// <summary>
     /// A temporary class to use LegacyTlsAuthentication
     /// </summary>
-    public sealed class LegacyTlsClient : DefaultTlsClient
+    public class LegacyTlsClient : DefaultTlsClient
     {
-        private readonly Uri TargetUri;
-        private readonly ICertificateVerifyer verifyer;
-        private readonly IClientCredentialsProvider credProvider;
+        public readonly Uri TargetUri;
+        public readonly ICertificateVerifyer verifyer;
+        public readonly IClientCredentialsProvider credProvider;
 
         public LegacyTlsClient(Uri targetUri, ICertificateVerifyer verifyer, IClientCredentialsProvider prov,
                                System.Collections.Generic.List<string> hostNames,
                                System.Collections.Generic.List<string> clientSupportedProtocols)
+            :base()
         {
             this.TargetUri = targetUri;
             this.verifyer = verifyer;

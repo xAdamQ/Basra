@@ -17,13 +17,11 @@ var Lib_BEST_HTTP_WebGL_HTTP_Bridge =
 
 	XHR_Create: function(method, url, user, passwd, withCredentials)
 	{
-		var _url = /*encodeURI*/(Pointer_stringify(url))
-					.replace(/\+/g, '%2B')
-					.replace(/%252[fF]/ig, '%2F');
+		var _url = new URL(Pointer_stringify(url)); ///*encodeURI*/(Pointer_stringify(url)).replace(/\+/g, '%2B').replace(/%252[fF]/ig, '%2F');
 		var _method = Pointer_stringify(method);
 
 		if (wr.loglevel <= 1) /*information*/
-			console.log(wr.nextRequestId + ' XHR_Create - withCredentials: ' + withCredentials + ' method: ' + _method + ' url: ' + _url);
+			console.log(wr.nextRequestId + ' XHR_Create - withCredentials: ' + withCredentials + ' method: ' + _method + ' url: ' + _url.toString());
 
 		var http = new XMLHttpRequest();
 
@@ -33,11 +31,11 @@ var Lib_BEST_HTTP_WebGL_HTTP_Bridge =
 			var p = Pointer_stringify(passwd);
 
 			http.withCredentials = true;
-			http.open(_method, _url, /*async:*/ true , u, p);
+			http.open(_method, _url.toString(), /*async:*/ true , u, p);
 		}
 		else {
             http.withCredentials = withCredentials;
-			http.open(_method, _url, /*async:*/ true);
+			http.open(_method, _url.toString(), /*async:*/ true);
         }
 
 		http.responseType = 'arraybuffer';
@@ -72,6 +70,18 @@ var Lib_BEST_HTTP_WebGL_HTTP_Bridge =
         }
 	},
 
+    XHR_CopyResponseTo: function (request, array, size) {
+        var http = wr.requestInstances[request];
+
+	    var response = 0;
+	    if (!!http.response)
+		    response = http.response;
+
+        var responseBytes = new Uint8Array(response);
+        var buffer = HEAPU8.subarray(array, array + size);
+        buffer.set(responseBytes)
+    },
+
 	XHR_SetResponseHandler: function (request, onresponse, onerror, ontimeout, onaborted)
 	{
 		if (wr.loglevel <= 1) /*information*/
@@ -85,17 +95,11 @@ var Lib_BEST_HTTP_WebGL_HTTP_Bridge =
 
 			if (onresponse)
 			{
-				var response = 0;
+				var responseLength = 0;
 				if (!!http.response)
-					response = http.response;
+					responseLength = http.response.byteLength;
 
-				var byteArray = new Uint8Array(response);
-				var buffer = _malloc(byteArray.length);
-				HEAPU8.set(byteArray, buffer);
-
-				Runtime.dynCall('viiiii', onresponse, [request, http.status, buffer, byteArray.length, 0]);
-
-				_free(buffer);
+				Runtime.dynCall('viiiii', onresponse, [request, http.status, 0, responseLength, 0]);
 			}
 		};
 
@@ -195,6 +199,8 @@ var Lib_BEST_HTTP_WebGL_HTTP_Bridge =
             headers += "\r\n";
         }
 
+        headers += "\r\n";
+
 		if (wr.loglevel <= 1) /*information*/
 			console.log('  "' + headers + '"');
 
@@ -216,7 +222,7 @@ var Lib_BEST_HTTP_WebGL_HTTP_Bridge =
 		if (wr.loglevel <= 1) /*information*/
 			console.log(request + ' XHR_GetStatusLine');
 
-		var status = "HTTP/1.1 " + wr.requestInstances[request].status + " " + wr.requestInstances[request].statusText;
+		var status = "HTTP/1.1 " + wr.requestInstances[request].status + " " + wr.requestInstances[request].statusText + "\r\n";
 
 		if (wr.loglevel <= 1) /*information*/
 			console.log(status);

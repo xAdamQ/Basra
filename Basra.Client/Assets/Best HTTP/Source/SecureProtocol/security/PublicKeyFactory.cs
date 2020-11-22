@@ -135,7 +135,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Security
             }
             else if (algOid.Equals(X9ObjectIdentifiers.IdECPublicKey))
             {
-                X962Parameters para = new X962Parameters(algID.Parameters.ToAsn1Object());
+                X962Parameters para = X962Parameters.GetInstance(algID.Parameters.ToAsn1Object());
 
                 X9ECParameters x9;
                 if (para.IsNamedCurve)

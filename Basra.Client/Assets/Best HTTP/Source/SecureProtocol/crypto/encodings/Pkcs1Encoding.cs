@@ -43,7 +43,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Encodings
         {
             string strictProperty = BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Platform.GetEnvironmentVariable(StrictLengthEnabledProperty);
 
-            strictLengthEnabled = new bool[]{ strictProperty == null || strictProperty.Equals("true")};
+            strictLengthEnabled = new bool[]{ strictProperty == null || BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Platform.EqualsIgnoreCase("true", strictProperty) };
         }
 
 

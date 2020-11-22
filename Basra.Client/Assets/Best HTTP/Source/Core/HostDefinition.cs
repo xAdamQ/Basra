@@ -64,7 +64,11 @@ namespace BestHTTP.Core
             var headerValues = response.GetHeaderValues("alt-svc");
             if (headerValues == null)
                 HTTPManager.Logger.Warning(typeof(HostDefinition).Name, "Received HandleAltSvcHeader message, but no Alt-Svc header found!", response.Context);
+        }
 
+        public void HandleConnectProtocol(HTTP2ConnectProtocolInfo info)
+        {
+            HTTPManager.Logger.Information(typeof(HostDefinition).Name, string.Format("Received HandleConnectProtocol message. Connect protocol for host {0}. Enabled: {1}", info.Host, info.Enabled));
         }
 
         internal void Shutdown()

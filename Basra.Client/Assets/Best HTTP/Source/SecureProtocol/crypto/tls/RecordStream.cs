@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 
+using BestHTTP.PlatformSupport.Memory;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.IO;
 
@@ -162,11 +163,11 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         internal /*virtual*/ bool ReadRecord()
         {
-            byte[] recordHeader = TlsUtilities.ReadAllOrNothing(TLS_HEADER_SIZE, mInput);
-            if (recordHeader == null)
+            BufferSegment recordHeader = TlsUtilities.ReadAllOrNothing(TLS_HEADER_SIZE, mInput);
+            if (recordHeader == BufferSegment.Empty )
                 return false;
 
-            byte type = TlsUtilities.ReadUint8(recordHeader, TLS_HEADER_TYPE_OFFSET);
+            byte type = TlsUtilities.ReadUint8(recordHeader.Data, TLS_HEADER_TYPE_OFFSET);
 
             /*
              * RFC 5246 6. If a TLS implementation receives an unexpected record type, it MUST send an
@@ -176,13 +177,13 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
             if (!mRestrictReadVersion)
             {
-                int version = TlsUtilities.ReadVersionRaw(recordHeader, TLS_HEADER_VERSION_OFFSET);
+                int version = TlsUtilities.ReadVersionRaw(recordHeader.Data, TLS_HEADER_VERSION_OFFSET);
                 if ((version & 0xffffff00) != 0x0300)
                     throw new TlsFatalAlert(AlertDescription.illegal_parameter);
             }
             else
             {
-                ProtocolVersion version = TlsUtilities.ReadVersion(recordHeader, TLS_HEADER_VERSION_OFFSET);
+                ProtocolVersion version = TlsUtilities.ReadVersion(recordHeader.Data, TLS_HEADER_VERSION_OFFSET);
                 if (mReadVersion == null)
                 {
                     mReadVersion = version;
@@ -193,48 +194,55 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                 }
             }
 
-            int length = TlsUtilities.ReadUint16(recordHeader, TLS_HEADER_LENGTH_OFFSET);
+            int length = TlsUtilities.ReadUint16(recordHeader.Data, TLS_HEADER_LENGTH_OFFSET);
+
+            BufferPool.Release(recordHeader.Data);
 
             CheckLength(length, mCiphertextLimit, AlertDescription.record_overflow);
 
-            byte[] plaintext = DecodeAndVerify(type, mInput, length);
-            mHandler.ProcessRecord(type, plaintext, 0, plaintext.Length);
+            BufferSegment plaintext = DecodeAndVerify(type, mInput, length);
+            mHandler.ProcessRecord(type, plaintext.Data, plaintext.Offset, plaintext.Count);
+            BufferPool.Release(plaintext);
+
             return true;
         }
 
-        internal /*virtual*/ byte[] DecodeAndVerify(byte type, Stream input, int len)
+        internal /*virtual*/ BufferSegment DecodeAndVerify(byte type, Stream input, int len)
         {
-            byte[] buf = TlsUtilities.ReadFully(len, input);
+            BufferSegment buf = TlsUtilities.ReadFullyOptimized(len, input);
 
             long seqNo = mReadSeqNo.NextValue(AlertDescription.unexpected_message);
-            byte[] decoded = mReadCipher.DecodeCiphertext(seqNo, type, buf, 0, buf.Length);
+            BufferSegment decoded = mReadCipher.DecodeCiphertext(seqNo, type, buf.Data, buf.Offset, buf.Count);
 
-            CheckLength(decoded.Length, mCompressedLimit, AlertDescription.record_overflow);
+            if (buf.Data != decoded.Data)
+                BufferPool.Release(buf);
+
+            CheckLength(decoded.Count, mCompressedLimit, AlertDescription.record_overflow);
 
             /*
              * TODO 5246 6.2.2. Implementation note: Decompression functions are responsible for
              * ensuring that messages cannot cause internal buffer overflows.
              */
-            Stream cOut = mReadCompression.Decompress(mBuffer);
-            if (cOut != mBuffer)
-            {
-                cOut.Write(decoded, 0, decoded.Length);
-                cOut.Flush();
-                decoded = GetBufferContents();
-            }
+            //Stream cOut = mReadCompression.Decompress(mBuffer);
+            //if (cOut != mBuffer)
+            //{
+            //    cOut.Write(decoded, 0, decoded.Length);
+            //    cOut.Flush();
+            //    decoded = GetBufferContents();
+            //}
 
             /*
              * RFC 5246 6.2.2. If the decompression function encounters a TLSCompressed.fragment that
              * would decompress to a length in excess of 2^14 bytes, it should report a fatal
              * decompression failure error.
              */
-            CheckLength(decoded.Length, mPlaintextLimit, AlertDescription.decompression_failure);
+            //CheckLength(decoded.Length, mPlaintextLimit, AlertDescription.decompression_failure);
 
             /*
              * RFC 5246 6.2.1 Implementations MUST NOT send zero-length fragments of Handshake, Alert,
              * or ChangeCipherSpec content types.
              */
-            if (decoded.Length < 1 && type != ContentType.application_data)
+            if (decoded.Count < 1 && type != ContentType.application_data)
                 throw new TlsFatalAlert(AlertDescription.illegal_parameter);
 
             return decoded;
@@ -268,7 +276,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
             long seqNo = mWriteSeqNo.NextValue(AlertDescription.internal_error);
 
-            byte[] ciphertext;
+            BufferSegment ciphertext;
             if (cOut == mBuffer)
             {
                 ciphertext = mWriteCipher.EncodePlaintext(seqNo, type, plaintext, plaintextOffset, plaintextLength);
@@ -291,14 +299,15 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             /*
              * RFC 5246 6.2.3. The length may not exceed 2^14 + 2048.
              */
-            CheckLength(ciphertext.Length, mCiphertextLimit, AlertDescription.internal_error);
+            CheckLength(ciphertext.Count, mCiphertextLimit, AlertDescription.internal_error);
 
-            int recordLength = ciphertext.Length + TLS_HEADER_SIZE;
+            int recordLength = ciphertext.Count + TLS_HEADER_SIZE;
             byte[] record = BestHTTP.PlatformSupport.Memory.BufferPool.Get(recordLength, true);
             TlsUtilities.WriteUint8(type, record, TLS_HEADER_TYPE_OFFSET);
             TlsUtilities.WriteVersion(mWriteVersion, record, TLS_HEADER_VERSION_OFFSET);
-            TlsUtilities.WriteUint16(ciphertext.Length, record, TLS_HEADER_LENGTH_OFFSET);
-            Array.Copy(ciphertext, 0, record, TLS_HEADER_SIZE, ciphertext.Length);
+            TlsUtilities.WriteUint16(ciphertext.Count, record, TLS_HEADER_LENGTH_OFFSET);
+            Array.Copy(ciphertext.Data, ciphertext.Offset, record, TLS_HEADER_SIZE, ciphertext.Count);
+            BufferPool.Release(ciphertext);
             mOutput.Write(record, 0, recordLength);
             BestHTTP.PlatformSupport.Memory.BufferPool.Release(record);
             mOutput.Flush();

@@ -21,7 +21,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Cms
 		internal readonly byte[]	salt;
 		internal readonly int		iterationCount;
 
-		[Obsolete("Use version taking 'char[]' instead")]
+
 		public CmsPbeKey(
 			string	password,
 			byte[]	salt,
@@ -30,7 +30,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Cms
 		{
 		}
 
-		[Obsolete("Use version taking 'char[]' instead")]
+
 		public CmsPbeKey(
 			string				password,
 			AlgorithmIdentifier keyDerivationAlgorithm)
@@ -69,7 +69,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Cms
 			Array.Clear(this.password, 0, this.password.Length);
 		}
 
-		[Obsolete("Will be removed")]
+
 		public string Password
 		{
 			get { return new string(password); }
@@ -80,7 +80,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Cms
 			get { return Arrays.Clone(salt); }
 		}
 
-		[Obsolete("Use 'Salt' property instead")]
+
 		public byte[] GetSalt()
 		{
 			return Salt;

@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text.Encodings.Web;
@@ -93,15 +92,15 @@ namespace Basra.Server.Services
 
                 //2343 var fbUserId = connectBody.PlayerId;
 
-                var userExists = await _fbigSecurityManager.SignInAsync(token/*the token is the fbid for testing*/);
-                if (userExists)
-                {
-                    return AuthenticateResult.Fail("Unauthorized");
-                }
+                var user = await _fbigSecurityManager.SignInAsync(token/*the token is the fbid for testing*/);
+                // if (user == null)
+                // {
+                // return AuthenticateResult.Fail("Unauthorized");
+                // }//why it maybe null? when createAsync result is false
 
                 var genericClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.NameIdentifier, userExists.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
                      //this is the identifier used in the signalr, this claim type "NameIdentifier" could be changed with IUserIdProvider
                     new Claim(ClaimTypes.Name, "tst name"),
                     new Claim(ClaimTypes.Email, "tst mail"),
@@ -115,7 +114,7 @@ namespace Basra.Server.Services
 
                 var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
-                Debug.WriteLine($"login succeeded for player: {userExists}");
+                Debug.WriteLine($"login succeeded for player: {user}");
 
                 return AuthenticateResult.Success(ticket);
             }

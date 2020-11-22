@@ -149,7 +149,7 @@ namespace BestHTTP
                         // Make sure to send all the wrote data to the wire
                         outStream.Flush();
 
-                        request.ProxyResponse = new HTTPResponse(request, stream, false, false);
+                        request.ProxyResponse = new HTTPResponse(request, stream, false, false, true);
 
                         // Read back the response of the proxy
                         if (!request.ProxyResponse.Receive(-1, true))

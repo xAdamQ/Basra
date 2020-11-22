@@ -1,4 +1,4 @@
-﻿#if !NETFX_CORE && (!UNITY_WEBGL || UNITY_EDITOR)
+#if !NETFX_CORE && (!UNITY_WEBGL || UNITY_EDITOR)
 using System;
 using System.IO;
 
@@ -15,8 +15,10 @@ namespace BestHTTP.PlatformSupport.FileSystem
             {
                 case FileStreamModes.Create:
                     return new FileStream(path, FileMode.Create);
-                case FileStreamModes.Open:
+                case FileStreamModes.OpenRead:
                     return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                case FileStreamModes.OpenReadWrite:
+                    return new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
                 case FileStreamModes.Append:
                     return new FileStream(path, FileMode.Append);
             }

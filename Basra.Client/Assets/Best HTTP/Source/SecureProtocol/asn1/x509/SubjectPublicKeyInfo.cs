@@ -87,7 +87,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X509
          * @exception IOException - if the bit string doesn't represent a Der
          * encoded object.
          */
-        [Obsolete("Use 'ParsePublicKey' instead")]
+
         public Asn1Object GetPublicKey()
         {
 			return Asn1Object.FromByteArray(keyData.GetOctets());

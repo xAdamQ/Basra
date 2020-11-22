@@ -53,7 +53,8 @@ namespace BestHTTP.Connections.HTTP2
                 {
                     if (header.Equals("connection", StringComparison.OrdinalIgnoreCase) ||
                         header.Equals("te", StringComparison.OrdinalIgnoreCase) ||
-                        header.Equals("host", StringComparison.OrdinalIgnoreCase))
+                        header.Equals("host", StringComparison.OrdinalIgnoreCase) ||
+                        header.Equals("keep-alive", StringComparison.OrdinalIgnoreCase))
                         return;
 
                     //if (!hasBody)

@@ -10,6 +10,10 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Digests
     * base implementation of MD4 family style digest as outlined in
     * "Handbook of Applied Cryptography", pages 344 - 347.
     */
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.NullChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.ArrayBoundsChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.DivideByZeroChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
     public abstract class GeneralDigest
 		: IDigest, IMemoable
     {
@@ -52,7 +56,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Digests
             byteCount++;
         }
 
-        public void BlockUpdate(
+        public unsafe void BlockUpdate(
             byte[]  input,
             int     inOff,
             int     length)
@@ -65,16 +69,17 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Digests
             int i = 0;
             if (xBufOff != 0)
             {
-                while (i < length)
-                {
-                    xBuf[xBufOff++] = input[inOff + i++];
-                    if (xBufOff == 4)
+                fixed (byte* pxBuf = xBuf, pinput = input)
+                    while (i < length)
                     {
-                        ProcessWord(xBuf, 0);
-                        xBufOff = 0;
-                        break;
+                        pxBuf[xBufOff++] = pinput[inOff + i++];
+                        if (xBufOff == 4)
+                        {
+                            ProcessWord(xBuf, 0);
+                            xBufOff = 0;
+                            break;
+                        }
                     }
-                }
             }
 
             //
@@ -89,10 +94,21 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Digests
             //
             // load in the remainder.
             //
-            while (i < length)
+            //while (i < length)
+            //{
+            //    xBuf[xBufOff++] = input[inOff + i++];
+            //}
+
+            fixed (byte* pxBuf = xBuf, pinput = input)
             {
-                xBuf[xBufOff++] = input[inOff + i++];
+                while (i < length)
+                    pxBuf[xBufOff++] = pinput[inOff + i++];
             }
+
+            //int len = length - i;
+            //Array.Copy(input, inOff + i, xBuf, xBufOff, len);
+            //xBufOff += len;
+            //i += len;
 
             byteCount += length;
         }

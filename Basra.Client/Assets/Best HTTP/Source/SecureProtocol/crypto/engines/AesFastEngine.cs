@@ -37,8 +37,12 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Engines
     /// Unfortunately this class has a few side channel issues.
     /// In an environment where encryption/decryption may be closely observed it should not be used.
     /// </remarks>
-    [Obsolete("Use AesEngine instead")]
-    public class AesFastEngine
+
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.NullChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.ArrayBoundsChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.DivideByZeroChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
+    public sealed class AesFastEngine
         : IBlockCipher
     {
         // The S box
@@ -789,7 +793,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Engines
         * @exception ArgumentException if the parameters argument is
         * inappropriate.
         */
-        public virtual void Init(
+        public /*virtual */void Init(
             bool				forEncryption,
             ICipherParameters	parameters)
         {
@@ -804,147 +808,199 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Engines
             this.forEncryption = forEncryption;
         }
 
-        public virtual string AlgorithmName
+        public /*virtual*/ string AlgorithmName
         {
             get { return "AES"; }
         }
 
-        public virtual bool IsPartialBlockOkay
+        public /*virtual*/ bool IsPartialBlockOkay
         {
             get { return false; }
         }
 
-        public virtual int GetBlockSize()
+        public /*virtual*/ int GetBlockSize()
         {
             return BLOCK_SIZE;
         }
 
-        public virtual int ProcessBlock(
+        public unsafe /*virtual*/ int ProcessBlock(
             byte[] input,
             int inOff,
             byte[] output,
             int outOff)
         {
-            if (WorkingKey == null)
-                throw new InvalidOperationException("AES engine not initialised");
+            fixed (byte* pinput = input)
+            {
+                uint* puintinput = (uint*)&pinput[inOff];
 
-            Check.DataLength(input, inOff, 16, "input buffer too short");
-            Check.OutputLength(output, outOff, 16, "output buffer too short");
+                C0 = puintinput[0];
+                C1 = puintinput[1];
+                C2 = puintinput[2];
+                C3 = puintinput[3];
 
-            UnPackBlock(input, inOff);
+                inOff += 16;
+            }
 
             if (forEncryption)
             {
-                EncryptBlock(WorkingKey);
+                uint[][] KW = WorkingKey;
+                uint[] kw = KW[0];
+                uint t0 = this.C0 ^ kw[0];
+                uint t1 = this.C1 ^ kw[1];
+                uint t2 = this.C2 ^ kw[2];
+
+                uint r0, r1, r2, r3 = this.C3 ^ kw[3];
+                int r = 1;
+                fixed (uint* pT0 = T0, pT1 = T1, pT2 = T2, pT3 = T3)
+                {
+                    while (r < ROUNDS - 1)
+                    {
+                        kw = KW[r++];
+                        fixed (uint* pkw = kw)
+                        {
+                            r0 = pT0[t0 & 255] ^ pT1[(t1 >> 8) & 255] ^ pT2[(t2 >> 16) & 255] ^ pT3[r3 >> 24] ^ pkw[0];
+                            r1 = pT0[t1 & 255] ^ pT1[(t2 >> 8) & 255] ^ pT2[(r3 >> 16) & 255] ^ pT3[t0 >> 24] ^ pkw[1];
+                            r2 = pT0[t2 & 255] ^ pT1[(r3 >> 8) & 255] ^ pT2[(t0 >> 16) & 255] ^ pT3[t1 >> 24] ^ pkw[2];
+                            r3 = pT0[r3 & 255] ^ pT1[(t0 >> 8) & 255] ^ pT2[(t1 >> 16) & 255] ^ pT3[t2 >> 24] ^ pkw[3];
+                        }
+
+                        kw = KW[r++];
+                        fixed (uint* pkw = kw)
+                        {
+                            t0 = pT0[r0 & 255] ^ pT1[(r1 >> 8) & 255] ^ pT2[(r2 >> 16) & 255] ^ pT3[r3 >> 24] ^ pkw[0];
+                            t1 = pT0[r1 & 255] ^ pT1[(r2 >> 8) & 255] ^ pT2[(r3 >> 16) & 255] ^ pT3[r0 >> 24] ^ pkw[1];
+                            t2 = pT0[r2 & 255] ^ pT1[(r3 >> 8) & 255] ^ pT2[(r0 >> 16) & 255] ^ pT3[r1 >> 24] ^ pkw[2];
+                            r3 = pT0[r3 & 255] ^ pT1[(r0 >> 8) & 255] ^ pT2[(r1 >> 16) & 255] ^ pT3[r2 >> 24] ^ pkw[3];
+                        }
+                    }
+
+                    kw = KW[r++];
+                    fixed (uint* pkw = kw)
+                    {
+                        r0 = pT0[t0 & 255] ^ pT1[(t1 >> 8) & 255] ^ pT2[(t2 >> 16) & 255] ^ pT3[r3 >> 24] ^ pkw[0];
+                        r1 = pT0[t1 & 255] ^ pT1[(t2 >> 8) & 255] ^ pT2[(r3 >> 16) & 255] ^ pT3[t0 >> 24] ^ pkw[1];
+                        r2 = pT0[t2 & 255] ^ pT1[(r3 >> 8) & 255] ^ pT2[(t0 >> 16) & 255] ^ pT3[t1 >> 24] ^ pkw[2];
+                        r3 = pT0[r3 & 255] ^ pT1[(t0 >> 8) & 255] ^ pT2[(t1 >> 16) & 255] ^ pT3[t2 >> 24] ^ pkw[3];
+                    }
+
+                    // the final round's table is a simple function of S so we don't use a whole other four tables for it
+
+                    kw = KW[r];
+                    fixed (uint* pkw = kw)
+                    fixed (byte* pS = S)
+                    {
+                        this.C0 = (uint)pS[r0 & 255] ^ (((uint)pS[(r1 >> 8) & 255]) << 8) ^ (((uint)pS[(r2 >> 16) & 255]) << 16) ^ (((uint)pS[r3 >> 24]) << 24) ^ pkw[0];
+                        this.C1 = (uint)pS[r1 & 255] ^ (((uint)pS[(r2 >> 8) & 255]) << 8) ^ (((uint)pS[(r3 >> 16) & 255]) << 16) ^ (((uint)pS[r0 >> 24]) << 24) ^ pkw[1];
+                        this.C2 = (uint)pS[r2 & 255] ^ (((uint)pS[(r3 >> 8) & 255]) << 8) ^ (((uint)pS[(r0 >> 16) & 255]) << 16) ^ (((uint)pS[r1 >> 24]) << 24) ^ pkw[2];
+                        this.C3 = (uint)pS[r3 & 255] ^ (((uint)pS[(r0 >> 8) & 255]) << 8) ^ (((uint)pS[(r1 >> 16) & 255]) << 16) ^ (((uint)pS[r2 >> 24]) << 24) ^ pkw[3];
+                    }
+                }
             }
             else
             {
-                DecryptBlock(WorkingKey);
+                uint[][] KW = WorkingKey;
+                uint[] kw = KW[ROUNDS];
+                uint t0 = this.C0 ^ kw[0];
+                uint t1 = this.C1 ^ kw[1];
+                uint t2 = this.C2 ^ kw[2];
+
+                uint r0, r1, r2, r3 = this.C3 ^ kw[3];
+                int r = ROUNDS - 1;
+                fixed (uint* pTinv0 = Tinv0, pTinv1 = Tinv1, pTinv2 = Tinv2, pTinv3 = Tinv3)
+                {
+                    while (r > 1)
+                    {
+                        kw = KW[r--];
+                        fixed (uint* pkw = kw)
+                        {
+                            r0 = pTinv0[t0 & 255] ^ pTinv1[(r3 >> 8) & 255] ^ pTinv2[(t2 >> 16) & 255] ^ pTinv3[t1 >> 24] ^ pkw[0];
+                            r1 = pTinv0[t1 & 255] ^ pTinv1[(t0 >> 8) & 255] ^ pTinv2[(r3 >> 16) & 255] ^ pTinv3[t2 >> 24] ^ pkw[1];
+                            r2 = pTinv0[t2 & 255] ^ pTinv1[(t1 >> 8) & 255] ^ pTinv2[(t0 >> 16) & 255] ^ pTinv3[r3 >> 24] ^ pkw[2];
+                            r3 = pTinv0[r3 & 255] ^ pTinv1[(t2 >> 8) & 255] ^ pTinv2[(t1 >> 16) & 255] ^ pTinv3[t0 >> 24] ^ pkw[3];
+                        }
+
+                        kw = KW[r--];
+                        fixed (uint* pkw = kw)
+                        {
+                            t0 = pTinv0[r0 & 255] ^ pTinv1[(r3 >> 8) & 255] ^ pTinv2[(r2 >> 16) & 255] ^ pTinv3[r1 >> 24] ^ pkw[0];
+                            t1 = pTinv0[r1 & 255] ^ pTinv1[(r0 >> 8) & 255] ^ pTinv2[(r3 >> 16) & 255] ^ pTinv3[r2 >> 24] ^ pkw[1];
+                            t2 = pTinv0[r2 & 255] ^ pTinv1[(r1 >> 8) & 255] ^ pTinv2[(r0 >> 16) & 255] ^ pTinv3[r3 >> 24] ^ pkw[2];
+                            r3 = pTinv0[r3 & 255] ^ pTinv1[(r2 >> 8) & 255] ^ pTinv2[(r1 >> 16) & 255] ^ pTinv3[r0 >> 24] ^ pkw[3];
+                        }
+                    }
+
+                    kw = KW[1];
+                    fixed (uint* pkw = kw)
+                    {
+                        r0 = pTinv0[t0 & 255] ^ pTinv1[(r3 >> 8) & 255] ^ pTinv2[(t2 >> 16) & 255] ^ pTinv3[t1 >> 24] ^ pkw[0];
+                        r1 = pTinv0[t1 & 255] ^ pTinv1[(t0 >> 8) & 255] ^ pTinv2[(r3 >> 16) & 255] ^ pTinv3[t2 >> 24] ^ pkw[1];
+                        r2 = pTinv0[t2 & 255] ^ pTinv1[(t1 >> 8) & 255] ^ pTinv2[(t0 >> 16) & 255] ^ pTinv3[r3 >> 24] ^ pkw[2];
+                        r3 = pTinv0[r3 & 255] ^ pTinv1[(t2 >> 8) & 255] ^ pTinv2[(t1 >> 16) & 255] ^ pTinv3[t0 >> 24] ^ pkw[3];
+                    }
+
+                    // the final round's table is a simple function of Si so we don't use a whole other four tables for it
+
+                    kw = KW[0];
+                    fixed (uint* pkw = kw)
+                    fixed (byte* pSi = Si)
+                    {
+                        this.C0 = (uint)pSi[r0 & 255] ^ (((uint)pSi[(r3 >> 8) & 255]) << 8) ^ (((uint)pSi[(r2 >> 16) & 255]) << 16) ^ (((uint)pSi[r1 >> 24]) << 24) ^ pkw[0];
+                        this.C1 = (uint)pSi[r1 & 255] ^ (((uint)pSi[(r0 >> 8) & 255]) << 8) ^ (((uint)pSi[(r3 >> 16) & 255]) << 16) ^ (((uint)pSi[r2 >> 24]) << 24) ^ pkw[1];
+                        this.C2 = (uint)pSi[r2 & 255] ^ (((uint)pSi[(r1 >> 8) & 255]) << 8) ^ (((uint)pSi[(r0 >> 16) & 255]) << 16) ^ (((uint)pSi[r3 >> 24]) << 24) ^ pkw[2];
+                        this.C3 = (uint)pSi[r3 & 255] ^ (((uint)pSi[(r2 >> 8) & 255]) << 8) ^ (((uint)pSi[(r1 >> 16) & 255]) << 16) ^ (((uint)pSi[r0 >> 24]) << 24) ^ pkw[3];
+                    }
+                }
             }
 
-            PackBlock(output, outOff);
+            fixed (byte* poutput = output)
+            {
+                uint* puintOutput = (uint*)&poutput[outOff];
+
+                puintOutput[0] = C0;
+                puintOutput[1] = C1;
+                puintOutput[2] = C2;
+                puintOutput[3] = C3;
+            }
 
             return BLOCK_SIZE;
         }
 
-        public virtual void Reset()
+        public /*virtual*/ void Reset()
         {
         }
 
-        private void UnPackBlock(
-            byte[]	bytes,
-            int		off)
+        private unsafe void UnPackBlock(
+            byte[]	input,
+            int		inOff)
         {
-            C0 = Pack.LE_To_UInt32(bytes, off);
-            C1 = Pack.LE_To_UInt32(bytes, off + 4);
-            C2 = Pack.LE_To_UInt32(bytes, off + 8);
-            C3 = Pack.LE_To_UInt32(bytes, off + 12);
-        }
-
-        private void PackBlock(
-            byte[]	bytes,
-            int		off)
-        {
-            Pack.UInt32_To_LE(C0, bytes, off);
-            Pack.UInt32_To_LE(C1, bytes, off + 4);
-            Pack.UInt32_To_LE(C2, bytes, off + 8);
-            Pack.UInt32_To_LE(C3, bytes, off + 12);
-        }
-
-        private void EncryptBlock(uint[][] KW)
-        {
-            uint[] kw = KW[0];
-            uint t0 = this.C0 ^ kw[0];
-            uint t1 = this.C1 ^ kw[1];
-            uint t2 = this.C2 ^ kw[2];
-
-            uint r0, r1, r2, r3 = this.C3 ^ kw[3];
-            int r = 1;
-            while (r < ROUNDS - 1)
+            fixed (byte* poutput = input)
             {
-                kw = KW[r++];
-                r0 = T0[t0 & 255] ^ T1[(t1 >> 8) & 255] ^ T2[(t2 >> 16) & 255] ^ T3[r3 >> 24] ^ kw[0];
-                r1 = T0[t1 & 255] ^ T1[(t2 >> 8) & 255] ^ T2[(r3 >> 16) & 255] ^ T3[t0 >> 24] ^ kw[1];
-                r2 = T0[t2 & 255] ^ T1[(r3 >> 8) & 255] ^ T2[(t0 >> 16) & 255] ^ T3[t1 >> 24] ^ kw[2];
-                r3 = T0[r3 & 255] ^ T1[(t0 >> 8) & 255] ^ T2[(t1 >> 16) & 255] ^ T3[t2 >> 24] ^ kw[3];
-                kw = KW[r++];
-                t0 = T0[r0 & 255] ^ T1[(r1 >> 8) & 255] ^ T2[(r2 >> 16) & 255] ^ T3[r3 >> 24] ^ kw[0];
-                t1 = T0[r1 & 255] ^ T1[(r2 >> 8) & 255] ^ T2[(r3 >> 16) & 255] ^ T3[r0 >> 24] ^ kw[1];
-                t2 = T0[r2 & 255] ^ T1[(r3 >> 8) & 255] ^ T2[(r0 >> 16) & 255] ^ T3[r1 >> 24] ^ kw[2];
-                r3 = T0[r3 & 255] ^ T1[(r0 >> 8) & 255] ^ T2[(r1 >> 16) & 255] ^ T3[r2 >> 24] ^ kw[3];
+                uint* puintoutput = (uint*)&poutput[inOff];
+
+                C0 = puintoutput[0];
+                C1 = puintoutput[1];
+                C2 = puintoutput[2];
+                C3 = puintoutput[3];
+
+                inOff += 16;
             }
-
-            kw = KW[r++];
-            r0 = T0[t0 & 255] ^ T1[(t1 >> 8) & 255] ^ T2[(t2 >> 16) & 255] ^ T3[r3 >> 24] ^ kw[0];
-            r1 = T0[t1 & 255] ^ T1[(t2 >> 8) & 255] ^ T2[(r3 >> 16) & 255] ^ T3[t0 >> 24] ^ kw[1];
-            r2 = T0[t2 & 255] ^ T1[(r3 >> 8) & 255] ^ T2[(t0 >> 16) & 255] ^ T3[t1 >> 24] ^ kw[2];
-            r3 = T0[r3 & 255] ^ T1[(t0 >> 8) & 255] ^ T2[(t1 >> 16) & 255] ^ T3[t2 >> 24] ^ kw[3];
-
-            // the final round's table is a simple function of S so we don't use a whole other four tables for it
-
-            kw = KW[r];
-            this.C0 = (uint)S[r0 & 255] ^ (((uint)S[(r1 >> 8) & 255]) << 8) ^ (((uint)S[(r2 >> 16) & 255]) << 16) ^ (((uint)S[r3 >> 24]) << 24) ^ kw[0];
-            this.C1 = (uint)S[r1 & 255] ^ (((uint)S[(r2 >> 8) & 255]) << 8) ^ (((uint)S[(r3 >> 16) & 255]) << 16) ^ (((uint)S[r0 >> 24]) << 24) ^ kw[1];
-            this.C2 = (uint)S[r2 & 255] ^ (((uint)S[(r3 >> 8) & 255]) << 8) ^ (((uint)S[(r0 >> 16) & 255]) << 16) ^ (((uint)S[r1 >> 24]) << 24) ^ kw[2];
-            this.C3 = (uint)S[r3 & 255] ^ (((uint)S[(r0 >> 8) & 255]) << 8) ^ (((uint)S[(r1 >> 16) & 255]) << 16) ^ (((uint)S[r2 >> 24]) << 24) ^ kw[3];
         }
 
-        private void DecryptBlock(uint[][] KW)
+        private unsafe void PackBlock(
+            byte[]	output,
+            int		outOff)
         {
-            uint[] kw = KW[ROUNDS];
-            uint t0 = this.C0 ^ kw[0];
-            uint t1 = this.C1 ^ kw[1];
-            uint t2 = this.C2 ^ kw[2];
-
-            uint r0, r1, r2, r3 = this.C3 ^ kw[3];
-            int r = ROUNDS - 1;
-            while (r > 1)
+            fixed (byte* poutput = output)
             {
-                kw = KW[r--];
-                r0 = Tinv0[t0 & 255] ^ Tinv1[(r3 >> 8) & 255] ^ Tinv2[(t2 >> 16) & 255] ^ Tinv3[t1 >> 24] ^ kw[0];
-                r1 = Tinv0[t1 & 255] ^ Tinv1[(t0 >> 8) & 255] ^ Tinv2[(r3 >> 16) & 255] ^ Tinv3[t2 >> 24] ^ kw[1];
-                r2 = Tinv0[t2 & 255] ^ Tinv1[(t1 >> 8) & 255] ^ Tinv2[(t0 >> 16) & 255] ^ Tinv3[r3 >> 24] ^ kw[2];
-                r3 = Tinv0[r3 & 255] ^ Tinv1[(t2 >> 8) & 255] ^ Tinv2[(t1 >> 16) & 255] ^ Tinv3[t0 >> 24] ^ kw[3];
-                kw = KW[r--];
-                t0 = Tinv0[r0 & 255] ^ Tinv1[(r3 >> 8) & 255] ^ Tinv2[(r2 >> 16) & 255] ^ Tinv3[r1 >> 24] ^ kw[0];
-                t1 = Tinv0[r1 & 255] ^ Tinv1[(r0 >> 8) & 255] ^ Tinv2[(r3 >> 16) & 255] ^ Tinv3[r2 >> 24] ^ kw[1];
-                t2 = Tinv0[r2 & 255] ^ Tinv1[(r1 >> 8) & 255] ^ Tinv2[(r0 >> 16) & 255] ^ Tinv3[r3 >> 24] ^ kw[2];
-                r3 = Tinv0[r3 & 255] ^ Tinv1[(r2 >> 8) & 255] ^ Tinv2[(r1 >> 16) & 255] ^ Tinv3[r0 >> 24] ^ kw[3];
+                uint* puintOutput = (uint*)&poutput[outOff];
+
+                puintOutput[0] = C0;
+                puintOutput[1] = C1;
+                puintOutput[2] = C2;
+                puintOutput[3] = C3;
+
+                outOff += 16;
             }
-
-            kw = KW[1];
-            r0 = Tinv0[t0 & 255] ^ Tinv1[(r3 >> 8) & 255] ^ Tinv2[(t2 >> 16) & 255] ^ Tinv3[t1 >> 24] ^ kw[0];
-            r1 = Tinv0[t1 & 255] ^ Tinv1[(t0 >> 8) & 255] ^ Tinv2[(r3 >> 16) & 255] ^ Tinv3[t2 >> 24] ^ kw[1];
-            r2 = Tinv0[t2 & 255] ^ Tinv1[(t1 >> 8) & 255] ^ Tinv2[(t0 >> 16) & 255] ^ Tinv3[r3 >> 24] ^ kw[2];
-            r3 = Tinv0[r3 & 255] ^ Tinv1[(t2 >> 8) & 255] ^ Tinv2[(t1 >> 16) & 255] ^ Tinv3[t0 >> 24] ^ kw[3];
-
-            // the final round's table is a simple function of Si so we don't use a whole other four tables for it
-
-            kw = KW[0];
-            this.C0 = (uint)Si[r0 & 255] ^ (((uint)Si[(r3 >> 8) & 255]) << 8) ^ (((uint)Si[(r2 >> 16) & 255]) << 16) ^ (((uint)Si[r1 >> 24]) << 24) ^ kw[0];
-            this.C1 = (uint)Si[r1 & 255] ^ (((uint)Si[(r0 >> 8) & 255]) << 8) ^ (((uint)Si[(r3 >> 16) & 255]) << 16) ^ (((uint)Si[r2 >> 24]) << 24) ^ kw[1];
-            this.C2 = (uint)Si[r2 & 255] ^ (((uint)Si[(r1 >> 8) & 255]) << 8) ^ (((uint)Si[(r0 >> 16) & 255]) << 16) ^ (((uint)Si[r3 >> 24]) << 24) ^ kw[2];
-            this.C3 = (uint)Si[r3 & 255] ^ (((uint)Si[(r2 >> 8) & 255]) << 8) ^ (((uint)Si[(r1 >> 16) & 255]) << 16) ^ (((uint)Si[r0 >> 24]) << 24) ^ kw[3];
         }
     }
 }

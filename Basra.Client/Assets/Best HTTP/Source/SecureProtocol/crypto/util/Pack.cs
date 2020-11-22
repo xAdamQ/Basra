@@ -4,12 +4,11 @@ using System;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
 {
-    internal sealed class Pack
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.NullChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.ArrayBoundsChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.DivideByZeroChecks, false)]
+    internal static class Pack
     {
-        private Pack()
-        {
-        }
-
         internal static void UInt16_To_BE(ushort n, byte[] bs)
         {
             bs[0] = (byte)(n >> 8);
@@ -126,6 +125,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             return bs;
         }
 
+        
         internal static void UInt64_To_BE(ulong[] ns, byte[] bs, int off)
         {
             for (int i = 0; i < ns.Length; ++i)
@@ -135,6 +135,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             }
         }
 
+        
         internal static ulong BE_To_UInt64(byte[] bs)
         {
             uint hi = BE_To_UInt32(bs);
@@ -142,6 +143,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             return ((ulong)hi << 32) | (ulong)lo;
         }
 
+        
         internal static ulong BE_To_UInt64(byte[] bs, int off)
         {
             uint hi = BE_To_UInt32(bs, off);
@@ -149,6 +151,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             return ((ulong)hi << 32) | (ulong)lo;
         }
 
+        
         internal static void BE_To_UInt64(byte[] bs, int off, ulong[] ns)
         {
             for (int i = 0; i < ns.Length; ++i)
@@ -158,18 +161,21 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             }
         }
 
+        
         internal static void UInt16_To_LE(ushort n, byte[] bs)
         {
             bs[0] = (byte)(n);
             bs[1] = (byte)(n >> 8);
         }
 
+        
         internal static void UInt16_To_LE(ushort n, byte[] bs, int off)
         {
             bs[off] = (byte)(n);
             bs[off + 1] = (byte)(n >> 8);
         }
 
+        
         internal static ushort LE_To_UInt16(byte[] bs)
         {
             uint n = (uint)bs[0]
@@ -177,6 +183,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             return (ushort)n;
         }
 
+        
         internal static ushort LE_To_UInt16(byte[] bs, int off)
         {
             uint n = (uint)bs[off]
@@ -184,6 +191,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             return (ushort)n;
         }
 
+        
         internal static byte[] UInt32_To_LE(uint n)
         {
             byte[] bs = new byte[4];
@@ -191,6 +199,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             return bs;
         }
 
+        
         internal static void UInt32_To_LE(uint n, byte[] bs)
         {
             bs[0] = (byte)(n);
@@ -199,6 +208,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             bs[3] = (byte)(n >> 24);
         }
 
+        
         internal static void UInt32_To_LE(uint n, byte[] bs, int off)
         {
             bs[off] = (byte)(n);
@@ -207,6 +217,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             bs[off + 3] = (byte)(n >> 24);
         }
 
+        
         internal static byte[] UInt32_To_LE(uint[] ns)
         {
             byte[] bs = new byte[4 * ns.Length];
@@ -214,6 +225,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             return bs;
         }
 
+        
         internal static void UInt32_To_LE(uint[] ns, byte[] bs, int off)
         {
             for (int i = 0; i < ns.Length; ++i)
@@ -223,6 +235,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             }
         }
 
+        
         internal static uint LE_To_UInt32(byte[] bs)
         {
             return (uint)bs[0]
@@ -231,6 +244,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
                 | (uint)bs[3] << 24;
         }
 
+        
         internal static uint LE_To_UInt32(byte[] bs, int off)
         {
             return (uint)bs[off]
@@ -239,6 +253,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
                 | (uint)bs[off + 3] << 24;
         }
 
+        
         internal static void LE_To_UInt32(byte[] bs, int off, uint[] ns)
         {
             for (int i = 0; i < ns.Length; ++i)
@@ -248,6 +263,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             }
         }
 
+        
         internal static void LE_To_UInt32(byte[] bs, int bOff, uint[] ns, int nOff, int count)
         {
             for (int i = 0; i < count; ++i)
@@ -257,6 +273,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             }
         }
 
+        
         internal static uint[] LE_To_UInt32(byte[] bs, int off, int count)
         {
             uint[] ns = new uint[count];
@@ -268,6 +285,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             return ns;
         }
 
+        
         internal static byte[] UInt64_To_LE(ulong n)
         {
             byte[] bs = new byte[8];
@@ -275,18 +293,21 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             return bs;
         }
 
+        
         internal static void UInt64_To_LE(ulong n, byte[] bs)
         {
             UInt32_To_LE((uint)(n), bs);
             UInt32_To_LE((uint)(n >> 32), bs, 4);
         }
 
+        
         internal static void UInt64_To_LE(ulong n, byte[] bs, int off)
         {
             UInt32_To_LE((uint)(n), bs, off);
             UInt32_To_LE((uint)(n >> 32), bs, off + 4);
         }
 
+        
         internal static byte[] UInt64_To_LE(ulong[] ns)
         {
             byte[] bs = new byte[8 * ns.Length];
@@ -294,6 +315,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             return bs;
         }
 
+        
         internal static void UInt64_To_LE(ulong[] ns, byte[] bs, int off)
         {
             for (int i = 0; i < ns.Length; ++i)
@@ -303,6 +325,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             }
         }
 
+        
         internal static void UInt64_To_LE(ulong[] ns, int nsOff, int nsLen, byte[] bs, int bsOff)
         {
             for (int i = 0; i < nsLen; ++i)
@@ -312,6 +335,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             }
         }
 
+        
         internal static ulong LE_To_UInt64(byte[] bs)
         {
             uint lo = LE_To_UInt32(bs);
@@ -319,6 +343,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             return ((ulong)hi << 32) | (ulong)lo;
         }
 
+        
         internal static ulong LE_To_UInt64(byte[] bs, int off)
         {
             uint lo = LE_To_UInt32(bs, off);
@@ -326,6 +351,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             return ((ulong)hi << 32) | (ulong)lo;
         }
 
+        
         internal static void LE_To_UInt64(byte[] bs, int off, ulong[] ns)
         {
             for (int i = 0; i < ns.Length; ++i)
@@ -335,6 +361,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities
             }
         }
 
+        
         internal static void LE_To_UInt64(byte[] bs, int bsOff, ulong[] ns, int nsOff, int nsLen)
         {
             for (int i = 0; i < nsLen; ++i)

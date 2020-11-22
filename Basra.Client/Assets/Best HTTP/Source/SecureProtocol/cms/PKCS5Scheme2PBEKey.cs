@@ -16,7 +16,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Cms
 	public class Pkcs5Scheme2PbeKey
 		: CmsPbeKey
 	{
-		[Obsolete("Use version taking 'char[]' instead")]
+
 		public Pkcs5Scheme2PbeKey(
 			string	password,
 			byte[]	salt,
@@ -25,7 +25,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Cms
 		{
 		}
 
-		[Obsolete("Use version taking 'char[]' instead")]
+
 		public Pkcs5Scheme2PbeKey(
 			string				password,
 			AlgorithmIdentifier keyDerivationAlgorithm)

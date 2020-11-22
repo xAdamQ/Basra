@@ -116,7 +116,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
             return p;
         }
 
-        [Obsolete("Per-point compression property will be removed")]
+
         public virtual ECPoint ValidatePoint(BigInteger x, BigInteger y, bool withCompression)
         {
             ECPoint p = CreatePoint(x, y, withCompression);
@@ -132,7 +132,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
             return CreatePoint(x, y, false);
         }
 
-        [Obsolete("Per-point compression property will be removed")]
+
         public virtual ECPoint CreatePoint(BigInteger x, BigInteger y, bool withCompression)
         {
             return CreateRawPoint(FromBigInteger(x), FromBigInteger(y), withCompression);
@@ -633,7 +633,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
         protected readonly BigInteger m_q, m_r;
         protected readonly FpPoint m_infinity;
 
-        [Obsolete("Use constructor taking order/cofactor")]
+
         public FpCurve(BigInteger q, BigInteger a, BigInteger b)
             : this(q, a, b, null, null)
         {
@@ -653,7 +653,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
             this.m_coord = FP_DEFAULT_COORDS;
         }
 
-        [Obsolete("Use constructor taking order/cofactor")]
+
         protected FpCurve(BigInteger q, BigInteger r, ECFieldElement a, ECFieldElement b)
             : this(q, r, a, b, null, null)
         {
@@ -800,7 +800,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
             return x != null && x.SignValue >= 0 && x.BitLength <= FieldSize;
         }
 
-        [Obsolete("Per-point compression property will be removed")]
+
         public override ECPoint CreatePoint(BigInteger x, BigInteger y, bool withCompression)
         {
             ECFieldElement X = FromBigInteger(x), Y = FromBigInteger(y);
@@ -1021,7 +1021,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
          * for non-supersingular elliptic curves over
          * <code>F<sub>2<sup>m</sup></sub></code>.
          */
-        [Obsolete("Use constructor taking order/cofactor")]
+
         public F2mCurve(
             int			m,
             int			k,
@@ -1079,7 +1079,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
          * for non-supersingular elliptic curves over
          * <code>F<sub>2<sup>m</sup></sub></code>.
          */
-        [Obsolete("Use constructor taking order/cofactor")]
+
         public F2mCurve(
             int			m,
             int			k1,

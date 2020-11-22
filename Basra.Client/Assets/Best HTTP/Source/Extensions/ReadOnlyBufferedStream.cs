@@ -1,4 +1,4 @@
-﻿using BestHTTP.PlatformSupport.Memory;
+using BestHTTP.PlatformSupport.Memory;
 using System;
 using System.IO;
 
@@ -35,6 +35,7 @@ namespace BestHTTP.Extensions
             else
             {
                 int readcount = 0;
+
                 if (available > 0)
                 {
                     Array.Copy(buf, pos, buffer, offset, available);
@@ -44,52 +45,52 @@ namespace BestHTTP.Extensions
                     pos = 0;
                 }
 
-                while (true)
+                try
                 {
-                    try
+                    available = stream.Read(buf, 0, buf.Length);
+                    pos = 0;
+                }
+                catch (Exception ex)
+                {
+                    if (readcount > 0)
                     {
-                        available = stream.Read(buf, 0, buf.Length);
-                        pos = 0;
+                        return readcount;
                     }
-                    catch (Exception ex)
-                    {
-                        if (readcount > 0)
-                        {
-                            return readcount;
-                        }
 
-                        throw (ex);
+                    throw (ex);
+                }
+
+                if (available < 1)
+                {
+                    if (readcount > 0)
+                    {
+                        return readcount;
                     }
-                    if (available < 1)
-                    {
-                        if (readcount > 0)
-                        {
-                            return readcount;
-                        }
 
-                        return 0;
+                    return available;
+                }
+                else
+                {
+                    int toread = size - readcount;
+                    if (toread <= available)
+                    {
+                        Array.Copy(buf, pos, buffer, offset, toread);
+                        available -= toread;
+                        pos += toread;
+                        readcount += toread;
+                        return readcount;
                     }
                     else
                     {
-                        int toread = size - readcount;
-                        if (toread <= available)
-                        {
-                            Array.Copy(buf, pos, buffer, offset, toread);
-                            available -= toread;
-                            pos += toread;
-                            readcount += toread;
-                            return readcount;
-                        }
-                        else
-                        {
-                            Array.Copy(buf, pos, buffer, offset, available);
-                            offset += available;
-                            readcount += available;
-                            pos = 0;
-                            available = 0;
-                        }
+                        Array.Copy(buf, pos, buffer, offset, available);
+                        offset += available;
+                        readcount += available;
+                        pos = 0;
+                        available = 0;
                     }
                 }
+
+                return readcount;
             }
         }
 

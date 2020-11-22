@@ -3,11 +3,16 @@
 using System;
 using System.Text;
 
+using BestHTTP.PlatformSupport.Memory;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Math;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities
 {
     /// <summary> General array utilities.</summary>
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.NullChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.ArrayBoundsChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.DivideByZeroChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
     public abstract class Arrays
     {
         public static readonly byte[] EmptyBytes = new byte[0];
@@ -55,9 +60,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities
         /// <param name="a">Left side.</param>
         /// <param name="b">Right side.</param>
         /// <returns>True if equal.</returns>
-        public static bool AreEqual(
-            byte[]	a,
-            byte[]	b)
+        public static bool AreEqual(byte[] a, byte[] b)
         {
             if (a == b)
                 return true;
@@ -68,7 +71,24 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities
             return HaveSameContents(a, b);
         }
 
-        [Obsolete("Use 'AreEqual' method instead")]
+        public static bool AreEqual(byte[] a, int aFromIndex, int aToIndex, byte[] b, int bFromIndex, int bToIndex)
+        {
+            int aLength = aToIndex - aFromIndex;
+            int bLength = bToIndex - bFromIndex;
+
+            if (aLength != bLength)
+                return false;
+
+            for (int i = 0; i < aLength; ++i)
+            {
+                if (a[aFromIndex + i] != b[bFromIndex + i])
+                    return false;
+            }
+
+            return true;
+        }
+
+
         public static bool AreSame(
             byte[]	a,
             byte[]	b)
@@ -99,6 +119,26 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities
             for (int i = len; i < b.Length; ++i)
             {
                 nonEqual |= (b[i] ^ ~b[i]);
+            }
+            return 0 == nonEqual;
+        }
+
+        public static bool ConstantTimeAreEqual(BufferSegment a, BufferSegment b)
+        {
+            if (null == a || null == b)
+                return false;
+            if (a == b)
+                return true;
+
+            int len = System.Math.Min(a.Count, b.Count);
+            int nonEqual = a.Count ^ b.Count;
+            for (int i = 0; i < len; ++i)
+            {
+                nonEqual |= (a.Data[a.Offset + i] ^ b.Data[b.Offset + i]);
+            }
+            for (int i = len; i < b.Count; ++i)
+            {
+                nonEqual |= (b.Data[b.Offset + i] ^ ~b.Data[b.Offset + i]);
             }
             return 0 == nonEqual;
         }

@@ -7,6 +7,10 @@ using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Modes.Gcm
 {
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.NullChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.ArrayBoundsChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.DivideByZeroChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
     public sealed class Tables8kGcmMultiplier
         : IGcmMultiplier
     {
@@ -81,26 +85,49 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Modes.Gcm
         }
         uint[] z = new uint[4];
 
-        public void MultiplyH(byte[] x)
+        public unsafe void MultiplyH(byte[] x)
         {
-            Array.Clear(z, 0, z.Length);
-            for (int i = 15; i >= 0; --i)
+            fixed (byte* px = x)
+                fixed (uint* pz = z)
             {
-                //GcmUtilities.Xor(z, M[i + i][x[i] & 0x0f]);
-                uint[] m = M[i + i][x[i] & 0x0f];
-                z[0] ^= m[0];
-                z[1] ^= m[1];
-                z[2] ^= m[2];
-                z[3] ^= m[3];
-                //GcmUtilities.Xor(z, M[i + i + 1][(x[i] & 0xf0) >> 4]);
-                m = M[i + i + 1][(x[i] & 0xf0) >> 4];
-                z[0] ^= m[0];
-                z[1] ^= m[1];
-                z[2] ^= m[2];
-                z[3] ^= m[3];
-            }
+                ulong* pulongZ = (ulong*)pz;
+                pulongZ[0] = 0;
+                pulongZ[1] = 0;
 
-            Pack.UInt32_To_BE(z, x, 0);
+                for (int i = 15; i >= 0; --i)
+                {
+                    uint[] m = M[i + i][px[i] & 0x0f];
+                    fixed (uint* pm = m)
+                    {
+                        ulong* pulongm = (ulong*)pm;
+                        
+                        pulongZ[0] ^= pulongm[0];
+                        pulongZ[1] ^= pulongm[1];
+                    }
+
+                    m = M[i + i + 1][(px[i] & 0xf0) >> 4];
+                    fixed (uint* pm = m)
+                    {
+                        ulong* pulongm = (ulong*)pm;
+
+                        pulongZ[0] ^= pulongm[0];
+                        pulongZ[1] ^= pulongm[1];
+                    }
+                }
+
+                int off = 0;
+
+                for (int i = 0; i < 4; ++i)
+                {
+                    uint n = pz[i];
+                    px[off] =     (byte)(n >> 24);
+                    px[off + 1] = (byte)(n >> 16);
+                    px[off + 2] = (byte)(n >> 8);
+                    px[off + 3] = (byte)(n);
+                    
+                    off += 4;
+                }
+            }
         }
     }
 }

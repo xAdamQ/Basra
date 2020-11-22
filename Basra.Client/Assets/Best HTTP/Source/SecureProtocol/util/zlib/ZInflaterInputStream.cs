@@ -7,7 +7,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Zlib {
     /// <summary>
     /// Summary description for DeflaterOutputStream.
     /// </summary>
-    [Obsolete("Use 'ZInputStream' instead")]
+
     public class ZInflaterInputStream : Stream {
         protected ZStream z=new ZStream();
         protected int flushLevel=JZlib.Z_NO_FLUSH;

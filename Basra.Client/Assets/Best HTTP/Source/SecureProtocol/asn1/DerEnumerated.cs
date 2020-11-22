@@ -154,6 +154,11 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1
             }
             return possibleMatch;
         }
+
+        public override string ToString()
+        {
+            return this.Value.ToString();
+        }
     }
 }
 #pragma warning restore

@@ -12,7 +12,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1
 	{
 		public static new readonly BerNull Instance = new BerNull(0);
 
-		[Obsolete("Use static Instance object")]
+
 		public BerNull()
 		{
 		}

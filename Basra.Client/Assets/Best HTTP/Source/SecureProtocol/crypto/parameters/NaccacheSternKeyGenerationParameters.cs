@@ -64,7 +64,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Parameters
 		 * @param debug
          *            Ignored
 		 */
-        [Obsolete("Use version without 'debug' parameter")]
+
 		public NaccacheSternKeyGenerationParameters(
             SecureRandom    random,
 			int             strength,
@@ -91,7 +91,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Parameters
 			get { return countSmallPrimes; }
 		}
 
-        [Obsolete("Remove: always false")]
+
         public bool IsDebug
 		{
 			get { return false; }

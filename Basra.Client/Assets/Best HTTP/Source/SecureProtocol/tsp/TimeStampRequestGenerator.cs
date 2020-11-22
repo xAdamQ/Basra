@@ -40,7 +40,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Tsp
 		 * add a given extension field for the standard extensions tag (tag 3)
 		 * @throws IOException
 		 */
-		[Obsolete("Use method taking DerObjectIdentifier")]
+
 		public void AddExtension(
 			string			oid,
 			bool			critical,
@@ -54,7 +54,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Tsp
 		* The value parameter becomes the contents of the octet string associated
 		* with the extension.
 		*/
-		[Obsolete("Use method taking DerObjectIdentifier")]
+
 		public void AddExtension(
 			string	oid,
 			bool	critical,

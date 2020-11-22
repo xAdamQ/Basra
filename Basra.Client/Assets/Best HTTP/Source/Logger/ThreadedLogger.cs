@@ -4,6 +4,9 @@ using System.Text;
 
 namespace BestHTTP.Logger
 {
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.NullChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.ArrayBoundsChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.DivideByZeroChecks, false)]
     public sealed class ThreadedLogger : BestHTTP.Logger.ILogger, IDisposable
     {
         public Loglevels Level { get; set; }
@@ -23,6 +26,9 @@ namespace BestHTTP.Logger
         private StringBuilder sb = new StringBuilder(40);
 
 #if !UNITY_WEBGL || UNITY_EDITOR
+
+        public TimeSpan ExitThreadAfterInactivity = TimeSpan.FromMinutes(1);
+
         private ConcurrentQueue<LogJob> jobs = new ConcurrentQueue<LogJob>();
         private System.Threading.AutoResetEvent newJobEvent = new System.Threading.AutoResetEvent(false);
 
@@ -89,36 +95,43 @@ namespace BestHTTP.Logger
             }
             catch
             {
-                WriteToOutput(job);
+                try
+                {
+                    this.Output.Write(job.level, job.ToJson(sb));
+                }
+                catch
+                { }
                 return;
             }
 
             if (System.Threading.Interlocked.CompareExchange(ref this.threadCreated, 1, 0) == 0)
                 BestHTTP.PlatformSupport.Threading.ThreadedRunner.RunLongLiving(ThreadFunc);
 #else
-            WriteToOutput(job);
+            this.Output.Write(job.level, job.ToJson(sb));
 #endif
-        }
-
-        private void WriteToOutput(LogJob job)
-        {
-            string json = job.ToJson(sb);
-
-            this.Output.Write(job.level, json);
         }
 
 #if !UNITY_WEBGL || UNITY_EDITOR
         private void ThreadFunc()
         {
+            System.Threading.Thread.CurrentThread.Name = "BestHTTP.Logger";
             try
             {
                 do
                 {
-                    this.newJobEvent.WaitOne();
+                    if (!this.newJobEvent.WaitOne(this.ExitThreadAfterInactivity))
+                        return;
 
                     LogJob job;
                     while (this.jobs.TryDequeue(out job))
-                        WriteToOutput(job);
+                    {
+                        try
+                        {
+                            this.Output.Write(job.level, job.ToJson(sb));
+                        }
+                        catch
+                        { }
+                    }
 
                 } while (!HTTPManager.IsQuitting);
 
@@ -153,7 +166,7 @@ namespace BestHTTP.Logger
 
             if (this.newJobEvent != null)
             {
-                this.newJobEvent.Dispose();
+                this.newJobEvent.Close();
                 this.newJobEvent = null;
             }
 #endif
@@ -168,6 +181,7 @@ namespace BestHTTP.Logger
         }
     }
 
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
     struct LogJob
     {
         private static string[] LevelStrings = new string[] { "Verbose", "Information", "Warning", "Error", "Exception" };
@@ -199,8 +213,8 @@ namespace BestHTTP.Logger
 
             sb.AppendFormat("{{\"tid\":{0},\"div\":\"{1}\",\"msg\":\"{2}\"",
                 WrapInColor(this.threadId.ToString(), "yellow"),
-                WrapInColor(this.division, "blue"),
-                WrapInColor(LoggingContext.Escape(this.msg), "maroon"));
+                WrapInColor(this.division, "yellow"),
+                WrapInColor(LoggingContext.Escape(this.msg), "yellow"));
 
             if (ex != null)
             {

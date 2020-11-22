@@ -7,6 +7,8 @@ using BestHTTP.Logger;
 using BestHTTP.Caching;
 #endif
 
+using BestHTTP.Timings;
+
 namespace BestHTTP.Connections
 {
     public sealed class HTTP1Handler : IHTTPRequestHandler
@@ -17,7 +19,7 @@ namespace BestHTTP.Connections
 
         public bool CanProcessMultiple { get { return false; } }
 
-        private HTTPConnection conn;
+        private readonly HTTPConnection conn;
 
         public LoggingContext Context { get; private set; }
 
@@ -34,6 +36,8 @@ namespace BestHTTP.Connections
         public void RunHandler()
         {
             HTTPManager.Logger.Information("HTTP1Handler", string.Format("[{0}] started processing request '{1}'", this, this.conn.CurrentRequest.CurrentUri.ToString()), this.Context, this.conn.CurrentRequest.Context);
+
+            System.Threading.Thread.CurrentThread.Name = "BestHTTP.HTTP1 R&W";
 
             HTTPConnectionStates proposedConnectionState = HTTPConnectionStates.Processing;
 
@@ -52,6 +56,7 @@ namespace BestHTTP.Connections
 
                 // Write the request to the stream
                 this.conn.CurrentRequest.SendOutTo(this.conn.connector.Stream);
+                this.conn.CurrentRequest.Timing.Add(TimingEventNames.Request_Sent);
 
                 if (this.conn.CurrentRequest.IsCancellationRequested)
                     return;
@@ -60,6 +65,8 @@ namespace BestHTTP.Connections
 
                 // Receive response from the server
                 bool received = Receive(this.conn.CurrentRequest);
+
+                this.conn.CurrentRequest.Timing.Add(TimingEventNames.Response_Received);
 
                 if (this.conn.CurrentRequest.IsCancellationRequested)
                     return;
@@ -154,7 +161,16 @@ namespace BestHTTP.Connections
                     }
                     else if (resendRequest)
                     {
-                        RequestEventHelper.EnqueueRequestEvent(new RequestEventInfo(this.conn.CurrentRequest, RequestEvents.Resend));
+                        // Here introducing a ClosedResendRequest connection state, where we have to process the connection's state change to Closed
+                        // than we have to resend the request.
+                        // If we would send the Resend request here, than a few lines below the Closed connection state change,
+                        //  request events are processed before connection events (just switching the EnqueueRequestEvent and EnqueueConnectionEvent wouldn't work
+                        //  see order of ProcessQueues in HTTPManager.OnUpdate!) and it would pick this very same closing/closed connection!
+
+                        if (proposedConnectionState == HTTPConnectionStates.Closed)
+                            ConnectionEventHelper.EnqueueConnectionEvent(new ConnectionEventInfo(this.conn, this.conn.CurrentRequest));
+                        else
+                            RequestEventHelper.EnqueueRequestEvent(new RequestEventInfo(this.conn.CurrentRequest, RequestEvents.Resend));
                     }
                     else if (this.conn.CurrentRequest.Response != null && this.conn.CurrentRequest.Response.IsUpgraded)
                     {
@@ -181,7 +197,8 @@ namespace BestHTTP.Connections
                     if (proposedConnectionState == HTTPConnectionStates.Processing)
                         proposedConnectionState = HTTPConnectionStates.Recycle;
 
-                    ConnectionEventHelper.EnqueueConnectionEvent(new ConnectionEventInfo(this.conn, proposedConnectionState));
+                    if (proposedConnectionState != HTTPConnectionStates.ClosedResendRequest)
+                        ConnectionEventHelper.EnqueueConnectionEvent(new ConnectionEventInfo(this.conn, proposedConnectionState));
                 }
             }
         }

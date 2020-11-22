@@ -1,5 +1,7 @@
 #if !BESTHTTP_DISABLE_ALTERNATE_SSL && (!UNITY_WEBGL || UNITY_EDITOR)
 #pragma warning disable
+using System;
+
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1
 {
     public class DerOctetString
@@ -12,9 +14,13 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1
         {
         }
 
-		public DerOctetString(
-			Asn1Encodable obj)
-			: base(obj)
+        public DerOctetString(IAsn1Convertible obj)
+            : this(obj.ToAsn1Object())
+        {
+        }
+
+        public DerOctetString(Asn1Encodable obj)
+            : base(obj.GetEncoded(Asn1Encodable.Der))
         {
         }
 

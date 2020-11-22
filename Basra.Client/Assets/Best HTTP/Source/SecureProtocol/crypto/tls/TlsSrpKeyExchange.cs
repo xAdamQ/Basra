@@ -49,7 +49,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected TlsSignerCredentials mServerCredentials = null;
 
-        [Obsolete("Use constructor taking an explicit 'groupVerifier' argument")]
+
         public TlsSrpKeyExchange(int keyExchange, IList supportedSignatureAlgorithms, byte[] identity, byte[] password)
             :   this(keyExchange, supportedSignatureAlgorithms, new DefaultTlsSrpGroupVerifier(), identity, password)
         {

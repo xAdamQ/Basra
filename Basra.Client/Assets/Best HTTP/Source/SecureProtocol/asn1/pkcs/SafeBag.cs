@@ -1,5 +1,7 @@
 #if !BESTHTTP_DISABLE_ALTERNATE_SSL && (!UNITY_WEBGL || UNITY_EDITOR)
 #pragma warning disable
+using System;
+
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Pkcs
@@ -7,6 +9,15 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Pkcs
     public class SafeBag
         : Asn1Encodable
     {
+        public static SafeBag GetInstance(object obj)
+        {
+            if (obj is SafeBag)
+                return (SafeBag)obj;
+            if (obj == null)
+                return null;
+            return new SafeBag(Asn1Sequence.GetInstance(obj));
+        }
+
         private readonly DerObjectIdentifier bagID;
         private readonly Asn1Object bagValue;
         private readonly Asn1Set bagAttributes;
@@ -30,14 +41,15 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Pkcs
             this.bagAttributes = bagAttributes;
         }
 
+
 		public SafeBag(
             Asn1Sequence seq)
         {
-            this.bagID = (DerObjectIdentifier) seq[0];
-            this.bagValue = ((DerTaggedObject) seq[1]).GetObject();
+            this.bagID = (DerObjectIdentifier)seq[0];
+            this.bagValue = ((DerTaggedObject)seq[1]).GetObject();
             if (seq.Count == 3)
             {
-                this.bagAttributes = (Asn1Set) seq[2];
+                this.bagAttributes = (Asn1Set)seq[2];
             }
         }
 

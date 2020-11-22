@@ -8,7 +8,7 @@ using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Ess
 {
-	[Obsolete("Use version in Asn1.Esf instead")]
+
 	public class OtherCertID
 		: Asn1Encodable
 	{

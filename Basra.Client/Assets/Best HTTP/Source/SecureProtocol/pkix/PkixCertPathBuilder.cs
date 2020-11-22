@@ -60,7 +60,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkix
 			}
 
 			if (targets.IsEmpty)
-				throw new PkixCertPathBuilderException("No certificate found matching targetContraints.");
+				throw new PkixCertPathBuilderException("No certificate found matching targetConstraints.");
 
 			PkixCertPathBuilderResult result = null;
 			IList certPathList = BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Platform.CreateArrayList();

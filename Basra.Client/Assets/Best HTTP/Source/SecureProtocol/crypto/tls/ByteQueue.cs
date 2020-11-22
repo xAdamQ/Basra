@@ -3,6 +3,8 @@
 using System;
 using System.IO;
 
+using BestHTTP.PlatformSupport.Memory;
+
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 {
     /// <remarks>
@@ -59,7 +61,14 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         public ByteQueue(int capacity)
         {
-            this.databuf = capacity == 0 ? TlsUtilities.EmptyBytes : new byte[capacity];
+            if (capacity == 0)
+            {
+                this.databuf = TlsUtilities.EmptyBytes;
+            }
+            else
+            {
+                this.databuf = BufferPool.Get(capacity, true);
+            }
         }
 
         public ByteQueue(byte[] buf, int off, int len)
@@ -87,8 +96,12 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                 int desiredSize = ByteQueue.NextTwoPow(available + len);
                 if (desiredSize > databuf.Length)
                 {
-                    byte[] tmp = new byte[desiredSize];
+                    byte[] tmp = BufferPool.Get(desiredSize, true);
+
                     Array.Copy(databuf, skipped, tmp, 0, available);
+
+                    BufferPool.Release(databuf);
+
                     databuf = tmp;
                 }
                 else
@@ -185,7 +198,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         public byte[] RemoveData(int len, int skip)
         {
-            byte[] buf = new byte[len];
+            byte[] buf = BufferPool.Get(len, true);
             RemoveData(buf, 0, len, skip);
             return buf;
         }
@@ -202,8 +215,12 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                 int desiredSize = ByteQueue.NextTwoPow(available);
                 if (desiredSize < databuf.Length)
                 {
-                    byte[] tmp = new byte[desiredSize];
+                    byte[] tmp = BufferPool.Get(desiredSize, true);
+
                     Array.Copy(databuf, skipped, tmp, 0, available);
+
+                    BufferPool.Release(databuf);
+
                     databuf = tmp;
                     skipped = 0;
                 }

@@ -27,6 +27,8 @@ namespace BestHTTP.Core
 
         public readonly HostProtocolSupport ProtocolSupport;
 
+        public readonly HTTPRequest Request;
+
         public ConnectionEventInfo(ConnectionBase sourceConn, ConnectionEvents @event)
         {
             this.Source = sourceConn;
@@ -35,6 +37,8 @@ namespace BestHTTP.Core
             this.State = HTTPConnectionStates.Initial;
 
             this.ProtocolSupport = HostProtocolSupport.Unknown;
+
+            this.Request = null;
         }
 
         public ConnectionEventInfo(ConnectionBase sourceConn, HTTPConnectionStates newState)
@@ -46,6 +50,8 @@ namespace BestHTTP.Core
             this.State = newState;
 
             this.ProtocolSupport = HostProtocolSupport.Unknown;
+
+            this.Request = null;
         }
 
         public ConnectionEventInfo(ConnectionBase sourceConn, HostProtocolSupport protocolSupport)
@@ -56,6 +62,21 @@ namespace BestHTTP.Core
             this.State = HTTPConnectionStates.Initial;
 
             this.ProtocolSupport = protocolSupport;
+
+            this.Request = null;
+        }
+
+        public ConnectionEventInfo(ConnectionBase sourceConn, HTTPRequest request)
+        {
+            this.Source = sourceConn;
+
+            this.Event = ConnectionEvents.StateChange;
+
+            this.State = HTTPConnectionStates.ClosedResendRequest;
+
+            this.ProtocolSupport = HostProtocolSupport.Unknown;
+
+            this.Request = request;
         }
 
         public override string ToString()
@@ -139,11 +160,15 @@ namespace BestHTTP.Core
                     break;
 
                 case HTTPConnectionStates.Closed:
+                case HTTPConnectionStates.ClosedResendRequest:
+                    // in case of ClosedResendRequest
+                    if (@event.Request != null)
+                        RequestEventHelper.EnqueueRequestEvent(new RequestEventInfo(@event.Request, RequestEvents.Resend));
+
                     HostManager.GetHost(connection.LastProcessedUri.Host)
                         .GetHostDefinition(connection.ServerAddress)
                         .RemoveConnection(connection, @event.State)
                         .TryToSendQueuedRequests();
-
                     break;
             }
         }

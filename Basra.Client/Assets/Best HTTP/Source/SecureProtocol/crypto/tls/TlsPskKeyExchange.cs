@@ -38,7 +38,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
         protected TlsEncryptionCredentials mServerCredentials = null;
         protected byte[] mPremasterSecret;
 
-        [Obsolete("Use constructor that takes a TlsDHVerifier")]
+
         public TlsPskKeyExchange(int keyExchange, IList supportedSignatureAlgorithms, TlsPskIdentity pskIdentity,
             TlsPskIdentityManager pskIdentityManager, DHParameters dhParameters, int[] namedCurves,
             byte[] clientECPointFormats, byte[] serverECPointFormats)

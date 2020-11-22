@@ -33,7 +33,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X509
             this.algorithm = algorithm;
         }
 
-        [Obsolete("Use version taking a DerObjectIdentifier")]
+
         public AlgorithmIdentifier(
             string algorithm)
         {
@@ -66,7 +66,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X509
 			get { return algorithm; }
 		}
 
-        [Obsolete("Use 'Algorithm' property instead")]
+
         public virtual DerObjectIdentifier ObjectID
         {
             get { return algorithm; }

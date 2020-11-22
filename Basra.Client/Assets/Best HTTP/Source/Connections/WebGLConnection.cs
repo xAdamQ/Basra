@@ -26,7 +26,7 @@ namespace BestHTTP.Connections
         static Dictionary<int, WebGLConnection> Connections = new Dictionary<int, WebGLConnection>(4);
 
         int NativeId;
-        BufferPoolMemoryStream Stream;
+        BufferSegmentStream Stream;
 
         public WebGLConnection(string serverAddress)
             : base(serverAddress, false)
@@ -75,7 +75,7 @@ namespace BestHTTP.Connections
 
 #region Callback Implementations
 
-        void OnResponse(int httpStatus, byte[] buffer, int bufferLength)
+        void OnResponse(int httpStatus, BufferSegment payload)
         {
             HTTPConnectionStates proposedConnectionState = HTTPConnectionStates.Processing;
             bool resendRequest = false;
@@ -85,26 +85,20 @@ namespace BestHTTP.Connections
                 if (this.CurrentRequest.IsCancellationRequested)
                     return;
 
-                using (var ms = new BufferPoolMemoryStream())
+                using (var ms = new BufferSegmentStream())
                 {
                     Stream = ms;
 
                     XHR_GetStatusLine(NativeId, OnBufferCallback);
                     XHR_GetResponseHeaders(NativeId, OnBufferCallback);
 
-                    if (buffer != null && bufferLength > 0)
-                        ms.Write(buffer, 0, bufferLength);
-
-                    ms.Seek(0L, SeekOrigin.Begin);
-
-                    var internalBuffer = ms.GetBuffer();
-                    string tmp = System.Text.Encoding.UTF8.GetString(internalBuffer);
-                    HTTPManager.Logger.Information(this.NativeId + " OnResponse - full response ", tmp, this.Context);
+                    if (payload != BufferSegment.Empty)
+                        ms.Write(payload);
 
                     SupportedProtocols protocol = CurrentRequest.ProtocolHandler == SupportedProtocols.Unknown ? HTTPProtocolFactory.GetProtocolFromUri(CurrentRequest.CurrentUri) : CurrentRequest.ProtocolHandler;
                     CurrentRequest.Response = HTTPProtocolFactory.Get(protocol, CurrentRequest, ms, CurrentRequest.UseStreaming, false);
 
-                    CurrentRequest.Response.Receive(buffer != null && bufferLength > 0 ? (int)bufferLength : -1, true);
+                    CurrentRequest.Response.Receive(payload != BufferSegment.Empty && payload.Count > 0 ? (int)payload.Count : -1, true);
 
                     KeepAliveHeader keepAlive = null;
                     ConnectionHelper.HandleResponse(this.ToString(), this.CurrentRequest, out resendRequest, out proposedConnectionState, ref keepAlive);
@@ -181,12 +175,12 @@ namespace BestHTTP.Connections
             }
         }
 
-        void OnBuffer(byte[] buffer, int bufferLength)
+        void OnBuffer(BufferSegment buffer)
         {
             if (Stream != null)
             {
-                Stream.Write(buffer, 0, bufferLength);
-                Stream.Write(HTTPRequest.EOL, 0, HTTPRequest.EOL.Length);
+                Stream.Write(buffer);
+                //Stream.Write(HTTPRequest.EOL, 0, HTTPRequest.EOL.Length);
             }
         }
 
@@ -258,14 +252,17 @@ namespace BestHTTP.Connections
 
             HTTPManager.Logger.Information("WebGLConnection - OnResponse", string.Format("{0} {1} {2} {3}", nativeId, httpStatus, length, err), conn.Context);
 
-            byte[] buffer = BufferPool.Get(length, true);
+            BufferSegment payload = BufferSegment.Empty;
+            if (length > 0)
+            {
+                var buffer = BufferPool.Get(length, true);
 
-            // Copy data from the 'unmanaged' memory to managed memory. Buffer will be reclaimed by the GC.
-            Marshal.Copy(pBuffer, buffer, 0, length);
+                XHR_CopyResponseTo(nativeId, buffer, length);
 
-            conn.OnResponse(httpStatus, buffer, length);
+                payload = new BufferSegment(buffer, 0, length);
+            }
 
-            BufferPool.Release(buffer);
+            conn.OnResponse(httpStatus, payload);
         }
 
         [AOT.MonoPInvokeCallback(typeof(OnWebGLBufferDelegate))]
@@ -283,9 +280,7 @@ namespace BestHTTP.Connections
             // Copy data from the 'unmanaged' memory to managed memory. Buffer will be reclaimed by the GC.
             Marshal.Copy(pBuffer, buffer, 0, length);
 
-            conn.OnBuffer(buffer, length);
-
-            BufferPool.Release(buffer);
+            conn.OnBuffer(new BufferSegment(buffer, 0, length));
         }
 
         [AOT.MonoPInvokeCallback(typeof(OnWebGLProgressDelegate))]
@@ -378,6 +373,9 @@ namespace BestHTTP.Connections
 
         [DllImport("__Internal")]
         private static extern void XHR_SetProgressHandler(int nativeId, OnWebGLProgressDelegate onDownloadProgress, OnWebGLProgressDelegate onUploadProgress);
+
+        [DllImport("__Internal")]
+        private static extern void XHR_CopyResponseTo(int nativeId, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 2)] byte[] response, int length);
 
         [DllImport("__Internal")]
         private static extern void XHR_Send(int nativeId, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 2)] byte[] body, int length);

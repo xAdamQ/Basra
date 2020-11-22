@@ -4,14 +4,16 @@ using System.Collections.Generic;
 
 #if !BESTHTTP_DISABLE_CACHING
 using BestHTTP.Caching;
-using BestHTTP.Cookies;
 #endif
 
 using BestHTTP.Core;
-
 using BestHTTP.Extensions;
 using BestHTTP.Logger;
 using BestHTTP.PlatformSupport.Memory;
+
+#if !BESTHTTP_DISABLE_COOKIES
+using BestHTTP.Cookies;
+#endif
 
 namespace BestHTTP
 {
@@ -22,9 +24,14 @@ namespace BestHTTP
         Immediate
     }
 
+#if !BESTHTTP_DISABLE_ALTERNATE_SSL && (!UNITY_WEBGL || UNITY_EDITOR)
+    public delegate SecureProtocol.Org.BouncyCastle.Crypto.Tls.AbstractTlsClient TlsClientFactoryDelegate(HTTPRequest request, List<string> protocols);
+#endif
+
     /// <summary>
     ///
     /// </summary>
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
     public static partial class HTTPManager
     {
         // Static constructor. Setup default values
@@ -192,6 +199,32 @@ namespace BestHTTP
         private static BestHTTP.Logger.ILogger logger;
 
 #if !BESTHTTP_DISABLE_ALTERNATE_SSL && (!UNITY_WEBGL || UNITY_EDITOR)
+
+        public static TlsClientFactoryDelegate TlsClientFactory;
+
+        public static SecureProtocol.Org.BouncyCastle.Crypto.Tls.AbstractTlsClient DefaultTlsClientFactory(HTTPRequest request, List<string> protocols)
+        {
+            // http://tools.ietf.org/html/rfc3546#section-3.1
+            // -It is RECOMMENDED that clients include an extension of type "server_name" in the client hello whenever they locate a server by a supported name type.
+            // -Literal IPv4 and IPv6 addresses are not permitted in "HostName".
+
+            // User-defined list has a higher priority
+            List<string> hostNames = request.CustomTLSServerNameList;
+
+            // If there's no user defined one and the host isn't an IP address, add the default one
+            if ((hostNames == null || hostNames.Count == 0) && !request.CurrentUri.IsHostIsAnIPAddress())
+            {
+                hostNames = new List<string>(1);
+                hostNames.Add(request.CurrentUri.Host);
+            }
+
+            return new SecureProtocol.Org.BouncyCastle.Crypto.Tls.LegacyTlsClient(request.CurrentUri,
+                         request.CustomCertificateVerifyer == null ? new SecureProtocol.Org.BouncyCastle.Crypto.Tls.AlwaysValidVerifyer() : request.CustomCertificateVerifyer,
+                         request.CustomClientCredentialsProvider,
+                         hostNames,
+                         protocols);
+        }
+
         /// <summary>
         /// The default ICertificateVerifyer implementation that the plugin will use when the request's UseAlternateSSL property is set to true.
         /// </summary>
@@ -220,7 +253,7 @@ namespace BestHTTP
         /// <summary>
         /// TCP Client's receive buffer size.
         /// </summary>
-        public static int ReceiveBufferSize = 65 * 1024;
+        public static int ReceiveBufferSize = 2 * 1024 * 1024;
 
         /// <summary>
         /// An IIOService implementation to handle filesystem operations.
@@ -236,7 +269,7 @@ namespace BestHTTP
         /// <summary>
         /// User-agent string that will be sent with each requests.
         /// </summary>
-        public static string UserAgent = "BestHTTP/2 v2.1.0";
+        public static string UserAgent = "BestHTTP/2 v2.2.2";
 
         /// <summary>
         /// It's true if the application is quitting and the plugin is shutting down itself.
@@ -307,22 +340,29 @@ namespace BestHTTP
             // If possible load the full response from cache.
             if (Caching.HTTPCacheService.IsCachedEntityExpiresInTheFuture(request))
             {
+                DateTime started = DateTime.Now;
                 PlatformSupport.Threading.ThreadedRunner.RunShortLiving<HTTPRequest>((req) =>
                 {
                     if (Connections.ConnectionHelper.TryLoadAllFromCache("HTTPManager", req, req.Context))
+                    {
+                        req.Timing.Add("Full Cache Load", DateTime.Now - started);
                         req.State = HTTPRequestStates.Finished;
+                    }
                     else
                     {
                         // If for some reason it couldn't load we place back the request to the queue.
 
+                        request.State = HTTPRequestStates.Queued;
                         RequestEventHelper.EnqueueRequestEvent(new RequestEventInfo(request, RequestEvents.Resend));
                     }
                 }, request);
             }
             else
 #endif
-
+            {
+                request.State = HTTPRequestStates.Queued;
                 RequestEventHelper.EnqueueRequestEvent(new RequestEventInfo(request, RequestEvents.Resend));
+            }
 
             return request;
         }
@@ -334,7 +374,7 @@ namespace BestHTTP
         /// <summary>
         /// Will return where the various caches should be saved.
         /// </summary>
-        internal static string GetRootCacheFolder()
+        public static string GetRootCacheFolder()
         {
             try
             {
@@ -362,9 +402,9 @@ namespace BestHTTP
             HTTPManager.Logger.Information("HTTPManager", "Reset called!");
         }
 
-        #endregion
+#endregion
 
-        #region MonoBehaviour Events (Called from HTTPUpdateDelegator)
+#region MonoBehaviour Events (Called from HTTPUpdateDelegator)
 
         /// <summary>
         /// Update function that should be called regularly from a Unity event(Update, LateUpdate). Callbacks are dispatched from this function.

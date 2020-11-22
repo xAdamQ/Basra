@@ -60,7 +60,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X509
          * calling @{link toASN1Object()} for a <code>UserNotice</code>
          * instance or from parsing it from a DER-encoded stream.</p>
          */
-        [Obsolete("Use GetInstance() instead")]
+
         public UserNotice(
             Asn1Sequence seq)
         {

@@ -59,7 +59,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Cmp
 		 *
 		 * @return number of elements present.
 		 */
-		[Obsolete("Use 'Count' property instead")]
+
 		public int Size
 		{
 			get { return strings.Count; }
@@ -81,7 +81,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Cmp
 			get { return (DerUtf8String) strings[index]; }
 		}
 
-		[Obsolete("Use 'object[index]' syntax instead")]
+
 		public DerUtf8String GetStringAt(
 			int index)
 		{

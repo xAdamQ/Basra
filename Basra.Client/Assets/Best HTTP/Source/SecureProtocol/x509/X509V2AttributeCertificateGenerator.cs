@@ -75,7 +75,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.X509
         /// are treated as case insensitive.
         /// </summary>
         /// <param name="signatureAlgorithm">The algorithm name.</param>
-        [Obsolete("Not needed if Generate used with an ISignatureFactory")]
+
         public void SetSignatureAlgorithm(
 			string signatureAlgorithm)
 		{
@@ -135,7 +135,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.X509
         /// <summary>
         /// Generate an X509 certificate, based on the current issuer and subject.
         /// </summary>
-        [Obsolete("Use Generate with an ISignatureFactory")]
+
         public IX509AttributeCertificate Generate(
 			AsymmetricKeyParameter privateKey)
 		{
@@ -146,7 +146,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.X509
         /// Generate an X509 certificate, based on the current issuer and subject,
         /// using the supplied source of randomness, if required.
         /// </summary>
-        [Obsolete("Use Generate with an ISignatureFactory")]
+
         public IX509AttributeCertificate Generate(
 			AsymmetricKeyParameter	privateKey,
 			SecureRandom			random)

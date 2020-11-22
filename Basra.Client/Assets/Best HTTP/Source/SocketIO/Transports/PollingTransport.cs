@@ -1,4 +1,4 @@
-﻿#if !BESTHTTP_DISABLE_SOCKETIO
+#if !BESTHTTP_DISABLE_SOCKETIO
 
 using System;
 using System.Text;
@@ -70,6 +70,9 @@ namespace BestHTTP.SocketIO.Transports
 #endif
 
             request.MaxRetries = 0;
+
+            if (this.Manager.Options.HTTPRequestCustomizationCallback != null)
+                this.Manager.Options.HTTPRequestCustomizationCallback(this.Manager, request);
 
             request.Send();
 
@@ -160,6 +163,9 @@ namespace BestHTTP.SocketIO.Transports
             LastRequest.SetHeader("Content-Type", "application/octet-stream");
             LastRequest.RawData = buffer;
 
+            if (this.Manager.Options.HTTPRequestCustomizationCallback != null)
+                this.Manager.Options.HTTPRequestCustomizationCallback(this.Manager, LastRequest);
+
             LastRequest.Send();
         }
 
@@ -244,6 +250,9 @@ namespace BestHTTP.SocketIO.Transports
 #endif
 
             PollRequest.MaxRetries = 0;
+
+            if (this.Manager.Options.HTTPRequestCustomizationCallback != null)
+                this.Manager.Options.HTTPRequestCustomizationCallback(this.Manager, PollRequest);
 
             PollRequest.Send();
         }

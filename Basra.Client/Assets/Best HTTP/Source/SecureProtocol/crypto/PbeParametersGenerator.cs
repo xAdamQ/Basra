@@ -56,7 +56,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto
          *
          * @return the password byte array.
          */
-        [Obsolete("Use 'Password' property")]
+
         public byte[] GetPassword()
         {
             return Password;
@@ -72,7 +72,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto
          *
          * @return the salt byte array.
          */
-        [Obsolete("Use 'Salt' property")]
+
         public byte[] GetSalt()
         {
             return Salt;
@@ -94,7 +94,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto
          * @param keySize the length, in bits, of the key required.
          * @return a parameters object representing a key.
          */
-        [Obsolete("Use version with 'algorithm' parameter")]
+
         public abstract ICipherParameters GenerateDerivedParameters(int keySize);
         public abstract ICipherParameters GenerateDerivedParameters(string algorithm, int keySize);
 
@@ -106,7 +106,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto
          * @param ivSize the length, in bits, of the iv required.
          * @return a parameters object representing a key and an IV.
          */
-        [Obsolete("Use version with 'algorithm' parameter")]
+
         public abstract ICipherParameters GenerateDerivedParameters(int keySize, int ivSize);
         public abstract ICipherParameters GenerateDerivedParameters(string algorithm, int keySize, int ivSize);
 
@@ -135,7 +135,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto
             return Strings.ToByteArray(password);
         }
 
-        [Obsolete("Use version taking 'char[]' instead")]
+
         public static byte[] Pkcs5PasswordToBytes(
             string password)
         {
@@ -161,7 +161,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto
             return Encoding.UTF8.GetBytes(password);
         }
 
-        [Obsolete("Use version taking 'char[]' instead")]
+
         public static byte[] Pkcs5PasswordToUtf8Bytes(
             string password)
         {

@@ -122,7 +122,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1
 			WriteByte(0x00);
 		}
 
-		[Obsolete("Use version taking an Asn1Encodable arg instead")]
+
 		public virtual void WriteObject(
 			object obj)
 		{

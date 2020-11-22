@@ -11,6 +11,8 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
 	{
 		private DerObjectIdentifier	keyAlgorithm = PkcsObjectIdentifiers.PbeWithShaAnd3KeyTripleDesCbc;
 		private DerObjectIdentifier	certAlgorithm = PkcsObjectIdentifiers.PbewithShaAnd40BitRC2Cbc;
+		private DerObjectIdentifier keyPrfAlgorithm = null;
+		private DerObjectIdentifier certPrfAlgorithm = null;
 		private bool useDerEncoding = false;
 
 		public Pkcs12StoreBuilder()
@@ -19,7 +21,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
 
 		public Pkcs12Store Build()
 		{
-			return new Pkcs12Store(keyAlgorithm, certAlgorithm, useDerEncoding);
+			return new Pkcs12Store(keyAlgorithm, keyPrfAlgorithm, certAlgorithm, certPrfAlgorithm, useDerEncoding);
 		}
 
 		public Pkcs12StoreBuilder SetCertAlgorithm(DerObjectIdentifier certAlgorithm)
@@ -34,6 +36,13 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
 			return this;
 		}
 
+		// Specify a PKCS#5 Scheme 2 encryption for keys
+		public Pkcs12StoreBuilder SetKeyAlgorithm(DerObjectIdentifier keyAlgorithm, DerObjectIdentifier keyPrfAlgorithm)
+		{
+			this.keyAlgorithm = keyAlgorithm;
+			this.keyPrfAlgorithm = keyPrfAlgorithm;
+			return this;
+		}
 		public Pkcs12StoreBuilder SetUseDerEncoding(bool useDerEncoding)
 		{
 			this.useDerEncoding = useDerEncoding;

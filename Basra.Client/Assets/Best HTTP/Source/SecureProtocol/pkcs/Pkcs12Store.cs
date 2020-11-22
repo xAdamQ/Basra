@@ -21,13 +21,17 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
 {
     public class Pkcs12Store
     {
+        public const string IgnoreUselessPasswordProperty = "BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs12.IgnoreUselessPassword";
+
         private readonly IgnoresCaseHashtable	keys = new IgnoresCaseHashtable();
         private readonly IDictionary            localIds = BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Platform.CreateHashtable();
         private readonly IgnoresCaseHashtable	certs = new IgnoresCaseHashtable();
         private readonly IDictionary            chainCerts = BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Platform.CreateHashtable();
         private readonly IDictionary            keyCerts = BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Platform.CreateHashtable();
         private readonly DerObjectIdentifier	keyAlgorithm;
+        private readonly DerObjectIdentifier    keyPrfAlgorithm;
         private readonly DerObjectIdentifier	certAlgorithm;
+        private readonly DerObjectIdentifier    certPrfAlgorithm;
         private readonly bool					useDerEncoding;
 
         private AsymmetricKeyEntry unmarkedKeyEntry = null;
@@ -89,12 +93,28 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
             bool				useDerEncoding)
         {
             this.keyAlgorithm = keyAlgorithm;
+            this.keyPrfAlgorithm = null;
             this.certAlgorithm = certAlgorithm;
+            this.certPrfAlgorithm = null;
+            this.useDerEncoding = useDerEncoding;
+        }
+
+        internal Pkcs12Store(
+            DerObjectIdentifier keyAlgorithm,
+            DerObjectIdentifier keyPrfAlgorithm,
+            DerObjectIdentifier certAlgorithm,
+            DerObjectIdentifier certPrfAlgorithm,
+            bool useDerEncoding)
+        {
+            this.keyAlgorithm = keyAlgorithm;
+            this.keyPrfAlgorithm = keyPrfAlgorithm;
+            this.certAlgorithm = certAlgorithm;
+            this.certPrfAlgorithm = certPrfAlgorithm;
             this.useDerEncoding = useDerEncoding;
         }
 
         // TODO Consider making obsolete
-//		[Obsolete("Use 'Pkcs12StoreBuilder' instead")]
+
         public Pkcs12Store()
             : this(PkcsObjectIdentifiers.PbeWithShaAnd3KeyTripleDesCbc,
                 PkcsObjectIdentifiers.PbewithShaAnd40BitRC2Cbc, false)
@@ -102,7 +122,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
         }
 
         // TODO Consider making obsolete
-//		[Obsolete("Use 'Pkcs12StoreBuilder' and 'Load' method instead")]
+
         public Pkcs12Store(
             Stream	input,
             char[]	password)
@@ -200,20 +220,22 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
             if (input == null)
                 throw new ArgumentNullException("input");
 
-            Asn1Sequence obj = (Asn1Sequence) Asn1Object.FromStream(input);
-            Pfx bag = new Pfx(obj);
+            Pfx bag = Pfx.GetInstance(Asn1Object.FromStream(input));
             ContentInfo info = bag.AuthSafe;
             bool wrongPkcs12Zero = false;
 
-            if (password != null && bag.MacData != null) // check the mac code
+            if (bag.MacData != null) // check the mac code
             {
+                if (password == null)
+                    throw new ArgumentNullException("password", "no password supplied when one expected");
+
                 MacData mData = bag.MacData;
                 DigestInfo dInfo = mData.Mac;
                 AlgorithmIdentifier algId = dInfo.AlgorithmID;
                 byte[] salt = mData.GetSalt();
                 int itCount = mData.IterationCount.IntValue;
 
-                byte[] data = ((Asn1OctetString) info.Content).GetOctets();
+                byte[] data = Asn1OctetString.GetInstance(info.Content).GetOctets();
 
                 byte[] mac = CalculatePbeMac(algId.Algorithm, salt, itCount, password, false, data);
                 byte[] dig = dInfo.GetDigest();
@@ -232,6 +254,16 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
                     wrongPkcs12Zero = true;
                 }
             }
+            else if (password != null)
+            {
+                string ignoreProperty = BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Platform.GetEnvironmentVariable(IgnoreUselessPasswordProperty);
+                bool ignore = ignoreProperty != null && BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Platform.EqualsIgnoreCase("true", ignoreProperty);
+
+                if (!ignore)
+                {
+                    throw new IOException("password supplied for keystore that does not require one");
+                }
+            }
 
             keys.Clear();
             localIds.Clear();
@@ -241,9 +273,8 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
 
             if (info.ContentType.Equals(PkcsObjectIdentifiers.Data))
             {
-                byte[] octs = ((Asn1OctetString)info.Content).GetOctets();
-                AuthenticatedSafe authSafe = new AuthenticatedSafe(
-                    (Asn1Sequence) Asn1OctetString.FromByteArray(octs));
+                Asn1OctetString content = Asn1OctetString.GetInstance(info.Content);
+                AuthenticatedSafe authSafe = AuthenticatedSafe.GetInstance(content.GetOctets());
                 ContentInfo[] cis = authSafe.GetContentInfo();
 
                 foreach (ContentInfo ci in cis)
@@ -253,7 +284,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
                     byte[] octets = null;
                     if (oid.Equals(PkcsObjectIdentifiers.Data))
                     {
-                        octets = ((Asn1OctetString)ci.Content).GetOctets();
+                        octets = Asn1OctetString.GetInstance(ci.Content).GetOctets();
                     }
                     else if (oid.Equals(PkcsObjectIdentifiers.EncryptedData))
                     {
@@ -271,7 +302,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
 
                     if (octets != null)
                     {
-                        Asn1Sequence seq = (Asn1Sequence)Asn1Object.FromByteArray(octets);
+                        Asn1Sequence seq = Asn1Sequence.GetInstance(octets);
 
                         foreach (Asn1Sequence subSeq in seq)
                         {
@@ -529,15 +560,15 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
                     X509Certificate x509c = c.Certificate;
                     X509CertificateEntry nextC = null;
 
-                    Asn1OctetString ext = x509c.GetExtensionValue(X509Extensions.AuthorityKeyIdentifier);
-                    if (ext != null)
+                    Asn1OctetString akiValue = x509c.GetExtensionValue(X509Extensions.AuthorityKeyIdentifier);
+                    if (akiValue != null)
                     {
-                        AuthorityKeyIdentifier id = AuthorityKeyIdentifier.GetInstance(
-                            Asn1Object.FromByteArray(ext.GetOctets()));
+                        AuthorityKeyIdentifier aki = AuthorityKeyIdentifier.GetInstance(akiValue.GetOctets());
 
-                        if (id.GetKeyIdentifier() != null)
+                        byte[] keyID = aki.GetKeyIdentifier();
+                        if (keyID != null)
                         {
-                            nextC = (X509CertificateEntry) chainCerts[new CertId(id.GetKeyIdentifier())];
+                            nextC = (X509CertificateEntry)chainCerts[new CertId(keyID)];
                         }
                     }
 
@@ -693,7 +724,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
             return false;
         }
 
-        [Obsolete("Use 'Count' property instead")]
+
         public int Size()
         {
             return Count;
@@ -737,8 +768,16 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
                 else
                 {
                     bagOid = PkcsObjectIdentifiers.Pkcs8ShroudedKeyBag;
-                    bagData = EncryptedPrivateKeyInfoFactory.CreateEncryptedPrivateKeyInfo(
-                        keyAlgorithm, password, kSalt, MinIterations, privKey.Key);
+                    if (keyPrfAlgorithm != null)
+                    {
+                        bagData = EncryptedPrivateKeyInfoFactory.CreateEncryptedPrivateKeyInfo(
+                                        keyAlgorithm, keyPrfAlgorithm, password, kSalt, MinIterations, random, privKey.Key);
+                    }
+                    else
+                    {
+                        bagData = EncryptedPrivateKeyInfoFactory.CreateEncryptedPrivateKeyInfo(
+                                            keyAlgorithm, password, kSalt, MinIterations, privKey.Key);
+                    }
                 }
 
                 Asn1EncodableVector kName = new Asn1EncodableVector();
@@ -941,7 +980,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
             byte[] certBagsEncoding = new DerSequence(certBags).GetDerEncoded();
 
             ContentInfo certsInfo;
-            if (password == null)
+            if (password == null || certAlgorithm == null)
             {
                 certsInfo = new ContentInfo(PkcsObjectIdentifiers.Data, new BerOctetString(certBagsEncoding));
             }
@@ -1100,6 +1139,11 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
             public ICollection Values
             {
                 get { return orig.Values; }
+            }
+
+            public int Count
+            {
+                get { return orig.Count; }
             }
         }
     }

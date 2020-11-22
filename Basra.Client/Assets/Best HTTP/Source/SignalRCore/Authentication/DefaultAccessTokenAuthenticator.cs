@@ -51,8 +51,12 @@ namespace BestHTTP.SignalRCore.Authentication
                 request.SetHeader("Authorization", "Bearer " + this._connection.NegotiationResult.AccessToken);
             else
 #endif
+#if !BESTHTTP_DISABLE_WEBSOCKET
                 if (BestHTTP.Connections.HTTPProtocolFactory.GetProtocolFromUri(request.Uri) != BestHTTP.Connections.SupportedProtocols.WebSocket)
-                request.Uri = PrepareUriImpl(request.Uri);
+                    request.Uri = PrepareUriImpl(request.Uri);
+#else
+                ;
+#endif
         }
 
         public Uri PrepareUri(Uri uri)
@@ -68,9 +72,10 @@ namespace BestHTTP.SignalRCore.Authentication
                 return builder.Uri;
             }
 
-            // For WebSocket, PrepareRequest already changed the uri
+#if !BESTHTTP_DISABLE_WEBSOCKET
             if (BestHTTP.Connections.HTTPProtocolFactory.GetProtocolFromUri(uri) == BestHTTP.Connections.SupportedProtocols.WebSocket)
                 uri = PrepareUriImpl(uri);
+#endif
 
             return uri;
 
@@ -79,8 +84,7 @@ namespace BestHTTP.SignalRCore.Authentication
         private Uri PrepareUriImpl(Uri uri)
         {
             string query = string.IsNullOrEmpty(uri.Query) ? "" : uri.Query + "&";
-            UriBuilder uriBuilder = new UriBuilder(uri.Scheme, uri.Host, uri.Port, uri.AbsolutePath,
-                                                    query + "access_token=" + this._connection.NegotiationResult.AccessToken);
+            UriBuilder uriBuilder = new UriBuilder(uri.Scheme, uri.Host, uri.Port, uri.AbsolutePath, query + "access_token=" + this._connection.NegotiationResult.AccessToken);
             return uriBuilder.Uri;
         }
 

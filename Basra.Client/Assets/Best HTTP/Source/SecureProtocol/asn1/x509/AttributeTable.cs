@@ -60,7 +60,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X509
         }
 
 #if !(SILVERLIGHT || PORTABLE || NETFX_CORE)
-        [Obsolete("Use 'ToDictionary' instead")]
+
 		public Hashtable ToHashtable()
         {
             return new Hashtable(attributes);

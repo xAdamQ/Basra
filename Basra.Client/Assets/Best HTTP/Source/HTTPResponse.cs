@@ -25,6 +25,7 @@ namespace BestHTTP
     using BestHTTP.Core;
     using BestHTTP.PlatformSupport.Memory;
     using BestHTTP.Logger;
+    using BestHTTP.Timings;
 
     /// <summary>
     ///
@@ -82,6 +83,11 @@ namespace BestHTTP
         /// </summary>
         public bool IsCacheOnly { get; private set; }
 #endif
+
+        /// <summary>
+        /// True, if this is a response for a HTTPProxy request.
+        /// </summary>
+        public bool IsProxyResponse { get; private set; }
 
         /// <summary>
         /// The headers that sent from the server.
@@ -199,16 +205,19 @@ namespace BestHTTP
             this.Context.Add("IsFromCache", isFromCache);
         }
 
-        public HTTPResponse(HTTPRequest request, Stream stream, bool isStreamed, bool isFromCache)
+        public HTTPResponse(HTTPRequest request, Stream stream, bool isStreamed, bool isFromCache, bool isProxyResponse = false)
         {
             this.baseRequest = request;
-            this.Stream = /*new ReadOnlyBufferedStream*/(stream);
+            this.Stream = stream;
             this.IsStreamed = isStreamed;
 
 #if !BESTHTTP_DISABLE_CACHING
             this.IsFromCache = isFromCache;
             this.IsCacheOnly = request.CacheOnly;
 #endif
+
+            this.IsProxyResponse = isProxyResponse;
+
             this.IsClosedManually = false;
 
             this.Context = new LoggingContext(this);
@@ -254,8 +263,11 @@ namespace BestHTTP
                 if (baseRequest.Retries >= baseRequest.MaxRetries)
                     return false;
 
-                throw new Exception("Remote server closed the connection before sending response header!");
+                throw new Exception("Network error! TCP Connection got closed before receiving any data!");
             }
+
+            if (!this.IsProxyResponse)
+                baseRequest.Timing.Add(TimingEventNames.Waiting_TTFB);
 
             string[] versions = statusLine.Split(new char[] { '/', '.' });
             this.VersionMajor = int.Parse(versions[1]);
@@ -292,6 +304,9 @@ namespace BestHTTP
 
             //Read Headers
             ReadHeaders(Stream);
+
+            if (!this.IsProxyResponse)
+                baseRequest.Timing.Add(TimingEventNames.Headers);
 
             IsUpgraded = StatusCode == 101 && (HasHeaderWithValue("connection", "upgrade") || HasHeader("upgrade"));
 
@@ -520,7 +535,7 @@ namespace BestHTTP
 
                     //make buffer larger if too short
                     if (readBuf.Length <= bufpos)
-                        BufferPool.Resize(ref readBuf, readBuf.Length * 2, true);
+                        BufferPool.Resize(ref readBuf, readBuf.Length * 2, true, false);
 
                     if (bufpos > 0 || !char.IsWhiteSpace((char)ch)) //trimstart
                         readBuf[bufpos++] = (byte)ch;
@@ -552,7 +567,7 @@ namespace BestHTTP
 
                     //make buffer larger if too short
                     if (readBuf.Length <= bufpos)
-                        BufferPool.Resize(ref readBuf, readBuf.Length * 2, true);
+                        BufferPool.Resize(ref readBuf, readBuf.Length * 2, true, true);
 
                     if (bufpos > 0 || !char.IsWhiteSpace((char)ch)) //trimstart
                         readBuf[bufpos++] = (byte)ch;
@@ -584,7 +599,7 @@ namespace BestHTTP
 
                     //make buffer larger if too short
                     if (readBuf.Length <= bufpos)
-                        BufferPool.Resize(ref readBuf, readBuf.Length * 2, true);
+                        BufferPool.Resize(ref readBuf, readBuf.Length * 2, true, true);
 
                     if (bufpos > 0 || !char.IsWhiteSpace((char)ch)) //trimstart
                         readBuf[bufpos++] = (byte)ch;
@@ -946,7 +961,7 @@ namespace BestHTTP
                         else
                             FeedStreamFragment(buffer, 0, readBytes);
                     }
-                    else
+                    else if (readBytes > 0)
                         output.Write(buffer, 0, readBytes);
 
                 } while (bytes > 0);
@@ -1058,7 +1073,7 @@ namespace BestHTTP
             // If reading from cache, we don't want to read too much data to memory. So we will wait until the loaded fragment processed.
 #if !UNITY_WEBGL || UNITY_EDITOR
 #if CSHARP_7_3_OR_NEWER
-                SpinWait spinWait = new SpinWait();
+            SpinWait spinWait = new SpinWait();
 #endif
 
             while (!this.baseRequest.IsCancellationRequested && 
@@ -1069,9 +1084,9 @@ namespace BestHTTP
                 VerboseLogging("WaitWhileFragmentQueueIsFull");
 
 #if CSHARP_7_3_OR_NEWER
-                    spinWait.SpinOnce();
+                spinWait.SpinOnce();
 #elif !NETFX_CORE
-                    System.Threading.Thread.Sleep(10);
+                System.Threading.Thread.Sleep(1);
 #endif
             }
 #endif

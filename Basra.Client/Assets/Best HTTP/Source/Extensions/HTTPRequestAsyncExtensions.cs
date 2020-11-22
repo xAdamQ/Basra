@@ -229,7 +229,13 @@ namespace BestHTTP
 
             var tcs = new TaskCompletionSource<T>();
 
-            request.Callback = (req, resp) => callback(req, resp, tcs);
+            request.Callback = (req, resp) =>
+            {
+                if (token.IsCancellationRequested)
+                    tcs.SetCanceled();
+                else
+                    callback(req, resp, tcs);
+            };
 
             if (token.CanBeCanceled)
                 token.Register((state) => (state as HTTPRequest)?.Abort(), request);

@@ -14,7 +14,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1
 
 		byte[] zeroBytes = new byte[0];
 
-		[Obsolete("Use static Instance object")]
+
 		public DerNull()
 		{
 		}

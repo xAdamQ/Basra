@@ -9,7 +9,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC.Endo
         protected readonly BigInteger m_beta, m_lambda;
         protected readonly ScalarSplitParameters m_splitParams;
 
-        [Obsolete("Use constructor taking a ScalarSplitParameters instead")]
+
         public GlvTypeBParameters(BigInteger beta, BigInteger lambda, BigInteger[] v1, BigInteger[] v2,
             BigInteger g1, BigInteger g2, int bits)
         {
@@ -40,31 +40,31 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC.Endo
             get { return m_splitParams; }
         }
 
-        [Obsolete("Access via SplitParams instead")]
+
         public virtual BigInteger[] V1
         {
             get { return new BigInteger[] { m_splitParams.V1A, m_splitParams.V1B }; }
         }
 
-        [Obsolete("Access via SplitParams instead")]
+
         public virtual BigInteger[] V2
         {
             get { return new BigInteger[] { m_splitParams.V2A, m_splitParams.V2B }; }
         }
 
-        [Obsolete("Access via SplitParams instead")]
+
         public virtual BigInteger G1
         {
             get { return m_splitParams.G1; }
         }
 
-        [Obsolete("Access via SplitParams instead")]
+
         public virtual BigInteger G2
         {
             get { return m_splitParams.G2; }
         }
 
-        [Obsolete("Access via SplitParams instead")]
+
         public virtual int Bits
         {
             get { return m_splitParams.Bits; }

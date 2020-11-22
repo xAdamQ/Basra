@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 
+using BestHTTP.PlatformSupport.Memory;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Parameters;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
@@ -97,25 +98,28 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             return ciphertextLimit - writeMac.Size;
         }
 
-        public virtual byte[] EncodePlaintext(long seqNo, byte type, byte[] plaintext, int offset, int len)
+        public virtual BufferSegment EncodePlaintext(long seqNo, byte type, byte[] plaintext, int offset, int len)
         {
             if (usesNonce)
             {
                 UpdateIV(encryptCipher, true, seqNo);
             }
 
-            byte[] outBuf = new byte[len + writeMac.Size];
+            int outBufLength = len + writeMac.Size;
+            byte[] outBuf = BufferPool.Get(outBufLength, true);
 
             encryptCipher.ProcessBytes(plaintext, offset, len, outBuf, 0);
 
-            byte[] mac = writeMac.CalculateMac(seqNo, type, plaintext, offset, len);
-            encryptCipher.ProcessBytes(mac, 0, mac.Length, outBuf, len);
+            BufferSegment mac = writeMac.CalculateMac(seqNo, type, plaintext, offset, len);
+            encryptCipher.ProcessBytes(mac.Data, mac.Offset, mac.Count, outBuf, len);
 
-            return outBuf;
+            BufferPool.Release(mac);
+
+            return new BufferSegment(outBuf, 0, outBufLength);
         }
 
         /// <exception cref="IOException"></exception>
-        public virtual byte[] DecodeCiphertext(long seqNo, byte type, byte[] ciphertext, int offset, int len)
+        public virtual BufferSegment DecodeCiphertext(long seqNo, byte type, byte[] ciphertext, int offset, int len)
         {
             if (usesNonce)
             {
@@ -128,20 +132,24 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
             int plaintextLength = len - macSize;
 
-            byte[] deciphered = new byte[len];
+            byte[] deciphered = BufferPool.Get(len, true);
             decryptCipher.ProcessBytes(ciphertext, offset, len, deciphered, 0);
             CheckMac(seqNo, type, deciphered, plaintextLength, len, deciphered, 0, plaintextLength);
-            return Arrays.CopyOfRange(deciphered, 0, plaintextLength);
+
+            //byte[] output = Arrays.CopyOfRange(deciphered, 0, plaintextLength);
+            return new BufferSegment(deciphered, 0, plaintextLength);
         }
 
         /// <exception cref="IOException"></exception>
         protected virtual void CheckMac(long seqNo, byte type, byte[] recBuf, int recStart, int recEnd, byte[] calcBuf, int calcOff, int calcLen)
         {
-            byte[] receivedMac = Arrays.CopyOfRange(recBuf, recStart, recEnd);
-            byte[] computedMac = readMac.CalculateMac(seqNo, type, calcBuf, calcOff, calcLen);
+            BufferSegment receivedMac = new BufferSegment(recBuf, recStart, recEnd - recStart);
+            BufferSegment computedMac = readMac.CalculateMac(seqNo, type, calcBuf, calcOff, calcLen);
 
             if (!Arrays.ConstantTimeAreEqual(receivedMac, computedMac))
                 throw new TlsFatalAlert(AlertDescription.bad_record_mac);
+
+            BufferPool.Release(computedMac);
         }
 
         protected virtual void UpdateIV(IStreamCipher cipher, bool forEncryption, long seqNo)

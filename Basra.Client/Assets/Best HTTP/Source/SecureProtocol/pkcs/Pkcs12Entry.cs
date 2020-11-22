@@ -26,21 +26,21 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
 			}
         }
 
-		[Obsolete("Use 'object[index]' syntax instead")]
+
 		public Asn1Encodable GetBagAttribute(
             DerObjectIdentifier oid)
         {
             return (Asn1Encodable)this.attributes[oid.Id];
         }
 
-		[Obsolete("Use 'object[index]' syntax instead")]
+
 		public Asn1Encodable GetBagAttribute(
             string oid)
         {
             return (Asn1Encodable)this.attributes[oid];
         }
 
-		[Obsolete("Use 'BagAttributeKeys' property")]
+
         public IEnumerator GetBagAttributeKeys()
         {
             return this.attributes.Keys.GetEnumerator();

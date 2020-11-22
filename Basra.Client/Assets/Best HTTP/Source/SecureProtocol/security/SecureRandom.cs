@@ -6,6 +6,7 @@ using System.Threading;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Digests;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Prng;
+using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Utilities;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Security
@@ -113,7 +114,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Security
             throw new ArgumentException("Unrecognised PRNG algorithm: " + algorithm, "algorithm");
         }
 
-        [Obsolete("Call GenerateSeed() on a SecureRandom instance instead")]
+
         public static byte[] GetSeed(int length)
         {
             return GetNextBytes(Master, length);
@@ -129,7 +130,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Security
         /// <remarks>
         /// To replicate existing predictable output, replace with GetInstance("SHA1PRNG", false), followed by SetSeed(seed)
         /// </remarks>
-        [Obsolete("Use GetInstance/SetSeed instead")]
+
         public SecureRandom(byte[] seed)
             : this(CreatePrng("SHA1", false))
         {
@@ -234,31 +235,27 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Security
             generator.NextBytes(buf, off, len);
         }
 
-        private static readonly double DoubleScale = System.Math.Pow(2.0, 64.0);
+        private static readonly double DoubleScale = 1.0 / Convert.ToDouble(1L << 53);
 
         public override double NextDouble()
         {
-            return Convert.ToDouble((ulong) NextLong()) / DoubleScale;
+            ulong x = (ulong)NextLong() >> 11;
+
+            return Convert.ToDouble(x) * DoubleScale;
         }
 
         public virtual int NextInt()
         {
             byte[] bytes = new byte[4];
             NextBytes(bytes);
-
-            uint result = bytes[0];
-            result <<= 8;
-            result |= bytes[1];
-            result <<= 8;
-            result |= bytes[2];
-            result <<= 8;
-            result |= bytes[3];
-            return (int)result;
+            return (int)Pack.BE_To_UInt32(bytes);
         }
 
         public virtual long NextLong()
         {
-            return ((long)(uint) NextInt() << 32) | (long)(uint) NextInt();
+            byte[] bytes = new byte[8];
+            NextBytes(bytes);
+            return (long)Pack.BE_To_UInt64(bytes);
         }
     }
 }

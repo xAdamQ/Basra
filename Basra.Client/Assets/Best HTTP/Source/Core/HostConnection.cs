@@ -53,7 +53,7 @@ namespace BestHTTP.Core
             {
                 this.ProtocolSupport = protocolSupport;
 
-                HTTPManager.Logger.Information(typeof(HostConnection).Name, string.Format("AddProtocol({0}) - changing from {1} to {2}", this.VariantId, protocolSupport, oldProtocol, this.ProtocolSupport), this.Context);
+                HTTPManager.Logger.Information(typeof(HostConnection).Name, string.Format("AddProtocol({0}) - changing from {1} to {2}", this.VariantId, oldProtocol, protocolSupport), this.Context);
 
                 HostManager.Save();
 

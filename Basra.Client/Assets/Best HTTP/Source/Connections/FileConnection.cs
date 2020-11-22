@@ -23,7 +23,7 @@ namespace BestHTTP.Connections
                 // Step 4 : create a HTTPResponse object
                 // Step 5 : call the Receive function of the response object
 
-                using (System.IO.Stream fs = HTTPManager.IOService.CreateFileStream(this.CurrentRequest.CurrentUri.LocalPath, FileStreamModes.Open))
+                using (System.IO.Stream fs = HTTPManager.IOService.CreateFileStream(this.CurrentRequest.CurrentUri.LocalPath, FileStreamModes.OpenRead))
                     using (StreamList stream = new StreamList(new BufferPoolMemoryStream(), fs))
                     {
                         // This will write to the MemoryStream

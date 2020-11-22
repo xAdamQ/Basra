@@ -20,7 +20,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Parameters
         {
         }
 
-        [Obsolete("Use version with explicit 'algorithm' parameter")]
+
         public ECPublicKeyParameters(
             ECPoint				q,
             DerObjectIdentifier publicKeyParamSet)

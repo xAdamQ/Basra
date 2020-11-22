@@ -366,13 +366,11 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X509
         public static X509Name GetInstance(
             object obj)
         {
-            if (obj == null || obj is X509Name)
+            if (obj is X509Name)
                 return (X509Name)obj;
-
-            if (obj != null)
-                return new X509Name(Asn1Sequence.GetInstance(obj));
-
-            throw new ArgumentException("null object in factory", "obj");
+            if (obj == null)
+                return null;
+            return new X509Name(Asn1Sequence.GetInstance(obj));
         }
 
         protected X509Name()
@@ -1076,9 +1074,10 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X509
             return buf.ToString();
         }
 
+        string cachedStrRepresentation = null;
         public override string ToString()
         {
-            return ToString(DefaultReverse, (IDictionary)DefaultSymbols);
+            return cachedStrRepresentation ?? (cachedStrRepresentation = ToString(DefaultReverse, (IDictionary)DefaultSymbols));
         }
     }
 }

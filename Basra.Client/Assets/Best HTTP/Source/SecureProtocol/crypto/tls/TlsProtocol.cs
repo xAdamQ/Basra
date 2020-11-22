@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using System.IO;
 
+using BestHTTP.Logger;
+using BestHTTP.PlatformSupport.Memory;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Prng;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Security;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
@@ -85,6 +87,8 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
         protected ByteQueueStream mInputBuffers = null;
         protected ByteQueueStream mOutputBuffer = null;
 
+        protected LoggingContext LoggingContext;
+
         public TlsProtocol(Stream stream, SecureRandom secureRandom)
             :   this(stream, stream, secureRandom)
         {
@@ -113,6 +117,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void HandleAlertMessage(byte alertLevel, byte alertDescription)
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsProtocol", string.Format("HandleAlertMessage level: {0} description: {1}", alertLevel, alertDescription), this.LoggingContext);
+
             Peer.NotifyAlertReceived(alertLevel, alertDescription);
 
             if (alertLevel == AlertLevel.warning)
@@ -148,6 +155,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void HandleClose(bool user_canceled)
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsProtocol", string.Format("HandleAlertMessage user_canceled: {0}", user_canceled), this.LoggingContext);
+
             if (!mClosed)
             {
                 this.mClosed = true;
@@ -170,6 +180,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void HandleException(byte alertDescription, string message, Exception cause)
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsProtocol", string.Format("HandleException alertDescription: {0}, message: \"{1}\", cause: {2}", alertDescription, message, cause), this.LoggingContext);
+
             if (!mClosed)
             {
                 RaiseAlertFatal(alertDescription, message, cause);
@@ -209,6 +222,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
                 int plainTextLimit = 1 << (8 + mSecurityParameters.maxFragmentLength);
                 mRecordStream.SetPlaintextLimit(plainTextLimit);
+
+                if (HTTPManager.Logger.Level <= Loglevels.All)
+                    HTTPManager.Logger.Verbose("TlsProtocol", string.Format("ApplyMaxFragmentLengthExtension plainTextLimit: {0}", plainTextLimit), this.LoggingContext);
             }
         }
 
@@ -247,6 +263,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             {
                 while (this.mConnectionState != CS_END)
                 {
+                    if (HTTPManager.Logger.Level <= Loglevels.All)
+                        HTTPManager.Logger.Verbose("TlsProtocol", string.Format("BlockForHandshake mConnectionState: {0}", this.mConnectionState), this.LoggingContext);
+
                     if (this.mClosed)
                     {
                         // NOTE: Any close during the handshake should have raised an exception.
@@ -270,6 +289,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                 this.mRecordStream.FinaliseHandshake();
 
                 this.mAppDataSplitEnabled = !TlsUtilities.IsTlsV11(Context);
+
+                if (HTTPManager.Logger.Level <= Loglevels.All)
+                    HTTPManager.Logger.Verbose("TlsProtocol", string.Format("CompleteHandshake mAppDataSplitEnabled: {0}", this.mAppDataSplitEnabled), this.LoggingContext);
 
                 /*
                  * If this was an initial handshake, we are now ready to send and receive application data.
@@ -316,6 +338,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected internal void ProcessRecord(byte protocol, byte[] buf, int off, int len)
         {
+            //if (HTTPManager.Logger.Level <= Loglevels.All)
+            //    HTTPManager.Logger.Verbose("TlsProtocol", string.Format("ProcessRecord protocol: {0}, buff len: {1}", protocol, len), this.LoggingContext);
+
             /*
              * Have a look at the protocol type, and add it to the correct queue.
              */
@@ -380,6 +405,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
         {
             while (queue.Available >= 4)
             {
+                if (HTTPManager.Logger.Level <= Loglevels.All)
+                    HTTPManager.Logger.Verbose("TlsProtocol", string.Format("ProcessHandshakeQueue queue.Available: {0}", queue.Available), this.LoggingContext);
+
                 /*
                  * We need the first 4 bytes, they contain type and length of the message.
                  */
@@ -452,6 +480,8 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                 byte alertLevel = alert[0];
                 byte alertDescription = alert[1];
 
+                BufferPool.Release(alert);
+
                 HandleAlertMessage(alertLevel, alertDescription);
             }
         }
@@ -464,6 +494,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
          */
         private void ProcessChangeCipherSpec(byte[] buf, int off, int len)
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsProtocol", string.Format("ProcessChangeCipherSpec buf Len: {0}", len), this.LoggingContext);
+
             for (int i = 0; i < len; ++i)
             {
                 byte message = TlsUtilities.ReadUint8(buf, off + i);
@@ -503,6 +536,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
          */
         protected internal virtual int ReadApplicationData(byte[] buf, int offset, int len)
         {
+            //if (HTTPManager.Logger.Level <= Loglevels.All)
+            //    HTTPManager.Logger.Verbose("TlsProtocol", string.Format("ReadApplicationData buf Len: {0}", len), this.LoggingContext);
+
             if (len < 1)
                 return 0;
 
@@ -562,21 +598,33 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             }
             catch (TlsFatalAlertReceived e)
             {
+                if (HTTPManager.Logger.Level == Loglevels.All)
+                    HTTPManager.Logger.Exception("TlsProtocol", "SafeReadRecord", e, this.LoggingContext);
+
                 // Connection failure already handled at source
                 throw e;
             }
             catch (TlsFatalAlert e)
             {
+                if (HTTPManager.Logger.Level == Loglevels.All)
+                    HTTPManager.Logger.Exception("TlsProtocol", "SafeReadRecord", e, this.LoggingContext);
+
                 HandleException(e.AlertDescription, "Failed to read record", e);
                 throw e;
             }
             catch (IOException e)
             {
+                if (HTTPManager.Logger.Level == Loglevels.All)
+                    HTTPManager.Logger.Exception("TlsProtocol", "SafeReadRecord", e, this.LoggingContext);
+
                 HandleException(AlertDescription.internal_error, "Failed to read record", e);
                 throw e;
             }
             catch (Exception e)
             {
+                if (HTTPManager.Logger.Level == Loglevels.All)
+                    HTTPManager.Logger.Exception("TlsProtocol", "SafeReadRecord", e, this.LoggingContext);
+
                 HandleException(AlertDescription.internal_error, "Failed to read record", e);
                 throw new TlsFatalAlert(AlertDescription.internal_error, e);
             }
@@ -594,16 +642,25 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             }
             catch (TlsFatalAlert e)
             {
+                if (HTTPManager.Logger.Level == Loglevels.All)
+                    HTTPManager.Logger.Exception("TlsProtocol", "SafeWriteRecord", e, this.LoggingContext);
+
                 HandleException(e.AlertDescription, "Failed to write record", e);
                 throw e;
             }
             catch (IOException e)
             {
+                if (HTTPManager.Logger.Level == Loglevels.All)
+                    HTTPManager.Logger.Exception("TlsProtocol", "SafeWriteRecord", e, this.LoggingContext);
+
                 HandleException(AlertDescription.internal_error, "Failed to write record", e);
                 throw e;
             }
             catch (Exception e)
             {
+                if (HTTPManager.Logger.Level == Loglevels.All)
+                    HTTPManager.Logger.Exception("TlsProtocol", "SafeWriteRecord", e, this.LoggingContext);
+
                 HandleException(AlertDescription.internal_error, "Failed to write record", e);
                 throw new TlsFatalAlert(AlertDescription.internal_error, e);
             }
@@ -895,6 +952,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void InvalidateSession()
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsProtocol", "InvalidateSession", this.LoggingContext);
+
             if (this.mSessionParameters != null)
             {
                 this.mSessionParameters.Clear();
@@ -910,6 +970,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void ProcessFinishedMessage(MemoryStream buf)
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsProtocol", "ProcessFinishedMessage", this.LoggingContext);
+
             if (mExpectedVerifyData == null)
                 throw new TlsFatalAlert(AlertDescription.internal_error);
 
@@ -931,6 +994,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void RaiseAlertFatal(byte alertDescription, string message, Exception cause)
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsProtocol", string.Format("RaiseAlertFatal alertDescription: {0}, message: \"{1}\", cause: {2}", alertDescription, message, cause), this.LoggingContext);
+
             Peer.NotifyAlertRaised(AlertLevel.fatal, alertDescription, message, cause);
 
             byte[] alert = new byte[]{ AlertLevel.fatal, alertDescription };
@@ -947,6 +1013,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void RaiseAlertWarning(byte alertDescription, string message)
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsProtocol", string.Format("RaiseAlertWarning alertDescription: {0}, message: \"{1}\"", alertDescription, message), this.LoggingContext);
+
             Peer.NotifyAlertRaised(AlertLevel.warning, alertDescription, message, null);
 
             byte[] alert = new byte[]{ AlertLevel.warning, alertDescription };
@@ -956,6 +1025,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void SendCertificateMessage(Certificate certificate)
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsProtocol", "SendCertificateMessage", this.LoggingContext);
+
             if (certificate == null)
             {
                 certificate = Certificate.EmptyChain;
@@ -985,6 +1057,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void SendChangeCipherSpecMessage()
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsProtocol", "SendChangeCipherSpecMessage", this.LoggingContext);
+
             byte[] message = new byte[]{ 1 };
             SafeWriteRecord(ContentType.change_cipher_spec, message, 0, message.Length);
             mRecordStream.SentWriteCipherSpec();
@@ -992,6 +1067,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void SendFinishedMessage()
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsProtocol", "SendFinishedMessage", this.LoggingContext);
+
             byte[] verify_data = CreateVerifyData(Context.IsServer);
 
             HandshakeMessage message = new HandshakeMessage(HandshakeType.finished, verify_data.Length);
@@ -1003,6 +1081,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
         protected virtual void SendSupplementalDataMessage(IList supplementalData)
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsProtocol", "SendSupplementalDataMessage", this.LoggingContext);
+
             HandshakeMessage message = new HandshakeMessage(HandshakeType.supplemental_data);
 
             WriteSupplementalData(message, supplementalData);
@@ -1026,6 +1107,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
          */
         public virtual void Close()
         {
+            if (HTTPManager.Logger.Level <= Loglevels.All)
+                HTTPManager.Logger.Verbose("TlsProtocol", "Close", this.LoggingContext);
+
             HandleClose(true);
         }
 
@@ -1265,24 +1349,19 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             case CipherSuite.TLS_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA256:
             case CipherSuite.TLS_DHE_PSK_WITH_AES_128_CCM:
             case CipherSuite.TLS_DHE_PSK_WITH_AES_128_GCM_SHA256:
-            case CipherSuite.DRAFT_TLS_DHE_PSK_WITH_AES_128_OCB:
             case CipherSuite.TLS_DHE_PSK_WITH_AES_256_CCM:
-            case CipherSuite.DRAFT_TLS_DHE_PSK_WITH_AES_256_OCB:
             case CipherSuite.TLS_DHE_PSK_WITH_CAMELLIA_128_GCM_SHA256:
             case CipherSuite.DRAFT_TLS_DHE_PSK_WITH_CHACHA20_POLY1305_SHA256:
             case CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA256:
             case CipherSuite.TLS_DHE_RSA_WITH_AES_128_CCM:
             case CipherSuite.TLS_DHE_RSA_WITH_AES_128_CCM_8:
             case CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256:
-            case CipherSuite.DRAFT_TLS_DHE_RSA_WITH_AES_128_OCB:
             case CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA256:
             case CipherSuite.TLS_DHE_RSA_WITH_AES_256_CCM:
             case CipherSuite.TLS_DHE_RSA_WITH_AES_256_CCM_8:
-            case CipherSuite.DRAFT_TLS_DHE_RSA_WITH_AES_256_OCB:
             case CipherSuite.TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA256:
             case CipherSuite.TLS_DHE_RSA_WITH_CAMELLIA_128_GCM_SHA256:
             case CipherSuite.TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA256:
-            case CipherSuite.DRAFT_TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256:
             case CipherSuite.TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256:
             case CipherSuite.TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256:
             case CipherSuite.TLS_ECDH_ECDSA_WITH_CAMELLIA_128_CBC_SHA256:
@@ -1295,20 +1374,14 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             case CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CCM:
             case CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8:
             case CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256:
-            case CipherSuite.DRAFT_TLS_ECDHE_ECDSA_WITH_AES_128_OCB:
             case CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CCM:
             case CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CCM_8:
-            case CipherSuite.DRAFT_TLS_ECDHE_ECDSA_WITH_AES_256_OCB:
             case CipherSuite.TLS_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256:
             case CipherSuite.TLS_ECDHE_ECDSA_WITH_CAMELLIA_128_GCM_SHA256:
             case CipherSuite.DRAFT_TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256:
-            case CipherSuite.DRAFT_TLS_ECDHE_PSK_WITH_AES_128_OCB:
-            case CipherSuite.DRAFT_TLS_ECDHE_PSK_WITH_AES_256_OCB:
             case CipherSuite.DRAFT_TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256:
             case CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256:
             case CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256:
-            case CipherSuite.DRAFT_TLS_ECDHE_RSA_WITH_AES_128_OCB:
-            case CipherSuite.DRAFT_TLS_ECDHE_RSA_WITH_AES_256_OCB:
             case CipherSuite.TLS_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256:
             case CipherSuite.TLS_ECDHE_RSA_WITH_CAMELLIA_128_GCM_SHA256:
             case CipherSuite.DRAFT_TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256:
@@ -1317,10 +1390,8 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             case CipherSuite.TLS_PSK_WITH_AES_128_CCM:
             case CipherSuite.TLS_PSK_WITH_AES_128_CCM_8:
             case CipherSuite.TLS_PSK_WITH_AES_128_GCM_SHA256:
-            case CipherSuite.DRAFT_TLS_PSK_WITH_AES_128_OCB:
             case CipherSuite.TLS_PSK_WITH_AES_256_CCM:
             case CipherSuite.TLS_PSK_WITH_AES_256_CCM_8:
-            case CipherSuite.DRAFT_TLS_PSK_WITH_AES_256_OCB:
             case CipherSuite.TLS_PSK_WITH_CAMELLIA_128_GCM_SHA256:
             case CipherSuite.DRAFT_TLS_PSK_WITH_CHACHA20_POLY1305_SHA256:
             case CipherSuite.TLS_RSA_PSK_WITH_AES_128_GCM_SHA256:

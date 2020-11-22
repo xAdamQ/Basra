@@ -7,7 +7,11 @@ using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Modes.Gcm
 {
-    internal abstract class GcmUtilities
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.NullChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.ArrayBoundsChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.DivideByZeroChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
+    internal static class GcmUtilities
     {
         private const uint E1 = 0xe1000000;
         private const ulong E1L = (ulong)E1 << 32;

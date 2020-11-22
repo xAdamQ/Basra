@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 
+using BestHTTP.PlatformSupport.Memory;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Digests;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Macs;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Parameters;
@@ -14,14 +15,18 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
     /// <summary>
     /// A generic TLS MAC implementation, acting as an HMAC based on some underlying Digest.
     /// </summary>
-    public class TlsMac
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.NullChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.ArrayBoundsChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.DivideByZeroChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
+    public sealed class TlsMac
     {
-        protected readonly TlsContext context;
-        protected readonly byte[] secret;
-        protected readonly IMac mac;
-        protected readonly int digestBlockSize;
-        protected readonly int digestOverhead;
-        protected readonly int macLength;
+        private readonly TlsContext context;
+        private readonly byte[] secret;
+        private readonly IMac mac;
+        private readonly int digestBlockSize;
+        private readonly int digestOverhead;
+        private readonly int macLength;
 
         /**
          * Generate a new instance of an TlsMac.
@@ -85,7 +90,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
         /**
          * @return the MAC write secret
          */
-        public virtual byte[] MacSecret
+        public /*virtual */byte[] MacSecret
         {
             get { return this.secret; }
         }
@@ -93,7 +98,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
         /**
          * @return The output length of this MAC.
          */
-        public virtual int Size
+        public /*virtual */int Size
         {
             get { return macLength; }
         }
@@ -107,33 +112,35 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
          * @param length  The length of the message.
          * @return A new byte-buffer containing the MAC value.
          */
-        public virtual byte[] CalculateMac(long seqNo, byte type, byte[] message, int offset, int length)
+        public /*virtual */BufferSegment CalculateMac(long seqNo, byte type, byte[] message, int offset, int length)
         {
             ProtocolVersion serverVersion = context.ServerVersion;
             bool isSsl = serverVersion.IsSsl;
 
-            byte[] macHeader = new byte[isSsl ? 11 : 13];
+            int macHeaderLength = isSsl ? 11 : 13;
+            byte[] macHeader = BufferPool.Get(macHeaderLength, true);
             TlsUtilities.WriteUint64(seqNo, macHeader, 0);
             TlsUtilities.WriteUint8(type, macHeader, 8);
             if (!isSsl)
             {
                 TlsUtilities.WriteVersion(serverVersion, macHeader, 9);
             }
-            TlsUtilities.WriteUint16(length, macHeader, macHeader.Length - 2);
+            TlsUtilities.WriteUint16(length, macHeader, macHeaderLength - 2);
 
-            mac.BlockUpdate(macHeader, 0, macHeader.Length);
+            mac.BlockUpdate(macHeader, 0, macHeaderLength);
             mac.BlockUpdate(message, offset, length);
 
-            return Truncate(MacUtilities.DoFinal(mac));
+            BufferPool.Release(macHeader);
+
+            return Truncate(MacUtilities.DoFinalOptimized(mac));
         }
 
-        public virtual byte[] CalculateMacConstantTime(long seqNo, byte type, byte[] message, int offset, int length,
-            int fullLength, byte[] dummyData)
+        public /*virtual */BufferSegment CalculateMacConstantTime(long seqNo, byte type, byte[] message, int offset, int length, int fullLength, byte[] dummyData)
         {
             /*
              * Actual MAC only calculated on 'length' bytes...
              */
-            byte[] result = CalculateMac(seqNo, type, message, offset, length);
+            BufferSegment result = CalculateMac(seqNo, type, message, offset, length);
 
             /*
              * ...but ensure a constant number of complete digest blocks are processed (as many as would
@@ -156,20 +163,20 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             return result;
         }
 
-        protected virtual int GetDigestBlockCount(int inputLength)
+        protected /*virtual */int GetDigestBlockCount(int inputLength)
         {
             // NOTE: This calculation assumes a minimum of 1 pad byte
             return (inputLength + digestOverhead) / digestBlockSize;
         }
 
-        protected virtual byte[] Truncate(byte[] bs)
+        protected /*virtual */BufferSegment Truncate(BufferSegment bs)
         {
-            if (bs.Length <= macLength)
+            if (bs.Count <= macLength)
             {
                 return bs;
             }
 
-            return Arrays.CopyOf(bs, macLength);
+            return new BufferSegment(bs.Data, bs.Offset, macLength); //Arrays.CopyOf(bs, macLength);
         }
     }
 }

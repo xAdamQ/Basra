@@ -49,7 +49,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Pkcs
             this.sigBits = signature;
         }
 
-        [Obsolete("Use 'GetInstance' instead")]
+
         public CertificationRequest(
             Asn1Sequence seq)
         {

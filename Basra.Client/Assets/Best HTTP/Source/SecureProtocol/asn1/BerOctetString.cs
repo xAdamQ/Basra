@@ -11,66 +11,77 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1
     public class BerOctetString
         : DerOctetString, IEnumerable
     {
-		public static BerOctetString FromSequence(Asn1Sequence seq)
-		{
-			IList v = BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Platform.CreateArrayList();
+        private static readonly int DefaultChunkSize = 1000;
 
-			foreach (Asn1Encodable obj in seq)
-			{
-				v.Add(obj);
-			}
+        public static BerOctetString FromSequence(Asn1Sequence seq)
+        {
+            int count = seq.Count;
+            Asn1OctetString[] v = new Asn1OctetString[count];
+            for (int i = 0; i < count; ++i)
+            {
+                v[i] = Asn1OctetString.GetInstance(seq[i]);
+            }
+            return new BerOctetString(v);
+        }
 
-			return new BerOctetString(v);
-		}
-
-		private const int MaxLength = 1000;
-
-		/**
-         * convert a vector of octet strings into a single byte string
-         */
-        private static byte[] ToBytes(
-            IEnumerable octs)
+        private static byte[] ToBytes(Asn1OctetString[] octs)
         {
             MemoryStream bOut = new MemoryStream();
-			foreach (DerOctetString o in octs)
-			{
+            foreach (Asn1OctetString o in octs)
+            {
                 byte[] octets = o.GetOctets();
                 bOut.Write(octets, 0, octets.Length);
             }
-			return bOut.ToArray();
+            return bOut.ToArray();
         }
 
-		private readonly IEnumerable octs;
+        private static Asn1OctetString[] ToOctetStringArray(IEnumerable e)
+        {
+            IList list = BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Platform.CreateArrayList(e);
 
-		/// <param name="str">The octets making up the octet string.</param>
-		public BerOctetString(
-			byte[] str)
-			: base(str)
+            int count = list.Count;
+            Asn1OctetString[] v = new Asn1OctetString[count];
+            for (int i = 0; i < count; ++i)
+            {
+                v[i] = Asn1OctetString.GetInstance(list[i]);
+            }
+            return v;
+        }
+
+        private readonly int chunkSize;
+        private readonly Asn1OctetString[] octs;
+
+
+        public BerOctetString(IEnumerable e)
+            : this(ToOctetStringArray(e))
+        {
+        }
+
+        public BerOctetString(byte[] str)
+			: this(str, DefaultChunkSize)
 		{
 		}
 
-		public BerOctetString(
-			IEnumerable octets)
-			: base(ToBytes(octets))
-        {
-            this.octs = octets;
-        }
-
-        public BerOctetString(
-			Asn1Object obj)
-			: base(obj)
+        public BerOctetString(Asn1OctetString[] octs)
+            : this(octs, DefaultChunkSize)
         {
         }
 
-        public BerOctetString(
-			Asn1Encodable obj)
-			: base(obj.ToAsn1Object())
+        public BerOctetString(byte[] str, int chunkSize)
+            : this(str, null, chunkSize)
         {
         }
 
-        public override byte[] GetOctets()
+        public BerOctetString(Asn1OctetString[] octs, int chunkSize)
+            : this(ToBytes(octs), octs, chunkSize)
         {
-            return str;
+        }
+
+        private BerOctetString(byte[] str, Asn1OctetString[] octs, int chunkSize)
+            : base(str)
+        {
+            this.octs = octs;
+            this.chunkSize = chunkSize;
         }
 
         /**
@@ -86,7 +97,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1
 			return octs.GetEnumerator();
 		}
 
-		[Obsolete("Use GetEnumerator() instead")]
+
         public IEnumerator GetObjects()
         {
 			return GetEnumerator();
@@ -95,17 +106,17 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1
 		private IList GenerateOcts()
         {
             IList vec = BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Platform.CreateArrayList();
-			for (int i = 0; i < str.Length; i += MaxLength)
-			{
-				int end = System.Math.Min(str.Length, i + MaxLength);
+            for (int i = 0; i < str.Length; i += chunkSize)
+            { 
+				int end = System.Math.Min(str.Length, i + chunkSize);
 
-				byte[] nStr = new byte[end - i];
+                byte[] nStr = new byte[end - i]; 
 
-				Array.Copy(str, i, nStr, 0, nStr.Length);
+                Array.Copy(str, i, nStr, 0, nStr.Length);
 
-				vec.Add(new DerOctetString(nStr));
-			}
-			return vec;
+                vec.Add(new DerOctetString(nStr));
+             } 
+             return vec; 
         }
 
         internal override void Encode(
@@ -120,7 +131,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1
                 //
                 // write out the octet array
                 //
-                foreach (DerOctetString oct in this)
+                foreach (Asn1OctetString oct in this)
                 {
                     derOut.WriteObject(oct);
                 }

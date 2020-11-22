@@ -44,9 +44,7 @@ var Lib_BEST_HTTP_WebGL_WS_Bridge =
 
 	WS_Create: function(url, protocol, onOpen, onText, onBinary, onError, onClose)
 	{
-		var urlStr = /*encodeURI*/(Pointer_stringify(url))
-					.replace(/\+/g, '%2B')
-					.replace(/%252[fF]/ig, '%2F');
+		var urlStr = new URL(Pointer_stringify(url)); ///*encodeURI*/(Pointer_stringify(url)).replace(/\+/g, '%2B').replace(/%252[fF]/ig, '%2F');
 		var proto = Pointer_stringify(protocol);
 
 		console.log('WS_Create(' + urlStr + ', "' + proto + '")');

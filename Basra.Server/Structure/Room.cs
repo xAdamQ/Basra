@@ -2,11 +2,15 @@ using System.Collections.Generic;
 using Basra.Server.Extensions;
 using System.Linq;
 using Microsoft.AspNetCore.SignalR;
+using System;
 
 namespace Basra.Server.Structure
 {
     public class Room
     {
+        //todo ready timeout
+        //timouts overall as defensive strategy
+
         //wrong approach but I don't know the right
         public IHubContext<MasterHub> _hubContext { get; }
 
@@ -16,12 +20,19 @@ namespace Basra.Server.Structure
 
         public int Genre { get; }
         public User[] Users { get; }
+        public List<int>[] Hands { get; }
+        public bool[] IsReady { get; }
+
         public int Id { get; }
         private static int LastId { get; set; }
         public List<int> Deck { get; }
-        public List<int>[] Hands { get; }
 
         public static List<Room> All { get; } = new List<Room>();
+
+        private int GetUserRoomId(string userId)
+        {
+            return Array.FindIndex(Users, u => u.Id == userId);
+        }
 
         public Room(IHubContext<MasterHub> hubContext, PendingRoom pendingRoom)
         {
@@ -31,15 +42,20 @@ namespace Basra.Server.Structure
             Users = pendingRoom.Users.ToArray();
             Id = LastId++;
 
+            foreach (var user in Users)
+            {
+                user.Room = this;
+            }
+
             Hands = new List<int>[Users.Length];
             for (int i = 0; i < Hands.Length; i++)
             {
                 Hands[i] = new List<int>();
             }
 
-            Deck = GenerateDeck();
+            IsReady = new bool[Users.Length];
 
-            Distribute();
+            Deck = GenerateDeck();
         }
 
         private List<int> GenerateDeck()
@@ -60,6 +76,8 @@ namespace Basra.Server.Structure
         //modern factories use the IServiceProvider to resolve the dependancies automatically (GetService() instead of new), still no config at runtime
 
         //anything needs injecting is a service
+
+        //request from mw to hub to here
 
         public void Distribute()
         {
@@ -94,5 +112,14 @@ namespace Basra.Server.Structure
             _hubContext.Clients.Client(Users[userRoomId].ConnectionId).SendAsync("SetHand", Hands[userRoomId]);
         }
 
+        public void Ready(string playerId)
+        {
+            IsReady[GetUserRoomId(playerId)] = true;
+            var readyUsersCount = IsReady.Count(value => value);
+            if (readyUsersCount == Users.Length)
+            {
+                Distribute();
+            }
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1
         {
         }
 
-		[Obsolete("Use version taking an Asn1Encodable arg instead")]
+
         public override void WriteObject(
             object    obj)
         {

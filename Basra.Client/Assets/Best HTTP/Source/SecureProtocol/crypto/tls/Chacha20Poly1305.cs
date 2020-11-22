@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 
+using BestHTTP.PlatformSupport.Memory;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Engines;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Generators;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Macs;
@@ -16,7 +17,11 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
     /**
      * draft-ietf-tls-chacha20-poly1305-04
      */
-    public class Chacha20Poly1305
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.NullChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.ArrayBoundsChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.DivideByZeroChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
+    public sealed class Chacha20Poly1305
         :   TlsCipher
     {
         private static readonly byte[] Zeroes = new byte[15];
@@ -80,28 +85,31 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             this.decryptCipher.Init(false, new ParametersWithIV(decryptKey, decryptIV));
         }
 
-        public virtual int GetPlaintextLimit(int ciphertextLimit)
+        public /*virtual */int GetPlaintextLimit(int ciphertextLimit)
         {
             return ciphertextLimit - 16;
         }
 
         /// <exception cref="IOException"></exception>
-        public virtual byte[] EncodePlaintext(long seqNo, byte type, byte[] plaintext, int offset, int len)
+        public /*virtual */BufferSegment EncodePlaintext(long seqNo, byte type, byte[] plaintext, int offset, int len)
         {
             KeyParameter macKey = InitRecord(encryptCipher, true, seqNo, encryptIV);
 
-            byte[] output = new byte[len + 16];
+            byte[] output = BufferPool.Get(len + 16, true);
             encryptCipher.ProcessBytes(plaintext, offset, len, output, 0);
 
-            byte[] additionalData = GetAdditionalData(seqNo, type, len);
-            byte[] mac = CalculateRecordMac(macKey, additionalData, output, 0, len);
-            Array.Copy(mac, 0, output, len, mac.Length);
+            BufferSegment additionalData = GetAdditionalData(seqNo, type, len);
+            BufferSegment mac = CalculateRecordMac(macKey, additionalData, output, 0, len);
+            Array.Copy(mac.Data, mac.Offset, output, len, mac.Count);
 
-            return output;
+            BufferPool.Release(additionalData);
+            BufferPool.Release(mac);
+
+            return new BufferSegment(output, 0, len + 16);
         }
 
         /// <exception cref="IOException"></exception>
-        public virtual byte[] DecodeCiphertext(long seqNo, byte type, byte[] ciphertext, int offset, int len)
+        public /*virtual */BufferSegment DecodeCiphertext(long seqNo, byte type, byte[] ciphertext, int offset, int len)
         {
             if (GetPlaintextLimit(len) < 0)
                 throw new TlsFatalAlert(AlertDescription.decode_error);
@@ -110,26 +118,29 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
             int plaintextLength = len - 16;
 
-            byte[] additionalData = GetAdditionalData(seqNo, type, plaintextLength);
-            byte[] calculatedMac = CalculateRecordMac(macKey, additionalData, ciphertext, offset, plaintextLength);
-            byte[] receivedMac = Arrays.CopyOfRange(ciphertext, offset + plaintextLength, offset + len);
+            BufferSegment additionalData = GetAdditionalData(seqNo, type, plaintextLength);
+            BufferSegment calculatedMac = CalculateRecordMac(macKey, additionalData, ciphertext, offset, plaintextLength);
+            BufferSegment receivedMac = new BufferSegment(ciphertext, offset + plaintextLength, 16);
 
             if (!Arrays.ConstantTimeAreEqual(calculatedMac, receivedMac))
                 throw new TlsFatalAlert(AlertDescription.bad_record_mac);
 
-            byte[] output = new byte[plaintextLength];
+            BufferPool.Release(additionalData);
+            BufferPool.Release(calculatedMac);
+
+            byte[] output = BufferPool.Get(plaintextLength, true);
             decryptCipher.ProcessBytes(ciphertext, offset, plaintextLength, output, 0);
-            return output;
+            return new BufferSegment(output, 0, plaintextLength);
         }
 
-        protected virtual KeyParameter InitRecord(IStreamCipher cipher, bool forEncryption, long seqNo, byte[] iv)
+        protected /*virtual */KeyParameter InitRecord(IStreamCipher cipher, bool forEncryption, long seqNo, byte[] iv)
         {
             byte[] nonce = CalculateNonce(seqNo, iv);
             cipher.Init(forEncryption, new ParametersWithIV(null, nonce));
             return GenerateRecordMacKey(cipher);
         }
 
-        protected virtual byte[] CalculateNonce(long seqNo, byte[] iv)
+        protected /*virtual */byte[] CalculateNonce(long seqNo, byte[] iv)
         {
             byte[] nonce = new byte[12];
             TlsUtilities.WriteUint64(seqNo, nonce, 4);
@@ -142,7 +153,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             return nonce;
         }
 
-        protected virtual KeyParameter GenerateRecordMacKey(IStreamCipher cipher)
+        protected /*virtual */KeyParameter GenerateRecordMacKey(IStreamCipher cipher)
         {
             byte[] firstBlock = new byte[64];
             cipher.ProcessBytes(firstBlock, 0, firstBlock.Length, firstBlock, 0);
@@ -152,30 +163,30 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             return macKey;
         }
 
-        protected virtual byte[] CalculateRecordMac(KeyParameter macKey, byte[] additionalData, byte[] buf, int off, int len)
+        protected /*virtual */BufferSegment CalculateRecordMac(KeyParameter macKey, BufferSegment additionalData, byte[] buf, int off, int len)
         {
-            IMac mac = new Poly1305();
+            Poly1305 mac = new Poly1305();
             mac.Init(macKey);
 
-            UpdateRecordMacText(mac, additionalData, 0, additionalData.Length);
-            UpdateRecordMacText(mac, buf, off, len);
-            UpdateRecordMacLength(mac, additionalData.Length);
+            UpdateRecordMacText(mac, additionalData);
+            UpdateRecordMacText(mac, new BufferSegment(buf, off, len));
+            UpdateRecordMacLength(mac, additionalData.Count);
             UpdateRecordMacLength(mac, len);
 
-            return MacUtilities.DoFinal(mac);
+            return MacUtilities.DoFinalOptimized(mac);
         }
 
-        protected virtual void UpdateRecordMacLength(IMac mac, int len)
+        protected /*virtual */void UpdateRecordMacLength(Poly1305 mac, int len)
         {
             byte[] longLen = Pack.UInt64_To_LE((ulong)len);
             mac.BlockUpdate(longLen, 0, longLen.Length);
         }
 
-        protected virtual void UpdateRecordMacText(IMac mac, byte[] buf, int off, int len)
+        protected /*virtual */void UpdateRecordMacText(Poly1305 mac, BufferSegment buf)
         {
-            mac.BlockUpdate(buf, off, len);
+            mac.BlockUpdate(buf.Data, buf.Offset, buf.Count);
 
-            int partial = len % 16;
+            int partial = buf.Count % 16;
             if (partial != 0)
             {
                 mac.BlockUpdate(Zeroes, 0, 16 - partial);
@@ -183,19 +194,19 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
         }
 
         /// <exception cref="IOException"></exception>
-        protected virtual byte[] GetAdditionalData(long seqNo, byte type, int len)
+        protected /*virtual */BufferSegment GetAdditionalData(long seqNo, byte type, int len)
         {
             /*
              * additional_data = seq_num + TLSCompressed.type + TLSCompressed.version +
              * TLSCompressed.length
              */
-            byte[] additional_data = new byte[13];
+            byte[] additional_data = BufferPool.Get(13, true);
             TlsUtilities.WriteUint64(seqNo, additional_data, 0);
             TlsUtilities.WriteUint8(type, additional_data, 8);
             TlsUtilities.WriteVersion(context.ServerVersion, additional_data, 9);
             TlsUtilities.WriteUint16(len, additional_data, 11);
 
-            return additional_data;
+            return new BufferSegment(additional_data, 0, 13);
         }
     }
 }

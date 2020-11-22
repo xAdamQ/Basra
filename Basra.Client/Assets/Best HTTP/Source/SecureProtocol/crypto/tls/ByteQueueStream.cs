@@ -3,6 +3,8 @@
 using System;
 using System.IO;
 
+using BestHTTP.PlatformSupport.Memory;
+
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 {
     public class ByteQueueStream
@@ -74,7 +76,11 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             if (buffer.Available == 0)
                 return -1;
 
-            return buffer.RemoveData(1, 0)[0] & 0xFF;
+            byte[] data = buffer.RemoveData(1, 0);
+            byte value = data[0];
+            BufferPool.Release(data);
+
+            return value & 0xFF;
         }
 
         public override long Seek(long offset, SeekOrigin origin)
@@ -104,9 +110,11 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             buffer.AddData(buf, off, len);
         }
 
+        private byte[] writeByteBuffer = new byte[1];
         public override void WriteByte(byte b)
         {
-            buffer.AddData(new byte[]{ b }, 0, 1);
+            writeByteBuffer[0] = b;
+            buffer.AddData(writeByteBuffer, 0, 1);
         }
     }
 }

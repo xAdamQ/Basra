@@ -107,7 +107,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Cms
 			}
 		}
 
-		[Obsolete("Use 'object[oid]' syntax instead")]
+
         public Attribute Get(
             DerObjectIdentifier oid)
         {
@@ -171,7 +171,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Cms
         }
 
 #if !(SILVERLIGHT || PORTABLE || NETFX_CORE)
-        [Obsolete("Use 'ToDictionary' instead")]
+
 		public Hashtable ToHashtable()
         {
             return new Hashtable(attributes);

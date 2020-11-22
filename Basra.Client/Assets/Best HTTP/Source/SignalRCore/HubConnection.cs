@@ -466,6 +466,10 @@ namespace BestHTTP.SignalRCore
 
             switch(this.State)
             {
+                case ConnectionStates.Initial:
+                    SetState(ConnectionStates.Closed);
+                    break;
+
                 case ConnectionStates.Authenticating:
                     this.AuthenticationProvider.OnAuthenticationSucceded -= OnAuthenticationSucceded;
                     this.AuthenticationProvider.OnAuthenticationFailed -= OnAuthenticationFailed;

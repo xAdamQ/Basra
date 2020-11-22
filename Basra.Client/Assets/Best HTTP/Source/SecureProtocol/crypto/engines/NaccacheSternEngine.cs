@@ -74,7 +74,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Engines
 			}
 		}
 
-        [Obsolete("Remove: no longer used")]
+
         public virtual bool Debug
 		{
 			set {}

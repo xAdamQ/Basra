@@ -560,7 +560,7 @@ namespace BestHTTP.ServerSentEvents
                 if (LineBuffer.Length < LineBufferPos + (copyIndex - pos))
                 {
                     int newSize = LineBufferPos + (copyIndex - pos);
-                    BufferPool.Resize(ref LineBuffer, newSize, true);
+                    BufferPool.Resize(ref LineBuffer, newSize, true, false);
                 }
 
                 Array.Copy(buffer, pos, LineBuffer, LineBufferPos, copyIndex - pos);

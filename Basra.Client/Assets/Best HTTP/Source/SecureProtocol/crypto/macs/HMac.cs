@@ -14,7 +14,11 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Macs
     *
     * H(K XOR opad, H(K XOR ipad, text))
     */
-    public class HMac
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.NullChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.ArrayBoundsChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.DivideByZeroChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
+    public sealed class HMac
 		: IMac
     {
         private const byte IPAD = (byte)0x36;
@@ -38,17 +42,17 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Macs
             this.outputBuf = new byte[blockLength + digestSize];
         }
 
-        public virtual string AlgorithmName
+        public /*virtual */string AlgorithmName
         {
             get { return digest.AlgorithmName + "/HMAC"; }
         }
 
-		public virtual IDigest GetUnderlyingDigest()
+		public /*virtual */IDigest GetUnderlyingDigest()
         {
             return digest;
         }
 
-        public virtual void Init(ICipherParameters parameters)
+        public /*virtual */void Init(ICipherParameters parameters)
         {
             digest.Reset();
 
@@ -88,22 +92,22 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Macs
 			}
         }
 
-        public virtual int GetMacSize()
+        public /*virtual */int GetMacSize()
         {
             return digestSize;
         }
 
-        public virtual void Update(byte input)
+        public /*virtual */void Update(byte input)
         {
             digest.Update(input);
         }
 
-        public virtual void BlockUpdate(byte[] input, int inOff, int len)
+        public /*virtual */void BlockUpdate(byte[] input, int inOff, int len)
         {
             digest.BlockUpdate(input, inOff, len);
         }
 
-        public virtual int DoFinal(byte[] output, int outOff)
+        public /*virtual */int DoFinal(byte[] output, int outOff)
         {
             digest.DoFinal(outputBuf, blockLength);
 
@@ -136,7 +140,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Macs
         /**
         * Reset the mac generator.
         */
-        public virtual void Reset()
+        public /*virtual */void Reset()
         {
 			// Reset underlying digest
             digest.Reset();

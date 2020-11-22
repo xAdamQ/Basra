@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace BestHTTP.Extensions
 {
@@ -6,6 +6,8 @@ namespace BestHTTP.Extensions
     {
         public int Capacity { get; private set; }
         public int Count { get; private set; }
+        public int StartIdx { get { return this.startIdx; } }
+        public int EndIdx { get { return this.endIdx; } }
 
         public T this[int idx]
         {
@@ -49,7 +51,7 @@ namespace BestHTTP.Extensions
 
         public void Clear()
         {
-            this.startIdx = this.endIdx = 0;
+            this.Count = this.startIdx = this.endIdx = 0;
         }
 
         public override string ToString()

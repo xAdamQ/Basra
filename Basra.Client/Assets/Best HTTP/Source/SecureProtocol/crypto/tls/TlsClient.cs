@@ -4,12 +4,19 @@ using System;
 using System.Collections;
 using System.IO;
 
+using BestHTTP.Logger;
+
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 {
     public interface TlsClient
-        :   TlsPeer
+        : TlsPeer
     {
+        LoggingContext LoggingContext { get; set; }
         System.Collections.Generic.List<string> HostNames { get; set; }
+
+        bool ExpectEmptyCertificateStatusExtension { get; }
+
+        CertificateStatus CertificateStatus { get; set; }
 
         /// <summary>
         /// Called at the start of a new TLS session, before any other methods.

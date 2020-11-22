@@ -415,7 +415,7 @@ namespace BestHTTP.PlatformSupport.TcpClient.General
                 if (success)
                 {
                     IPAddress[] addresses = Dns.EndGetHostAddresses(result);
-                    Connect(addresses, port);
+                    Connect(addresses, port, null);
                 }
                 else
                 {
@@ -425,11 +425,11 @@ namespace BestHTTP.PlatformSupport.TcpClient.General
             else
             {
                 IPAddress[] addresses = Dns.GetHostAddresses(hostname);
-                Connect(addresses, port);
+                Connect(addresses, port, null);
             }
         }
 
-        public void Connect(IPAddress[] ipAddresses, int port)
+        public void Connect(IPAddress[] ipAddresses, int port, HTTPRequest request)
         {
             CheckDisposed();
 
@@ -464,6 +464,9 @@ namespace BestHTTP.PlatformSupport.TcpClient.General
                     {
                         throw new NotSupportedException("This method is only valid for sockets in the InterNetwork and InterNetworkV6 families");
                     }
+
+                    if (request != null && request.IsCancellationRequested)
+                        throw new Exception("IsCancellationRequested");
 
                     Connect(new IPEndPoint(address, port));
 

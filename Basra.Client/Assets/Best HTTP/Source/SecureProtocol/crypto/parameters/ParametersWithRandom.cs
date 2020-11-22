@@ -31,7 +31,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Parameters
         {
 		}
 
-		[Obsolete("Use Random property instead")]
+
 		public SecureRandom GetRandom()
 		{
 			return Random;

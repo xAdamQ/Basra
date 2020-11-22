@@ -49,7 +49,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkix
 			if (targets.Count == 0)
 			{
 				throw new PkixCertPathBuilderException(
-					"No attribute certificate found matching targetContraints.");
+					"No attribute certificate found matching targetConstraints.");
 			}
 
 			PkixCertPathBuilderResult result = null;

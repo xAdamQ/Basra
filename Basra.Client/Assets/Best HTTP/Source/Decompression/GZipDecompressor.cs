@@ -1,4 +1,4 @@
-﻿using BestHTTP.Extensions;
+using BestHTTP.Extensions;
 using BestHTTP.PlatformSupport.Memory;
 using System;
 
@@ -73,12 +73,18 @@ namespace BestHTTP.Decompression
             byte[] copyBuffer = BufferPool.Get(1024, true);
 
             int readCount;
+            int sumReadCount = 0;
             while ((readCount = decompressorGZipStream.Read(copyBuffer, 0, copyBuffer.Length)) != 0)
+            {
                 decompressorOutputStream.Write(copyBuffer, 0, readCount);
+                sumReadCount += readCount;
+            }
 
             BufferPool.Release(copyBuffer);
 
-            decompressorGZipStream.SetLength(0);
+            // If no read is done (returned with any data) don't zero out the input stream, as it would delete any not yet used data.
+            if (sumReadCount > 0)
+                decompressorGZipStream.SetLength(0);
 
             byte[] result = decompressorOutputStream.ToArray(dataCanBeLarger);
 

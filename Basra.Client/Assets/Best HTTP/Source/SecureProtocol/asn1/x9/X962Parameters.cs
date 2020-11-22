@@ -51,7 +51,14 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X9
             this._params = namedCurve;
         }
 
-		public X962Parameters(
+        public X962Parameters(
+            Asn1Null obj)
+        {
+            this._params = obj;
+        }
+
+
+        public X962Parameters(
             Asn1Object obj)
         {
             this._params = obj;

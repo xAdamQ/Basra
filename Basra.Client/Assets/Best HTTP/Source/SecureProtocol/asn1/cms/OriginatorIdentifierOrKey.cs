@@ -18,7 +18,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Cms
             this.id = id;
         }
 
-		[Obsolete("Use version taking a 'SubjectKeyIdentifier'")]
+
         public OriginatorIdentifierOrKey(
             Asn1OctetString id)
 			: this(new SubjectKeyIdentifier(id))
@@ -37,7 +37,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Cms
             this.id = new DerTaggedObject(false, 1, id);
         }
 
-		[Obsolete("Use more specific version")]
+
         public OriginatorIdentifierOrKey(
             Asn1Object id)
         {
@@ -131,7 +131,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Cms
 			}
 		}
 
-		[Obsolete("Use 'OriginatorPublicKey' property")]
+
 		public OriginatorPublicKey OriginatorKey
 		{
 			get { return OriginatorPublicKey; }

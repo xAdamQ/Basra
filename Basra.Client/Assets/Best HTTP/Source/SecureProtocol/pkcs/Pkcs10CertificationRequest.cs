@@ -143,7 +143,8 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
 			noParams.Add(X9ObjectIdentifiers.ECDsaWithSha384);
 			noParams.Add(X9ObjectIdentifiers.ECDsaWithSha512);
 			noParams.Add(X9ObjectIdentifiers.IdDsaWithSha1);
-			noParams.Add(NistObjectIdentifiers.DsaWithSha224);
+            noParams.Add(OiwObjectIdentifiers.DsaWithSha1);
+            noParams.Add(NistObjectIdentifiers.DsaWithSha224);
 			noParams.Add(NistObjectIdentifiers.DsaWithSha256);
 
 			//
@@ -230,7 +231,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkcs
         /// <param name="publicKey">Public Key to be included in cert reqest.</param>
         /// <param name="attributes">ASN1Set of Attributes.</param>
         /// <param name="signingKey">Ignored.</param>
-        [Obsolete("Use constructor without 'signingKey' parameter (ignored here)")]
+
         public Pkcs10CertificationRequest(
             ISignatureFactory signatureFactory,
             X509Name subject,

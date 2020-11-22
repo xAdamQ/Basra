@@ -23,7 +23,7 @@ using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Date;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 {
-    [Obsolete("Use 'TlsClientProtocol' instead")]
+
     public class TlsProtocolHandler
         :   TlsClientProtocol
     {

@@ -66,7 +66,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Parameters
 		}
 
 #if !(SILVERLIGHT || PORTABLE || NETFX_CORE)
-        [Obsolete("Use 'SmallPrimesList' instead")]
+
         public ArrayList SmallPrimes
 		{
 			get { return new ArrayList(smallPrimes); }

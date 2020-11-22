@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 
+using BestHTTP.PlatformSupport.Memory;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Parameters;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Security;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
@@ -12,6 +13,10 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
     /// <summary>
     /// A generic TLS 1.0-1.2 / SSLv3 block cipher. This can be used for AES or 3DES for example.
     /// </summary>
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.NullChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.ArrayBoundsChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.DivideByZeroChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
     public class TlsBlockCipher
         :   TlsCipher
     {
@@ -147,7 +152,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             return plaintextLimit;
         }
         byte[] explicitIV = null;
-        public virtual byte[] EncodePlaintext(long seqNo, byte type, byte[] plaintext, int offset, int len)
+        public virtual BufferSegment EncodePlaintext(long seqNo, byte type, byte[] plaintext, int offset, int len)
         {
             int blockSize = encryptCipher.GetBlockSize();
             int macSize = mWriteMac.Size;
@@ -186,7 +191,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                 totalSize += blockSize;
             }
 
-            byte[] outBuf = new byte[totalSize];
+            byte[] outBuf = BufferPool.Get(totalSize, true);
             int outOff = 0;
 
             if (useExplicitIV)
@@ -207,9 +212,11 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
             if (!encryptThenMac)
             {
-                byte[] mac = mWriteMac.CalculateMac(seqNo, type, plaintext, offset, len);
-                Array.Copy(mac, 0, outBuf, outOff, mac.Length);
-                outOff += mac.Length;
+                BufferSegment mac = mWriteMac.CalculateMac(seqNo, type, plaintext, offset, len);
+                Array.Copy(mac.Data, mac.Offset, outBuf, outOff, mac.Count);
+                outOff += mac.Count;
+
+                BufferPool.Release(mac);
             }
 
             for (int i = 0; i <= padding_length; i++)
@@ -224,18 +231,19 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
             if (encryptThenMac)
             {
-                byte[] mac = mWriteMac.CalculateMac(seqNo, type, outBuf, 0, outOff);
-                Array.Copy(mac, 0, outBuf, outOff, mac.Length);
-                outOff += mac.Length;
+                BufferSegment mac = mWriteMac.CalculateMac(seqNo, type, outBuf, 0, outOff);
+                Array.Copy(mac.Data, mac.Offset, outBuf, outOff, mac.Count);
+                outOff += mac.Count;
+                BufferPool.Release(mac);
             }
 
     //        assert outBuf.length == outOff;
 
-            return outBuf;
+            return new BufferSegment(outBuf, 0, totalSize);
         }
 
         /// <exception cref="IOException"></exception>
-        public virtual byte[] DecodeCiphertext(long seqNo, byte type, byte[] ciphertext, int offset, int len)
+        public virtual BufferSegment DecodeCiphertext(long seqNo, byte type, byte[] ciphertext, int offset, int len)
         {
             int blockSize = decryptCipher.GetBlockSize();
             int macSize = mReadMac.Size;
@@ -270,10 +278,13 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             if (encryptThenMac)
             {
                 int end = offset + len;
-                byte[] receivedMac = Arrays.CopyOfRange(ciphertext, end - macSize, end);
-                byte[] calculatedMac = mReadMac.CalculateMac(seqNo, type, ciphertext, offset, len - macSize);
+                BufferSegment receivedMac = new BufferSegment(ciphertext, end - macSize, macSize);
+                BufferSegment calculatedMac = mReadMac.CalculateMac(seqNo, type, ciphertext, offset, len - macSize);
 
                 bool badMacEtm = !Arrays.ConstantTimeAreEqual(calculatedMac, receivedMac);
+
+                BufferPool.Release(calculatedMac);
+
                 if (badMacEtm)
                 {
                     /*
@@ -312,17 +323,20 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                 dec_output_length -= macSize;
                 int macInputLen = dec_output_length;
                 int macOff = offset + macInputLen;
-                byte[] receivedMac = Arrays.CopyOfRange(ciphertext, macOff, macOff + macSize);
-                byte[] calculatedMac = mReadMac.CalculateMacConstantTime(seqNo, type, ciphertext, offset, macInputLen,
-                    blocks_length - macSize, randomData);
+                BufferSegment receivedMac = new BufferSegment(ciphertext, macOff, macSize);
+                BufferSegment calculatedMac = mReadMac.CalculateMacConstantTime(seqNo, type, ciphertext, offset, macInputLen, blocks_length - macSize, randomData);
 
                 badMac |= !Arrays.ConstantTimeAreEqual(calculatedMac, receivedMac);
+
+                BufferPool.Release(calculatedMac);
             }
 
             if (badMac)
                 throw new TlsFatalAlert(AlertDescription.bad_record_mac);
 
-            return Arrays.CopyOfRange(ciphertext, offset, offset + dec_output_length);
+            //byte[] output = BufferPool.Get(dec_output_length, true); //Arrays.CopyOfRange(ciphertext, offset, offset + dec_output_length);
+            //Array.Copy(ciphertext, offset, output, 0, dec_output_length);
+            return new BufferSegment(ciphertext, offset, dec_output_length);
         }
 
         protected virtual int CheckPaddingConstantTime(byte[] buf, int off, int len, int blockSize, int macSize)

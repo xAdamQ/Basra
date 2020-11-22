@@ -169,7 +169,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.X509.Store
 			set { this.attributeCert = value; }
 		}
 
-		[Obsolete("Use AttributeCertificateValid instead")]
+
 		public DateTimeObject AttribueCertificateValid
 		{
 			get { return attributeCertificateValid; }

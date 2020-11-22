@@ -744,7 +744,7 @@ namespace BestHTTP.Caching
             library = new Dictionary<Uri, HTTPCacheFileInfo>(new UriComparer());
             try
             {
-                using (var fs = HTTPManager.IOService.CreateFileStream(LibraryPath, FileStreamModes.Open))
+                using (var fs = HTTPManager.IOService.CreateFileStream(LibraryPath, FileStreamModes.OpenRead))
                 using (var br = new System.IO.BinaryReader(fs))
                 {
                     version = br.ReadInt32();

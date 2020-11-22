@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 
+using BestHTTP.PlatformSupport.Memory;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
@@ -80,26 +81,33 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
         }
 
         /// <exception cref="IOException"></exception>
-        public virtual byte[] EncodePlaintext(long seqNo, byte type, byte[] plaintext, int offset, int len)
+        public virtual BufferSegment EncodePlaintext(long seqNo, byte type, byte[] plaintext, int offset, int len)
         {
             if (writeMac == null)
             {
-                return Arrays.CopyOfRange(plaintext, offset, offset + len);
+                byte[] output = Arrays.CopyOfRange(plaintext, offset, offset + len);
+                return new BufferSegment(output, 0, output.Length);
             }
 
-            byte[] mac = writeMac.CalculateMac(seqNo, type, plaintext, offset, len);
-            byte[] ciphertext = new byte[len + mac.Length];
+            BufferSegment mac = writeMac.CalculateMac(seqNo, type, plaintext, offset, len);
+            int ciphertextLength = len + mac.Count;
+            byte[] ciphertext = BufferPool.Get(len + mac.Count, true);
             Array.Copy(plaintext, offset, ciphertext, 0, len);
-            Array.Copy(mac, 0, ciphertext, len, mac.Length);
-            return ciphertext;
+            Array.Copy(mac.Data, 0, ciphertext, len, mac.Count);
+
+            BufferPool.Release(mac);
+
+            return new BufferSegment(ciphertext, 0, ciphertextLength);
         }
 
         /// <exception cref="IOException"></exception>
-        public virtual byte[] DecodeCiphertext(long seqNo, byte type, byte[] ciphertext, int offset, int len)
+        public virtual BufferSegment DecodeCiphertext(long seqNo, byte type, byte[] ciphertext, int offset, int len)
         {
+            byte[] output;
             if (readMac == null)
             {
-                return Arrays.CopyOfRange(ciphertext, offset, offset + len);
+                output = Arrays.CopyOfRange(ciphertext, offset, offset + len);
+                return new BufferSegment(output, 0, output.Length);
             }
 
             int macSize = readMac.Size;
@@ -108,13 +116,16 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 
             int macInputLen = len - macSize;
 
-            byte[] receivedMac = Arrays.CopyOfRange(ciphertext, offset + macInputLen, offset + len);
-            byte[] computedMac = readMac.CalculateMac(seqNo, type, ciphertext, offset, macInputLen);
+            BufferSegment receivedMac = new BufferSegment(ciphertext, offset + macInputLen, offset + len);
+            BufferSegment computedMac = readMac.CalculateMac(seqNo, type, ciphertext, offset, macInputLen);
 
             if (!Arrays.ConstantTimeAreEqual(receivedMac, computedMac))
                 throw new TlsFatalAlert(AlertDescription.bad_record_mac);
 
-            return Arrays.CopyOfRange(ciphertext, offset, offset + macInputLen);
+            BufferPool.Release(computedMac);
+
+            output = Arrays.CopyOfRange(ciphertext, offset, offset + macInputLen);
+            return new BufferSegment(output, 0, output.Length);
         }
     }
 }

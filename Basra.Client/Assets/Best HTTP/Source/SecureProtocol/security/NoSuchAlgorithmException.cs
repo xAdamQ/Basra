@@ -4,7 +4,7 @@ using System;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Security
 {
-	[Obsolete("Never thrown")]
+
 #if !(NETCF_1_0 || NETCF_2_0 || SILVERLIGHT || PORTABLE || NETFX_CORE)
     [Serializable]
 #endif

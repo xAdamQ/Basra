@@ -247,12 +247,11 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkix
 			if (!(PkixCertPathValidatorUtilities.IsSelfIssued(cert) && (i < n)))
 			{
 				X509Name principal = cert.SubjectDN;
-				Asn1InputStream aIn = new Asn1InputStream(principal.GetEncoded());
 				Asn1Sequence dns;
 
 				try
 				{
-					dns = DerSequence.GetInstance(aIn.ReadObject());
+					dns = Asn1Sequence.GetInstance(principal.GetEncoded());
 				}
 				catch (Exception e)
 				{
@@ -359,7 +358,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkix
 					DerObjectIdentifier subjectDomainPolicy = null;
 					try
 					{
-						Asn1Sequence mapping = DerSequence.GetInstance(mappings[j]);
+                        Asn1Sequence mapping = Asn1Sequence.GetInstance(mappings[j]);
 
 						issuerDomainPolicy = DerObjectIdentifier.GetInstance(mapping[0]);
 						subjectDomainPolicy = DerObjectIdentifier.GetInstance(mapping[1]);
@@ -402,7 +401,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkix
 			Asn1Sequence certPolicies = null;
 			try
 			{
-				certPolicies = DerSequence.GetInstance(
+				certPolicies = Asn1Sequence.GetInstance(
 					PkixCertPathValidatorUtilities.GetExtensionValue(cert, X509Extensions.CertificatePolicies));
 			}
 			catch (Exception e)
@@ -1169,10 +1168,10 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkix
 					 * omitted and a distribution point name of the certificate
 					 * issuer.
 					 */
-					Asn1Object issuer = null;
+					X509Name issuer;
 					try
 					{
-						issuer = new Asn1InputStream(cert.IssuerDN.GetEncoded()).ReadObject();
+						issuer = X509Name.GetInstance(cert.IssuerDN.GetEncoded());
 					}
 					catch (Exception e)
 					{
@@ -1600,7 +1599,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkix
 			Asn1Sequence pc = null;
 			try
 			{
-				pc = DerSequence.GetInstance(
+                pc = Asn1Sequence.GetInstance(
 					PkixCertPathValidatorUtilities.GetExtensionValue(cert, X509Extensions.PolicyConstraints));
 			}
 			catch (Exception e)
@@ -1655,7 +1654,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkix
 			Asn1Sequence pc = null;
 			try
 			{
-				pc = DerSequence.GetInstance(
+                pc = Asn1Sequence.GetInstance(
 					PkixCertPathValidatorUtilities.GetExtensionValue(cert, X509Extensions.PolicyConstraints));
 			}
 			catch (Exception e)
@@ -1710,7 +1709,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkix
 			NameConstraints nc = null;
 			try
 			{
-				Asn1Sequence ncSeq = DerSequence.GetInstance(
+                Asn1Sequence ncSeq = Asn1Sequence.GetInstance(
 					PkixCertPathValidatorUtilities.GetExtensionValue(cert, X509Extensions.NameConstraints));
 				if (ncSeq != null)
 				{
@@ -2044,7 +2043,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkix
 			Asn1Sequence pc = null;
 			try
 			{
-				pc = DerSequence.GetInstance(
+                pc = Asn1Sequence.GetInstance(
 					PkixCertPathValidatorUtilities.GetExtensionValue(cert, X509Extensions.PolicyConstraints));
 			}
 			catch (Exception e)
@@ -2417,7 +2416,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Pkix
 			Asn1Sequence certPolicies = null;
 			try
 			{
-				certPolicies = DerSequence.GetInstance(
+                certPolicies = Asn1Sequence.GetInstance(
 					PkixCertPathValidatorUtilities.GetExtensionValue(cert, X509Extensions.CertificatePolicies));
 			}
 			catch (Exception e)

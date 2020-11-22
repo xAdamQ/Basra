@@ -6,11 +6,13 @@ using BestHTTP.Extensions;
 
 #if !BESTHTTP_DISABLE_CACHING
 using BestHTTP.Caching;
-using BestHTTP.Logger;
 #endif
 #if !BESTHTTP_DISABLE_COOKIES
 using BestHTTP.Cookies;
 #endif
+
+using BestHTTP.Logger;
+using BestHTTP.Timings;
 
 namespace BestHTTP.Connections
 {
@@ -37,8 +39,8 @@ namespace BestHTTP.Connections
             if (parser.TryGet("timeout", out value) && value.HasValue)
             {
                 int intValue = 0;
-                if (int.TryParse(value.Value, out intValue))
-                    this.TimeOut = TimeSpan.FromSeconds(intValue);
+                if (int.TryParse(value.Value, out intValue) && intValue > 1)
+                    this.TimeOut = TimeSpan.FromSeconds(intValue - 1);
                 else
                     this.TimeOut = TimeSpan.MaxValue;
             }
@@ -122,9 +124,6 @@ namespace BestHTTP.Connections
                                 // Set the new Uri, the CurrentUri will return this while the IsRedirected property is true
                                 request.RedirectUri = redirectUri;
 
-                                // Discard the redirect response, we don't need it any more
-                                request.Response = null;
-
                                 request.IsRedirected = true;
 
                                 resendRequest = true;
@@ -142,6 +141,7 @@ namespace BestHTTP.Connections
                         
                         if (ConnectionHelper.LoadFromCache(context, request, loggingContext1, loggingContext2, loggingContext3))
                         {
+                            request.Timing.Add(TimingEventNames.Loading_From_Cache);
                             HTTPManager.Logger.Verbose("HTTPConnection", string.Format("[{0}] - HandleResponse - Loaded from cache successfully!", context), loggingContext1, loggingContext2, loggingContext3);
 
                             // Update any caching value
@@ -185,6 +185,19 @@ namespace BestHTTP.Connections
                             keepAlive.Parse(keepAliveheaderValues);
                         }
                     }
+                }
+
+                // Null out the response here instead of the redirected cases (301, 302, 307, 308)
+                //  because response might have a Connection: Close header that we would miss to process.
+                // If Connection: Close is present, the server is closing the connection and we would
+                // reuse that closed connection.
+                if (resendRequest)
+                {
+                    // Discard the redirect response, we don't need it any more
+                    request.Response = null;
+
+                    if (proposedConnectionState == HTTPConnectionStates.Closed)
+                        proposedConnectionState = HTTPConnectionStates.ClosedResendRequest;
                 }
             }
         }
@@ -285,6 +298,7 @@ namespace BestHTTP.Connections
                     HTTPCacheService.Store(request.Uri, request.MethodType, request.Response);
                 else
                     HTTPCacheService.Store(request.CurrentUri, request.MethodType, request.Response);
+                request.Timing.Add(TimingEventNames.Writing_To_Cache);
 
                 PluginEventHelper.EnqueuePluginEvent(new PluginEventInfo(PluginEvents.SaveCacheLibrary));
             }

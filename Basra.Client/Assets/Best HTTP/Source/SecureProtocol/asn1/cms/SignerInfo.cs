@@ -65,7 +65,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Cms
             this.unauthenticatedAttributes = Asn1Set.GetInstance(unauthenticatedAttributes);
         }
 
-        [Obsolete("Use 'GetInstance' instead")]
+
         public SignerInfo(
             Asn1Sequence seq)
         {

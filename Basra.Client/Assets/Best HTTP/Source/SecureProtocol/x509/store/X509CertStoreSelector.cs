@@ -111,7 +111,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.X509.Store
 			set { issuer = value; }
 		}
 
-		[Obsolete("Avoid working with X509Name objects in string form")]
+
 		public string IssuerAsString
 		{
 			get { return issuer != null ? issuer.ToString() : null; }
@@ -150,7 +150,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.X509.Store
 			set { subject = value; }
 		}
 
-        [Obsolete("Avoid working with X509Name objects in string form")]
+
         public string SubjectAsString
 		{
 			get { return subject != null ? subject.ToString() : null; }

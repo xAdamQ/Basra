@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace BestHTTP.Connections
@@ -31,7 +31,7 @@ namespace BestHTTP.Connections
 #if !BESTHTTP_DISABLE_WEBSOCKET && (!UNITY_WEBGL || UNITY_EDITOR)
                 case SupportedProtocols.WebSocket: return new WebSocket.WebSocketResponse(request, stream, isStreamed, isFromCache);
 #endif
-                default: return new HTTPResponse(request, new Extensions.ReadOnlyBufferedStream(stream), isStreamed, isFromCache);
+                default: return new HTTPResponse(request, stream, isStreamed, isFromCache);
             }
         }
 

@@ -96,7 +96,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Digests
 
             if (finalBits >= 8)
             {
-                Absorb(new byte[]{ (byte)finalInput }, 0, 1);
+                Absorb((byte)finalInput);
                 finalBits -= 8;
                 finalInput >>= 8;
             }

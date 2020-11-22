@@ -4,12 +4,13 @@ using System;
 using System.Collections;
 using System.IO;
 
+using BestHTTP.Logger;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 {
     public abstract class AbstractTlsClient
-        :   AbstractTlsPeer, TlsClient
+        : AbstractTlsPeer, TlsClient
     {
         protected TlsCipherFactory mCipherFactory;
 
@@ -25,6 +26,13 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
         public System.Collections.Generic.List<string> HostNames { get; set; }
         public System.Collections.Generic.List<string> ClientSupportedProtocols { get; set; }
         public string ServerSupportedProtocol { get; set; }
+
+        public bool ExpectEmptyCertificateStatusExtension { get { return this.mExpectEmptyCertificateStatus; } }
+        protected bool mExpectEmptyCertificateStatus = false;
+
+        public CertificateStatus CertificateStatus { get; set; }
+
+        public LoggingContext LoggingContext { get; set; }
 
         public AbstractTlsClient()
             :   this(new DefaultTlsCipherFactory())
@@ -169,6 +177,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             {
                 TlsExtensionsUtilities.AddALPNExtension(clientExtensions, this.ClientSupportedProtocols);
             }
+
+            if (TlsUtilities.HasBlockCipherSuite(GetCipherSuites()))
+                TlsExtensionsUtilities.AddEncryptThenMacExtension(clientExtensions);
 
             return clientExtensions;
         }

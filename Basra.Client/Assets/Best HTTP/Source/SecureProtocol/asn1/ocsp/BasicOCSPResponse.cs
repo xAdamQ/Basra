@@ -64,7 +64,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Ocsp
             }
         }
 
-		[Obsolete("Use TbsResponseData property instead")]
+
 		public ResponseData GetTbsResponseData()
         {
             return tbsResponseData;
@@ -75,7 +75,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Ocsp
 			get { return tbsResponseData; }
 		}
 
-		[Obsolete("Use SignatureAlgorithm property instead")]
+
 		public AlgorithmIdentifier GetSignatureAlgorithm()
         {
             return signatureAlgorithm;
@@ -86,7 +86,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Ocsp
 			get { return signatureAlgorithm; }
 		}
 
-		[Obsolete("Use Signature property instead")]
+
 		public DerBitString GetSignature()
         {
             return signature;
@@ -102,7 +102,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Ocsp
             return signature.GetOctets();
         }
 
-        [Obsolete("Use Certs property instead")]
+
 		public Asn1Sequence GetCerts()
         {
             return certs;

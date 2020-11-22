@@ -72,9 +72,7 @@ var Lib_BEST_HTTP_WebGL_ES_Bridge =
 
 	ES_Create: function(urlPtr, withCredentials, onOpen, onMessage, onError)
 	{
-		var url = /*encodeURI*/(Pointer_stringify(urlPtr))
-					.replace(/\+/g, '%2B')
-					.replace(/%252[fF]/ig, '%2F');
+		var url = new URL(Pointer_stringify(urlPtr)); ///*encodeURI*/(Pointer_stringify(urlPtr)).replace(/\+/g, '%2B').replace(/%252[fF]/ig, '%2F');
 
 		var event = {
 			onError: onError

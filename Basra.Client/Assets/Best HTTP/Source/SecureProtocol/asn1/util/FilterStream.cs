@@ -7,10 +7,10 @@ using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Utilities
 {
-    [Obsolete("Use BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.IO.FilterStream")]
+
     public class FilterStream : Stream
     {
-        [Obsolete("Use BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.IO.FilterStream")]
+
         public FilterStream(Stream s)
         {
             this.s = s;

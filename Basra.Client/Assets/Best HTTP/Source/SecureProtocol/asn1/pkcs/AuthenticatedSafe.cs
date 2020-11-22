@@ -1,5 +1,7 @@
 #if !BESTHTTP_DISABLE_ALTERNATE_SSL && (!UNITY_WEBGL || UNITY_EDITOR)
 #pragma warning disable
+using System;
+
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Pkcs
@@ -7,33 +9,59 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Pkcs
     public class AuthenticatedSafe
         : Asn1Encodable
     {
+        private static ContentInfo[] Copy(ContentInfo[] info)
+        {
+            return (ContentInfo[])info.Clone();
+        }
+
+        public static AuthenticatedSafe GetInstance(object obj)
+        {
+            if (obj is AuthenticatedSafe)
+                return (AuthenticatedSafe)obj;
+            if (obj == null)
+                return null;
+            return new AuthenticatedSafe(Asn1Sequence.GetInstance(obj));
+        }
+
         private readonly ContentInfo[] info;
+        private readonly bool isBer;
+
 
 		public AuthenticatedSafe(
             Asn1Sequence seq)
         {
             info = new ContentInfo[seq.Count];
 
-			for (int i = 0; i != info.Length; i++)
+            for (int i = 0; i != info.Length; i++)
             {
                 info[i] = ContentInfo.GetInstance(seq[i]);
             }
+
+            isBer = seq is BerSequence;
         }
 
 		public AuthenticatedSafe(
             ContentInfo[] info)
         {
-            this.info = (ContentInfo[]) info.Clone();
+            this.info = Copy(info);
+            this.isBer = true;
         }
 
 		public ContentInfo[] GetContentInfo()
         {
-            return (ContentInfo[]) info.Clone();
+            return Copy(info);
         }
 
-		public override Asn1Object ToAsn1Object()
+        public override Asn1Object ToAsn1Object()
         {
-			return new BerSequence(info);
+            if (isBer)
+            {
+                return new BerSequence(info);
+            }
+
+            // TODO bc-java uses DL sequence
+            //return new DLSequence(info);
+            return new DerSequence(info);
         }
     }
 }

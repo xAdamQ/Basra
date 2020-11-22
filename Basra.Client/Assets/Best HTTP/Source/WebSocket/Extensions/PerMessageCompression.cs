@@ -1,4 +1,4 @@
-﻿#if !BESTHTTP_DISABLE_WEBSOCKET && (!UNITY_WEBGL || UNITY_EDITOR)
+#if !BESTHTTP_DISABLE_WEBSOCKET && (!UNITY_WEBGL || UNITY_EDITOR)
 
 using System;
 using BestHTTP.Extensions;
@@ -84,7 +84,7 @@ namespace BestHTTP.WebSocket.Extensions
         {
             this.Level = level;
             this.ClientNoContextTakeover = clientNoContextTakeover;
-            this.ServerNoContextTakeover = ServerNoContextTakeover;
+            this.ServerNoContextTakeover = serverNoContextTakeover;
             this.ClientMaxWindowBits = desiredClientMaxWindowBits;
             this.ServerMaxWindowBits = desiredServerMaxWindowBits;
             this.MinimumDataLegthToCompress = minDatalengthToCompress;

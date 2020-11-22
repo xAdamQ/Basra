@@ -124,7 +124,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.X509
 		/// This can be either a name or an OID, names are treated as case insensitive.
 		/// </summary>
 		/// <param name="signatureAlgorithm">string representation of the algorithm name</param>
-		[Obsolete("Not needed if Generate used with an ISignatureFactory")]
+
 		public void SetSignatureAlgorithm(
 			string signatureAlgorithm)
 		{
@@ -149,7 +149,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.X509
 		/// </summary>
 		/// <param name="privateKey">The private key of the issuer used to sign this certificate.</param>
 		/// <returns>An X509Certificate.</returns>
-		[Obsolete("Use Generate with an ISignatureFactory")]
+
 		public X509Certificate Generate(
 			AsymmetricKeyParameter privateKey)
 		{
@@ -162,7 +162,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.X509
         /// <param name="privateKey">The private key of the issuer used to sign this certificate.</param>
         /// <param name="random">The Secure Random you want to use.</param>
         /// <returns>An X509Certificate.</returns>
-		[Obsolete("Use Generate with an ISignatureFactory")]
+
 		public X509Certificate Generate(
 			AsymmetricKeyParameter	privateKey,
 			SecureRandom			random)

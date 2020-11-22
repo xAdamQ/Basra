@@ -18,7 +18,7 @@ namespace BestHTTP
     using BestHTTP.PlatformSupport.Memory;
     using BestHTTP.Connections;
     using BestHTTP.Logger;
-
+    using BestHTTP.Timings;
 
     /// <summary>
     /// Possible logical states of a HTTTPRequest object.
@@ -29,6 +29,11 @@ namespace BestHTTP
         /// Initial status of a request. No callback will be called with this status.
         /// </summary>
         Initial,
+
+        /// <summary>
+        /// The request queued for processing.
+        /// </summary>
+        Queued,
 
         /// <summary>
         /// Processing of the request started. In this state the client will send the request, and parse the response. No callback will be called with this status.
@@ -466,7 +471,15 @@ namespace BestHTTP
         }
         private OnBeforeHeaderSendDelegate _onBeforeHeaderSend;
 
+        /// <summary>
+        /// Logging context of the request.
+        /// </summary>
         public LoggingContext Context { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public TimingCollector Timing { get; private set; }
 
 #if UNITY_WEBGL
         /// <summary>
@@ -667,6 +680,7 @@ namespace BestHTTP
 #endif
 
             this.Context = new LoggingContext(this);
+            this.Timing = new TimingCollector();
         }
 
         #endregion
@@ -935,6 +949,14 @@ namespace BestHTTP
 
             if (!HasHeader("Connection"))
                 AddHeader("Connection", IsKeepAlive ? "Keep-Alive, TE" : "Close, TE");
+
+            if (IsKeepAlive && !HasHeader("Keep-Alive"))
+            {
+                // Send the server a slightly larger value to make sure it's not going to close sooner than the client
+                int seconds = (int)Math.Ceiling(HTTPManager.MaxConnectionIdleTime.TotalSeconds + 1);
+
+                AddHeader("Keep-Alive", "timeout=" + seconds);
+            }
 
             if (!HasHeader("TE"))
                 AddHeader("TE", "identity");
@@ -1206,7 +1228,7 @@ namespace BestHTTP
                 if (uploadStream == null)
                 {
                     // Make stream from the data. A BufferPoolMemoryStream could be used here,
-                    // but because data comes from outside, we don't have control on it's lifetime
+                    // but because data comes from outside, we don't have control on its lifetime
                     // and might be gets reused without our knowledge.
                     uploadStream = new MemoryStream(data, 0, data.Length);
 
@@ -1230,135 +1252,127 @@ namespace BestHTTP
         {
             // Under WEBGL EnumerateHeaders and GetEntityBody are used instead of this function.
 #if !UNITY_WEBGL || UNITY_EDITOR
-            try
-            {
-                string requestPathAndQuery =
-                #if !BESTHTTP_DISABLE_PROXY
+            string requestPathAndQuery =
+#if !BESTHTTP_DISABLE_PROXY
                     HasProxy ? this.Proxy.GetRequestPath(CurrentUri) :
-                #endif
+#endif
                     CurrentUri.GetRequestPathAndQueryURL();
 
-                string requestLine = string.Format("{0} {1} HTTP/1.1", MethodNames[(byte)MethodType], requestPathAndQuery);
+            string requestLine = string.Format("{0} {1} HTTP/1.1", MethodNames[(byte)MethodType], requestPathAndQuery);
 
-                if (HTTPManager.Logger.Level <= Logger.Loglevels.Information)
-                    HTTPManager.Logger.Information("HTTPRequest", string.Format("Sending request: '{0}'", requestLine), this.Context);
+            if (HTTPManager.Logger.Level <= Logger.Loglevels.Information)
+                HTTPManager.Logger.Information("HTTPRequest", string.Format("Sending request: '{0}'", requestLine), this.Context);
 
-                // Create a buffer stream that will not close 'stream' when disposed or closed.
-                // buffersize should be larger than UploadChunkSize as it might be used for uploading user data and
-                //  it should have enough room for UploadChunkSize data and additional chunk information.
-                using (WriteOnlyBufferedStream bufferStream = new WriteOnlyBufferedStream(stream, (int)(UploadChunkSize * 1.5f)))
+            // Create a buffer stream that will not close 'stream' when disposed or closed.
+            // buffersize should be larger than UploadChunkSize as it might be used for uploading user data and
+            //  it should have enough room for UploadChunkSize data and additional chunk information.
+            using (WriteOnlyBufferedStream bufferStream = new WriteOnlyBufferedStream(stream, (int)(UploadChunkSize * 1.5f)))
+            {
+                byte[] requestLineBytes = requestLine.GetASCIIBytes();
+                bufferStream.WriteArray(requestLineBytes);
+                bufferStream.WriteArray(EOL);
+
+                BufferPool.Release(requestLineBytes);
+
+                // Write headers to the buffer
+                SendHeaders(bufferStream);
+                bufferStream.WriteArray(EOL);
+
+                // Send remaining data to the wire
+                bufferStream.Flush();
+
+                byte[] data = RawData;
+
+                // We are sending forms? Then convert the form to a byte array
+                if (data == null && FormImpl != null)
+                    data = FormImpl.GetData();
+
+                if (data != null || UploadStream != null)
                 {
-                    byte[] requestLineBytes = requestLine.GetASCIIBytes();
-                    bufferStream.WriteArray(requestLineBytes);
-                    bufferStream.WriteArray(EOL);
+                    // Make a new reference, as we will check the UploadStream property in the HTTPManager
+                    Stream uploadStream = UploadStream;
 
-                    BufferPool.Release(requestLineBytes);
+                    long UploadLength = 0;
 
-                    // Write headers to the buffer
-                    SendHeaders(bufferStream);
-                    bufferStream.WriteArray(EOL);
-
-                    // Send remaining data to the wire
-                    bufferStream.Flush();
-
-                    byte[] data = RawData;
-
-                    // We are sending forms? Then convert the form to a byte array
-                    if (data == null && FormImpl != null)
-                        data = FormImpl.GetData();
-
-                    if (data != null || UploadStream != null)
+                    if (uploadStream == null)
                     {
-                        // Make a new reference, as we will check the UploadStream property in the HTTPManager
-                        Stream uploadStream = UploadStream;
+                        // Make stream from the data. A BufferPoolMemoryStream could be used here,
+                        // but because data comes from outside, we don't have control on it's lifetime
+                        // and might be gets reused without our knowledge.
+                        uploadStream = new MemoryStream(data, 0, data.Length);
 
-                        long UploadLength = 0;
-
-                        if (uploadStream == null)
-                        {
-                            // Make stream from the data. A BufferPoolMemoryStream could be used here,
-                            // but because data comes from outside, we don't have control on it's lifetime
-                            // and might be gets reused without our knowledge.
-                            uploadStream = new MemoryStream(data, 0, data.Length);
-
-                            // Initialize progress report variable
-                            UploadLength = data.Length;
-                        }
-                        else
-                            UploadLength = UseUploadStreamLength ? UploadStreamLength : -1;
-
-                        // Initialize the progress report variables
-                        long Uploaded = 0;
-
-                        // Upload buffer. First we will read the data into this buffer from the UploadStream, then write this buffer to our outStream
-                        byte[] buffer = BufferPool.Get(UploadChunkSize, true);
-
-                        // How many bytes was read from the UploadStream
-                        int count = 0;
-                        while ((count = uploadStream.Read(buffer, 0, buffer.Length)) > 0)
-                        {
-                            // If we don't know the size, send as chunked
-                            if (!UseUploadStreamLength)
-                            {
-                                byte[] countBytes = count.ToString("X").GetASCIIBytes();
-                                bufferStream.WriteArray(countBytes);
-                                bufferStream.WriteArray(EOL);
-
-                                BufferPool.Release(countBytes);
-                            }
-
-                            // write out the buffer to the wire
-                            bufferStream.Write(buffer, 0, count);
-
-                            // chunk trailing EOL
-                            if (!UseUploadStreamLength)
-                                bufferStream.WriteArray(EOL);
-
-                            // update how many bytes are uploaded
-                            Uploaded += count;
-
-                            // Write to the wire
-                            bufferStream.Flush();
-
-                            if (this.OnUploadProgress != null)
-                                RequestEventHelper.EnqueueRequestEvent(new RequestEventInfo(this, RequestEvents.UploadProgress, Uploaded, UploadLength));
-
-                            if (this.IsCancellationRequested)
-                                return;
-                        }
-
-                        BufferPool.Release(buffer);
-
-                        // All data from the stream are sent, write the 'end' chunk if necessary
-                        if (!UseUploadStreamLength)
-                        {
-                            byte[] noMoreChunkBytes = BufferPool.Get(1, true);
-                            noMoreChunkBytes[0] = (byte)'0';
-                            bufferStream.Write(noMoreChunkBytes, 0, 1);
-                            bufferStream.WriteArray(EOL);
-                            bufferStream.WriteArray(EOL);
-
-                            BufferPool.Release(noMoreChunkBytes);
-                        }
-
-                        // Make sure all remaining data will be on the wire
-                        bufferStream.Flush();
-
-                        // Dispose the MemoryStream
-                        if (UploadStream == null && uploadStream != null)
-                            uploadStream.Dispose();
+                        // Initialize progress report variable
+                        UploadLength = data.Length;
                     }
                     else
-                        bufferStream.Flush();
-                } // bufferStream.Dispose
+                        UploadLength = UseUploadStreamLength ? UploadStreamLength : -1;
 
-                HTTPManager.Logger.Information("HTTPRequest", "'" + requestLine + "' sent out", this.Context);
-            }
-            finally
-            {
-                if (UploadStream != null && DisposeUploadStream)
-                    UploadStream.Dispose();
-            }
+                    // Initialize the progress report variables
+                    long Uploaded = 0;
+
+                    // Upload buffer. First we will read the data into this buffer from the UploadStream, then write this buffer to our outStream
+                    byte[] buffer = BufferPool.Get(UploadChunkSize, true);
+
+                    // How many bytes was read from the UploadStream
+                    int count = 0;
+                    while ((count = uploadStream.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        // If we don't know the size, send as chunked
+                        if (!UseUploadStreamLength)
+                        {
+                            byte[] countBytes = count.ToString("X").GetASCIIBytes();
+                            bufferStream.WriteArray(countBytes);
+                            bufferStream.WriteArray(EOL);
+
+                            BufferPool.Release(countBytes);
+                        }
+
+                        // write out the buffer to the wire
+                        bufferStream.Write(buffer, 0, count);
+
+                        // chunk trailing EOL
+                        if (!UseUploadStreamLength)
+                            bufferStream.WriteArray(EOL);
+
+                        // update how many bytes are uploaded
+                        Uploaded += count;
+
+                        // Write to the wire
+                        bufferStream.Flush();
+
+                        if (this.OnUploadProgress != null)
+                            RequestEventHelper.EnqueueRequestEvent(new RequestEventInfo(this, RequestEvents.UploadProgress, Uploaded, UploadLength));
+
+                        if (this.IsCancellationRequested)
+                            return;
+                    }
+
+                    BufferPool.Release(buffer);
+
+                    // All data from the stream are sent, write the 'end' chunk if necessary
+                    if (!UseUploadStreamLength)
+                    {
+                        byte[] noMoreChunkBytes = BufferPool.Get(1, true);
+                        noMoreChunkBytes[0] = (byte)'0';
+                        bufferStream.Write(noMoreChunkBytes, 0, 1);
+                        bufferStream.WriteArray(EOL);
+                        bufferStream.WriteArray(EOL);
+
+                        BufferPool.Release(noMoreChunkBytes);
+                    }
+
+                    // Make sure all remaining data will be on the wire
+                    bufferStream.Flush();
+
+                    // Dispose the MemoryStream
+                    if (UploadStream == null && uploadStream != null)
+                        uploadStream.Dispose();
+                }
+                else
+                    bufferStream.Flush();
+            } // bufferStream.Dispose
+
+            HTTPManager.Logger.Information("HTTPRequest", "'" + requestLine + "' sent out", this.Context);
 #endif
         }
 
@@ -1491,6 +1505,12 @@ namespace BestHTTP
 
         public void Dispose()
         {
+            if (UploadStream != null && DisposeUploadStream)
+            {
+                UploadStream.Dispose();
+                UploadStream = null;
+            }
+
             if (Response != null)
                 Response.Dispose();
         }

@@ -15,7 +15,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
     {
         protected TlsSignerCredentials mServerCredentials = null;
 
-        [Obsolete("Use constructor that takes a TlsDHVerifier")]
+
         public TlsDheKeyExchange(int keyExchange, IList supportedSignatureAlgorithms, DHParameters dhParameters)
             :   this(keyExchange, supportedSignatureAlgorithms, new DefaultTlsDHVerifier(), dhParameters)
         {

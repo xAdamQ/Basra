@@ -213,7 +213,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1
 			}
         }
 
-		[Obsolete("Use 'AdjustedTimeString' property instead")]
+
 		public string AdjustedTime
 		{
 			get { return AdjustedTimeString; }

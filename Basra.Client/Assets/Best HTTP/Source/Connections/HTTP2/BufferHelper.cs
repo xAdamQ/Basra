@@ -1,4 +1,4 @@
-﻿#if (!UNITY_WEBGL || UNITY_EDITOR) && !BESTHTTP_DISABLE_ALTERNATE_SSL && !BESTHTTP_DISABLE_HTTP2
+#if (!UNITY_WEBGL || UNITY_EDITOR) && !BESTHTTP_DISABLE_ALTERNATE_SSL && !BESTHTTP_DISABLE_HTTP2
 
 using System;
 
@@ -8,42 +8,42 @@ namespace BestHTTP.Connections.HTTP2
     {
         public static void SetUInt16(byte[] buffer, int offset, UInt16 value)
         {
-            buffer[offset + 1] = (byte)(value & 0xFF);
-            buffer[offset + 0] = (byte)((value & 0xFF00) >> 8);
+            buffer[offset + 1] = (byte)(value);
+            buffer[offset + 0] = (byte)(value >> 8);
         }
 
         public static void SetUInt24(byte[] buffer, int offset, UInt32 value)
         {
-            buffer[offset + 2] = (byte)(value & 0xFF);
-            buffer[offset + 1] = (byte)((value & 0xFF00) >> 8);
-            buffer[offset + 0] = (byte)((value & 0xFF0000) >> 16);
+            buffer[offset + 2] = (byte)(value);
+            buffer[offset + 1] = (byte)(value >> 8);
+            buffer[offset + 0] = (byte)(value >> 16);
         }
 
         public static void SetUInt31(byte[] buffer, int offset, UInt32 value)
         {
-            buffer[offset + 3] = (byte)(value & 0xFF);
-            buffer[offset + 2] = (byte)((value & 0xFF00) >> 8);
-            buffer[offset + 1] = (byte)((value & 0xFF0000) >> 16);
-            buffer[offset + 0] = (byte)(((value & 0xFF000000) >> 24) & 0x7F);
+            buffer[offset + 3] = (byte)(value);
+            buffer[offset + 2] = (byte)(value >> 8);
+            buffer[offset + 1] = (byte)(value >> 16);
+            buffer[offset + 0] = (byte)((value >> 24) & 0x7F);
         }
 
         public static void SetUInt32(byte[] buffer, int offset, UInt32 value)
         {
-            buffer[offset + 3] = (byte)(value & 0xFF);
-            buffer[offset + 2] = (byte)((value & 0xFF00) >> 8);
-            buffer[offset + 1] = (byte)((value & 0xFF0000) >> 16);
-            buffer[offset + 0] = (byte)((value & 0xFF000000) >> 24);
+            buffer[offset + 3] = (byte)(value);
+            buffer[offset + 2] = (byte)(value >> 8);
+            buffer[offset + 1] = (byte)(value >> 16);
+            buffer[offset + 0] = (byte)(value >> 24);
         }
 
         public static void SetLong(byte[] buffer, int offset, long value)
         {
-            buffer[offset + 7] = (byte)(value & 0xFF);
-            buffer[offset + 6] = (byte)((value >> 8) & 0xFF);
-            buffer[offset + 5] = (byte)((value >> 16) & 0xFF);
-            buffer[offset + 4] = (byte)((value >> 24) & 0xFF);
-            buffer[offset + 3] = (byte)((value >> 32) & 0xFF);
-            buffer[offset + 2] = (byte)((value >> 40) & 0xFF);
-            buffer[offset + 1] = (byte)((value >> 48) & 0xFF);
+            buffer[offset + 7] = (byte)(value);
+            buffer[offset + 6] = (byte)(value >> 8);
+            buffer[offset + 5] = (byte)(value >> 16);
+            buffer[offset + 4] = (byte)(value >> 24);
+            buffer[offset + 3] = (byte)(value >> 32);
+            buffer[offset + 2] = (byte)(value >> 40);
+            buffer[offset + 1] = (byte)(value >> 48);
             buffer[offset + 0] = (byte)(value >> 56);
         }
 

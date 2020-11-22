@@ -49,7 +49,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X9
             }
         }
 
-        [Obsolete("Use constructor including order/cofactor")]
+
         public X9Curve(
             X9FieldID		fieldID,
             Asn1Sequence	seq)

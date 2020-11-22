@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Basra.Server.Structure;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using Basra.Server.Extensions;
+using System.Linq;
 
 //todo learn about thread safety
 namespace Basra.Server
@@ -41,7 +41,7 @@ namespace Basra.Server
 
             // Context.GetHttpContext().RequestServices()
 
-            ConnectedUsersIdentities.Add(_masterContext.Users.FirstOrDefault(u => u.Id == Context.UserIdentifier));
+            ConnectedUsersIdentities.Add(_masterContext.Users.First(u => u.Id == Context.UserIdentifier));
             var user = new User
             {
                 Id = Context.UserIdentifier,
@@ -93,6 +93,10 @@ namespace Basra.Server
         {
             await PendingRoom.AskForRoom(this, roomGenre, roomPlayerCount);
 
+        }
+        public void Ready()
+        {
+            GetCurrentUser().Ready();
         }
         #endregion
 

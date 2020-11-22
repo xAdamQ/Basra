@@ -25,7 +25,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Sec
             return new ECPrivateKeyStructure(Asn1Sequence.GetInstance(obj));
         }
 
-        [Obsolete("Use 'GetInstance' instead")]
+
         public ECPrivateKeyStructure(
             Asn1Sequence seq)
         {
@@ -35,7 +35,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Sec
             this.seq = seq;
         }
 
-        [Obsolete("Use constructor which takes 'orderBitLength' instead, to guarantee correct encoding")]
+
         public ECPrivateKeyStructure(
             BigInteger key)
         {
@@ -54,7 +54,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Sec
         {
         }
 
-        [Obsolete("Use constructor which takes 'orderBitLength' instead, to guarantee correct encoding")]
+
         public ECPrivateKeyStructure(
             BigInteger		key,
             Asn1Encodable	parameters)
@@ -62,7 +62,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Sec
         {
         }
 
-        [Obsolete("Use constructor which takes 'orderBitLength' instead, to guarantee correct encoding")]
+
         public ECPrivateKeyStructure(
             BigInteger		key,
             DerBitString	publicKey,

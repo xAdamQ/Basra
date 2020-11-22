@@ -7,8 +7,8 @@ using System.Security.Cryptography;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
-using System.Linq;
 using Basra.Server.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace Basra.Server.Services
 {
@@ -79,18 +79,18 @@ namespace Basra.Server.Services
         /// <summary>
         /// check if the user exist and make a new one if note
         /// </summary>
-        public async Task<bool> SignInAsync(string fbUserId)
+        public async Task<BasraIdentityUser> SignInAsync(string fbUserId)
         {
             //todo if (_userManager.FindByIdAsync(fbUserId) == null)
-            if (_masterContext.Users.Any(u => u.FbId == fbUserId))
+            // _userManager.FindByLoginAsync()
+            // if (_masterContext.Users.Any(u => u.FbId == fbUserId))
+            var user = await _masterContext.Users.FirstAsync(u => u.FbId == fbUserId);
+            if (user == null)
             {
-                var signUpSucceeded = await SignUpAsync(fbUserId);
-                return signUpSucceeded;
+                user = await SignUpAsync(fbUserId);
             }
-            else
-            {
-                return true;
-            }
+
+            return user;
 
             // todo 
             // await _signInManager.SignInWithClaimsAsync()
@@ -98,7 +98,7 @@ namespace Basra.Server.Services
             //issues a cookie
         }
 
-        private async Task<bool> SignUpAsync(string fbUserId)
+        private async Task<BasraIdentityUser> SignUpAsync(string fbUserId)
         {
             var user = new BasraIdentityUser
             {
@@ -108,7 +108,8 @@ namespace Basra.Server.Services
 
             var result = await _userManager.CreateAsync(user);
 
-            return result.Succeeded;
+            //todo the result maybe failure
+            return user;
         }
 
     }

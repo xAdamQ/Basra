@@ -66,7 +66,7 @@ namespace BestHTTP.WebSocket
         /// <summary>
         /// Maximum size of a fragment's payload data. Its default value is 32767.
         /// </summary>
-        public UInt16 MaxFragmentSize { get; private set; }
+        public uint MaxFragmentSize { get; set; }
 
         /// <summary>
         /// Length of unsent, buffered up data in bytes.
@@ -369,125 +369,122 @@ namespace BestHTTP.WebSocket
         {
             try
             {
-                using (var bufferedStream = new ReadOnlyBufferedStream(this.Stream))
+                while (!closed)
                 {
-                    while (!closed)
+                    try
                     {
-                        try
+                        WebSocketFrameReader frame = new WebSocketFrameReader();
+                        frame.Read(this.Stream);
+
+                        lastMessage = DateTime.UtcNow;
+
+                        // A server MUST NOT mask any frames that it sends to the client.  A client MUST close a connection if it detects a masked frame.
+                        // In this case, it MAY use the status code 1002 (protocol error)
+                        // (These rules might be relaxed in a future specification.)
+                        if (frame.HasMask)
                         {
-                            WebSocketFrameReader frame = new WebSocketFrameReader();
-                            frame.Read(bufferedStream);
+                            HTTPManager.Logger.Warning("WebSocketResponse", "Protocol Error: masked frame received from server!", this.Context);
+                            Close(1002, "Protocol Error: masked frame received from server!");
+                            continue;
+                        }
 
-                            lastMessage = DateTime.UtcNow;
+                        if (!frame.IsFinal)
+                        {
+                            if (OnIncompleteFrame == null)
+                                IncompleteFrames.Add(frame);
+                            else
+                                CompletedFrames.Enqueue(frame);
+                            continue;
+                        }
 
-                            // A server MUST NOT mask any frames that it sends to the client.  A client MUST close a connection if it detects a masked frame.
-                            // In this case, it MAY use the status code 1002 (protocol error)
-                            // (These rules might be relaxed in a future specification.)
-                            if (frame.HasMask)
-                            {
-                                HTTPManager.Logger.Warning("WebSocketResponse", "Protocol Error: masked frame received from server!", this.Context);
-                                Close(1002, "Protocol Error: masked frame received from server!");
-                                continue;
-                            }
-
-                            if (!frame.IsFinal)
-                            {
+                        switch (frame.Type)
+                        {
+                            // For a complete documentation and rules on fragmentation see http://tools.ietf.org/html/rfc6455#section-5.4
+                            // A fragmented Frame's last fragment's opcode is 0 (Continuation) and the FIN bit is set to 1.
+                            case WebSocketFrameTypes.Continuation:
+                                // Do an assemble pass only if OnFragment is not set. Otherwise put it in the CompletedFrames, we will handle it in the HandleEvent phase.
                                 if (OnIncompleteFrame == null)
-                                    IncompleteFrames.Add(frame);
+                                {
+                                    frame.Assemble(IncompleteFrames);
+
+                                    // Remove all incomplete frames
+                                    IncompleteFrames.Clear();
+
+                                    // Control frames themselves MUST NOT be fragmented. So, its a normal text or binary frame. Go, handle it as usual.
+                                    goto case WebSocketFrameTypes.Binary;
+                                }
                                 else
-                                    CompletedFrames.Enqueue(frame);
-                                continue;
-                            }
-
-                            switch (frame.Type)
-                            {
-                                // For a complete documentation and rules on fragmentation see http://tools.ietf.org/html/rfc6455#section-5.4
-                                // A fragmented Frame's last fragment's opcode is 0 (Continuation) and the FIN bit is set to 1.
-                                case WebSocketFrameTypes.Continuation:
-                                    // Do an assemble pass only if OnFragment is not set. Otherwise put it in the CompletedFrames, we will handle it in the HandleEvent phase.
-                                    if (OnIncompleteFrame == null)
-                                    {
-                                        frame.Assemble(IncompleteFrames);
-
-                                        // Remove all incomplete frames
-                                        IncompleteFrames.Clear();
-
-                                        // Control frames themselves MUST NOT be fragmented. So, its a normal text or binary frame. Go, handle it as usual.
-                                        goto case WebSocketFrameTypes.Binary;
-                                    }
-                                    else
-                                    {
-                                        CompletedFrames.Enqueue(frame);
-                                        ProtocolEventHelper.EnqueueProtocolEvent(new ProtocolEventInfo(this));
-                                    }
-                                    break;
-
-                                case WebSocketFrameTypes.Text:
-                                case WebSocketFrameTypes.Binary:
-                                    frame.DecodeWithExtensions(WebSocket);
+                                {
                                     CompletedFrames.Enqueue(frame);
                                     ProtocolEventHelper.EnqueueProtocolEvent(new ProtocolEventInfo(this));
-                                    break;
+                                }
+                                break;
 
-                                // Upon receipt of a Ping frame, an endpoint MUST send a Pong frame in response, unless it already received a Close frame.
-                                case WebSocketFrameTypes.Ping:
-                                    if (!closeSent && !closed)
-                                        Send(new WebSocketFrame(this.WebSocket, WebSocketFrameTypes.Pong, frame.Data));
-                                    break;
+                            case WebSocketFrameTypes.Text:
+                            case WebSocketFrameTypes.Binary:
+                                frame.DecodeWithExtensions(WebSocket);
+                                CompletedFrames.Enqueue(frame);
+                                ProtocolEventHelper.EnqueueProtocolEvent(new ProtocolEventInfo(this));
+                                break;
 
-                                case WebSocketFrameTypes.Pong:
-                                    try
-                                    {
-                                        // Get the ticks from the frame's payload
-                                        long ticksSent = BitConverter.ToInt64(frame.Data, 0);
+                            // Upon receipt of a Ping frame, an endpoint MUST send a Pong frame in response, unless it already received a Close frame.
+                            case WebSocketFrameTypes.Ping:
+                                if (!closeSent && !closed)
+                                    Send(new WebSocketFrame(this.WebSocket, WebSocketFrameTypes.Pong, frame.Data));
+                                break;
 
-                                        // the difference between the current time and the time when the ping message is sent
-                                        TimeSpan diff = TimeSpan.FromTicks(lastMessage.Ticks - ticksSent);
+                            case WebSocketFrameTypes.Pong:
+                                try
+                                {
+                                    // Get the ticks from the frame's payload
+                                    long ticksSent = BitConverter.ToInt64(frame.Data, 0);
 
-                                        // add it to the buffer
-                                        this.rtts.Add((int)diff.TotalMilliseconds);
+                                    // the difference between the current time and the time when the ping message is sent
+                                    TimeSpan diff = TimeSpan.FromTicks(lastMessage.Ticks - ticksSent);
 
-                                        // and calculate the new latency
-                                        this.Latency = CalculateLatency();
-                                    }
-                                    catch
-                                    {
-                                        // https://tools.ietf.org/html/rfc6455#section-5.5
-                                        // A Pong frame MAY be sent unsolicited.  This serves as a
-                                        // unidirectional heartbeat.  A response to an unsolicited Pong frame is
-                                        // not expected. 
-                                    }
+                                    // add it to the buffer
+                                    this.rtts.Add((int)diff.TotalMilliseconds);
 
-                                    break;
+                                    // and calculate the new latency
+                                    this.Latency = CalculateLatency();
+                                }
+                                catch
+                                {
+                                    // https://tools.ietf.org/html/rfc6455#section-5.5
+                                    // A Pong frame MAY be sent unsolicited.  This serves as a
+                                    // unidirectional heartbeat.  A response to an unsolicited Pong frame is
+                                    // not expected. 
+                                }
 
-                                // If an endpoint receives a Close frame and did not previously send a Close frame, the endpoint MUST send a Close frame in response.
-                                case WebSocketFrameTypes.ConnectionClose:
-                                    HTTPManager.Logger.Information("WebSocketResponse", "ConnectionClose packet received!", this.Context);
+                                break;
 
-                                    CloseFrame = frame;
-                                    if (!closeSent)
-                                        Send(new WebSocketFrame(this.WebSocket, WebSocketFrameTypes.ConnectionClose, null));
-                                    closed = true;
-                                    break;
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            if (HTTPUpdateDelegator.IsCreated)
-                            {
-                                this.baseRequest.Exception = e;
-                                this.baseRequest.State = HTTPRequestStates.Error;
-                            }
-                            else
-                                this.baseRequest.State = HTTPRequestStates.Aborted;
+                            // If an endpoint receives a Close frame and did not previously send a Close frame, the endpoint MUST send a Close frame in response.
+                            case WebSocketFrameTypes.ConnectionClose:
+                                HTTPManager.Logger.Information("WebSocketResponse", "ConnectionClose packet received!", this.Context);
 
-                            closed = true;
-                            newFrameSignal.Set();
+                                CloseFrame = frame;
+                                if (!closeSent)
+                                    Send(new WebSocketFrame(this.WebSocket, WebSocketFrameTypes.ConnectionClose, null));
+                                closed = true;
+                                break;
                         }
                     }
+                    catch (Exception e)
+                    {
+                        if (HTTPUpdateDelegator.IsCreated)
+                        {
+                            this.baseRequest.Exception = e;
+                            this.baseRequest.State = HTTPRequestStates.Error;
+                        }
+                        else
+                            this.baseRequest.State = HTTPRequestStates.Aborted;
 
-                    HTTPManager.Logger.Information("WebSocketResponse", "Ending Read thread! closed: " + closed, this.Context);
+                        closed = true;
+                        newFrameSignal.Set();
+                    }
                 }
+
+                HTTPManager.Logger.Information("WebSocketResponse", "Ending Read thread! closed: " + closed, this.Context);
             }
             finally
             {
@@ -595,7 +592,7 @@ namespace BestHTTP.WebSocket
             if (now - lastPing >= PingFrequnecy)
                 SendPing();
 
-            if (now - (lastMessage + this.PingFrequnecy) > this.WebSocket.CloseAfterNoMesssage)
+            if (now - lastMessage > this.WebSocket.CloseAfterNoMesssage)
             {
                 HTTPManager.Logger.Warning("WebSocketResponse", 
                     string.Format("No message received in the given time! Closing WebSocket. LastMessage: {0}, PingFrequency: {1}, Close After: {2}, Now: {3}", 

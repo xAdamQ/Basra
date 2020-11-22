@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 
+using BestHTTP.PlatformSupport.Memory;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Date;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
@@ -220,13 +221,13 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                         continue;
                     }
 
-                    byte[] plaintext = recordEpoch.Cipher.DecodeCiphertext(
+                    BufferSegment plaintext = recordEpoch.Cipher.DecodeCiphertext(
                         GetMacSequenceNumber(recordEpoch.Epoch, seq), type, record, RECORD_HEADER_LENGTH,
                         received - RECORD_HEADER_LENGTH);
 
                     recordEpoch.ReplayWindow.ReportAuthenticated(seq);
 
-                    if (plaintext.Length > this.mPlaintextLimit)
+                    if (plaintext.Count > this.mPlaintextLimit)
                     {
                         continue;
                     }
@@ -240,10 +241,10 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                     {
                     case ContentType.alert:
                     {
-                        if (plaintext.Length == 2)
+                        if (plaintext.Count == 2)
                         {
-                            byte alertLevel = plaintext[0];
-                            byte alertDescription = plaintext[1];
+                            byte alertLevel = plaintext.Data[0];
+                            byte alertDescription = plaintext.Data[1];
 
                             mPeer.NotifyAlertReceived(alertLevel, alertDescription);
 
@@ -276,9 +277,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                     {
                         // Implicitly receive change_cipher_spec and change to pending cipher state
 
-                        for (int i = 0; i < plaintext.Length; ++i)
+                        for (int i = 0; i < plaintext.Count; ++i)
                         {
-                            byte message = TlsUtilities.ReadUint8(plaintext, i);
+                            byte message = TlsUtilities.ReadUint8(plaintext.Data, i);
                             if (message != ChangeCipherSpec.change_cipher_spec)
                             {
                                 continue;
@@ -298,7 +299,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                         {
                             if (mRetransmit != null)
                             {
-                                mRetransmit.ReceivedHandshakeRecord(epoch, plaintext, 0, plaintext.Length);
+                                mRetransmit.ReceivedHandshakeRecord(epoch, plaintext.Data, plaintext.Offset, plaintext.Count);
                             }
 
                             // TODO Consider support for HelloRequest
@@ -323,8 +324,9 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                         this.mRetransmitEpoch = null;
                     }
 
-                    Array.Copy(plaintext, 0, buf, off, plaintext.Length);
-                    return plaintext.Length;
+                    Array.Copy(plaintext.Data, plaintext.Offset, buf, off, plaintext.Count);
+                    BufferPool.Release(plaintext);
+                    return plaintext.Count;
                 }
                 catch (IOException e)
                 {
@@ -512,21 +514,23 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             int recordEpoch = mWriteEpoch.Epoch;
             long recordSequenceNumber = mWriteEpoch.AllocateSequenceNumber();
 
-            byte[] ciphertext = mWriteEpoch.Cipher.EncodePlaintext(
+            BufferSegment ciphertext = mWriteEpoch.Cipher.EncodePlaintext(
                 GetMacSequenceNumber(recordEpoch, recordSequenceNumber), contentType, buf, off, len);
 
             // TODO Check the ciphertext length?
 
-            byte[] record = new byte[ciphertext.Length + RECORD_HEADER_LENGTH];
+            byte[] record = new byte[ciphertext.Count + RECORD_HEADER_LENGTH];
             TlsUtilities.WriteUint8(contentType, record, 0);
             ProtocolVersion version = mWriteVersion;
             TlsUtilities.WriteVersion(version, record, 1);
             TlsUtilities.WriteUint16(recordEpoch, record, 3);
             TlsUtilities.WriteUint48(recordSequenceNumber, record, 5);
-            TlsUtilities.WriteUint16(ciphertext.Length, record, 11);
-            Array.Copy(ciphertext, 0, record, RECORD_HEADER_LENGTH, ciphertext.Length);
+            TlsUtilities.WriteUint16(ciphertext.Count, record, 11);
+            Array.Copy(ciphertext.Data, ciphertext.Offset, record, RECORD_HEADER_LENGTH, ciphertext.Count);
 
             mTransport.Send(record, 0, record.Length);
+
+            BufferPool.Release(ciphertext);
         }
 
         private static long GetMacSequenceNumber(int epoch, long sequence_number)

@@ -41,11 +41,14 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.IO.Pem
 			{
 				line = line.Substring(BeginString.Length);
 				int index = line.IndexOf('-');
+
+                if (index > 0 && BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities.Platform.EndsWith(line, "-----") && (line.Length - index) == 5)
+                {
 				string type = line.Substring(0, index);
 
-				if (index > 0)
 					return LoadObject(type);
 			}
+            }
 
 			return null;
 		}

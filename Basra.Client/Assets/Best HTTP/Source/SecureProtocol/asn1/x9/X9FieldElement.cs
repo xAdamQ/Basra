@@ -21,7 +21,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X9
             this.f = f;
         }
 
-        [Obsolete("Will be removed")]
+
         public X9FieldElement(
             BigInteger		p,
             Asn1OctetString	s)
@@ -29,7 +29,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X9
         {
         }
 
-        [Obsolete("Will be removed")]
+
         public X9FieldElement(
             int				m,
             int				k1,

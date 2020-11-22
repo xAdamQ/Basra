@@ -347,7 +347,7 @@ namespace BestHTTP.Caching
 
             LastAccess = DateTime.UtcNow;
 
-            Stream stream = HTTPManager.IOService.CreateFileStream(GetPath(), FileStreamModes.Open);
+            Stream stream = HTTPManager.IOService.CreateFileStream(GetPath(), FileStreamModes.OpenRead);
             stream.Seek(-length, System.IO.SeekOrigin.End);
 
             return stream;
@@ -360,7 +360,7 @@ namespace BestHTTP.Caching
 
             LastAccess = DateTime.UtcNow;
 
-            using (Stream stream = HTTPManager.IOService.CreateFileStream(GetPath(), FileStreamModes.Open))
+            using (Stream stream = HTTPManager.IOService.CreateFileStream(GetPath(), FileStreamModes.OpenRead))
             {
                 var response = new HTTPResponse(request, stream, request.UseStreaming, true);
                 response.CacheFileInfo = this;

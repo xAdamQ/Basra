@@ -42,7 +42,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Utilities
                 }
                 else if (obj is DerSequence)
                 {
-                    buf.Append("DER Sequence");
+                    buf.Append("DER Sequence" + (obj as DerSequence).ToString());
                 }
                 else
                 {
@@ -160,13 +160,13 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Utilities
             else if (obj is BerOctetString)
             {
                 byte[] octets = ((Asn1OctetString)obj).GetOctets();
-                string extra = verbose ? dumpBinaryDataAsString(indent, octets) : "";
+                string extra = verbose ? dumpBinaryDataAsString(indent, octets) : Hex.ToHexString(octets);
                 buf.Append(indent + "BER Octet String" + "[" + octets.Length + "] " + extra + NewLine);
             }
             else if (obj is DerOctetString)
             {
                 byte[] octets = ((Asn1OctetString)obj).GetOctets();
-                string extra = verbose ? dumpBinaryDataAsString(indent, octets) : "";
+                string extra = verbose ? dumpBinaryDataAsString(indent, octets) : Hex.ToHexString(octets);
                 buf.Append(indent + "DER Octet String" + "[" + octets.Length + "] " + extra + NewLine);
             }
             else if (obj is DerBitString)
@@ -286,7 +286,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Utilities
                 + Hex.ToHexString(app.GetContents()) + ")" + NewLine;
         }
 
-        [Obsolete("Use version accepting Asn1Encodable")]
+
         public static string DumpAsString(
             object   obj)
         {

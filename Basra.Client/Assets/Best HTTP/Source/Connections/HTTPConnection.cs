@@ -3,6 +3,7 @@
 using System;
 
 using BestHTTP.Core;
+using BestHTTP.Timings;
 
 namespace BestHTTP.Connections
 {
@@ -17,7 +18,7 @@ namespace BestHTTP.Connections
         public override TimeSpan KeepAliveTime {
             get {
                 if (this.requestHandler != null && this.requestHandler.KeepAlive != null)
-                    return this.requestHandler.KeepAlive.TimeOut;
+                    return base.KeepAliveTime < this.requestHandler.KeepAlive.TimeOut ? base.KeepAliveTime : this.requestHandler.KeepAlive.TimeOut;
         
                 return base.KeepAliveTime;
             }
@@ -57,6 +58,11 @@ namespace BestHTTP.Connections
 
         protected override void ThreadFunc()
         {
+            if (this.CurrentRequest.IsRedirected)
+                this.CurrentRequest.Timing.Add(TimingEventNames.Queued_For_Redirection);
+            else
+                this.CurrentRequest.Timing.Add(TimingEventNames.Queued);
+
             if (this.connector != null && !this.connector.IsConnected)
             {
                 // this will send the request back to the queue
@@ -78,7 +84,13 @@ namespace BestHTTP.Connections
                     if (HTTPManager.Logger.Level == Logger.Loglevels.All)
                         HTTPManager.Logger.Exception("HTTPConnection", "Connector.Connect", ex, this.Context, this.CurrentRequest.Context);
 
-                    this.CurrentRequest.State = HTTPRequestStates.ConnectionTimedOut;
+                    if (ex is TimeoutException)
+                        this.CurrentRequest.State = HTTPRequestStates.ConnectionTimedOut;
+                    else
+                    {
+                        this.CurrentRequest.Exception = ex;
+                        this.CurrentRequest.State = HTTPRequestStates.Error;
+                    }
                     ConnectionEventHelper.EnqueueConnectionEvent(new ConnectionEventInfo(this, HTTPConnectionStates.Closed));
 
                     return;

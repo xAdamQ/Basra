@@ -131,7 +131,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
             return null;
         }
 
-        [Obsolete("Use ECCurve.FromBigInteger to construct field elements")]
+
         public FpFieldElement(BigInteger q, BigInteger x)
             : this(q, CalculateResidue(q), x)
         {
@@ -673,7 +673,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
          * represents the reduction polynomial <code>f(z)</code>.
          * @param x The BigInteger representing the value of the field element.
          */
-        [Obsolete("Use ECCurve.FromBigInteger to construct field elements")]
+
         public F2mFieldElement(
             int			m,
             int			k1,
@@ -713,7 +713,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
          * polynomial <code>f(z)</code>.
          * @param x The BigInteger representing the value of the field element.
          */
-        [Obsolete("Use ECCurve.FromBigInteger to construct field elements")]
+
         public F2mFieldElement(
             int			m,
             int			k,

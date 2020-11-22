@@ -652,7 +652,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
          * @param x affine x co-ordinate
          * @param y affine y co-ordinate
          */
-        [Obsolete("Use ECCurve.CreatePoint to construct points")]
+
         public FpPoint(ECCurve curve, ECFieldElement x, ECFieldElement y)
             : this(curve, x, y, false)
         {
@@ -666,7 +666,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
          * @param y affine y co-ordinate
          * @param withCompression if true encode with point compression
          */
-        [Obsolete("Per-point compression property will be removed, see GetEncoded(bool)")]
+
         public FpPoint(ECCurve curve, ECFieldElement x, ECFieldElement y, bool withCompression)
             : base(curve, x, y, withCompression)
         {
@@ -1635,7 +1635,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
          * @param x x point
          * @param y y point
          */
-        [Obsolete("Use ECCurve.CreatePoint to construct points")]
+
         public F2mPoint(
             ECCurve			curve,
             ECFieldElement	x,
@@ -1650,7 +1650,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Math.EC
          * @param y y point
          * @param withCompression true if encode with point compression.
          */
-        [Obsolete("Per-point compression property will be removed, see GetEncoded(bool)")]
+
         public F2mPoint(
             ECCurve			curve,
             ECFieldElement	x,

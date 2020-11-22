@@ -98,7 +98,7 @@ namespace BestHTTP.Core
 
             try
             {
-                using (var fs = HTTPManager.IOService.CreateFileStream(LibraryPath, FileStreamModes.Open))
+                using (var fs = HTTPManager.IOService.CreateFileStream(LibraryPath, FileStreamModes.OpenRead))
                 using (var br = new System.IO.BinaryReader(fs))
                 {
                     int version = br.ReadInt32();

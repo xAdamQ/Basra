@@ -24,7 +24,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Cms
             return new IssuerAndSerialNumber(Asn1Sequence.GetInstance(obj));
         }
 
-        [Obsolete("Use GetInstance() instead")]
+
         public IssuerAndSerialNumber(
             Asn1Sequence seq)
         {

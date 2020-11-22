@@ -1,4 +1,4 @@
-﻿#if !BESTHTTP_DISABLE_WEBSOCKET && (!UNITY_WEBGL || UNITY_EDITOR)
+#if !BESTHTTP_DISABLE_WEBSOCKET && (!UNITY_WEBGL || UNITY_EDITOR)
 
 using BestHTTP.Extensions;
 using BestHTTP.PlatformSupport.Memory;
@@ -28,6 +28,7 @@ namespace BestHTTP.WebSocket.Frames
     /// Denotes a binary frame. The "Payload data" is arbitrary binary data whose interpretation is solely up to the application layer.
     /// This is the base class of all other frame writers, as all frame can be represented as a byte array.
     /// </summary>
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
     public sealed class WebSocketFrame
     {
         public WebSocketFrameTypes Type { get; private set; }
@@ -37,6 +38,12 @@ namespace BestHTTP.WebSocket.Frames
         public byte[] Data { get; private set; }
         public int DataLength { get; private set; }
         public bool UseExtensions { get; private set; }
+
+        public override string ToString()
+        {
+            return string.Format("[WebSocketFrame Type: {0}, IsFinal: {1}, Header: {2:X2}, DataLength: {3}, UseExtensions: {4}]",
+                this.Type, this.IsFinal, this.Header, this.DataLength, this.UseExtensions);
+        }
 
         #region Constructors
 
@@ -99,7 +106,7 @@ namespace BestHTTP.WebSocket.Frames
 
         #region Public Functions
 
-        public RawFrameData Get()
+        public unsafe RawFrameData Get()
         {
             if (Data == null)
                 Data = BufferPool.NoData;
@@ -150,17 +157,41 @@ namespace BestHTTP.WebSocket.Frames
 
                 ms.Write(mask, 0, 4);
 
+                // Do the masking.
+                fixed (byte* pData = Data, pmask = mask)
+                {
+                    // Here, instead of byte by byte, we reinterpret cast the data as uints and apply the masking so.
+                    // This way, we can mask 4 bytes in one cycle, instead of just 1
+                    int localLength = this.DataLength / 4;
+                    if (localLength > 0)
+                    {
+                        uint* upData = (uint*)pData;
+                        uint umask = *(uint*)pmask;
+
+                        unchecked
+                        {
+                            for (int i = 0; i < localLength; ++i)
+                                upData[i] = upData[i] ^ umask;
+                        }
+                    }
+
+                    // Because data might not be exactly dividable by 4, we have to mask the remaining 0..3 too.
+                    int from = localLength * 4;
+                    localLength = from + this.DataLength % 4;
+                    for (int i = from; i < localLength; ++i)
+                        pData[i] = (byte)(pData[i] ^ pmask[i % 4]);
+                }
+
                 BufferPool.Release(mask);
 
-                // Do the masking.
-                for (int i = 0; i < this.DataLength; ++i)
-                    ms.WriteByte((byte)(Data[i] ^ mask[i % 4]));
+                ms.Write(Data, 0, DataLength);
 
                 return new RawFrameData(ms.ToArray(true), (int)ms.Length);
             }
         }
 
-        public WebSocketFrame[] Fragment(ushort maxFragmentSize)
+
+        public WebSocketFrame[] Fragment(uint maxFragmentSize)
         {
             if (this.Data == null)
                 return null;
@@ -178,7 +209,7 @@ namespace BestHTTP.WebSocket.Frames
             this.Header &= 0x7F;
 
             // One chunk will remain in this fragment, so we have to allocate one less
-            int count = (this.DataLength / maxFragmentSize) + (this.DataLength % maxFragmentSize == 0 ? -1 : 0);
+            int count = (int)((this.DataLength / maxFragmentSize) + (this.DataLength % maxFragmentSize == 0 ? -1 : 0));
 
             WebSocketFrame[] fragments = new WebSocketFrame[count];
 
@@ -198,7 +229,7 @@ namespace BestHTTP.WebSocket.Frames
             //VariableSizedBufferPool.Release(this.Data);
 
             //this.Data = newData;
-            this.DataLength = maxFragmentSize;
+            this.DataLength = (int)maxFragmentSize;
 
             return fragments;
         }

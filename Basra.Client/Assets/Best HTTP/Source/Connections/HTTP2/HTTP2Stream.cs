@@ -10,13 +10,15 @@ using BestHTTP.Logger;
 using BestHTTP.Caching;
 #endif
 
+using BestHTTP.Timings;
+
 namespace BestHTTP.Connections.HTTP2
 {
     // https://httpwg.org/specs/rfc7540.html#StreamStates
     //
-    //                                       Idle
-    //                                        |
-    //                                        V
+    //                                      Idle
+    //                                       |
+    //                                       V
     //                                      Open
     //                Receive END_STREAM  /  |   \  Send END_STREAM
     //                                   v   |R   V
@@ -139,6 +141,11 @@ namespace BestHTTP.Connections.HTTP2
 
         public void Assign(HTTPRequest request)
         {
+            if (request.IsRedirected)
+                request.Timing.Add(TimingEventNames.Queued_For_Redirection);
+            else
+                request.Timing.Add(TimingEventNames.Queued);
+
             HTTPManager.Logger.Information("HTTP2Stream", string.Format("[{0}] Request assigned to stream. Remote Window: {1:N0}. Uri: {2}", this.Id, this.remoteWindow, request.CurrentUri.ToString()), this.Context, request.Context, this.parent.Context);
             this.AssignedRequest = request;
             this.isStreamedDownload = request.UseStreaming && request.OnStreamingData != null;
@@ -256,7 +263,10 @@ namespace BestHTTP.Connections.HTTP2
                         frame.DontUseMemPool = true;
 
                         if (this.headerView == null)
+                        {
+                            this.AssignedRequest.Timing.Add(TimingEventNames.Waiting_TTFB);
                             this.headerView = new FramesAsStreamView(new HeaderFrameView());
+                        }
 
                         this.headerView.AddFrame(frame);
 
@@ -276,6 +286,8 @@ namespace BestHTTP.Connections.HTTP2
                             {
                                 HTTPManager.Logger.Exception("HTTP2Stream", string.Format("[{0}] ProcessIncomingFrames - Header Frames: {1}, Encoder: {2}", this.Id, this.headerView.ToString(), this.encoder.ToString()), ex, this.Context, this.AssignedRequest.Context, this.parent.Context);
                             }
+
+                            this.AssignedRequest.Timing.Add(TimingEventNames.Headers);
 
                             if (this.isRSTFrameSent)
                             {
@@ -322,7 +334,7 @@ namespace BestHTTP.Connections.HTTP2
                             this.response.ProcessData(frame.Payload, (int)frame.PayloadLength);
 
                         // frame's buffer will be released by the frames view
-                        frame.DontUseMemPool = true;
+                        frame.DontUseMemPool = !this.isStreamedDownload;
 
                         if (this.dataView == null && !this.isStreamedDownload)
                             this.dataView = new FramesAsStreamView(new DataFrameView());
@@ -387,6 +399,10 @@ namespace BestHTTP.Connections.HTTP2
                     case HTTP2FrameTypes.RST_STREAM:
                         // https://httpwg.org/specs/rfc7540.html#RST_STREAM
 
+                        // It's possible to receive an RST_STREAM on a closed stream. In this case, we have to ignore it.
+                        if (this.State == HTTP2StreamStates.Closed)
+                            break;
+
                         var rstStreamFrame = HTTP2FrameHelper.ReadRST_StreamFrame(frame);
 
                         HTTPManager.Logger.Error("HTTP2Stream", string.Format("[{0}] RST Stream frame ({1}) received in state {2}!", this.Id, rstStreamFrame, this.State), this.Context, this.AssignedRequest.Context, this.parent.Context);
@@ -443,7 +459,10 @@ namespace BestHTTP.Connections.HTTP2
                     //this.State = HTTP2StreamStates.Open;
 
                     if (this.uploadStreamInfo.Stream == null)
+                    {
                         this.State = HTTP2StreamStates.HalfClosedLocal;
+                        this.AssignedRequest.Timing.Add(TimingEventNames.Request_Sent);
+                    }
                     else
                         this.State = HTTP2StreamStates.Open;
                     break;
@@ -487,6 +506,8 @@ namespace BestHTTP.Connections.HTTP2
                         frame.Flags = (byte)(HTTP2DataFlags.END_STREAM);
 
                         this.State = HTTP2StreamStates.HalfClosedLocal;
+
+                        this.AssignedRequest.Timing.Add(TimingEventNames.Request_Sent);
                     }
 
                     this.outgoing.Enqueue(frame);
@@ -552,14 +573,21 @@ namespace BestHTTP.Connections.HTTP2
         {
             if (dataStream != null)
             {
-                stream.response.AddData(dataStream);
-
-                dataStream.Close();
+                try
+                {
+                    stream.response.AddData(dataStream);
+                }
+                finally
+                {
+                    dataStream.Close();
+                }
             }
 
+            stream.AssignedRequest.Timing.Add(TimingEventNames.Response_Received);
+
             bool resendRequest;
-            HTTPConnectionStates proposedConnectionStates;
-            KeepAliveHeader keepAliveHeader = null;
+            HTTPConnectionStates proposedConnectionStates; // ignored
+            KeepAliveHeader keepAliveHeader = null; // ignored
 
             ConnectionHelper.HandleResponse("HTTP2Stream", stream.AssignedRequest, out resendRequest, out proposedConnectionStates, ref keepAliveHeader, stream.Context, stream.AssignedRequest.Context);
 

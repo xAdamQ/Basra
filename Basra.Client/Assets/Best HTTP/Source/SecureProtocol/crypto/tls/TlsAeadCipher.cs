@@ -3,13 +3,18 @@
 using System;
 using System.IO;
 
+using BestHTTP.PlatformSupport.Memory;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Modes;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Parameters;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
 {
-    public class TlsAeadCipher
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.NullChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.ArrayBoundsChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppSetOption(BestHTTP.PlatformSupport.IL2CPP.Option.DivideByZeroChecks, false)]
+    [BestHTTP.PlatformSupport.IL2CPP.Il2CppEagerStaticClassConstructionAttribute]
+    public sealed class TlsAeadCipher
         :   TlsCipher
     {
         // TODO[draft-zauner-tls-aes-ocb-04] Apply data volume limit described in section 8.4
@@ -107,21 +112,25 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                 decryptKey = server_write_key;
             }
 
+            // NOTE: Ensure dummy nonce is not part of the generated sequence(s)
             byte[] dummyNonce = new byte[fixed_iv_length + record_iv_length];
+            dummyNonce[0] = (byte)~encryptImplicitNonce[0];
+            dummyNonce[1] = (byte)~decryptImplicitNonce[1];
 
             this.encryptCipher.Init(true, new AeadParameters(encryptKey, 8 * macSize, dummyNonce));
             this.decryptCipher.Init(false, new AeadParameters(decryptKey, 8 * macSize, dummyNonce));
         }
 
-        public virtual int GetPlaintextLimit(int ciphertextLimit)
+        public /*virtual */int GetPlaintextLimit(int ciphertextLimit)
         {
             // TODO We ought to be able to ask the decryptCipher (independently of it's current state!)
             return ciphertextLimit - macSize - record_iv_length;
         }
 
         /// <exception cref="IOException"></exception>
-        public virtual byte[] EncodePlaintext(long seqNo, byte type, byte[] plaintext, int offset, int len)
+        public /*virtual */BufferSegment EncodePlaintext(long seqNo, byte type, byte[] plaintext, int offset, int len)
         {
+            // nonce is passed to AeadParameters and used a lot of places
             byte[] nonce = new byte[encryptImplicitNonce.Length + record_iv_length];
 
             switch (nonceMode)
@@ -146,7 +155,8 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             int plaintextLength = len;
             int ciphertextLength = encryptCipher.GetOutputSize(plaintextLength);
 
-            byte[] output = new byte[record_iv_length + ciphertextLength];
+            int outputLength = record_iv_length + ciphertextLength;
+            byte[] output = BufferPool.Get(outputLength, true);
             if (record_iv_length != 0)
             {
                 Array.Copy(nonce, nonce.Length - record_iv_length, output, 0, record_iv_length);
@@ -167,17 +177,17 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                 throw new TlsFatalAlert(AlertDescription.internal_error, e);
             }
 
-            if (outputPos != output.Length)
+            if (outputPos != outputLength)
             {
                 // NOTE: Existing AEAD cipher implementations all give exact output lengths
                 throw new TlsFatalAlert(AlertDescription.internal_error);
             }
 
-            return output;
+            return new BufferSegment(output, 0, outputLength);
         }
 
         /// <exception cref="IOException"></exception>
-        public virtual byte[] DecodeCiphertext(long seqNo, byte type, byte[] ciphertext, int offset, int len)
+        public /*virtual */BufferSegment DecodeCiphertext(long seqNo, byte type, byte[] ciphertext, int offset, int len)
         {
             if (GetPlaintextLimit(len) < 0)
                 throw new TlsFatalAlert(AlertDescription.decode_error);
@@ -205,7 +215,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
             int ciphertextLength = len - record_iv_length;
             int plaintextLength = decryptCipher.GetOutputSize(ciphertextLength);
 
-            byte[] output = new byte[plaintextLength];
+            byte[] output = BufferPool.Get(plaintextLength, true);
             int outputPos = 0;
 
             byte[] additionalData = GetAdditionalData(seqNo, type, plaintextLength);
@@ -222,17 +232,17 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls
                 throw new TlsFatalAlert(AlertDescription.bad_record_mac, e);
             }
 
-            if (outputPos != output.Length)
+            if (outputPos != plaintextLength)
             {
                 // NOTE: Existing AEAD cipher implementations all give exact output lengths
                 throw new TlsFatalAlert(AlertDescription.internal_error);
             }
 
-            return output;
+            return new BufferSegment(output, 0, plaintextLength);
         }
 
         /// <exception cref="IOException"></exception>
-        protected virtual byte[] GetAdditionalData(long seqNo, byte type, int len)
+        protected /*virtual */byte[] GetAdditionalData(long seqNo, byte type, int len)
         {
             /*
              * additional_data = seq_num + TLSCompressed.type + TLSCompressed.version +

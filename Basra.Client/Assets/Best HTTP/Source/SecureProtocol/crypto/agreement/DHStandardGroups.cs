@@ -174,7 +174,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Agreement
         /// <remarks>
         /// Existence of a "hidden SNFS" backdoor cannot be ruled out. see https://eprint.iacr.org/2016/961.pdf .
         /// </remarks>
-        [Obsolete("Existence of a 'hidden SNFS' backdoor cannot be ruled out.")]
+
         public static readonly DHParameters rfc5114_1024_160 = FromPGQ(rfc5114_1024_160_p, rfc5114_1024_160_g,
             rfc5114_1024_160_q);
 
@@ -195,7 +195,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Agreement
         /// <remarks>
         /// Existence of a "hidden SNFS" backdoor cannot be ruled out. see https://eprint.iacr.org/2016/961.pdf .
         /// </remarks>
-        [Obsolete("Existence of a 'hidden SNFS' backdoor cannot be ruled out.")]
+
         public static readonly DHParameters rfc5114_2048_224 = FromPGQ(rfc5114_2048_224_p, rfc5114_2048_224_g,
             rfc5114_2048_224_q);
 
@@ -217,7 +217,7 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Agreement
         /// <remarks>
         /// Existence of a "hidden SNFS" backdoor cannot be ruled out. see https://eprint.iacr.org/2016/961.pdf .
         /// </remarks>
-        [Obsolete("Existence of a 'hidden SNFS' backdoor cannot be ruled out.")]
+
         public static readonly DHParameters rfc5114_2048_256 = FromPGQ(rfc5114_2048_256_p, rfc5114_2048_256_g,
             rfc5114_2048_256_q);
 

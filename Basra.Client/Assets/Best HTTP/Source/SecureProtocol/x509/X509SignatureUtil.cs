@@ -11,6 +11,7 @@ using BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.TeleTrust;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X509;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X9;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto;
+using BestHTTP.SecureProtocol.Org.BouncyCastle.Security;
 
 namespace BestHTTP.SecureProtocol.Org.BouncyCastle.X509
 {
@@ -70,6 +71,12 @@ namespace BestHTTP.SecureProtocol.Org.BouncyCastle.X509
 					return GetDigestAlgName((DerObjectIdentifier)ecDsaParams[0]) + "withECDSA";
 				}
 			}
+
+            string sigName = SignerUtilities.GetEncodingName(sigAlgId.Algorithm);
+            if (null != sigName)
+            {
+                return sigName;
+            }
 
             return sigAlgId.Algorithm.Id;
 		}
