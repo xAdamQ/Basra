@@ -10,6 +10,7 @@ using BestHTTP.SignalRCore.Authentication;
 using System.Threading.Tasks;
 using Basra.Core;
 using UnityEngine.SceneManagement;
+using UnityEngine.AddressableAssets;
 
 public class AppManager : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class AppManager : MonoBehaviour
         Connect("5");
 #endif
 
+        LoadFrequentAssets();
     }
 
     public GameObject TestLoginUI;
@@ -59,9 +61,8 @@ public class AppManager : MonoBehaviour
         HubConnection.OnClosed += OnClosed;
         HubConnection.OnMessage += OnMessage;
 
-        // HubConnection.On<int>(nameof(AddMoneyAsync), AddMoney);
         HubConnection.On<int, int>(nameof(LobbyManger.Current.EnterRoom), (genre, playerCount) => LobbyManger.Current.EnterRoom(genre, playerCount)/*will make it runtime evaluated*/);
-        HubConnection.On<List<int>>(nameof(RoomManager.Current.SetHand), (hand) => RoomManager.Current.SetHand(hand));
+        HubConnection.On<int[]>(nameof(RoomManager.Current.Distribute), (hand) => RoomManager.Current.Distribute(hand));
         HubConnection.On(nameof(LobbyManger.Current.RoomIsFilling), () => LobbyManger.Current.RoomIsFilling());
 
         User = new User
@@ -72,6 +73,19 @@ public class AppManager : MonoBehaviour
 
         HubConnection.ConnectAsync();
     }
+
+    private void LoadFrequentAssets()
+    {
+        // Addressables.LoadAsset<GameObject>("AssetAddress");
+        // Addressables.LoadAssetAsync<GameObject>("card");
+        // Addressables.LoadAssetsAsync<GameObject>("frequent", loadcallback);
+        // Addressables.LoadAssetsAsync<GameObject>()
+    }
+
+    // private void loadcallback(GameObject obj)
+    // {
+    //     Debug.Log("hello");
+    // }
 
     public void Disconnect()
     {

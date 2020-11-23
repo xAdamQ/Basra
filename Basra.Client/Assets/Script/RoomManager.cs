@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 public class RoomManager : MonoBehaviour
 {
     public static RoomManager Current;
 
-    private List<int> Hand;
+    private MyHand MyHand;
+    private OtherHand[] OtherHands;
 
     static float UpperPadding = .5f, ButtomPadding = 1f;
 
@@ -26,28 +28,50 @@ public class RoomManager : MonoBehaviour
         new Vector3(0, 0, -90),
     };
 
+    //this will work because room follows "Current" patterns
+    //any static you have to reinit
+    public static int Genre;
+    public static int PlayerCount;
+
+    [SerializeField] Text GenreText;
+
     private void Awake()
     {
         Current = this;
     }
 
-    //this will work because room follows "Current" patterns
-    public static int Genre;
-    public static int PlayerCount;
-
-    [SerializeField]
-    private Text GenreText;
-
     private void Start()
     {
         Ready();
         GenreText.text = Genre.ToString();
+
+        CreateHands();
     }
 
-    public void SetHand(List<int> hand)
+    private void CreateHands()
     {
-        Hand = hand;
-        //do hand anim
+        MyHand = Instantiate(FrequentAssets.I.MyHandPrefab).GetComponent<MyHand>();
+        MyHand.transform.position = HandPozes[0];
+        MyHand.transform.eulerAngles = HandRotations[0];
+
+        OtherHands = new OtherHand[PlayerCount];
+        for (var i = 0; i < PlayerCount - 1; i++)
+        {
+            OtherHands[i] = Instantiate(FrequentAssets.I.OtherHandPrefab).GetComponent<OtherHand>();
+            OtherHands[i].transform.position = HandPozes[i + 1];
+            OtherHands[i].transform.eulerAngles = HandRotations[i + 1];
+        }
+    }
+
+    public void Distribute(int[] hand)
+    {
+        MyHand.Set(hand);
+
+        for (var i = 0; i < PlayerCount - 1; i++)
+        {
+            OtherHands[i].Set();
+        }
+
         Debug.Log($"hand cards are {hand[0]} {hand[1]} {hand[2]} {hand[3]}");
     }
 

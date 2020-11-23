@@ -79,37 +79,38 @@ namespace Basra.Server.Structure
 
         //request from mw to hub to here
 
-        public void Distribute()
+        private void Distribute()
         {
             //every player should have 4 cards or less
-            if (Users.Length * HandSize > Deck.Count)
-            {
-                var minHandSize = Deck.Count / Users.Length;
-                var remainder = Deck.Count % Users.Length;
+            //if the deck is 52 always, you won't need to customize hand size
+            // if (Users.Length * HandSize > Deck.Count)
+            // {
+            //     var minHandSize = Deck.Count / Users.Length;
+            //     var remainder = Deck.Count % Users.Length;
 
-                int u = 0;
-                for (; u < Users.Length; u++)
-                {
-                    SetHand(u, minHandSize + remainder);
-                }
-                for (; u < Users.Length - remainder; u++)
-                {
-                    SetHand(u, minHandSize);
-                }
-            }
-            else
+            //     int u = 0;
+            //     for (; u < Users.Length; u++)
+            //     {
+            //         Distribute(u, minHandSize + remainder);
+            //     }
+            //     for (; u < Users.Length - remainder; u++)
+            //     {
+            //         Distribute(u, minHandSize);
+            //     }
+            // }
+            // else
+            // {
+            for (int u = 0; u < Users.Length; u++)
             {
-                for (int u = 0; u < Users.Length; u++)
-                {
-                    SetHand(u, HandSize);
-                }
+                Distribute(u, HandSize);
             }
+            // }
         }
 
-        private void SetHand(int userRoomId, int handSize)
+        private void Distribute(int userRoomId, int handSize)
         {
             Hands[userRoomId] = Deck.CutRange(handSize);
-            _hubContext.Clients.Client(Users[userRoomId].ConnectionId).SendAsync("SetHand", Hands[userRoomId]);
+            _hubContext.Clients.Client(Users[userRoomId].ConnectionId).SendAsync("Distribute", Hands[userRoomId].ToArray());
         }
 
         public void Ready(string playerId)
