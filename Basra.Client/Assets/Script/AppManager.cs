@@ -10,7 +10,6 @@ using BestHTTP.SignalRCore.Authentication;
 using System.Threading.Tasks;
 using Basra.Core;
 using UnityEngine.SceneManagement;
-using UnityEngine.AddressableAssets;
 
 public class AppManager : MonoBehaviour
 {
