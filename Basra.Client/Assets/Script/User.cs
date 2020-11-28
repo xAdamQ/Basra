@@ -1,4 +1,7 @@
-public class User
+namespace Basra.Client
 {
-    public string FbId;
+    public class User
+    {
+        public string FbId;
+    }
 }

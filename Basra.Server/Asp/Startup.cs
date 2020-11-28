@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Basra.Server.Identity;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Basra.Server
 {
@@ -61,8 +62,7 @@ namespace Basra.Server
             services.AddControllers();
             services.AddSignalR(options =>
             {
-                // options.Fil
-                // options.
+                options.AddFilter<BadUserInputFilter>();
             });
         }
 

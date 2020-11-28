@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class LoadingPanel : MonoBehaviour
+namespace Basra.Client
 {
-    public Text MessageText;
+    public class LoadingPanel : MonoBehaviour
+    {
+        public Text MessageText;
+    }
 }

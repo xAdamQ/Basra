@@ -3,6 +3,7 @@ using Basra.Server.Extensions;
 using System.Linq;
 using Microsoft.AspNetCore.SignalR;
 using System;
+using Basra.Server.Exceptions;
 
 namespace Basra.Server.Structure.Room
 {
@@ -128,7 +129,7 @@ namespace Basra.Server.Structure.Room
             if (userIndexInRoom != CurrentTurn)
             {
                 Console.WriteLine($"player {user.Structure.Id} is cheating");
-                throw new Exception("it's not player's turn");
+                throw new BadUserInputException();
             }
             //validation
 

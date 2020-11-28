@@ -5,43 +5,47 @@ using UnityEngine;
 using UnityEngine.UI;
 using BestHTTP.SignalRCore;
 using UnityEngine.SceneManagement;
-
-public class LobbyManger : MonoBehaviour
+using System.Reflection;
+namespace Basra.Client
 {
-    [SerializeField] Image UserPic;
-    [SerializeField] Text UserName;
-
-    private void Awake()
+    public class LobbyManger : MonoBehaviour
     {
-        AppManager.I.Lobby = this;
-    }
+        [SerializeField] Image UserPic;
+        [SerializeField] Text UserName;
 
-    void Start()
-    {
-        UserName.text = AppManager.I.User.FbId.ToString();
-        // UserName.text = AppManger.I.FirebaseAuth.CurrentUser.DisplayName;
-    }
+        private void Awake()
+        {
+            AppManager.I.Lobby = this;
+        }
 
-    //rpc
-    public void EnterRoom(int genre, int playerCount)
-    {
-        Debug.Log("Should Enter Room");
-        RoomManager.Genre = genre;
-        RoomManager.PlayerCount = playerCount;
-        SceneManager.LoadScene(2);
-        AppManager.I.StopLoadingPanel();//todo make it hide after async load scene
-    }
+        void Start()
+        {
+            UserName.text = AppManager.I.User.FbId.ToString();
+            // UserName.text = AppManger.I.FirebaseAuth.CurrentUser.DisplayName;
+        }
 
-    //rpc
-    public void RoomIsFilling()
-    {
-        AppManager.I.ShowLoadingPanel("Filling The Room");
-    }
+        //rpc
+        [Rpc]
+        public void EnterRoom(int genre, int playerCount)
+        {
+            Debug.Log("Should Enter Room");
+            RoomManager.Genre = genre;
+            RoomManager.PlayerCount = playerCount;
+            SceneManager.LoadScene(2);
+            AppManager.I.StopLoadingPanel();//todo make it hide after async load scene
+        }
 
-    //button
-    public void AskForRoom(int genre, int playerCount)
-    {
-        AppManager.I.HubConnection.Send("AskForRoom", genre, playerCount);
-    }
+        //rpc
+        [Rpc]
+        public void RoomIsFilling()
+        {
+            AppManager.I.ShowLoadingPanel("Filling The Room");
+        }
 
+        //button
+        public void AskForRoom(int genre, int playerCount)
+        {
+            AppManager.I.HubConnection.Send("AskForRoom", genre, playerCount);
+        }
+    }
 }

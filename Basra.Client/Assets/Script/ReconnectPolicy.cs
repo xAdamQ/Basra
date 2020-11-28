@@ -1,18 +1,20 @@
 using System;
 using BestHTTP.SignalRCore;
-
-public class ReconnectPolicy : IRetryPolicy
+namespace Basra.Client
 {
-    static int MaxRetries = 20;
-    int Retries;
-
-    public TimeSpan? GetNextRetryDelay(RetryContext context)
+    public class ReconnectPolicy : IRetryPolicy
     {
-        Retries++;
+        static int MaxRetries = 20;
+        int Retries;
 
-        if (Retries > MaxRetries)
-            return null;
-        else
-            return TimeSpan.FromSeconds(2);
+        public TimeSpan? GetNextRetryDelay(RetryContext context)
+        {
+            Retries++;
+
+            if (Retries > MaxRetries)
+                return null;
+            else
+                return TimeSpan.FromSeconds(2);
+        }
     }
 }

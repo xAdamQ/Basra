@@ -1,63 +1,65 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Hand : MonoBehaviour
+namespace Basra.Client
 {
-    public List<Card> Cards = new List<Card>();
-    public static int Size = 4;
-
-    public RoomManager Room;
-
-    //act on all cards because we don't add inidie cards
-    protected void PlaceCards()
+    public class Hand : MonoBehaviour
     {
-        var xPointer = -(Size / 2) * Card.Bounds.x;
-        xPointer -= xPointer / 2f;
+        public List<Card> Cards = new List<Card>();
+        public static int Size = 4;
 
-        var xSpacing = Card.Bounds.x;
+        public RoomManager Room;
 
-        for (var i = 0; i < Cards.Count; i++)
+        //act on all cards because we don't add inidie cards
+        protected void PlaceCards()
         {
-            Cards[i].transform.localPosition = Vector3.right * xPointer;
-            xPointer += xSpacing;
-        }
-    }
+            var xPointer = -(Size / 2) * Card.Bounds.x;
+            xPointer -= xPointer / 2f;
 
-    //my
-    public void Set(int[] hand)
-    {
-        for (var i = 0; i < hand.Length; i++)
+            var xSpacing = Card.Bounds.x;
+
+            for (var i = 0; i < Cards.Count; i++)
+            {
+                Cards[i].transform.localPosition = Vector3.right * xPointer;
+                xPointer += xSpacing;
+            }
+        }
+
+        //my
+        public void Set(int[] hand)
         {
-            var card = MakeCard(hand[i]);
-            card.Type = CardType.Mine;
+            for (var i = 0; i < hand.Length; i++)
+            {
+                var card = MakeCard(hand[i]);
+                card.Type = CardType.Mine;
+            }
+            PlaceCards();
         }
-        PlaceCards();
-    }
-    //oppo
-    public void Set()
-    {
-        for (var i = 0; i < Size; i++)
+        //oppo
+        public void Set()
         {
-            MakeCard();
+            for (var i = 0; i < Size; i++)
+            {
+                MakeCard();
+            }
+            PlaceCards();
         }
-        PlaceCards();
-    }
 
-    //my
-    private Card MakeCard(int id)
-    {
-        var card = Instantiate(FrequentAssets.I.CardPrefab, transform).GetComponent<Card>();
-        card.AddFront(id);
-        Cards.Add(card);
-        return card;
-    }
-    //oppo
-    private Card MakeCard()
-    {
-        var card = Instantiate(FrequentAssets.I.CardPrefab, transform).GetComponent<Card>();
-        Cards.Add(card);
-        return card;
-    }
+        //my
+        private Card MakeCard(int id)
+        {
+            var card = Instantiate(FrequentAssets.I.CardPrefab, transform).GetComponent<Card>();
+            card.AddFront(id);
+            Cards.Add(card);
+            return card;
+        }
+        //oppo
+        private Card MakeCard()
+        {
+            var card = Instantiate(FrequentAssets.I.CardPrefab, transform).GetComponent<Card>();
+            Cards.Add(card);
+            return card;
+        }
 
+    }
 }

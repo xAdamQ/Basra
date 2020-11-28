@@ -85,7 +85,7 @@ namespace Basra.Server.Services
             //todo if (_userManager.FindByIdAsync(fbUserId) == null)
             // _userManager.FindByLoginAsync()
             // if (_masterContext.Users.Any(u => u.FbId == fbUserId))
-            var user = await _masterContext.Users.FirstAsync(u => u.FbId == fbUserId);
+            var user = await _masterContext.Users.FirstOrDefaultAsync(u => u.FbId == fbUserId);
             if (user == null)
             {
                 user = await SignUpAsync(fbUserId);

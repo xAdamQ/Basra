@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class StartGameButton : MonoBehaviour
+namespace Basra.Client
 {
-    [SerializeField]
-    private int RoomGenre;
-    [SerializeField]
-    private int PlayerCount;
-
-    public void StartGame()
+    public class StartGameButton : MonoBehaviour
     {
-        AppManager.I.Lobby.AskForRoom(RoomGenre, PlayerCount);
+        [SerializeField]
+        private int RoomGenre;
+        [SerializeField]
+        private int PlayerCount;
+
+        public void StartGame()
+        {
+            AppManager.I.Lobby.AskForRoom(RoomGenre, PlayerCount);
+        }
     }
 }

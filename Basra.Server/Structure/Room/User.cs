@@ -35,15 +35,7 @@ namespace Basra.Server.Structure.Room
 
         public int[] Throw(int cardIndexInHand)
         {
-            try
-            {
-                Active.Throw(this);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-
+            Active.Throw(this);
             var card = Hand.Cut(cardIndexInHand);
             return Active.Ground.Throw(card);
         }

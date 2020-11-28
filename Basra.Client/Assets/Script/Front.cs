@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using UnityEngine;
-
-public class Front : MonoBehaviour
+namespace Basra.Client
 {
-    public int Id;
-
-    public void Set(int id)
+    public class Front : MonoBehaviour
     {
-        Id = id;
-        GetComponent<SpriteRenderer>().sprite = FrequentAssets.I.NumberSprites[id];
+        public int Id;
+
+        public void Set(int id)
+        {
+            Id = id;
+            GetComponent<SpriteRenderer>().sprite = FrequentAssets.I.NumberSprites[id];
+        }
     }
 }
