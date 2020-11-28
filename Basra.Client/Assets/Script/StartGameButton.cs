@@ -11,6 +11,6 @@ public class StartGameButton : MonoBehaviour
 
     public void StartGame()
     {
-        LobbyManger.Current.AskForRoom(RoomGenre, PlayerCount);
+        AppManager.I.Lobby.AskForRoom(RoomGenre, PlayerCount);
     }
 }

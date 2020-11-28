@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Basra.Server.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Basra.Server.Identity;
 
 namespace Basra.Server.Services
 {

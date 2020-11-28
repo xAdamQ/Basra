@@ -9,10 +9,14 @@ public class FrequentAssets : MonoBehaviour
         I = this;
     }
 
-    public GameObject EmptyCardPrefab;
-    public GameObject RealCardPrefab;
-    public GameObject MyHandPrefab;
-    public GameObject OtherHandPrefab;
+    public GameObject FrontPrefab;
+    public GameObject CardPrefab;
+    //public GameObject OpponentCardPrefab;
+    //public GameObject RealCardPrefab;
+    public GameObject HandPrefab;
+    //public GameObject MyHandPrefab;
+    //public GameObject OtherHandPrefab;
+    public GameObject GroundPrefab;
     public Sprite[] NumberSprites;//thier order matters
 
 }

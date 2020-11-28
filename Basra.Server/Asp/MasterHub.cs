@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Basra.Server.Structure;
+using Basra.Server.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using Basra.Server.Extensions;
 using System.Linq;
+using Basra.Server.Structure;
 
 //todo learn about thread safety
 namespace Basra.Server
@@ -39,8 +40,6 @@ namespace Basra.Server
         {
             System.Console.WriteLine($"connection established: {Context.ConnectionId} {Context.UserIdentifier}");
 
-            // Context.GetHttpContext().RequestServices()
-
             ConnectedUsersIdentities.Add(_masterContext.Users.First(u => u.Id == Context.UserIdentifier));
             var user = new User
             {
@@ -70,33 +69,39 @@ namespace Basra.Server
         }
 
         //sends the message to other contacts
-        public async Task SendMessageAsync(string message)
-        {
-            var messageObject = JsonConvert.DeserializeObject<Message>(message);
-            // JsonConvert.DeserializeObject<dynamic>(message); //you clould use it like this without strict types
+        //public async Task SendMessageAsync(string message)
+        //{
+        //    var messageObject = JsonConvert.DeserializeObject<Message>(message);
+        //    // JsonConvert.DeserializeObject<dynamic>(message); //you clould use it like this without strict types
 
-            System.Console.WriteLine("message from: " + Context.ConnectionId);
+        //    System.Console.WriteLine("message from: " + Context.ConnectionId);
 
-            if (string.IsNullOrEmpty(messageObject.To))
-            {
-                await Clients.All.SendAsync("ShowMessage", messageObject.Value);
-                //what's the method
-            }
-            else
-            {
-                await Clients.Client(messageObject.To).SendAsync("ShowMessage", messageObject.Value);
-            }
-        }
+        //    if (string.IsNullOrEmpty(messageObject.To))
+        //    {
+        //        await Clients.All.SendAsync("ShowMessage", messageObject.Value);
+        //        //what's the method
+        //    }
+        //    else
+        //    {
+        //        await Clients.Client(messageObject.To).SendAsync("ShowMessage", messageObject.Value);
+        //    }
+        //}
 
         #region rpc
         public async Task AskForRoom(int roomGenre, int roomPlayerCount)
         {
-            await PendingRoom.AskForRoom(this, roomGenre, roomPlayerCount);
+            await Structure.Room.Pending.AskForRoom(this, roomGenre, roomPlayerCount);
 
         }
+
         public void Ready()
         {
-            GetCurrentUser().Ready();
+            GetCurrentUser().RUser.Ready();
+        }
+
+        public int[] Throw(int indexInHand)
+        {
+            return GetCurrentUser().RUser.Throw(indexInHand);
         }
         #endregion
 

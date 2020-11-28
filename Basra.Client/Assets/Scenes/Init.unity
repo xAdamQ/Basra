@@ -385,6 +385,8 @@ MonoBehaviour:
   Money: 0
   TestLoginUI: {fileID: 1193718581}
   TestFbigInf: {fileID: 1129281197}
+  Room: {fileID: 0}
+  Lobby: {fileID: 0}
   LaodingPanel: {fileID: 989740899}
 --- !u!1 &852047583
 GameObject:
@@ -434,10 +436,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb03dcf9af33331ead36bb052168894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackPrefab: {fileID: 8249647828415074049, guid: 91cc747f46429b00e945c1e73e073c70, type: 3}
-  CardPrefab: {fileID: 5817480139864948004, guid: 14f9f4b766f15e19399eca9d262f9049, type: 3}
-  MyHandPrefab: {fileID: 5995490670672844398, guid: e8187d3f2596aee3d9b4895ff62ca24d, type: 3}
-  OtherHandPrefab: {fileID: 74464471230816744, guid: ba857669c09897e43af16811e726ef6d, type: 3}
+  FrontPrefab: {fileID: 6318510277521361182, guid: 8d7fc7449ba5f5d4c8bf3fbe2ef81ffb, type: 3}
+  CardPrefab: {fileID: 8249647828415074049, guid: 91cc747f46429b00e945c1e73e073c70, type: 3}
+  HandPrefab: {fileID: 6095275712694222183, guid: 0aec6ccccb153d3fbaa3fd23f5565cfa, type: 3}
+  GroundPrefab: {fileID: 3841681440189108531, guid: 68aff56aa30865e4ab0dadcfd4a17353, type: 3}
   NumberSprites:
   - {fileID: 4774885822605981829, guid: 39883e13245f1054aac7b33760e03982, type: 3}
   - {fileID: 6601591887075733081, guid: 39883e13245f1054aac7b33760e03982, type: 3}
