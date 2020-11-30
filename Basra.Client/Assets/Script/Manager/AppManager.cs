@@ -8,7 +8,6 @@ using UnityEngine.UI;
 using BestHTTP.SignalRCore.Messages;
 using BestHTTP.SignalRCore.Authentication;
 using System.Threading.Tasks;
-using Basra.Core;
 using UnityEngine.SceneManagement;
 using BestHTTP.Futures;
 using System.Reflection;
