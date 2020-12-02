@@ -41,6 +41,7 @@ public class JobsManager : MonoBehaviour
             Unity.Mathematics.math.sqrt(55);
         }
     }
+
     private JobHandle ToughTaskJob()
     {
         var job = new ToughJob();
@@ -57,6 +58,9 @@ public struct ToughJob : IJob
     // [ReadOnly]//works on job struct props
     public void Execute()
     {
-        JobsManager.ToughTask();
+        for (var i = 0; i < 99999; i++)
+        {
+            Unity.Mathematics.math.sqrt(55);
+        }
     }
 }//jobs are taking twice the time in some durations, and give inconsistent framerate.. why? 

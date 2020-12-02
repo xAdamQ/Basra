@@ -16,6 +16,11 @@ namespace Basra.Client
         private void Awake()
         {
             AppManager.I.Lobby = this;
+            AppManager.I.Currents.Add(this);
+        }
+        private void OnDestroy()
+        {
+            AppManager.I.Currents.Remove(this);
         }
 
         void Start()
@@ -24,7 +29,6 @@ namespace Basra.Client
             // UserName.text = AppManger.I.FirebaseAuth.CurrentUser.DisplayName;
         }
 
-        //rpc
         [Rpc]
         public void EnterRoom(int genre, int playerCount)
         {
@@ -35,7 +39,6 @@ namespace Basra.Client
             AppManager.I.StopLoadingPanel();//todo make it hide after async load scene
         }
 
-        //rpc
         [Rpc]
         public void RoomIsFilling()
         {
@@ -47,5 +50,7 @@ namespace Basra.Client
         {
             AppManager.I.HubConnection.Send("AskForRoom", genre, playerCount);
         }
+
+
     }
 }

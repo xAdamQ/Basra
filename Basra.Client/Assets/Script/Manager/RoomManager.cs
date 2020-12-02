@@ -37,6 +37,12 @@ namespace Basra.Client
         private void Awake()
         {
             AppManager.I.Room = this;
+            AppManager.I.Currents.Add(this);
+        }
+
+        private void OnDestroy()
+        {
+            AppManager.I.Currents.Remove(this);
         }
 
         private void Start()
