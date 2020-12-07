@@ -4,6 +4,8 @@ using System.Linq;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using Basra.Server.Exceptions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Basra.Server.Structure.Room
 {
@@ -27,7 +29,9 @@ namespace Basra.Server.Structure.Room
         public int Id { get; }
         private static int LastId { get; set; }
         public List<int> Deck { get; }
-        private int CurrentTurn { get; set; }
+        public int CurrentTurn { get; private set; }
+        private User UserInTurn => Users[CurrentTurn];
+        private Timer TurnTimer;
 
         public static List<Active> All { get; } = new List<Active>();
 
@@ -82,6 +86,7 @@ namespace Basra.Server.Structure.Room
             {
                 Users[u].InitialDistribute();
             }
+
         }
 
         private void Distribute()
@@ -123,17 +128,22 @@ namespace Basra.Server.Structure.Room
             }
         }
 
-        public void Throw(User user)
+        //you can safely pass user not in turn
+        public void NextTurn()
         {
-            var userIndexInRoom = Array.IndexOf(Users, user);
-            if (userIndexInRoom != CurrentTurn)
-            {
-                Console.WriteLine($"player {user.Structure.Id} is cheating");
-                throw new BadUserInputException();
-            }
-            //validation
-
-            CurrentTurn++;
+            // var userIndexInRoom = Array.IndexOf(Users, user);
+            // if (userIndexInRoom != CurrentTurn)
+            // {
+            //     Console.WriteLine($"player {user.Structure.Id} is cheating");
+            //     throw new BadUserInputException();
+            // }
+            CurrentTurn = ++CurrentTurn % Users.Length;
+        }
+        public async Task ResetTurnTimer()
+        {
+            await TurnTimer.DisposeAsync();
+            TurnTimer = new Timer(UserInTurn.OnTurnTimeout, UserInTurn, HandTime * 1000, Timeout.Infinite);
+            //different callback everytime
         }
 
         #region helpers
@@ -154,6 +164,7 @@ namespace Basra.Server.Structure.Room
 
             return false;
         }
+
         #endregion
 
     }

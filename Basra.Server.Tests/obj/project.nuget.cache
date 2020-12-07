@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ecrZ3/ejjxeC51nFB8WB0o96ZdyVX8/x+vHXdP7DEw9DOcemxk3ziRHMdgA2fwcTXLzkwU0UIC2diOrVfgMuXg==",
+  "dgSpecHash": "5GhZE9PF8/hL/pAmY1aV2wxgOViX9Wxjlw//JbBzEjgxMesvxY7Z6dl1Py5QHT4rSUYuxiT9ubYC9dvvjtl5lQ==",
   "success": true,
   "projectFilePath": "/home/adam/Projects/Basra/Basra.Server.Tests/Basra.Server.Tests.csproj",
   "expectedPackageFiles": [
@@ -53,7 +53,8 @@
     "/home/adam/.nuget/packages/xunit.core/2.4.0/xunit.core.2.4.0.nupkg.sha512",
     "/home/adam/.nuget/packages/xunit.extensibility.core/2.4.0/xunit.extensibility.core.2.4.0.nupkg.sha512",
     "/home/adam/.nuget/packages/xunit.extensibility.execution/2.4.0/xunit.extensibility.execution.2.4.0.nupkg.sha512",
-    "/home/adam/.nuget/packages/xunit.runner.visualstudio/2.4.0/xunit.runner.visualstudio.2.4.0.nupkg.sha512"
+    "/home/adam/.nuget/packages/xunit.runner.visualstudio/2.4.0/xunit.runner.visualstudio.2.4.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.app.ref/3.1.8/microsoft.aspnetcore.app.ref.3.1.8.nupkg.sha512"
   ],
   "logs": []
 }

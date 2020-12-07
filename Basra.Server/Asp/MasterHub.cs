@@ -99,10 +99,10 @@ namespace Basra.Server
             GetCurrentUser().RUser.Ready();
         }
 
-        public int[] Throw(int indexInHand)
+        public async Task<int[]> Throw(int indexInHand)
         {
-            return GetCurrentUser().RUser.Throw(indexInHand);
-        }
+            return await GetCurrentUser().RUser.Play(indexInHand);
+        }//automatic actions happen from serevr side and the client knows this overrides his action and do the revert 
         #endregion
 
     }

@@ -15,7 +15,7 @@ namespace Basra.Client
             for (var i = 0; i < ground.Length; i++)
             {
                 var card = MakeCard(ground[i]);
-                ServerAdd(card);
+                OverrideAdd(card);
             }
         }
 
@@ -77,17 +77,22 @@ namespace Basra.Client
 
         // }
 
-        public void VisualAdd(Card card)
+        ///every out rpc is visual, Real, Server
+        public Card[] VisualAdd(Card card)
         {
-            AppManager.I.LastAction.RecoredTransform(card);
+            Cards.Add(card);
+
+            InstantRpcRecord.Current.RecoredTransform(card);
             PlaceCard(card);
+
+            return Cards.CutRange(1, fromEnd: false).ToArray();
         }
-        public void ActualAdd(Card card)
+        public void RealAdd(Card card)
         {
             Cards.Add(card);
             card.Type = CardType.Ground;
         }
-        public void ServerAdd(Card card)
+        public void OverrideAdd(Card card)
         {
             Cards.Add(card);
             PlaceCard(card);

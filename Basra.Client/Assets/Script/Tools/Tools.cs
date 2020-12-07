@@ -28,7 +28,6 @@ namespace Basra.Client
 
         //         var action = Action.CreateDelegate(delegateType, instance, method);
 
-
         //     }
 
 

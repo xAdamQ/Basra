@@ -24,12 +24,22 @@ namespace Basra.Client
 {
     public class AppManager : MonoBehaviour
     {
+        #region props
         public static AppManager I;
+
+        public List<object> Managers = new List<object>();
+        public List<MethodInfo> Rpcs = new List<MethodInfo>();
 
         public HubConnection HubConnection;
         public int Money;
         public User User;
-        public ActionRecord LastAction;
+
+        public GameObject TestLoginUI;
+        public InputField TestFbigInf;
+
+        public RoomManager Room;
+        public LobbyManger Lobby;
+        #endregion
 
         private void Awake()
         {
@@ -37,14 +47,9 @@ namespace Basra.Client
 
             DontDestroyOnLoad(this);
 
-            FetchRpcs();
+            FetchNamespaceRpcs();
 
-            // var eve = GetType().GetEvent("TestConnect");
-            // var tt = eve.EventHandlerType;
 
-            // var mi = GetType().GetMethod("Connect");
-
-            // mi.typs
 #if UNITY_EDITOR
             // SceneManager.UnloadSceneAsync(1);
             Connect("5");
@@ -52,22 +57,10 @@ namespace Basra.Client
 
         }
 
-        public GameObject TestLoginUI;
-        public InputField TestFbigInf;
-
-        public RoomManager Room;
-        public LobbyManger Lobby;
-
-        public List<object> Currents = new List<object>();
-
-        //iterate over the assmbly for the methods, but I need object instances
-
-
         public void TestConnect()
         {
             Connect(TestFbigInf.text);
         }
-
         public void Connect(string fbigToken)
         {
             var protocol = new JsonProtocol(new LitJsonEncoder());
@@ -106,11 +99,6 @@ namespace Basra.Client
             HubConnection.ConnectAsync();
         }
 
-        public void Disconnect()
-        {
-            HubConnection.CloseAsync();
-        }
-
         #region events
         private bool OnMessage(HubConnection arg1, Message message)
         {
@@ -123,9 +111,10 @@ namespace Basra.Client
 
                 var realArgs = HubConnection.Protocol.GetRealArguments(method.GetParameterTypes(), message.arguments);
 
-                var current = Currents.First(obj => obj.GetType() == method.DeclaringType);
+                var manager = Managers.First(obj => obj.GetType() == method.DeclaringType);
+                Debug.Log(manager);
 
-                var tdele = current.GetType().GetEvent(method.Name).EventHandlerType;
+                var tdele = manager.GetType().GetEvent(method.Name).EventHandlerType;
 
                 var dele = Delegate.CreateDelegate(tdele, this, method);
 
@@ -165,10 +154,8 @@ namespace Basra.Client
         {
             LaodingPanel.gameObject.SetActive(false);
         }
-        #endregion
 
-        public List<MethodInfo> Rpcs = new List<MethodInfo>();
-        private void FetchRpcs()
+        private void FetchNamespaceRpcs()
         {
             //you need instance of each object of the fun when server calls
             //get the type of each one and pass the right object
@@ -190,5 +177,6 @@ namespace Basra.Client
                 }
             }
         }
+        #endregion
     }
 }

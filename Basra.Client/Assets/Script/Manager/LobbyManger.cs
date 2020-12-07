@@ -16,11 +16,11 @@ namespace Basra.Client
         private void Awake()
         {
             AppManager.I.Lobby = this;
-            AppManager.I.Currents.Add(this);
+            AppManager.I.Managers.Add(this);
         }
         private void OnDestroy()
         {
-            AppManager.I.Currents.Remove(this);
+            AppManager.I.Managers.Remove(this);
         }
 
         void Start()

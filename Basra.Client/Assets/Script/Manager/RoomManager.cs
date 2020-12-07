@@ -14,17 +14,17 @@ namespace Basra.Client
 
         static Vector2[] HandPozes = new Vector2[]
         {
-        new Vector2(0, -5 + ButtomPadding),
-        new Vector2(0, 5 - UpperPadding),
-        new Vector2(2.5f, 0),
-        new Vector2(-2.5f, 0),
+            new Vector2(0, -5 + ButtomPadding),
+            new Vector2(0, 5 - UpperPadding),
+            new Vector2(2.5f, 0),
+            new Vector2(-2.5f, 0),
         };
         static Vector3[] HandRotations = new Vector3[]
         {
-        new Vector3(),
-        new Vector3(0, 0, 180),
-        new Vector3(0, 0, 90),
-        new Vector3(0, 0, -90),
+            new Vector3(),
+            new Vector3(0, 0, 180),
+            new Vector3(0, 0, 90),
+            new Vector3(0, 0, -90),
         };
 
         //this will work because room follows "Current" patterns
@@ -37,12 +37,13 @@ namespace Basra.Client
         private void Awake()
         {
             AppManager.I.Room = this;
-            AppManager.I.Currents.Add(this);
+            // AppManager.I.Currents.RemoveAll(c => c.GetType() == GetType());
+            AppManager.I.Managers.Add(this);
         }
 
         private void OnDestroy()
         {
-            AppManager.I.Currents.Remove(this);
+            AppManager.I.Managers.Remove(this);
         }
 
         private void Start()

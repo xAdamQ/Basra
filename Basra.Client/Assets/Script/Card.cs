@@ -118,21 +118,22 @@ namespace Basra.Client
         #endregion
 
         //server action initiator, who init the PrevAction
+        //you don't need to match server response with the instant feedback when the algorithm is consistant
         public void VisualThrow()
         {
             if (Type != CardType.Mine)
                 throw new System.Exception("play your card dump ass");
 
             var indexInHand = Hand.Cards.IndexOf(this);
-            AppManager.I.LastAction = new ActionRecord(this, "Throw", indexInHand);
+            var ipr = new InstantRpcRecord(this, "Throw", indexInHand);
 
             Hand.Room.Ground.VisualAdd(this);
 
-            AppManager.I.LastAction.RemoteCall();
+            ipr.Call();
         }
         public void InternalThrow()
         {
-            Hand.Room.Ground.ActualAdd(this);
+            Hand.Room.Ground.RealAdd(this);
             Hand.Cards.Remove(this);
         }
 
@@ -142,7 +143,7 @@ namespace Basra.Client
             //this design make the user init every action which is not true
             var card = Hand.Cards[indexInHand];
             Hand.Room.Ground.VisualAdd(card);
-            Hand.Room.Ground.ActualAdd(card);
+            Hand.Room.Ground.RealAdd(card);
             Hand.Cards.Remove(card);
         }
 
@@ -158,7 +159,7 @@ namespace Basra.Client
             AddFront(id);
 
             Hand.Cards.Remove(this);
-            Hand.Room.Ground.ServerAdd(this);//because server calls this fun
+            Hand.Room.Ground.OverrideAdd(this);//because server calls this fun
         }
 
         public void AddFront(int id)

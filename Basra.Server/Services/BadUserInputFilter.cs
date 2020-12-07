@@ -20,22 +20,19 @@ namespace Basra.Server.Services
             //     invocationContext.HubMethodArguments[languageFilter.FilterArgument] is string str)
 
             Console.WriteLine($"Calling hub method '{invocationContext.HubMethodName}'");
+
             try
             {
                 return await next(invocationContext);
                 //invokes the next filter. And if it's the last filter, invokes the hub method
             }
-
-            catch (BadUserInputException)
+            catch (BadUserInputException ex)
             {
                 Console.WriteLine("BadUserInputException happened");
+                return new ValueTask<object>(ex);
                 // return null;
                 throw;
             }
-            // catch (Exception /*late action*/)
-            // {
-            //     // 
-            // }
             // catch (Exception ex)
             // {
             //     Console.WriteLine($"Exception calling '{invocationContext.HubMethodName}': {ex}");
