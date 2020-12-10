@@ -26,12 +26,11 @@ namespace Basra.Server.Services
                 return await next(invocationContext);
                 //invokes the next filter. And if it's the last filter, invokes the hub method
             }
-            catch (BadUserInputException ex)
+            catch (BadUserInputException)
             {
                 Console.WriteLine("BadUserInputException happened");
-                return new ValueTask<object>(ex);
-                // return null;
-                throw;
+
+                return new ValueTask<object>("error 0");
             }
             // catch (Exception ex)
             // {

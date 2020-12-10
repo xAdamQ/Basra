@@ -40,8 +40,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 3841681440189108531}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64b1e2c51dbab934da9f5b9cf33e4843, type: 3}
+  m_Script: {fileID: 11500000, guid: 7860f2a3f4bc4ce21a1f6119410f9d37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Cards: []
-  Bounds: {x: 1.5, y: 3}
+  Room: {fileID: 0}

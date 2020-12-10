@@ -56,7 +56,7 @@ namespace Basra.Server
 
             services.AddAuthentication(FbigAuthenticationHandler.PROVIDER_NAME)
             .AddScheme<FbigAuthenticationSchemeOptions, FbigAuthenticationHandler>(FbigAuthenticationHandler.PROVIDER_NAME, null);
-            //is it ok to make the scheme naem and provider name the same?
+            //is it ok to make the scheme name and provider name the same?
 
             services.AddCors();
             services.AddControllers();

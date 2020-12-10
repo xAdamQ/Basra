@@ -1,9 +1,10 @@
 ﻿using Basra.Server.Extensions;
+using Basra.Server.Exceptions;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Basra.Server.Structure.Room
 {
@@ -15,12 +16,35 @@ namespace Basra.Server.Structure.Room
         //props for active, so if the user made ready and cancel, this will die without usage
         public Active Active { get; set; }
         public List<int> Hand { get; set; }
-        public int HandTime { get; private set; }
+        public const int HandTime = 11;
+
+        private Timer TurnTimer;
 
         /// <summary>
-        /// id in room
+        /// id in room, turn id
         /// </summary>
         public int Id;
+
+        public User()
+        {
+            TurnTimer = new Timer
+            {
+                Interval = HandTime * 1000,
+                AutoReset = false
+            };
+            TurnTimer.Elapsed += OnTurnTimeout;
+        }
+
+        /// <summary>
+        /// when active is made
+        /// </summary>
+        public async Task StartRoom(Active active, int id, string[] playerNames)
+        {
+            Id = id;
+            Active = active;
+
+            await Program.HubContext.Clients.Client(Structure.ConnectionId).SendAsync("StartRoom", Id, playerNames);
+        }
 
         //rpc
         /// <summary>
@@ -44,36 +68,49 @@ namespace Basra.Server.Structure.Room
             Program.HubContext.Clients.Client(Structure.ConnectionId).SendAsync("Distribute", Hand.ToArray());
         }
 
+        public void StartTurn()
+        {
+            TurnTimer.Start();
+        }
+
         public bool IsMyTurn()
         {
             return Id == Active.CurrentTurn;
         }
 
-        public async void OnTurnTimeout(object state)
+        public void OnTurnTimeout(object sender, ElapsedEventArgs e)
         {
-            await RandomPlay();
+            RandomPlay();
         }
 
         //rpc
-        public async Task<int[]> Play(int cardIndexInHand)
+        public async Task Play(int cardIndexInHand)
         {
             if (!IsMyTurn())
-                throw new Exception();
+                throw new BadUserInputException();//this is invoked by the server also, and may be a server error and it's handle way is ignoring and terminate the action
+            //hub exc are not handled when the actor is the system
+
+            TurnTimer.Stop();
 
             var card = Hand.Cut(cardIndexInHand);
 
+            Active.Ground.Eat(card);//sibling relation is not premited
+
             Active.NextTurn();
 
-            await Active.ResetTurnTimer();
-
-            return Active.Ground.Eat(card);//sibling relation is not premited
+            await Program.HubContext.Clients.GroupExcept("room" + Active.Id, Structure.ConnectionId).SendAsync("OppoThrow", card);
         }
         //rev rpc
-        public async Task<int[]> RandomPlay()
+        public async Task RandomPlay()
         {
             var randomCardIndex = StaticRandom.GetRandom(Hand.Count);
-            return await Play(randomCardIndex);
-        }
 
+            await Task.WhenAll
+            (
+                Play(randomCardIndex),
+                Program.HubContext.Clients.Client(Structure.ConnectionId).SendAsync("OverrideThrow", randomCardIndex)
+            // Structure.SendAsync("OverrideThrow", card)
+            );
+        }
     }
 }

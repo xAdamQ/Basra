@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine.UI;
-namespace Basra.Client
+
+namespace Basra.Client.Room
 {
     public enum CardType { Opponent, Mine, Ground }
 
@@ -18,11 +19,11 @@ namespace Basra.Client
         public Front Front;
 
         //works on my, oppo
-        public Hand Hand;
+        public User User;
 
         protected void Awake()
         {
-            Hand = transform.parent.GetComponent<Hand>();
+            User = transform.parent.GetComponent<User>();
 
             switch (Type)
             {
@@ -37,8 +38,11 @@ namespace Basra.Client
             }
         }
 
+        //me
         private void OnMouseDown()
         {
+            if (User.Type != UserType.Me || User.TurnId != User.Room.CurrentTurn) return;
+
             VisualThrow();
         }
 
@@ -121,45 +125,40 @@ namespace Basra.Client
         //you don't need to match server response with the instant feedback when the algorithm is consistant
         public void VisualThrow()
         {
-            if (Type != CardType.Mine)
-                throw new System.Exception("play your card dump ass");
+            User.TurnTimer.Stop();
 
-            var indexInHand = Hand.Cards.IndexOf(this);
+            var indexInHand = User.Cards.IndexOf(this);
             var ipr = new InstantRpcRecord(this, "Throw", indexInHand);
 
-            Hand.Room.Ground.VisualAdd(this);
+            User.Room.Ground.VisualAdd(this);
 
             ipr.Call();
         }
-        public void InternalThrow()
+        public void RealThrow()
         {
-            Hand.Room.Ground.RealAdd(this);
-            Hand.Cards.Remove(this);
-        }
+            User.Room.Ground.RealAdd(this);
+            User.Cards.Remove(this);
 
-        public void ServerThrow(int indexInHand)
+        }
+        public void OverrideThrow()
         {
             //happens when it's time, not in the error message, the client is blocked before the server by seconds so there shouldn't be error possibilty
             //this design make the user init every action which is not true
-            var card = Hand.Cards[indexInHand];
-            Hand.Room.Ground.VisualAdd(card);
-            Hand.Room.Ground.RealAdd(card);
-            Hand.Cards.Remove(card);
+            User.Room.Ground.VisualAdd(this);
+            User.Room.Ground.RealAdd(this);
         }
-
 
         /// <summary>
         /// for oppo cards only, 
         /// </summary>
         public void Throw(int id)
         {
-            if (Type != CardType.Opponent)
-                throw new System.Exception("play opponent card dump ass");
+            User.TurnTimer.Stop();
 
             AddFront(id);
 
-            Hand.Cards.Remove(this);
-            Hand.Room.Ground.OverrideAdd(this);//because server calls this fun
+            User.Cards.Remove(this);
+            User.Room.Ground.OverrideAdd(this);//because server calls this fun
         }
 
         public void AddFront(int id)

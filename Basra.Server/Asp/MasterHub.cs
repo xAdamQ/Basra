@@ -21,9 +21,7 @@ namespace Basra.Server
         //hub life time is not even per connection, it's per request!
 
         private readonly SignInManager<BasraIdentityUser> _signInManager;
-        private readonly MasterContext _masterContext;
 
-        private static List<BasraIdentityUser> ConnectedUsersIdentities { get; } = new List<BasraIdentityUser>();//filled using the conyext, isn't it loaded by default?
         private static List<User> ConnectedUsers { get; } = new List<User>();
 
         // public RuntimeUser GetUser(string connectionId) => RuntimeUsers.First(u => u.ConnectionId == connectionId);
@@ -33,19 +31,19 @@ namespace Basra.Server
         public MasterHub(SignInManager<BasraIdentityUser> signInManager, MasterContext masterContext)
         {
             _signInManager = signInManager;
-            _masterContext = masterContext;
         }
 
         public override async Task OnConnectedAsync()
         {
             System.Console.WriteLine($"connection established: {Context.ConnectionId} {Context.UserIdentifier}");
 
-            ConnectedUsersIdentities.Add(_masterContext.Users.First(u => u.Id == Context.UserIdentifier));
             var user = new User
             {
                 Id = Context.UserIdentifier,
                 ConnectionId = Context.ConnectionId,
+                Name = Context.User.Identity.Name,
             };
+
             ConnectedUsers.Add(user);
             //the claims principle shoud pass the id here
 
@@ -62,8 +60,6 @@ namespace Basra.Server
             currentUser.Disconncted = true;
             ConnectedUsers.Remove(currentUser);
             //removed from groups automatically
-
-            ConnectedUsersIdentities.Remove(u => u.Id == Context.UserIdentifier);
 
             await base.OnDisconnectedAsync(exception);
         }
@@ -91,7 +87,6 @@ namespace Basra.Server
         public async Task AskForRoom(int roomGenre, int roomPlayerCount)
         {
             await Structure.Room.Pending.AskForRoom(this, roomGenre, roomPlayerCount);
-
         }
 
         public void Ready()
@@ -99,10 +94,14 @@ namespace Basra.Server
             GetCurrentUser().RUser.Ready();
         }
 
-        public async Task<int[]> Throw(int indexInHand)
+        public async Task Throw(int indexInHand)
         {
-            return await GetCurrentUser().RUser.Play(indexInHand);
+            await GetCurrentUser().RUser.Play(indexInHand);
         }//automatic actions happen from serevr side and the client knows this overrides his action and do the revert 
+        public async Task InformTurnTimeout()
+        {
+            await GetCurrentUser().RUser.RandomPlay();
+        }
         #endregion
 
     }

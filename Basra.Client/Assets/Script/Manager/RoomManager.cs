@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Timers;
 
-namespace Basra.Client
+namespace Basra.Client.Room
 {
+    //room has user room info like turn id
+    //hand has 2 types.. oppo, mine
+
     public class RoomManager : MonoBehaviour
     {
-        private Hand[] Hands;
-        public Ground Ground;
-
         static float UpperPadding = .5f, ButtomPadding = 1f;
 
         static Vector2[] HandPozes = new Vector2[]
@@ -27,12 +28,21 @@ namespace Basra.Client
             new Vector3(0, 0, -90),
         };
 
-        //this will work because room follows "Current" patterns
+        //this will work because room follows "Current" pattern
         //any static you have to reinit
+        //they are static because they're set when there's no instance of this
         public static int Genre;
         public static int PlayerCount;
+        public static int MyTurnId;
+        public static string[] UserNames;
 
         [SerializeField] Text GenreText;
+
+        private User[] Users;
+        public Ground Ground;
+        public int CurrentTurn;
+
+        private User UserInTurn => Users[CurrentTurn];
 
         private void Awake()
         {
@@ -49,22 +59,26 @@ namespace Basra.Client
         private void Start()
         {
             Ready();
-            GenreText.text = Genre.ToString();
 
-            InitHands();
+            InitUsers();
             InitGround();
+            InitVisuals();
         }
 
-        private void InitHands()
+        private void InitUsers()
         {
-            Hands = new Hand[PlayerCount];
+            Users = new User[PlayerCount];
 
             for (var i = 0; i < PlayerCount; i++)
             {
-                Hands[i] = Instantiate(FrequentAssets.I.HandPrefab).GetComponent<Hand>();
-                Hands[i].transform.position = HandPozes[i];
-                Hands[i].transform.eulerAngles = HandRotations[i];
-                Hands[i].Room = this;
+                var user = Instantiate(FrequentAssets.I.HandPrefab).GetComponent<User>();
+                user.transform.position = HandPozes[i];
+                user.transform.eulerAngles = HandRotations[i];
+                user.Room = this;
+                user.Name = UserNames[i];
+                user.Type = i == MyTurnId ? UserType.Me : UserType.Oppo;
+
+                Users[i] = user;
             }
         }
         private void InitGround()
@@ -72,30 +86,62 @@ namespace Basra.Client
             Ground = Instantiate(FrequentAssets.I.GroundPrefab, Vector3.zero, new Quaternion()).GetComponent<Ground>();
             Ground.Room = this;
         }
+        private void InitVisuals()
+        {
+            GenreText.text = Genre.ToString();
+        }
 
+        //have something more than it's name, can be changes in the future
         [Rpc]
         public void InitialDistribute(int[] hand, int[] ground)
         {
             Ground.Set(ground);
             Distribute(hand);
+
+            UserInTurn.StartTurn();
         }
 
         [Rpc]
         public void Distribute(int[] hand)
         {
-            Hands[0].Set(hand);
-
-            for (var i = 1; i < PlayerCount; i++)
+            for (var i = 0; i < PlayerCount; i++)
             {
-                Hands[i].Set();
+                if (Users[i].Type == UserType.Me)
+                {
+                    Users[i].Set(hand);
+                }
+                else
+                {
+                    Users[i].Set();
+                }
             }
 
             Debug.Log($"hand cards are {hand[0]} {hand[1]} {hand[2]} {hand[3]}");
         }
 
+        //rev rpc
         public void Ready()
         {
             AppManager.I.HubConnection.SendAsync("Ready");
         }
+
+        public void NextTurn()
+        {
+            CurrentTurn = ++CurrentTurn % Users.Length;
+            UserInTurn.StartTurn();
+        }
+
+        [Rpc]
+        public void OppoThrow(int cardId)
+        {
+            var randomCard = Random.Range(0, UserInTurn.Cards.Count);
+            UserInTurn.Cards[randomCard].Throw(cardId);
+        }
+        [Rpc]
+        public void OverrideThrow(int cardIndex)
+        {
+            UserInTurn.Cards[cardIndex].OverrideThrow();
+        }
+
     }
 }

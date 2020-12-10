@@ -42,16 +42,12 @@ namespace Basra.Server.Structure.Room
 
             var initiator = hub.GetCurrentUser();
 
-            var rUser = new User
+            initiator.RUser = new User
             {
                 Structure = initiator,
             };
 
-            initiator.RUser = rUser;
-
-            pRoom.Users.Add(rUser);
-            await hub.Groups.AddToGroupAsync(initiator.ConnectionId, "room" + pRoom.Id);
-            Console.WriteLine($"player {initiator.Id} has entered room");
+            pRoom.Users.Add(initiator.RUser);
 
             pRoom.Users.RemoveAll(u => u.Structure.Disconncted);
 
@@ -59,10 +55,8 @@ namespace Basra.Server.Structure.Room
             {
                 All.Remove(pRoom);
 
-                var hubContext = hub.Context.GetHttpContext().RequestServices.GetService(typeof(IHubContext<MasterHub>)) as IHubContext<MasterHub>;
-                var room = new Active(pRoom);
-
-                await hub.Clients.Group("room" + pRoom.Id).SendAsync("EnterRoom", genre, playerCount);
+                var active = new Active(pRoom);
+                await active.Start();
             }
             else
             {

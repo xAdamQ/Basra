@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using BestHTTP.SignalRCore;
 using UnityEngine.SceneManagement;
 using System.Reflection;
+
 namespace Basra.Client
 {
     public class LobbyManger : MonoBehaviour
@@ -30,12 +31,13 @@ namespace Basra.Client
         }
 
         [Rpc]
-        public void EnterRoom(int genre, int playerCount)
+        public void StartRoom(int myTurnId, string[] userNames)
         {
-            Debug.Log("Should Enter Room");
-            RoomManager.Genre = genre;
-            RoomManager.PlayerCount = playerCount;
+            Room.RoomManager.UserNames = userNames;
+            Room.RoomManager.MyTurnId = myTurnId;
+
             SceneManager.LoadScene(2);
+
             AppManager.I.StopLoadingPanel();//todo make it hide after async load scene
         }
 
@@ -48,6 +50,8 @@ namespace Basra.Client
         //button
         public void AskForRoom(int genre, int playerCount)
         {
+            Room.RoomManager.Genre = genre;
+            Room.RoomManager.PlayerCount = playerCount;
             AppManager.I.HubConnection.Send("AskForRoom", genre, playerCount);
         }
 

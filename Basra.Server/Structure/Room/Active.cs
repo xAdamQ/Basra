@@ -4,8 +4,8 @@ using System.Linq;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using Basra.Server.Exceptions;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Basra.Server.Structure.Room
 {
@@ -19,7 +19,6 @@ namespace Basra.Server.Structure.Room
         //todo action that happened after it's time e.g. play card
 
         public int DeckSize => 52;
-        public int HandTime => 10;//7 in the client
         public int ShapeSize => 13;
 
         public int Genre { get; }
@@ -31,32 +30,36 @@ namespace Basra.Server.Structure.Room
         public List<int> Deck { get; }
         public int CurrentTurn { get; private set; }
         private User UserInTurn => Users[CurrentTurn];
-        private Timer TurnTimer;
 
         public static List<Active> All { get; } = new List<Active>();
 
-        private int GetUserRoomId(string userId)
+        public async Task Start()
         {
-            return Array.FindIndex(Users, u => u.Structure.Id == userId);
+            var userNames = Users.Select(u => u.Structure.Name).ToArray();
+            var tasks = new List<Task>();
+            for (int i = 0; i < Users.Length; i++)
+            {
+                tasks.Add(Program.HubContext.Groups.AddToGroupAsync(Users[i].Structure.ConnectionId, "room" + Id));
+                tasks.Add(Users[i].StartRoom(this, i, userNames));
+            }
+
+            await Task.WhenAll(tasks);
         }
 
         public Active(Pending pendingRoom)
         {
+            All.Add(this);
 
             Genre = pendingRoom.Genre;
             Users = pendingRoom.Users.ToArray();
             Id = LastId++;
-
-            foreach (var user in Users)
-            {
-                user.Active = this;
-            }
 
             IsReady = new bool[Users.Length];
 
             Deck = GenerateDeck();
 
             Ground = new Ground(Deck.CutRange(User.HandSize));
+
         }
 
         private List<int> GenerateDeck()
@@ -128,25 +131,15 @@ namespace Basra.Server.Structure.Room
             }
         }
 
-        //you can safely pass user not in turn
         public void NextTurn()
         {
-            // var userIndexInRoom = Array.IndexOf(Users, user);
-            // if (userIndexInRoom != CurrentTurn)
-            // {
-            //     Console.WriteLine($"player {user.Structure.Id} is cheating");
-            //     throw new BadUserInputException();
-            // }
             CurrentTurn = ++CurrentTurn % Users.Length;
-        }
-        public async Task ResetTurnTimer()
-        {
-            await TurnTimer.DisposeAsync();
-            TurnTimer = new Timer(UserInTurn.OnTurnTimeout, UserInTurn, HandTime * 1000, Timeout.Infinite);
-            //different callback everytime
+            UserInTurn.StartTurn();
         }
 
         #region helpers
+        private int GetUserRoomId(string userId) => Array.FindIndex(Users, u => u.Structure.Id == userId);
+
         /// <summary>
         /// check if the given index is equal to all similar indices, e.g. 7, 7+13, 7+26 (different colors of 7)
         /// </summary>
@@ -164,7 +157,6 @@ namespace Basra.Server.Structure.Room
 
             return false;
         }
-
         #endregion
 
     }

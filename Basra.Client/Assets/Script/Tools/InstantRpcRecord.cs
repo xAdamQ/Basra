@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 
 namespace Basra.Client
 {
-    //can you make concurrent actions?
-    //yes!! you can play a card and send a message without serevr confirmation
-
     //### can non monobehaviours use oop freely?
 
     //when function is called rpc, mine or serevr'???
@@ -74,6 +71,13 @@ namespace Basra.Client
         {
             var methodInfo = Initiator.GetType().GetMethod("Real" + Verb);
             methodInfo.Invoke(Initiator, null);
+        }
+
+        public void Revert()
+        {
+            Debug.Log("revert record");
+            RevertTransforms();
+            Current = null;
         }
 
         private void RevertTransforms()

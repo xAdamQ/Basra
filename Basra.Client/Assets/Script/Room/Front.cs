@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
-namespace Basra.Client
+
+namespace Basra.Client.Room
 {
     public class Front : MonoBehaviour
     {

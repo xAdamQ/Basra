@@ -104,7 +104,7 @@ namespace Basra.Server.Services
             var user = new BasraIdentityUser
             {
                 FbId = fbUserId,
-                UserName = fbUserId,
+                UserName = "AsAName_" + fbUserId,
             };
 
             var result = await _userManager.CreateAsync(user);

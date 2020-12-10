@@ -37,7 +37,7 @@ namespace Basra.Client
         public GameObject TestLoginUI;
         public InputField TestFbigInf;
 
-        public RoomManager Room;
+        public Room.RoomManager Room;
         public LobbyManger Lobby;
         #endregion
 
@@ -111,16 +111,31 @@ namespace Basra.Client
 
                 var realArgs = HubConnection.Protocol.GetRealArguments(method.GetParameterTypes(), message.arguments);
 
+                if (realArgs != null)
+                {
+                    var debugMessage = string.Empty;
+                    foreach (var item in realArgs)
+                    {
+                        debugMessage += item.ToString();
+                    }
+                    Debug.Log(debugMessage);
+                }
+
                 var manager = Managers.First(obj => obj.GetType() == method.DeclaringType);
-                Debug.Log(manager);
+                // Debug.Log(manager);
 
-                var tdele = manager.GetType().GetEvent(method.Name).EventHandlerType;
+                // var tdele = manager.GetType().GetEvent(method.Name).EventHandlerType;
 
-                var dele = Delegate.CreateDelegate(tdele, this, method);
+                // var dele = Delegate.CreateDelegate(tdele, this, method);
 
-                dele.DynamicInvoke(realArgs);
+                // dele.DynamicInvoke(realArgs);
 
-                // method.Invoke(current, realArgs);//the only problem
+                if (method.Name.StartsWith("Override"))
+                    InstantRpcRecord.Current?.Revert();
+
+                method.Invoke(manager, realArgs);//the only problem
+
+                return false;
             }
 
             return true;
@@ -162,7 +177,7 @@ namespace Basra.Client
 
             var namespaceTypes = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(a => a.GetTypes())
-            .Where(t => t.IsClass && t.Namespace == "Basra.Client");
+            .Where(t => t.IsClass && (t.Namespace == "Basra.Client" || t.Namespace == "Basra.Client.Room"));
 
             foreach (var type in namespaceTypes)
             {

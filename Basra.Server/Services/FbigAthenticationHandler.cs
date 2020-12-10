@@ -102,7 +102,7 @@ namespace Basra.Server.Services
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id),
                      //this is the identifier used in the signalr, this claim type "NameIdentifier" could be changed with IUserIdProvider
-                    new Claim(ClaimTypes.Name, "tst name"),
+                    new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(ClaimTypes.Email, "tst mail"),
                     // new Claim("UserType", "General"),//role?
                 };//this the only claims I can obtain from the payload
