@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "lQ5mBYgpGgJ16N40iJR/kzQbRok/7AI8NDYQ/TWu/ogqDMS01VOhBn7ttFs3+1fiFDeCHkDCMeWeoWecMjwfjw==",
+  "dgSpecHash": "UpqDkaVlFxm/p8cm6Fc9vw2PWmiV8MVbo6+QsgsDLDIXe8ewmKWIx/R9SFfQBWi1wlxw68v71yt2vMY9c5idVg==",
   "success": true,
   "projectFilePath": "/home/adam/Projects/Basra/Basra.Server/Basra.Server.csproj",
   "expectedPackageFiles": [
@@ -30,7 +30,8 @@
     "/home/adam/.nuget/packages/pomelo.entityframeworkcore.mysql/5.0.0-alpha.2/pomelo.entityframeworkcore.mysql.5.0.0-alpha.2.nupkg.sha512",
     "/home/adam/.nuget/packages/system.collections.immutable/5.0.0/system.collections.immutable.5.0.0.nupkg.sha512",
     "/home/adam/.nuget/packages/system.componentmodel.annotations/5.0.0/system.componentmodel.annotations.5.0.0.nupkg.sha512",
-    "/home/adam/.nuget/packages/system.diagnostics.diagnosticsource/5.0.0/system.diagnostics.diagnosticsource.5.0.0.nupkg.sha512"
+    "/home/adam/.nuget/packages/system.diagnostics.diagnosticsource/5.0.0/system.diagnostics.diagnosticsource.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/system.reactive/5.0.0/system.reactive.5.0.0.nupkg.sha512"
   ],
   "logs": []
 }

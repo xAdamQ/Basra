@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using Basra.Server.Extensions;
 using System.Linq;
 using Basra.Server.Structure;
+using Basra.Server.Exceptions;
+using System.Threading;
 
 //todo learn about thread safety
 namespace Basra.Server
@@ -60,7 +62,6 @@ namespace Basra.Server
             currentUser.Disconncted = true;
             ConnectedUsers.Remove(currentUser);
             //removed from groups automatically
-
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -101,6 +102,35 @@ namespace Basra.Server
         public async Task InformTurnTimeout()
         {
             await GetCurrentUser().RUser.RandomPlay();
+        }
+
+        public void MakeBadUserInputException()
+        {
+            throw new BadUserInputException();
+        }
+        public void DummyFunction()
+        {
+            System.Console.WriteLine("dummy called");
+        }
+
+        public static CancellationTokenSource testSource;
+        public async Task TestAsync()
+        {
+            testSource = new CancellationTokenSource();
+
+            testSource.CancelAfter(3500);
+
+            try
+            {
+                await Task.Delay(3000, testSource.Token);
+            }
+            catch (TaskCanceledException)
+            {
+                System.Console.WriteLine("Task cancelled");
+                return;
+            }
+
+            System.Console.WriteLine("success 7985255555555");
         }
         #endregion
 

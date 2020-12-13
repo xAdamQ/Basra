@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Threading;
 
 namespace Basra.Server.Structure.Room
 {
@@ -18,22 +19,12 @@ namespace Basra.Server.Structure.Room
         public List<int> Hand { get; set; }
         public const int HandTime = 11;
 
-        private Timer TurnTimer;
+        // private Timer TurnTimer;
 
         /// <summary>
         /// id in room, turn id
         /// </summary>
         public int Id;
-
-        public User()
-        {
-            TurnTimer = new Timer
-            {
-                Interval = HandTime * 1000,
-                AutoReset = false
-            };
-            TurnTimer.Elapsed += OnTurnTimeout;
-        }
 
         /// <summary>
         /// when active is made
@@ -68,19 +59,11 @@ namespace Basra.Server.Structure.Room
             Program.HubContext.Clients.Client(Structure.ConnectionId).SendAsync("Distribute", Hand.ToArray());
         }
 
+        CancellationTokenSource TurnTimoutCancelation;
         public void StartTurn()
         {
-            TurnTimer.Start();
-        }
-
-        public bool IsMyTurn()
-        {
-            return Id == Active.CurrentTurn;
-        }
-
-        public void OnTurnTimeout(object sender, ElapsedEventArgs e)
-        {
-            RandomPlay();
+            TurnTimoutCancelation = new CancellationTokenSource();
+            Task.Delay(HandTime).ContinueWith(t => RandomPlay(), TurnTimoutCancelation.Token);
         }
 
         //rpc
@@ -90,7 +73,7 @@ namespace Basra.Server.Structure.Room
                 throw new BadUserInputException();//this is invoked by the server also, and may be a server error and it's handle way is ignoring and terminate the action
             //hub exc are not handled when the actor is the system
 
-            TurnTimer.Stop();
+            TurnTimoutCancelation.Cancel();
 
             var card = Hand.Cut(cardIndexInHand);
 
@@ -112,5 +95,15 @@ namespace Basra.Server.Structure.Room
             // Structure.SendAsync("OverrideThrow", card)
             );
         }
+
+        #region helpers
+
+        public bool IsMyTurn()
+        {
+            return Id == Active.CurrentTurn;
+        }
+
+
+        #endregion
     }
 }

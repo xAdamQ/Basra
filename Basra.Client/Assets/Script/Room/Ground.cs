@@ -16,8 +16,14 @@ namespace Basra.Client.Room
             for (var i = 0; i < ground.Length; i++)
             {
                 var card = MakeCard(ground[i]);
-                OverrideAdd(card);
+                Distribute(card);
             }
+        }
+
+        public void Distribute(Card card)
+        {
+            Cards.Add(card);
+            PlaceCard(card);
         }
 
         public Card MakeCard(int id)
@@ -34,71 +40,23 @@ namespace Basra.Client.Room
             card.transform.position = new Vector3(xPoz, yPoz);
         }
 
-        // public void Add(Card card)
-        // {
-        //     // PrevCards = new List<Card>(Cards);
-        //     // PrevCard = Instantiate(card);
-        //     // PrevCard.gameObject.SetActive(false);
-
-        //     Cards.Add(card);
-        //     PlaceCard(card);
-        //     card.Type = CardType.Ground;
-        // }
-        // public void ReversAddIF(Card card)
-        // {
-        //     Cards = new List<Card>(PrevCards);
-        //     Destroy(card);
-        //     card = PrevCard;
-        //     card.gameObject.SetActive(true);
-        // }
-
-        // public void AddIF(Card card)
-        // {
-        //     Cards.Add(card);
-
-        //     PlaceCard(card);
-
-        //     card.Type = CardType.Ground;
-        // }
-
-        // public void ShadowAdd(Card card)
-        // {
-        //     ProcessingCard = card;
-        //     PlaceCard(ProcessingCard);
-        // }
-        // public void ConfirmAdd()
-        // {
-        //     Cards.Add(ProcessingCard);
-        //     ProcessingCard.Type = CardType.Ground;
-        // }
-        // public void ReverseAdd()
-        // {
-        //     //return card back to it's position, so you could memorized the state of it
-        //     //memorizing is the key for a time machine
-
-        // }
-
         ///every out rpc is visual, Real, Server
-        public Card[] VisualAdd(Card card)
+        public void RecordThrow(Card card)
         {
-            Cards.Add(card);
-
             InstantRpcRecord.Current.RecoredTransform(card);
+        }
+        public Card[] VisualThrow(Card card)
+        {
             PlaceCard(card);
+            return Cards.GetRange(0, 1).ToArray();
+        }
+        public void ConfirmThrow(Card card)
+        {
+            Cards.Add(card);
+            card.Type = CardType.Ground;
+        }
 
-            return Cards.CutRange(1, fromEnd: false).ToArray();
-        }
-        public void RealAdd(Card card)
-        {
-            Cards.Add(card);
-            card.Type = CardType.Ground;
-        }
-        public void OverrideAdd(Card card)
-        {
-            Cards.Add(card);
-            PlaceCard(card);
-            card.Type = CardType.Ground;
-        }
+        //card -> list of cards
 
 
     }

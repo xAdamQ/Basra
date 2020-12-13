@@ -34,7 +34,7 @@ namespace Basra.Client.Room
 
         private void OnTurnTimeout()
         {
-            AppManager.I.HubConnection.Invoke<int>("InformTurnTimeout").OnSuccess(cardIndex => Cards[cardIndex].OverrideThrow());
+            AppManager.I.HubConnection.Invoke<int>("InformTurnTimeout").OnSuccess(cardIndex => Cards[cardIndex].Throw());
             //this can't be instant because the random algo is not excpected
         }
 
@@ -93,6 +93,5 @@ namespace Basra.Client.Room
             Cards.Add(card);
             return card;
         }
-
     }
 }

@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace Basra.Client
 {
-    public class LobbyManger : MonoBehaviour
+    public class LobbyManager : MonoBehaviour
     {
         [SerializeField] Image UserPic;
         [SerializeField] Text UserName;

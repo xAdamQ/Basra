@@ -1,33 +1,38 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System.Reflection;
-using System.Threading.Tasks;
+using System;
 
 namespace Basra.Client
 {
     //### can non monobehaviours use oop freely?
-
     //when function is called rpc, mine or serevr'???
 
     public class InstantRpcRecord
     {
-        private MonoBehaviour Initiator;
-        private string Verb;
-        private object[] ServerArgs;
-
         /// <summary>
         /// must be null when assigned, as well as any 'current'
         /// </summary>
         public static InstantRpcRecord Current;
 
-        public InstantRpcRecord(MonoBehaviour initiator, string verb, params object[] serverArgs)
+        private Action Confirmation;
+
+        public InstantRpcRecord(System.Action confirmation)
         {
             if (Current != null) throw new System.Exception("you are breaking the current pattern");
             Current = this;
 
-            Initiator = initiator;
-            Verb = verb;
-            ServerArgs = serverArgs;
+            Confirmation = confirmation;
+        }
+
+        public void RevertVisuals()
+        {
+            RevertTransforms();
+            Current = null;
+        }
+        public void Confirm()
+        {
+            Confirmation?.Invoke();
+            Current = null;
         }
 
         private Dictionary<MonoBehaviour, TransformValue> Transforms = new Dictionary<MonoBehaviour, TransformValue>();
@@ -35,51 +40,6 @@ namespace Basra.Client
         {
             Transforms.Add(monoBehaviour, new TransformValue(monoBehaviour.transform));
         }
-
-        public void Call()
-        {
-            // var result = await AppManager.I.HubConnection.SendAsync(Verb, ServerArgs);
-            //awaited code works well using coro
-
-            AppManager.I.HubConnection.Send(Verb, ServerArgs)
-            .OnComplete(futures =>
-            {
-                Debug.Log("compleeeeeeeeeeeeeeeeeeeeeeeeeeted call");
-                ////### consider dispose
-                Current = null;
-                // LastAction.
-                //move to refelctions because it will save alot
-                // typeof(LobbyManger).GetMethod(nameof(Lobby.))
-            })
-            .OnSuccess(future =>
-            {
-                Debug.Log("Succcccccccceeeeeeeeeeeedeeeeeeeed call");
-                ExcuteReal();
-            })
-            .OnError(exc =>
-            {
-                Debug.Log("eroooooooooooooooooooooooooooooooooor call" + exc);
-                //the server call do the revert, no action needed late action with is the only possible error right now
-                // ServerCall();
-                //I choose the user exceptions, so you can make some uses with it
-                //reverse target and correct the action
-            });
-
-        }
-
-        private void ExcuteReal()
-        {
-            var methodInfo = Initiator.GetType().GetMethod("Real" + Verb);
-            methodInfo.Invoke(Initiator, null);
-        }
-
-        public void Revert()
-        {
-            Debug.Log("revert record");
-            RevertTransforms();
-            Current = null;
-        }
-
         private void RevertTransforms()
         {
             foreach (var item in Transforms)
@@ -89,13 +49,11 @@ namespace Basra.Client
         }
     }
 
-
-
     public struct TransformValue
     {
         public Vector3 Position, EularAngles, Scale;
 
-        public TransformValue(UnityEngine.Transform transform)
+        public TransformValue(Transform transform)
         {
             Position = transform.position;
             EularAngles = transform.eulerAngles;

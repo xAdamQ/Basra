@@ -21,17 +21,17 @@ namespace Basra.Server.Services
 
             Console.WriteLine($"Calling hub method '{invocationContext.HubMethodName}'");
 
-            try
-            {
-                return await next(invocationContext);
-                //invokes the next filter. And if it's the last filter, invokes the hub method
-            }
-            catch (BadUserInputException)
-            {
-                Console.WriteLine("BadUserInputException happened");
-
-                return new ValueTask<object>("error 0");
-            }
+            // try
+            // {
+            return await next(invocationContext);
+            //invokes the next filter. And if it's the last filter, invokes the hub method
+            // }
+            // catch (BadUserInputException)
+            // {
+            //     // throw new HubException();
+            //     // Console.WriteLine("BadUserInputException happened");
+            //     return new ValueTask<object>("error 0");
+            // }
             // catch (Exception ex)
             // {
             //     Console.WriteLine($"Exception calling '{invocationContext.HubMethodName}': {ex}");

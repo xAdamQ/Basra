@@ -37,6 +37,9 @@ namespace Basra.Server.Structure.Room
         {
             var userNames = Users.Select(u => u.Structure.Name).ToArray();
             var tasks = new List<Task>();
+
+            Users[0].StartTurn();
+
             for (int i = 0; i < Users.Length; i++)
             {
                 tasks.Add(Program.HubContext.Groups.AddToGroupAsync(Users[i].Structure.ConnectionId, "room" + Id));
@@ -59,7 +62,6 @@ namespace Basra.Server.Structure.Room
             Deck = GenerateDeck();
 
             Ground = new Ground(Deck.CutRange(User.HandSize));
-
         }
 
         private List<int> GenerateDeck()

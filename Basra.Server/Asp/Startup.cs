@@ -36,9 +36,9 @@ namespace Basra.Server
                     _configuration.GetConnectionString("Main"),
                     new MySqlServerVersion(new Version(8, 0, 21)),
                     mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)
-                )
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors();
+                );
+                // .EnableSensitiveDataLogging()
+                // .EnableDetailedErrors();
             });
 
             // services.AddDbContext<MasterContext>(options =>
@@ -64,6 +64,7 @@ namespace Basra.Server
             {
                 options.AddFilter<BadUserInputFilter>();
             });
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

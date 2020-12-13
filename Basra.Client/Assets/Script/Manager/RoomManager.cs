@@ -135,12 +135,12 @@ namespace Basra.Client.Room
         public void OppoThrow(int cardId)
         {
             var randomCard = Random.Range(0, UserInTurn.Cards.Count);
-            UserInTurn.Cards[randomCard].Throw(cardId);
+            UserInTurn.Cards[randomCard].OppoThrow(cardId);
         }
         [Rpc]
         public void OverrideThrow(int cardIndex)
         {
-            UserInTurn.Cards[cardIndex].OverrideThrow();
+            UserInTurn.Cards[cardIndex].Throw();
         }
 
     }

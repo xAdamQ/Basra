@@ -38,7 +38,7 @@ namespace Basra.Client
         public InputField TestFbigInf;
 
         public Room.RoomManager Room;
-        public LobbyManger Lobby;
+        public LobbyManager Lobby;
         #endregion
 
         private void Awake()
@@ -47,7 +47,7 @@ namespace Basra.Client
 
             DontDestroyOnLoad(this);
 
-            FetchNamespaceRpcs();
+            FetchManagersRpcs();
 
 
 #if UNITY_EDITOR
@@ -56,7 +56,10 @@ namespace Basra.Client
 #endif
 
         }
-
+        private void Start()
+        {
+            Managers.Add(this);
+        }
         public void TestConnect()
         {
             Connect(TestFbigInf.text);
@@ -100,11 +103,17 @@ namespace Basra.Client
         }
 
         #region events
+        private void OnConntected(HubConnection obj)
+        {
+            HubConnection.Send("TestAsync");
+            SceneManager.LoadScene(1);
+        }
         private bool OnMessage(HubConnection arg1, Message message)
         {
             Debug.Log($"OnMessage {message}");
             //call the rpcs using reflection and lobby, room objects
             // [Invocation Id: , Target: 'EnterRoom', Argument count: 2, Stream Ids: 0]
+
             if (message.type == MessageTypes.Invocation)
             {
                 var method = Rpcs.Find(m => m.Name == message.target);
@@ -113,25 +122,19 @@ namespace Basra.Client
 
                 if (realArgs != null)
                 {
-                    var debugMessage = string.Empty;
+                    var debugMessage = "args are:  ";
                     foreach (var item in realArgs)
                     {
-                        debugMessage += item.ToString();
+                        debugMessage += item.ToString() + "  --  ";
                     }
                     Debug.Log(debugMessage);
                 }
+                //debug args
 
                 var manager = Managers.First(obj => obj.GetType() == method.DeclaringType);
-                // Debug.Log(manager);
-
-                // var tdele = manager.GetType().GetEvent(method.Name).EventHandlerType;
-
-                // var dele = Delegate.CreateDelegate(tdele, this, method);
-
-                // dele.DynamicInvoke(realArgs);
 
                 if (method.Name.StartsWith("Override"))
-                    InstantRpcRecord.Current?.Revert();
+                    InstantRpcRecord.Current?.RevertVisuals();
 
                 method.Invoke(manager, realArgs);//the only problem
 
@@ -144,12 +147,6 @@ namespace Basra.Client
         private void OnClosed(HubConnection obj)
         {
             Debug.Log("OnClosed");
-        }
-        private void OnConntected(HubConnection obj)
-        {
-            Debug.Log("OnConntected");
-            TestLoginUI.SetActive(false);
-            SceneManager.LoadScene(1);
         }
         private void OnError(HubConnection arg1, string arg2)
         {
@@ -170,7 +167,7 @@ namespace Basra.Client
             LaodingPanel.gameObject.SetActive(false);
         }
 
-        private void FetchNamespaceRpcs()
+        private void FetchManagersRpcs()
         {
             //you need instance of each object of the fun when server calls
             //get the type of each one and pass the right object
@@ -181,6 +178,8 @@ namespace Basra.Client
 
             foreach (var type in namespaceTypes)
             {
+                if (!type.Name.EndsWith("Manager")) continue;
+                Debug.Log("we picked: " + type.Name);
                 var methods = type.GetMethods();
                 foreach (var method in methods)
                 {
@@ -193,5 +192,25 @@ namespace Basra.Client
             }
         }
         #endregion
+
+        public void SendUnconfirmed(string method, params object[] args)
+        {
+            HubConnection.Send(method, args)
+            .OnSuccess(future =>
+            {
+                Debug.Log(method + " confimred");
+                InstantRpcRecord.Current?.Confirm();
+            })
+            .OnError(exc =>
+            {
+                Debug.Log("error happened on serevr: " + exc);
+            });
+        }
+
+        [Rpc]
+        public void TestCall()
+        {
+            Debug.Log("TestCall *******************************************8");
+        }
     }
 }

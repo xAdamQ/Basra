@@ -64,3 +64,4 @@ C:/Projects/Basra/Basra.Server/bin/Debug/net5.0/Pomelo.EntityFrameworkCore.MySql
 /home/adam/Projects/Basra/Basra.Server/obj/Debug/net5.0/ref/Basra.Server.dll
 /home/adam/Projects/Basra/Basra.Server/obj/Debug/net5.0/Basra.Server.pdb
 /home/adam/Projects/Basra/Basra.Server/obj/Debug/net5.0/Basra.Server.genruntimeconfig.cache
+/home/adam/Projects/Basra/Basra.Server/bin/Debug/net5.0/System.Reactive.dll
