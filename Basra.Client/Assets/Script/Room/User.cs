@@ -34,7 +34,8 @@ namespace Basra.Client.Room
 
         private void OnTurnTimeout()
         {
-            AppManager.I.HubConnection.Invoke<int>("InformTurnTimeout").OnSuccess(cardIndex => Cards[cardIndex].Throw());
+            AppManager.I.HubConnection.Send("InformTurnTimeout");
+            // .OnSuccess(cardIndex => Cards[cardIndex].Throw());
             //this can't be instant because the random algo is not excpected
         }
 
@@ -64,7 +65,7 @@ namespace Basra.Client.Room
             for (var i = 0; i < hand.Length; i++)
             {
                 var card = MakeCard(hand[i]);
-                card.Type = CardType.Mine;
+                card.Type = CardOwner.Mine;
             }
             PlaceCards();
         }

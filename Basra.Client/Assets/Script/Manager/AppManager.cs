@@ -41,6 +41,8 @@ namespace Basra.Client
         public LobbyManager Lobby;
         #endregion
 
+        public Action LastRevertAction;
+
         private void Awake()
         {
             I = this;
@@ -48,7 +50,6 @@ namespace Basra.Client
             DontDestroyOnLoad(this);
 
             FetchManagersRpcs();
-
 
 #if UNITY_EDITOR
             // SceneManager.UnloadSceneAsync(1);
@@ -60,6 +61,7 @@ namespace Basra.Client
         {
             Managers.Add(this);
         }
+
         public void TestConnect()
         {
             Connect(TestFbigInf.text);
@@ -134,7 +136,12 @@ namespace Basra.Client
                 var manager = Managers.First(obj => obj.GetType() == method.DeclaringType);
 
                 if (method.Name.StartsWith("Override"))
-                    InstantRpcRecord.Current?.RevertVisuals();
+                {
+                    LastRevertAction?.Invoke();
+                    LastRevertAction = null;
+                }
+
+                // InstantRpcRecord.Current?.Revert();
 
                 method.Invoke(manager, realArgs);//the only problem
 
@@ -157,6 +164,7 @@ namespace Basra.Client
         #region helpers
         [SerializeField]
         private LoadingPanel LaodingPanel;
+
         public void ShowLoadingPanel(string message = "")
         {
             LaodingPanel.MessageText.text = message;
@@ -193,24 +201,29 @@ namespace Basra.Client
         }
         #endregion
 
-        public void SendUnconfirmed(string method, params object[] args)
-        {
-            HubConnection.Send(method, args)
-            .OnSuccess(future =>
-            {
-                Debug.Log(method + " confimred");
-                InstantRpcRecord.Current?.Confirm();
-            })
-            .OnError(exc =>
-            {
-                Debug.Log("error happened on serevr: " + exc);
-            });
-        }
-
+        #region testing
         [Rpc]
         public void TestCall()
         {
             Debug.Log("TestCall *******************************************8");
         }
+        #endregion
+
     }
 }
+
+#region general instant feedback with reflection, currenlty deprecated
+// public void SendUnconfirmed(string method, params object[] args)
+// {
+//     HubConnection.Send(method, args)
+//     .OnSuccess(future =>
+//     {
+//         Debug.Log(method + " confimred");
+//         InstantRpcRecord.Current?.Confirm();
+//     })
+//     .OnError(exc =>
+//     {
+//         Debug.Log("error happened on serevr: " + exc);
+//     });
+// }
+#endregion

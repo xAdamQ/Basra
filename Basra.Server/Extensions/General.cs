@@ -52,5 +52,10 @@ namespace Basra.Server.Extensions
 
             return element;
         }
+
+        public static bool InRange(this int value, int max, int min = 0)
+        {
+            return (value < max && value >= min);
+        }
     }
 }

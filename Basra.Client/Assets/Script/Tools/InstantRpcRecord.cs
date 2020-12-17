@@ -1,70 +1,88 @@
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+// using System.Collections.Generic;
+// using UnityEngine;
+// using System;
 
-namespace Basra.Client
-{
-    //### can non monobehaviours use oop freely?
-    //when function is called rpc, mine or serevr'???
+// //global object disabling
+// //every onmousedown is checked first
 
-    public class InstantRpcRecord
-    {
-        /// <summary>
-        /// must be null when assigned, as well as any 'current'
-        /// </summary>
-        public static InstantRpcRecord Current;
+// //I want to make it real instant
+// //so it should simulate adding a card
+// //so I have to add custom revert method!
 
-        private Action Confirmation;
+// namespace Basra.Client
+// {
+//     //### can non monobehaviours use oop freely?
+//     //when function is called rpc, mine or serevr'???
 
-        public InstantRpcRecord(System.Action confirmation)
-        {
-            if (Current != null) throw new System.Exception("you are breaking the current pattern");
-            Current = this;
+//     public class InstantRpcRecord
+//     {
+//         /// <summary>
+//         /// must be null when assigned, as well as any 'current'
+//         /// </summary>
+//         public static InstantRpcRecord Current;
 
-            Confirmation = confirmation;
-        }
+//         private readonly Action ConfirmationAction;
+//         private readonly MonoBehaviour Initiator;
 
-        public void RevertVisuals()
-        {
-            RevertTransforms();
-            Current = null;
-        }
-        public void Confirm()
-        {
-            Confirmation?.Invoke();
-            Current = null;
-        }
+//         // private readonly Action RevertAction;
 
-        private Dictionary<MonoBehaviour, TransformValue> Transforms = new Dictionary<MonoBehaviour, TransformValue>();
-        public void RecoredTransform(MonoBehaviour monoBehaviour)
-        {
-            Transforms.Add(monoBehaviour, new TransformValue(monoBehaviour.transform));
-        }
-        private void RevertTransforms()
-        {
-            foreach (var item in Transforms)
-            {
-                item.Value.LoadTo(item.Key);
-            }
-        }
-    }
+//         // public InstantRpcRecord(System.Action confirmation, System.Action revert)
+//         // {
+//         //     if (Current != null) throw new System.Exception("you are breaking the current pattern");
+//         //     Current = this;
 
-    public struct TransformValue
-    {
-        public Vector3 Position, EularAngles, Scale;
+//         //     ConfirmationAction = confirmation;
+//         //     this.RevertAction = revert;
+//         // }
 
-        public TransformValue(Transform transform)
-        {
-            Position = transform.position;
-            EularAngles = transform.eulerAngles;
-            Scale = transform.localScale;
-        }
+//         public InstantRpcRecord(System.Action confirmation, MonoBehaviour initiator)
+//         {
+//             if (Current != null) throw new System.Exception("you are breaking the current pattern");
+//             Current = this;
 
-        public void LoadTo(MonoBehaviour monoBehaviour)
-        {
-            monoBehaviour.transform.position = Position;
-            monoBehaviour.transform.eulerAngles = EularAngles;
-            monoBehaviour.transform.localScale = Scale;
-        }
-    }
-}
+//             ConfirmationAction = confirmation;
+//             Initiator = initiator;
+//         }
+
+//         public void Revert()
+//         {
+//             RevertTransforms();
+//             RevertFields();
+//             // RevertAction?.Invoke();
+//             Current = null;
+//         }
+//         public void Confirm()
+//         {
+//             ConfirmationAction?.Invoke();
+//             Current = null;
+//         }
+
+//         private Dictionary<MonoBehaviour, TransformValue> Transforms = new Dictionary<MonoBehaviour, TransformValue>();
+//         public void RecoredTransform(MonoBehaviour monoBehaviour)
+//         {
+//             Transforms.Add(monoBehaviour, new TransformValue(monoBehaviour.transform));
+//         }
+//         private void RevertTransforms()
+//         {
+//             foreach (var item in Transforms)
+//             {
+//                 item.Value.LoadTo(item.Key);
+//             }
+//         }
+
+//         private Dictionary<string, object> RecordedFields = new Dictionary<string, object>();
+//         public void RecordField(string name, object value)
+//         {
+//             RecordedFields.Add(name, value);
+//         }
+
+//         private void RevertFields()
+//         {
+//             var initiatorType = Initiator.GetType();
+//             foreach (var kvp in RecordedFields)
+//             {
+//                 initiatorType.GetField(kvp.Key).SetValue(Initiator, kvp.Value);
+//             }
+//         }
+//     }
+// }

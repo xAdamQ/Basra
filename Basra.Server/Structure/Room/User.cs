@@ -16,7 +16,7 @@ namespace Basra.Server.Structure.Room
 
         //props for active, so if the user made ready and cancel, this will die without usage
         public Active Active { get; set; }
-        public List<int> Hand { get; set; }
+        public List<int> Cards { get; set; }
         public const int HandTime = 11;
 
         // private Timer TurnTimer;
@@ -41,52 +41,58 @@ namespace Basra.Server.Structure.Room
         /// <summary>
         /// get ready for the room to start distribute cards
         /// </summary>
-        public void Ready()
+        public async Task Ready()
         {
-            Active.Ready(Structure.Id);
+            await Active.Ready(Structure.Id);
         }
 
         //rev rpc
-        public void InitialDistribute()
+        public async Task InitialDistribute()
         {
-            Hand = Active.Deck.CutRange(HandSize);
-            Program.HubContext.Clients.Client(Structure.ConnectionId).SendAsync("InitialDistribute", Hand.ToArray(), Active.Ground.Cards.ToArray());
+            Cards = Active.Deck.CutRange(HandSize);
+            await Program.HubContext.Clients.Client(Structure.ConnectionId).SendAsync("InitialDistribute", Cards.ToArray(), Active.Ground.Cards.ToArray());
         }
         //rev rpc
-        public void Distribute()
+        public async Task Distribute()
         {
-            Hand = Active.Deck.CutRange(HandSize);
-            Program.HubContext.Clients.Client(Structure.ConnectionId).SendAsync("Distribute", Hand.ToArray());
+            Cards = Active.Deck.CutRange(HandSize);
+            await Program.HubContext.Clients.Client(Structure.ConnectionId).SendAsync("Distribute", Cards.ToArray());
         }
 
         CancellationTokenSource TurnTimoutCancelation;
         public void StartTurn()
         {
             TurnTimoutCancelation = new CancellationTokenSource();
-            Task.Delay(HandTime).ContinueWith(t => RandomPlay(), TurnTimoutCancelation.Token);
+            Task.Delay(HandTime * 1000).ContinueWith(t => RandomPlay(), TurnTimoutCancelation.Token);
         }
 
         //rpc
         public async Task Play(int cardIndexInHand)
         {
-            if (!IsMyTurn())
+            if (!IsMyTurn() || cardIndexInHand.InRange(Cards.Count))
                 throw new BadUserInputException();//this is invoked by the server also, and may be a server error and it's handle way is ignoring and terminate the action
             //hub exc are not handled when the actor is the system
 
             TurnTimoutCancelation.Cancel();
 
-            var card = Hand.Cut(cardIndexInHand);
+            var card = Cards.Cut(cardIndexInHand);
 
             Active.Ground.Eat(card);//sibling relation is not premited
 
             Active.NextTurn();
 
             await Program.HubContext.Clients.GroupExcept("room" + Active.Id, Structure.ConnectionId).SendAsync("OppoThrow", card);
+            //what do you mean by await?, waiting for deliver or timeout?
+
+            if (Cards.Count == 0 && Id == Active.Users.Length - 1)
+            {
+                await Active.Distribute();
+            }
         }
         //rev rpc
         public async Task RandomPlay()
         {
-            var randomCardIndex = StaticRandom.GetRandom(Hand.Count);
+            var randomCardIndex = StaticRandom.GetRandom(Cards.Count);
 
             await Task.WhenAll
             (

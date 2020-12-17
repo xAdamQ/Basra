@@ -12,6 +12,15 @@ namespace Basra.Client.Room
         public event System.Action Elapsed;
         private Coroutine TimerCoroutine;
 
+        private void Start()
+        {
+            ReadableRotaion();
+        }
+
+        private void ReadableRotaion()
+        {
+            transform.eulerAngles = Vector3.zero;
+        }
         public void Play()
         {
             IEnumerator coroutine()

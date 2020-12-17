@@ -85,53 +85,40 @@ namespace Basra.Server.Structure.Room
 
         //request from mw to hub to here
 
-        private void InitialDistribute()
+        private async Task InitialDistribute()
         {
+            var tasks = new Task[Users.Length];
             for (int u = 0; u < Users.Length; u++)
             {
-                Users[u].InitialDistribute();
+                tasks[u] = Users[u].InitialDistribute();
             }
 
+            await Task.WhenAll(tasks);
         }
 
-        private void Distribute()
+        public async Task Distribute()
         {
-            //every player should have 4 cards or less
-            //if the deck is 52 always, you won't need to customize hand size
-            // if (Users.Length * HandSize > Deck.Count)
-            // {
-            //     var minHandSize = Deck.Count / Users.Length;
-            //     var remainder = Deck.Count % Users.Length;
-
-            //     int u = 0;
-            //     for (; u < Users.Length; u++)
-            //     {
-            //         Distribute(u, minHandSize + remainder);
-            //     }
-            //     for (; u < Users.Length - remainder; u++)
-            //     {
-            //         Distribute(u, minHandSize);
-            //     }
-            // }
-            // else
-            // {
-
+            var tasks = new Task[Users.Length];
             for (int u = 0; u < Users.Length; u++)
             {
-                Users[u].Distribute();
-                //Distribute(u, HandSize);
+                tasks[u] = Users[u].Distribute();
             }
+
+            await Task.WhenAll(tasks);
         }
 
-        public void Ready(string playerId)
+        public async Task Ready(string playerId)
         {
             IsReady[GetUserRoomId(playerId)] = true;
             var readyUsersCount = IsReady.Count(value => value);
             if (readyUsersCount == Users.Length)
             {
-                InitialDistribute();
+                await InitialDistribute();
             }
         }
+        //the usage of ready is to make a valid call in the client, 
+        //we can get around this by storing the values in the client and use it when scene laods
+        //but this is not fair in case the client has slow device
 
         public void NextTurn()
         {

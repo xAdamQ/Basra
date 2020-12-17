@@ -40,24 +40,25 @@ namespace Basra.Client.Room
             card.transform.position = new Vector3(xPoz, yPoz);
         }
 
-        ///every out rpc is visual, Real, Server
-        public void RecordThrow(Card card)
+        public Card[] ThrowPt1(Card card)
         {
-            InstantRpcRecord.Current.RecoredTransform(card);
-        }
-        public Card[] VisualThrow(Card card)
-        {
+            card.Type = CardOwner.Ground;
             PlaceCard(card);
             return Cards.GetRange(0, 1).ToArray();
         }
-        public void ConfirmThrow(Card card)
+        public void ThrowPt2(Card card)
         {
             Cards.Add(card);
-            card.Type = CardType.Ground;
         }
-
-        //card -> list of cards
-
-
     }
 }
+
+#region general instant feedback with reflection, currenlty deprecated
+///every out rpc is visual, Real, Server
+// public void RecordThrow(Card card)
+// {
+//     InstantRpcRecord.Current.RecordField(nameof(card.Type), card.Type);
+//     InstantRpcRecord.Current.RecoredTransform(card);
+// }
+#endregion
+

@@ -11,23 +11,6 @@ namespace Basra.Client.Room
 
     public class RoomManager : MonoBehaviour
     {
-        static float UpperPadding = .5f, ButtomPadding = 1f;
-
-        static Vector2[] HandPozes = new Vector2[]
-        {
-            new Vector2(0, -5 + ButtomPadding),
-            new Vector2(0, 5 - UpperPadding),
-            new Vector2(2.5f, 0),
-            new Vector2(-2.5f, 0),
-        };
-        static Vector3[] HandRotations = new Vector3[]
-        {
-            new Vector3(),
-            new Vector3(0, 0, 180),
-            new Vector3(0, 0, 90),
-            new Vector3(0, 0, -90),
-        };
-
         //this will work because room follows "Current" pattern
         //any static you have to reinit
         //they are static because they're set when there's no instance of this
@@ -65,6 +48,22 @@ namespace Basra.Client.Room
             InitVisuals();
         }
 
+        #region init
+        static float UpperPadding = 1.5f, ButtomPadding = 1f;
+        static Vector2[] HandPozes = new Vector2[]
+        {
+            new Vector2(0, -5 + ButtomPadding),
+            new Vector2(0, 5 - UpperPadding),
+            new Vector2(2.5f, 0),
+            new Vector2(-2.5f, 0),
+        };
+        static Vector3[] HandRotations = new Vector3[]
+        {
+            new Vector3(),
+            new Vector3(0, 0, 180),
+            new Vector3(0, 0, 90),
+            new Vector3(0, 0, -90),
+        };
         private void InitUsers()
         {
             Users = new User[PlayerCount];
@@ -77,6 +76,7 @@ namespace Basra.Client.Room
                 user.Room = this;
                 user.Name = UserNames[i];
                 user.Type = i == MyTurnId ? UserType.Me : UserType.Oppo;
+                user.TurnId = i;
 
                 Users[i] = user;
             }
@@ -90,6 +90,7 @@ namespace Basra.Client.Room
         {
             GenreText.text = Genre.ToString();
         }
+        #endregion
 
         //have something more than it's name, can be changes in the future
         [Rpc]
@@ -129,6 +130,10 @@ namespace Basra.Client.Room
         {
             CurrentTurn = ++CurrentTurn % Users.Length;
             UserInTurn.StartTurn();
+        }
+        public void ResetTurn()
+        {
+
         }
 
         [Rpc]

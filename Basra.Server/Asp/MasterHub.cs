@@ -85,18 +85,20 @@ namespace Basra.Server
         //}
 
         #region rpc
+
         public async Task AskForRoom(int roomGenre, int roomPlayerCount)
         {
             await Structure.Room.Pending.AskForRoom(this, roomGenre, roomPlayerCount);
         }
 
-        public void Ready()
+        public async Task Ready()
         {
-            GetCurrentUser().RUser.Ready();
+            await GetCurrentUser().RUser.Ready();
         }
 
         public async Task Throw(int indexInHand)
         {
+            return;
             await GetCurrentUser().RUser.Play(indexInHand);
         }//automatic actions happen from serevr side and the client knows this overrides his action and do the revert 
         public async Task InformTurnTimeout()
@@ -104,6 +106,7 @@ namespace Basra.Server
             await GetCurrentUser().RUser.RandomPlay();
         }
 
+        #region testing
         public void MakeBadUserInputException()
         {
             throw new BadUserInputException();
@@ -132,6 +135,8 @@ namespace Basra.Server
 
             System.Console.WriteLine("success 7985255555555");
         }
+        #endregion
+
         #endregion
 
     }

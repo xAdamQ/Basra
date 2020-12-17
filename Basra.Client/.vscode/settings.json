@@ -1,4 +1,4 @@
-﻿{
+{
     "files.exclude": {
         "**/.DS_Store": true,
         "**/.git": true,
@@ -52,4 +52,9 @@
         "temp/": true,
         "Temp/": true
     },
+    // "workbench.colorCustomizations": {
+    //     "activityBar.background": "#ffffff",
+    //     "activityBar.inactiveForeground": "#00e1ff",
+    //     "activityBar.foreground": "#ff0000"
+    // }
 }
