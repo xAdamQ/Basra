@@ -77,12 +77,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dbd0813a10f61930a59baf11df9e43a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cards: []
   NameText: {fileID: 3774407717309978880}
-  Room: {fileID: 0}
   TurnTimer: {fileID: 323550837679057990}
-  TurnId: 0
-  Type: 0
 --- !u!1 &6875936823855424755
 GameObject:
   m_ObjectHideFlags: 0

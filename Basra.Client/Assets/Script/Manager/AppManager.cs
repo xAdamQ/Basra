@@ -13,7 +13,7 @@ using BestHTTP.Futures;
 using System.Reflection;
 using System.Linq;
 using BestHTTP;
-
+using BestHTTP.Logger;
 
 //action is function instances(require object)
 //methodInfo is not
@@ -63,6 +63,8 @@ namespace Basra.Client
             Managers.Add(this);
 
             //HTTPManager.Logger.Level = BestHTTP.Logger.Loglevels.;
+            HTTPManager.Logger = new MyBestHttpLogger();
+            //HTTPManager.Logger.Output = new MyBestHttpOutput();
         }
 
         public void TestConnect()

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Basra.Client.Room
 {
     public enum UserType { Me, Oppo }
-    public class User : MonoBehaviour, IUser
+    public class User : MonoBehaviour
     {
         #region props
 
@@ -51,7 +51,7 @@ namespace Basra.Client.Room
 
         public IRoomManager Room { get; set; }
 
-        public TurnTimer TurnTimer { get; set; }
+        public TurnTimer TurnTimer;
 
         public int TurnId { get; set; }
 

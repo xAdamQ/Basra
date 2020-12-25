@@ -8,13 +8,12 @@ using Moq;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Basra.Client.Room;
-using Zenject;
 
 namespace Basra.Client.Test
 {
     //room testing now
     [TestFixture(Category = "mt tests")]
-    public class GeneralTests : ZenjectUnitTestFixture
+    public class GeneralTests
     {
         [Test]
         public void Throw()
