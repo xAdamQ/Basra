@@ -49,7 +49,6 @@ namespace Basra.Client.Room
             }
         }
 
-        //works on me
         private void OnMouseDown()
         {
             if (User.Type != UserType.Me || User.TurnId != User.Room.CurrentTurn) return;
@@ -84,7 +83,9 @@ namespace Basra.Client.Room
             //reverse of ground pt1
         }
 
-        //shared
+        //if a unit test happening affects another one
+        //so making a simulation won't be effective
+
         public void Throw()
         {
             //happens when it's time, not in the error message, the client is blocked before the server by seconds so there shouldn't be error possibilty

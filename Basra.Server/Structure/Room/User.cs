@@ -81,7 +81,7 @@ namespace Basra.Server.Structure.Room
 
             Active.NextTurn();
 
-            await Program.HubContext.Clients.GroupExcept("room" + Active.Id, Structure.ConnectionId).SendAsync("OppoThrow", card);
+            await Program.HubContext.Clients.GroupExcept("room" + Active.Id, Structure.ConnectionId).SendAsync("CurrentOppoThrow", card);
             //what do you mean by await?, waiting for deliver or timeout?
 
             if (Cards.Count == 0 && Id == Active.Users.Length - 1)
@@ -97,7 +97,7 @@ namespace Basra.Server.Structure.Room
             await Task.WhenAll
             (
                 Play(randomCardIndex),
-                Program.HubContext.Clients.Client(Structure.ConnectionId).SendAsync("OverrideThrow", randomCardIndex)
+                Program.HubContext.Clients.Client(Structure.ConnectionId).SendAsync("OverrideMyLastThrow", randomCardIndex)
             // Structure.SendAsync("OverrideThrow", card)
             );
         }

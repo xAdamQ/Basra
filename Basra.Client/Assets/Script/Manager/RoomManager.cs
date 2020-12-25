@@ -45,7 +45,7 @@ namespace Basra.Client.Room
 
             InitUsers();
 
-            Ground.Construct(this);
+            Ground = Ground.Construct(this);
 
             InitVisuals();
         }
@@ -123,7 +123,7 @@ namespace Basra.Client.Room
             UserInTurn.Cards[randomCard].OppoThrow(cardId);
         }
         [Rpc]
-        public void CurrentOverrideThrow(int cardIndex)
+        public void OverrideMyLastThrow(int cardIndex)
         {
             UserInTurn.Cards[cardIndex].Throw();
         }

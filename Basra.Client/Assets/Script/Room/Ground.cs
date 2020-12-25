@@ -11,10 +11,11 @@ namespace Basra.Client.Room
         public static Vector2 Bounds = new Vector2(1.5f, 2.5f);
         private IRoomManager Room;
 
-        public static void Construct(IRoomManager room)
+        public static Ground Construct(IRoomManager room)
         {
             var ground = Instantiate(FrequentAssets.I.GroundPrefab, Vector3.zero, new Quaternion()).GetComponent<Ground>();
             ground._construct(room);
+            return ground;
         }
         private void _construct(IRoomManager room)
         {

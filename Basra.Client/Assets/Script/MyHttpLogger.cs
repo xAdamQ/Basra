@@ -113,7 +113,7 @@ namespace Basra.Client
                         int counter = 1;
                         while (exception != null)
                         {
-                            sb.AppendFormat("{0}: {1} {2}", counter++.ToString(), exception.Message, exception.StackTrace);
+                            sb.AppendFormat("\n{0}: \n{1} \n{2}", counter++.ToString(), exception.Message, exception.StackTrace);
 
                             exception = exception.InnerException;
 
@@ -134,6 +134,7 @@ namespace Basra.Client
                 catch
                 { }
             }
+
         }
 
         private string GetFormattedTime()

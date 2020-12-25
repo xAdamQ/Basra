@@ -3,7 +3,7 @@
     public interface IRoomManager
     {
         void CurrentOppoThrow(int cardId);
-        void CurrentOverrideThrow(int cardIndex);
+        void OverrideMyLastThrow(int cardIndex);
         void Distribute(int[] hand);
         void InitialDistribute(int[] hand, int[] ground);
         void NextTurn();
