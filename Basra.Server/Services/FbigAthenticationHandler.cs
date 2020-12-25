@@ -80,8 +80,6 @@ namespace Basra.Server.Services
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            await Task.Delay(20);
-
             try
             {
                 var token = GetAccessTokenQueryParam();

@@ -20,6 +20,15 @@ namespace Basra.Server.Services
             //     invocationContext.HubMethodArguments[languageFilter.FilterArgument] is string str)
 
             Console.WriteLine($"Calling hub method '{invocationContext.HubMethodName}'");
+            if (invocationContext.HubMethodArguments.Count != 0)
+            {
+                var stringArgs = "with args: ";
+                foreach (var arg in invocationContext.HubMethodArguments)
+                {
+                    stringArgs += arg.ToString() + "  --  ";
+                }
+                Console.WriteLine(stringArgs);
+            }
 
             // try
             // {

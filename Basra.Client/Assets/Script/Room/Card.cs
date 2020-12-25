@@ -9,7 +9,7 @@ namespace Basra.Client.Room
 {
     public enum CardOwner { Opponent, Mine, Ground }
 
-    public class Card : MonoBehaviour
+    public class Card : MonoBehaviour, ICard
     {
         public static Vector2 Bounds = new Vector2(.75f, 1f);
 
@@ -64,10 +64,11 @@ namespace Basra.Client.Room
         }
         private void ThrowPt1()
         {
-            User.TurnTimer.Stop();
-            User.Room.NextTurn();
+            User.TurnTimer.Stop();//no reverse
 
             User.Room.Ground.ThrowPt1(this);
+
+            User.Room.NextTurn();
         }
         private void ThrowPt2()
         {
@@ -76,9 +77,11 @@ namespace Basra.Client.Room
         }
         private void RevertThrow()
         {
-            RecordedTransform.LoadTo(this);
-            Type = CardOwner.Mine;
+            User.Room.RevertTurn();
 
+            Type = CardOwner.Mine;
+            RecordedTransform.LoadTo(this);
+            //reverse of ground pt1
         }
 
         //shared
@@ -97,7 +100,6 @@ namespace Basra.Client.Room
             ThrowPt1();
 
             AppManager.I.LastRevertAction = RevertThrow;
-            //by initiator only
             AppManager.I.HubConnection.Send("Throw", User.Cards.IndexOf(this)).OnSuccess((future) => ThrowPt2());
         }
         public void OppoThrow(int cardId)

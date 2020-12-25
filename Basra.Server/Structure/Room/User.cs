@@ -69,7 +69,7 @@ namespace Basra.Server.Structure.Room
         //rpc
         public async Task Play(int cardIndexInHand)
         {
-            if (!IsMyTurn() || cardIndexInHand.InRange(Cards.Count))
+            if (!IsMyTurn() || !cardIndexInHand.InRange(Cards.Count))
                 throw new BadUserInputException();//this is invoked by the server also, and may be a server error and it's handle way is ignoring and terminate the action
             //hub exc are not handled when the actor is the system
 

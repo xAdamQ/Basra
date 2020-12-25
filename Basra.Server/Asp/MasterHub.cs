@@ -116,25 +116,25 @@ namespace Basra.Server
             System.Console.WriteLine("dummy called");
         }
 
-        public static CancellationTokenSource testSource;
-        public async Task TestAsync()
-        {
-            testSource = new CancellationTokenSource();
+        //public static CancellationTokenSource testSource;
+        //public async Task TestAsync()
+        //{
+        //testSource = new CancellationTokenSource();
 
-            testSource.CancelAfter(3500);
+        //testSource.CancelAfter(3500);
 
-            try
-            {
-                await Task.Delay(3000, testSource.Token);
-            }
-            catch (TaskCanceledException)
-            {
-                System.Console.WriteLine("Task cancelled");
-                return;
-            }
+        //try
+        //{
+        //    await Task.Delay(3000, testSource.Token);
+        //}
+        //catch (TaskCanceledException)
+        //{
+        //    System.Console.WriteLine("Task cancelled");
+        //    return;
+        //}
 
-            System.Console.WriteLine("success 7985255555555");
-        }
+        //System.Console.WriteLine("success 7985255555555");
+        //}
         #endregion
 
         #endregion

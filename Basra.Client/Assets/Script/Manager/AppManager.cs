@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 using BestHTTP.Futures;
 using System.Reflection;
 using System.Linq;
+using BestHTTP;
 
 
 //action is function instances(require object)
@@ -60,6 +61,8 @@ namespace Basra.Client
         private void Start()
         {
             Managers.Add(this);
+
+            //HTTPManager.Logger.Level = BestHTTP.Logger.Loglevels.;
         }
 
         public void TestConnect()
@@ -107,7 +110,7 @@ namespace Basra.Client
         #region events
         private void OnConntected(HubConnection obj)
         {
-            HubConnection.Send("TestAsync");
+            //HubConnection.Send("TestAsync");
             SceneManager.LoadScene(1);
         }
         private bool OnMessage(HubConnection arg1, Message message)
@@ -118,33 +121,7 @@ namespace Basra.Client
 
             if (message.type == MessageTypes.Invocation)
             {
-                var method = Rpcs.Find(m => m.Name == message.target);
-
-                var realArgs = HubConnection.Protocol.GetRealArguments(method.GetParameterTypes(), message.arguments);
-
-                if (realArgs != null)
-                {
-                    var debugMessage = "args are:  ";
-                    foreach (var item in realArgs)
-                    {
-                        debugMessage += item.ToString() + "  --  ";
-                    }
-                    Debug.Log(debugMessage);
-                }
-                //debug args
-
-                var manager = Managers.First(obj => obj.GetType() == method.DeclaringType);
-
-                if (method.Name.StartsWith("Override"))
-                {
-                    LastRevertAction?.Invoke();
-                    LastRevertAction = null;
-                }
-
-                // InstantRpcRecord.Current?.Revert();
-
-                method.Invoke(manager, realArgs);//the only problem
-
+                HandleInvocationMessage(message);
                 return false;
             }
 
@@ -187,7 +164,7 @@ namespace Basra.Client
             foreach (var type in namespaceTypes)
             {
                 if (!type.Name.EndsWith("Manager")) continue;
-                Debug.Log("we picked: " + type.Name);
+                //Debug.Log("we picked: " + type.Name);
                 var methods = type.GetMethods();
                 foreach (var method in methods)
                 {
@@ -209,6 +186,35 @@ namespace Basra.Client
         }
         #endregion
 
+        private void HandleInvocationMessage(Message message)
+        {
+            var method = Rpcs.Find(m => m.Name == message.target);
+
+            var realArgs = HubConnection.Protocol.GetRealArguments(method.GetParameterTypes(), message.arguments);
+
+            if (realArgs != null)
+            {
+                var debugMessage = "args are:  ";
+                foreach (var item in realArgs)
+                {
+                    debugMessage += item.ToString() + "  --  ";
+                }
+                Debug.Log(debugMessage);
+            }
+            //debug args
+
+            var manager = Managers.First(obj => obj.GetType() == method.DeclaringType);
+
+            if (method.Name.StartsWith("Override"))
+            {
+                LastRevertAction?.Invoke();
+                LastRevertAction = null;
+            }
+
+            // InstantRpcRecord.Current?.Revert();
+
+            method.Invoke(manager, realArgs);//the only problem
+        }
     }
 }
 

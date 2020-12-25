@@ -4,14 +4,24 @@ using UnityEngine;
 
 namespace Basra.Client.Room
 {
-    public class Ground : MonoBehaviour
+    public class Ground : MonoBehaviour, IGround
     {
         public List<Card> Cards;
 
         public static Vector2 Bounds = new Vector2(1.5f, 2.5f);
-        public RoomManager Room;
+        private IRoomManager Room;
 
-        public void Set(int[] ground)
+        public static void Construct(IRoomManager room)
+        {
+            var ground = Instantiate(FrequentAssets.I.GroundPrefab, Vector3.zero, new Quaternion()).GetComponent<Ground>();
+            ground._construct(room);
+        }
+        private void _construct(IRoomManager room)
+        {
+            Room = room;
+        }
+
+        public void CreateInitialCards(int[] ground)
         {
             for (var i = 0; i < ground.Length; i++)
             {
