@@ -4,10 +4,37 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.AddressableAssets;
+using Cysharp.Threading.Tasks;
 
 namespace Basra.Client.Room
 {
-    public enum CardOwner { Opponent, Mine, Ground }
+    public enum CardOwner { Oppo, Me, Ground }
+
+    public class NonMonoCard : ICard
+    {
+        public void OppoThrow(int cardId)
+        {
+            AddFront(cardId);
+
+            Throw();
+        }
+
+        public void Throw()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void AddFront(int id)
+        {
+            //Front = Object.Instantiate(Front.Prefab, transform).GetComponent<Front>();
+            //Front.transform.localPosition = Vector3.back * .01f;
+            //Front.Set(id);
+
+            //crete non mono front
+        }
+
+    }
 
     public class Card : MonoBehaviour, ICard
     {
@@ -21,37 +48,30 @@ namespace Basra.Client.Room
         //works on my, oppo
         public User User;
 
-        protected void Awake()
-        {
-            InitProps();
+        public static GameObject Prefab { get; set; }
 
-            SetType();
+        public async static UniTask StaticInit()
+        {
+            Prefab = await Addressables.LoadAssetAsync<GameObject>("Card");
         }
 
-        private void InitProps()
+        public static Card Construct(User user = null, Ground ground = null, int frontId = -1)
         {
-            User = transform.parent.GetComponent<User>();
-
+            var card = Object.Instantiate(Prefab, user ? user.transform : ground.transform).GetComponent<Card>();
+            card.construct(user, ground, frontId);
+            return card;
         }
-
-        private void SetType()
+        private void construct(User user, Ground ground, int frontId)
         {
-            switch (Type)
-            {
-                case CardOwner.Opponent:
-                    break;
-                case CardOwner.Mine:
-                    Front = transform.GetChild(0).GetComponent<Front>();
-                    break;
-                case CardOwner.Ground:
-                    Front = transform.GetChild(0).GetComponent<Front>();
-                    break;
-            }
+            if (user != null) User = user;
+            if (frontId != -1) AddFront(frontId);
         }
 
         private void OnMouseDown()
         {
-            if (User.Type != UserType.Me || User.TurnId != User.Room.CurrentTurn) return;
+            Debug.Log($"OnMouseDown on card {Front?.Id}");
+
+            if (User == null || Type != CardOwner.Me || User.TurnId != User.Room.CurrentTurn) return;
 
             MyThrow();
         }
@@ -63,7 +83,7 @@ namespace Basra.Client.Room
         }
         private void ThrowPt1()
         {
-            User.TurnTimer.Stop();//no reverse
+            User.UniTaskTimer.Stop();//no reverse
 
             User.Room.Ground.ThrowPt1(this);
 
@@ -76,9 +96,10 @@ namespace Basra.Client.Room
         }
         private void RevertThrow()
         {
+            Debug.Log("RevertThrow is called");
             User.Room.RevertTurn();
 
-            Type = CardOwner.Mine;
+            Type = CardOwner.Me;
             RecordedTransform.LoadTo(this);
             //reverse of ground pt1
         }
@@ -112,12 +133,20 @@ namespace Basra.Client.Room
             Throw();
         }
 
-        public void AddFront(int id)
+        private void AddFront(int id)
         {
-            Front = Instantiate(FrequentAssets.I.FrontPrefab, transform).GetComponent<Front>();
+            Front = Object.Instantiate(Front.Prefab, transform).GetComponent<Front>();
             Front.transform.localPosition = Vector3.back * .01f;
             Front.Set(id);
         }
+
+        /*
+        add calc funs and ui
+        get the winner and add the ui
+         */
+
+        //focus and make the right or die and start over
+        //but if testing you would be more consistant
 
     }
 }

@@ -12,6 +12,7 @@ namespace Basra.Client.Test
         [Test]//like [Fact]
         public void SetDamageToHalfWith50PrecentMiti()
         {
+
             //TDD
             //arrange
             var expected = 5;

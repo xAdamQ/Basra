@@ -1,16 +1,13 @@
 {
-    "name": "EditModeTests",
+    "name": "PlayModeTests",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Scripts",
-        "Zenject",
-        "Zenject-TestFramework"
+        "Basra.Client_Code",
+        "UniTask"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,

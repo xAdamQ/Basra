@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Linq;
 using BestHTTP;
 using BestHTTP.Logger;
+using Cysharp.Threading.Tasks;
 
 //action is function instances(require object)
 //methodInfo is not
@@ -38,8 +39,8 @@ namespace Basra.Client
         public GameObject TestLoginUI;
         public InputField TestFbigInf;
 
-        public Room.RoomManager Room;
-        public LobbyManager Lobby;
+        public Room.RoomManager RoomManager;
+        public LobbyManager LobbyManager;
         #endregion
 
         public Action LastRevertAction;
@@ -58,13 +59,22 @@ namespace Basra.Client
 #endif
 
         }
-        private void Start()
+
+        private async Task Start()
         {
             Managers.Add(this);
 
             //HTTPManager.Logger.Level = BestHTTP.Logger.Loglevels.;
             HTTPManager.Logger = new MyBestHttpLogger();
             //HTTPManager.Logger.Output = new MyBestHttpOutput();
+
+            await UniTask.WhenAll(new UniTask[]
+            {
+                Room.User.StaticInit(),
+                Room.Ground.StaticInit(),
+                Room.Card.StaticInit(),
+                Room.Front.StaticInit(),
+            });
         }
 
         public void TestConnect()

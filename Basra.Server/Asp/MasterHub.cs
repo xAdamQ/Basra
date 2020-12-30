@@ -98,7 +98,8 @@ namespace Basra.Server
 
         public async Task Throw(int indexInHand)
         {
-            return;
+            throw new BadUserInputException();
+
             await GetCurrentUser().RUser.Play(indexInHand);
         }//automatic actions happen from serevr side and the client knows this overrides his action and do the revert 
         public async Task InformTurnTimeout()

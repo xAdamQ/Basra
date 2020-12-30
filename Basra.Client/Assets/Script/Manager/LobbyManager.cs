@@ -16,7 +16,7 @@ namespace Basra.Client
 
         private void Awake()
         {
-            AppManager.I.Lobby = this;
+            AppManager.I.LobbyManager = this;
             AppManager.I.Managers.Add(this);
         }
         private void OnDestroy()

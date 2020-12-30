@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-public class DependantElemenet : MonoBehaviour
-{
-}
+//public class DependantElemenet : MonoBehaviour
+//{
+//}

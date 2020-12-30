@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Timers;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using Cysharp.Threading.Tasks;
 
-namespace Basra.Client.Room
+namespace Basra.Client.Room.Components
 {
-    public enum UserType { Me, Oppo }
     public class User : MonoBehaviour
     {
         #region props
@@ -13,7 +15,7 @@ namespace Basra.Client.Room
         #region public static
 
         public static int Size = 4;
-        public static float HandTime = 8;
+        public static int HandTime = 8000;
 
         #endregion
 
@@ -67,11 +69,16 @@ namespace Basra.Client.Room
 
         #endregion
 
-        //public GameObject Go;//go is a monobehaviour? it has transform monobehaviuor, but go is????
+        static GameObject Prefab;
+
+        public async static UniTask StaticInit()
+        {
+            Prefab = await Addressables.LoadAssetAsync<GameObject>("User");
+        }
 
         public static User Construct(IRoomManager room, string name, int turnId)
         {
-            var user = Object.Instantiate(FrequentAssets.I.HandPrefab).GetComponent<User>();
+            var user = Object.Instantiate(Prefab).GetComponent<User>();
             user._construct(room, name, turnId);
             return user;
         }
@@ -93,7 +100,7 @@ namespace Basra.Client.Room
         {
             if (Type == UserType.Me)
             {
-                TurnTimer.Elapsed += OnTurnTimeout;
+                TurnTimer.AddToOnElapsed(OnTurnTimeout);
             }
         }
 
@@ -103,10 +110,11 @@ namespace Basra.Client.Room
             //this can't be instant because the random algo is not excpected
         }
 
-        public void StartTurn()
+        public void EnterTurn()
         {
             TurnTimer.Play();
         }
+
         public void CancelTurn()
         {
             TurnTimer.Stop();
@@ -123,15 +131,15 @@ namespace Basra.Client.Room
 
         private void PlaceCards()
         {
-            var xPointer = -(Size / 2) * Card.Bounds.x;
-            xPointer -= xPointer / 2f;
+            var pointer = new Vector3(-(Size / 2) * Card.Bounds.x, 0, 0);
+            pointer.x -= pointer.x / 2f;
 
-            var xSpacing = Card.Bounds.x;
+            var spacing = new Vector3(Card.Bounds.x, 0, .05f);
 
             for (var i = 0; i < Cards.Count; i++)
             {
-                Cards[i].transform.localPosition = Vector3.right * xPointer;
-                xPointer += xSpacing;
+                Cards[i].transform.localPosition = pointer;
+                pointer += spacing;
             }
         }
         //act on all cards because we don't add indie cards
@@ -141,7 +149,7 @@ namespace Basra.Client.Room
             for (var i = 0; i < hand.Length; i++)
             {
                 var card = CreateCard_Me(hand[i]);
-                card.Type = CardOwner.Mine;
+                card.Type = CardOwner.Me;
             }
             PlaceCards();
         }
@@ -156,14 +164,129 @@ namespace Basra.Client.Room
 
         private Card CreateCard_Me(int id)
         {
-            var card = Object.Instantiate(FrequentAssets.I.CardPrefab, transform).GetComponent<Card>();
-            card.AddFront(id);
+            var card = Card.Construct(user: this, frontId: id);
             Cards.Add(card);
             return card;
         }
         private Card CreateCard_Oppo()
         {
-            var card = Object.Instantiate(FrequentAssets.I.CardPrefab, transform).GetComponent<Card>();
+            var card = Object.Instantiate(Card.Prefab, transform).GetComponent<Card>();
+            Cards.Add(card);
+            return card;
+        }
+    }
+}
+
+namespace Basra.Client.Room
+{
+    public enum UserType { Me, Oppo }
+
+    public class User
+    {
+        public static int HandTime = 8000;
+
+        private static float UpperPadding = 1.5f, ButtomPadding = 1f;
+        private static Vector2[] UserPositions = new Vector2[]
+        {
+            new Vector2(0, -5 + ButtomPadding),
+            new Vector2(0, 5 - UpperPadding),
+            new Vector2(2.5f, 0),
+            new Vector2(-2.5f, 0),
+        };
+        private static Vector3[] UserRotations = new Vector3[]
+        {
+            new Vector3(),
+            new Vector3(0, 0, 180),
+            new Vector3(0, 0, 90),
+            new Vector3(0, 0, -90),
+        };
+
+        private string Name;
+        public void SetName(string name)
+        {
+            Name = name;
+            NameText.text = name;
+        }
+        [SerializeField] TextMesh NameText;
+
+        public List<Card> Cards { get; set; } = new List<Card>();
+
+        public IRoomManager Room { get; set; }
+
+        public UniTaskTimer UniTaskTimer;
+
+        public int TurnId { get; set; }
+
+        public UserType Type { get; set; }
+
+        static GameObject Prefab;
+
+        public async static UniTask StaticInit()
+        {
+            Prefab = await Addressables.LoadAssetAsync<GameObject>("User");
+        }
+
+        public User(IRoomManager room, string name, int turnId)
+        {
+            Room = room;
+            SetName(name);
+            TurnId = turnId;
+
+            //var user = Object.Instantiate(Prefab).GetComponent<User>();
+            //transform.position = UserPositions[turnId];
+            //transform.eulerAngles = UserRotations[turnId];
+
+            Type = turnId == RoomManager.MyTurnId ? UserType.Me : UserType.Oppo;
+
+            if (Type == UserType.Me)
+            {
+                UniTaskTimer.Elapsed += OnTurnTimeout;
+            }
+        }
+
+        private void OnTurnTimeout()
+        {
+            AppManager.I.HubConnection.Send("InformTurnTimeout");
+            //this can't be instant because the random algo is not excpected
+        }
+
+        public void EnterTurn()
+        {
+            UniTaskTimer.Play().Forget();
+        }
+
+        public void CancelTurn()
+        {
+            UniTaskTimer.Stop();
+        }
+
+        public void CreateCards_Me(int[] hand)
+        {
+            for (var i = 0; i < hand.Length; i++)
+            {
+                var card = CreateCard_Me(hand[i]);
+                card.Type = CardOwner.Me;
+            }
+            PlaceCards();
+        }
+        public void CreateCards_Oppo()
+        {
+            for (var i = 0; i < Size; i++)
+            {
+                CreateCard_Oppo();
+            }
+            PlaceCards();
+        }
+
+        private Card CreateCard_Me(int id)
+        {
+            var card = Card.Construct(user: this, frontId: id);
+            Cards.Add(card);
+            return card;
+        }
+        private Card CreateCard_Oppo()
+        {
+            var card = Object.Instantiate(Card.Prefab, transform).GetComponent<Card>();
             Cards.Add(card);
             return card;
         }

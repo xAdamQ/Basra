@@ -12,7 +12,7 @@ namespace Basra.Client
 
         public void StartGame()
         {
-            AppManager.I.Lobby.AskForRoom(RoomGenre, PlayerCount);
+            AppManager.I.LobbyManager.AskForRoom(RoomGenre, PlayerCount);
         }
     }
 }

@@ -23,13 +23,13 @@ namespace Basra.Client.Room
 
         private User[] Users { get; set; }
         public Ground Ground { get; set; }
-        public int CurrentTurn { get; set; }
 
+        public int CurrentTurn { get; set; }
         private User UserInTurn => Users[CurrentTurn];
 
         private void Awake()
         {
-            AppManager.I.Room = this;
+            AppManager.I.RoomManager = this;
             // AppManager.I.Currents.RemoveAll(c => c.GetType() == GetType());
             AppManager.I.Managers.Add(this);
         }
@@ -41,13 +41,11 @@ namespace Basra.Client.Room
 
         private void Start()
         {
-            Ready();
-
             InitUsers();
-
             Ground = Ground.Construct(this);
-
             InitVisuals();
+
+            Ready();
         }
 
         #region init
@@ -73,7 +71,7 @@ namespace Basra.Client.Room
             Ground.CreateInitialCards(ground);
             Distribute(hand);
 
-            UserInTurn.StartTurn();
+            UserInTurn.EnterTurn();
         }
 
         [Rpc]
@@ -108,7 +106,7 @@ namespace Basra.Client.Room
         {
             PrevTurn = CurrentTurn;
             CurrentTurn = ++CurrentTurn % Users.Length;
-            UserInTurn.StartTurn();
+            UserInTurn.EnterTurn();
         }
         public void RevertTurn()
         {

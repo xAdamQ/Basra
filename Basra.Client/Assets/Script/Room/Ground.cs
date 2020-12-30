@@ -1,9 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using Cysharp.Threading.Tasks;
+
+//the use of Gos in unity
+//in your game context when you need them?
+//represent actual visual elements in your scene
+//so can these elemets relay on non-components?
+//especially on unity events like mouse down?
+//what makes me sure that I won't need the go to script relation
+
+//the humle pattern seems over-work
 
 namespace Basra.Client.Room
 {
+
     public class Ground : MonoBehaviour, IGround
     {
         public List<Card> Cards;
@@ -11,9 +24,16 @@ namespace Basra.Client.Room
         public static Vector2 Bounds = new Vector2(1.5f, 2.5f);
         private IRoomManager Room;
 
+        public static GameObject Prefab { get; private set; }
+
+        public async static UniTask StaticInit()
+        {
+            Prefab = await Addressables.LoadAssetAsync<GameObject>("Ground");
+        }
+
         public static Ground Construct(IRoomManager room)
         {
-            var ground = Instantiate(FrequentAssets.I.GroundPrefab, Vector3.zero, new Quaternion()).GetComponent<Ground>();
+            var ground = Object.Instantiate(Prefab, Vector3.zero, new Quaternion()).GetComponent<Ground>();
             ground._construct(room);
             return ground;
         }
@@ -39,8 +59,7 @@ namespace Basra.Client.Room
 
         public Card MakeCard(int id)
         {
-            var card = Instantiate(FrequentAssets.I.CardPrefab, transform).GetComponent<Card>();
-            card.AddFront(id);
+            var card = Card.Construct(ground: this, frontId: id);
             return card;
         }
 
@@ -59,6 +78,7 @@ namespace Basra.Client.Room
         }
         public void ThrowPt2(Card card)
         {
+            card.User = null;
             Cards.Add(card);
         }
     }
