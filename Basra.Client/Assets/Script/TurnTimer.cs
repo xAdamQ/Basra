@@ -25,9 +25,8 @@ namespace Basra.Client.Room
 
         private UniTaskTimer Timer;
 
-        private void Awake()
+        public void Construct(UniTaskTimer Timer)
         {
-            Timer = new UniTaskTimer(User.HandTime, 50);
             Timer.Ticking += OnTimerTicking;
         }
 
@@ -49,11 +48,9 @@ namespace Basra.Client.Room
         public void Play()
         {
             Show();
-            Timer.Play().Forget((ecx) => Debug.LogError(ecx.Message));
         }
         public void Stop()
         {
-            Timer.Stop();
             Hide();
         }
 

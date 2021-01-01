@@ -14,15 +14,17 @@ using Cysharp.Threading.Tasks;
 
 //the humle pattern seems over-work
 
-namespace Basra.Client.Room
+namespace Basra.Client.Room.Components
 {
 
-    public class Ground : MonoBehaviour, IGround
+    public class Ground : MonoBehaviour
     {
-        public List<Card> Cards;
+        public Room.Ground Logical;
 
         public static Vector2 Bounds = new Vector2(1.5f, 2.5f);
-        private IRoomManager Room;
+
+        public List<Card> Cards;
+        private RoomManager Room;
 
         public static GameObject Prefab { get; private set; }
 
@@ -31,36 +33,28 @@ namespace Basra.Client.Room
             Prefab = await Addressables.LoadAssetAsync<GameObject>("Ground");
         }
 
-        public static Ground Construct(IRoomManager room)
+        public static Ground Construct(Room.Ground logicalGround, RoomManager room)
         {
-            var ground = Object.Instantiate(Prefab, Vector3.zero, new Quaternion()).GetComponent<Ground>();
-            ground._construct(room);
+            var ground = Instantiate(Prefab, Vector3.zero, new Quaternion()).GetComponent<Ground>();
+            ground._construct(logicalGround, room);
             return ground;
         }
-        private void _construct(IRoomManager room)
+        private void _construct(Room.Ground logicalGround, RoomManager room)
         {
+            Logical = logicalGround;
             Room = room;
         }
 
         public void CreateInitialCards(int[] ground)
         {
+            Logical.CreateInitialCards(ground);
+
             for (var i = 0; i < ground.Length; i++)
             {
-                var card = MakeCard(ground[i]);
-                Distribute(card);
+                var card = Card.Construct(Logical.Cards[i], ground: this);
+                Cards.Add(card);
+                PlaceCard(card);
             }
-        }
-
-        public void Distribute(Card card)
-        {
-            Cards.Add(card);
-            PlaceCard(card);
-        }
-
-        public Card MakeCard(int id)
-        {
-            var card = Card.Construct(ground: this, frontId: id);
-            return card;
         }
 
         private void PlaceCard(Card card)
@@ -70,13 +64,50 @@ namespace Basra.Client.Room
             card.transform.position = new Vector3(xPoz, yPoz);
         }
 
-        public Card[] ThrowPt1(Card card)
+        public void ThrowPt1(Card card)
         {
-            card.Type = CardOwner.Ground;
+            Logical.MyThrowPt1(card.Logical);
+
             PlaceCard(card);
-            return Cards.GetRange(0, 1).ToArray();
         }
         public void ThrowPt2(Card card)
+        {
+            card.User = null;
+            Cards.Add(card);
+        }
+    }
+}
+
+namespace Basra.Client.Room
+{
+    public class Ground
+    {
+        public static Vector2 Bounds = new Vector2(1.5f, 2.5f);
+
+        public List<Card> Cards;
+        public RoomManager Room;
+
+        public Ground(RoomManager room)
+        {
+            Room = room;
+        }
+
+        public void CreateInitialCards(int[] ground)
+        {
+            for (var i = 0; i < ground.Length; i++)
+            {
+                var card = new Card(ground: this, frontId: i);
+                Cards.Add(card);
+            }
+        }
+
+        private Card[] LastEatenCards;
+        public Card[] MyThrowPt1(Card card)
+        {
+            card.Type = CardOwner.Ground;
+            return Cards.GetRange(0, 1).ToArray();
+        }
+        public void MyThrowPt2(Card card)
         {
             card.User = null;
             Cards.Add(card);

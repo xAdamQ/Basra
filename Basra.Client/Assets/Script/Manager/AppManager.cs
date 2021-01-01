@@ -70,10 +70,10 @@ namespace Basra.Client
 
             await UniTask.WhenAll(new UniTask[]
             {
-                Room.User.StaticInit(),
+                Room.Components.User.StaticInit(),
                 Room.Ground.StaticInit(),
-                Room.Card.StaticInit(),
-                Room.Front.StaticInit(),
+                Room.Components.Card.StaticInit(),
+                Room.Components.Front.StaticInit(),
             });
         }
 
@@ -226,6 +226,19 @@ namespace Basra.Client
             // InstantRpcRecord.Current?.Revert();
 
             method.Invoke(manager, realArgs);//the only problem
+        }
+
+        public void SendUnconfirmed(string method, Action onSuccess, Action revert = null, params object[] args)
+        {
+            LastRevertAction = revert;
+            //is cleaned after server response
+            //override or pt2 is called before any next unconfirmed action
+            HubConnection.Send(method, args).OnSuccess((future) =>
+            {
+                LastRevertAction = null;
+                onSuccess.Invoke();
+            });
+
         }
     }
 }
