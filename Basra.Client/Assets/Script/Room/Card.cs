@@ -11,32 +11,7 @@ namespace Basra.Client.Room
 {
     public enum CardOwner { Oppo, Me, Ground }
 
-    public class NonMonoCard : ICard
-    {
-        public void OppoThrow(int cardId)
-        {
-            AddFront(cardId);
-
-            Throw();
-        }
-
-        public void Throw()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void AddFront(int id)
-        {
-            //Front = Object.Instantiate(Front.Prefab, transform).GetComponent<Front>();
-            //Front.transform.localPosition = Vector3.back * .01f;
-            //Front.Set(id);
-
-            //crete non mono front
-        }
-
-    }
-
-    public class Card : MonoBehaviour, ICard
+    public class Card : MonoBehaviour
     {
         public static Vector2 Bounds = new Vector2(.75f, 1f);
 
@@ -83,7 +58,7 @@ namespace Basra.Client.Room
         }
         private void ThrowPt1()
         {
-            User.UniTaskTimer.Stop();//no reverse
+            User.TurnTimer.Stop();//no reverse
 
             User.Room.Ground.ThrowPt1(this);
 
