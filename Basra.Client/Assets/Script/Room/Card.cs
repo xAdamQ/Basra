@@ -74,7 +74,7 @@ namespace Basra.Client.Room.Components
         {
             Logical.MyUnconfirmedThrow();
 
-            AppManager.I.LastRevertAction += RevertThrow;//overwrite logical revert
+            Client.Components.AppManager.I.LastRevertAction += RevertThrow;//overwrite logical revert
         }
 
         private void AddFront(int id)
@@ -170,12 +170,12 @@ namespace Basra.Client.Room
             //AppManager.I.SendUnconfirmed("Throw", onSuccess: ThrowPt2,
             //revert: RevertThrow, args: User.Cards.IndexOf(this));
 
-            AppManager.I.LastRevertAction += RevertThrow;
+            User.Room.AppManager.LastRevertAction += RevertThrow;
             //is cleaned after server response
             //override or pt2 is called before any next unconfirmed action
-            AppManager.I.HubConnection.Send("Throw", User.Cards.IndexOf(this)).OnSuccess((future) =>
+            User.Room.AppManager.HubConnection.Send("Throw", User.Cards.IndexOf(this)).OnSuccess((future) =>
             {
-                AppManager.I.LastRevertAction = null;
+                User.Room.AppManager.LastRevertAction = null;
                 ThrowPt2();
             });
 

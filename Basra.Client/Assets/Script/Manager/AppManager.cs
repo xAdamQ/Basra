@@ -16,73 +16,99 @@ using BestHTTP;
 using BestHTTP.Logger;
 using Cysharp.Threading.Tasks;
 
-//action is function instances(require object)
-//methodInfo is not
-//so for every scoped life object we fetch it's actions with reflections (methodInfo to action with an object)
-//the id for a method in server side(sendAsync) is a single string, so function name must be unique acreoss all types
-
-
-namespace Basra.Client
+namespace Basra.Client.Components
 {
     public class AppManager : MonoBehaviour
     {
-        #region props
+        public Client.AppManager Logical;
+
         public static AppManager I;
 
-        public List<object> Managers = new List<object>();
-        public List<MethodInfo> Rpcs = new List<MethodInfo>();
-
-        public HubConnection HubConnection;
-        public int Money;
-        public User User;
-
-        public GameObject TestLoginUI;
-        public InputField TestFbigInf;
-
-        public Room.RoomManager RoomManager;
+        public Room.Components.RoomManager RoomManager;
         public LobbyManager LobbyManager;
-        #endregion
 
         public Action LastRevertAction;
 
         private void Awake()
         {
+            Logical = new Client.AppManager();
+
+            Logical.HubConnection.OnConnected += OnConntected;
+
             I = this;
 
             DontDestroyOnLoad(this);
 
-            FetchManagersRpcs();
-
-#if UNITY_EDITOR
-            // SceneManager.UnloadSceneAsync(1);
-            Connect("5");
-#endif
-
+            Logical.FetchManagersRpcs("Basra.Client.Components", "Basra.Client.Components.Room");
         }
 
-        private async Task Start()
+        private async void Start()
         {
-            Managers.Add(this);
-
-            //HTTPManager.Logger.Level = BestHTTP.Logger.Loglevels.;
-            HTTPManager.Logger = new MyBestHttpLogger();
-            //HTTPManager.Logger.Output = new MyBestHttpOutput();
-
             await UniTask.WhenAll(new UniTask[]
             {
                 Room.Components.User.StaticInit(),
-                Room.Ground.StaticInit(),
+                Room.Components.Ground.StaticInit(),
                 Room.Components.Card.StaticInit(),
                 Room.Components.Front.StaticInit(),
             });
         }
 
-        public void TestConnect()
+        //automated, so its injected to the logic
+        //but other types call the logic, like test units do
+        private void OnConntected(HubConnection obj)
         {
-            Connect(TestFbigInf.text);
+            SceneManager.LoadScene(1);
         }
+
+        public LoadingPanel LaodingPanel;
+
+        public GameObject ManualLoginUI;
+        public InputField FbigInputField;
+        public void ManualIdConnect()
+        {
+            Logical.Connect(FbigInputField.text);
+        }//button
+    }
+}
+
+namespace Basra.Client
+{
+    public class AppManager
+    {
+        //public static AppManager I;
+
+        public List<object> Managers = new List<object>();
+        public List<MethodInfo> Rpcs = new List<MethodInfo>();
+
+        public HubConnection HubConnection;
+        public User User;
+
+        public Room.RoomManager RoomManager;
+        public LobbyManager LobbyManager;
+
+        public Action LastRevertAction;
+
+        public string TestFbigInf;
+
+        public AppManager()
+        {
+            //I = this;
+
+            FetchManagersRpcs("Basra.Client", "Basra.Client.Room");
+
+            Managers.Add(this);
+            HTTPManager.Logger = new MyBestHttpLogger();
+
+#if UNITY_EDITOR
+            Connect("5");
+#endif
+
+        }
+
         public void Connect(string fbigToken)
         {
+            Debug.Log("connecting with id " + fbigToken);
+
             var protocol = new JsonProtocol(new LitJsonEncoder());
 
             // var fbigToken = "To1b7XND62yJ_mUCX2emTc8lzdeIUy-Uor95jWAPzcY.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImlzc3VlZF9hdCI6MTU5NjUyMjcwMCwicGxheWVyX2lkIjoiMzYzMjgxNTU2MDA5NDI3MyIsInJlcXVlc3RfcGF5bG9hZCI6bnVsbH0";
@@ -109,8 +135,6 @@ namespace Basra.Client
             // hubConnection.On<int[], int[]>(nameof(Room.InitialDistribute), (hand, ground) => Room.InitialDistribute(hand, ground));
             // hubConnection.On(nameof(Room.InitialDistribute), () => Lobby.RoomIsFilling());
 
-
-
             User = new User
             {
                 FbId = fbigToken,
@@ -119,11 +143,11 @@ namespace Basra.Client
             HubConnection.ConnectAsync();
         }
 
-        #region events
         private void OnConntected(HubConnection obj)
         {
             //HubConnection.Send("TestAsync");
-            SceneManager.LoadScene(1);
+            //SceneManager.LoadScene(1);
+            var roomManager = new LobbyManager(this);
         }
         private bool OnMessage(HubConnection arg1, Message message)
         {
@@ -148,36 +172,17 @@ namespace Basra.Client
         {
             Debug.Log($"OnError: {arg2}");
         }
-        #endregion
 
-        #region helpers
-        [SerializeField]
-        private LoadingPanel LaodingPanel;
-
-        public void ShowLoadingPanel(string message = "")
+        public void FetchManagersRpcs(params string[] namespaces)
         {
-            LaodingPanel.MessageText.text = message;
-            LaodingPanel.gameObject.SetActive(true);
-        }
-        public void StopLoadingPanel()
-        {
-            LaodingPanel.gameObject.SetActive(false);
-        }
-
-        private void FetchManagersRpcs()
-        {
-            //you need instance of each object of the fun when server calls
-            //get the type of each one and pass the right object
-
             var namespaceTypes = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(a => a.GetTypes())
-            .Where(t => t.IsClass && (t.Namespace == "Basra.Client" || t.Namespace == "Basra.Client.Room"));
+           .SelectMany(a => a.GetTypes())
+           .Where(t => t.IsClass && (namespaces.Contains(t.Namespace)));
 
             foreach (var type in namespaceTypes)
             {
                 if (!type.Name.EndsWith("Manager")) continue;
-                //Debug.Log("we picked: " + type.Name);
-                var methods = type.GetMethods();
+                var methods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance);
                 foreach (var method in methods)
                 {
                     var attribute = method.GetCustomAttribute(typeof(RpcAttribute));
@@ -188,15 +193,6 @@ namespace Basra.Client
                 }
             }
         }
-        #endregion
-
-        #region testing
-        [Rpc]
-        public void TestCall()
-        {
-            Debug.Log("TestCall *******************************************8");
-        }
-        #endregion
 
         private void HandleInvocationMessage(Message message)
         {

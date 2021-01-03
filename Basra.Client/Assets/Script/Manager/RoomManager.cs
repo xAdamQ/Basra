@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Timers;
+using Basra.Client.Components;
 
 namespace Basra.Client.Room.Components
 {
-    //room has user room info like turn id
-    //hand has 2 types.. oppo, mine
-
     public class RoomManager : MonoBehaviour
     {
         public Room.RoomManager Logical;
@@ -21,16 +19,17 @@ namespace Basra.Client.Room.Components
         public int CurrentTurn { get; set; }
         private User UserInTurn => Users[CurrentTurn];
 
-        //private void Awake()
-        //{
-        //    AppManager.I.RoomManager = this;
-        //    // AppManager.I.Currents.RemoveAll(c => c.GetType() == GetType());
-        //    AppManager.I.Managers.Add(this);
-        //}
+        private void Awake()
+        {
+            Client.Components.AppManager.I.RoomManager = this;
+            // _appManager.Currents.RemoveAll(c => c.GetType() == GetType());
+            //_appManager.Managers.Add(this);
+            Logical.OnInitialDistribute += InitialDistribute;
+        }
 
         //private void OnDestroy()
         //{
-        //    AppManager.I.Managers.Remove(this);
+        //    _appManager.Managers.Remove(this);
         //}
 
         private void Start()
@@ -39,7 +38,7 @@ namespace Basra.Client.Room.Components
             Ground = Ground.Construct(Logical.Ground, this);
             InitVisuals();
 
-            Ready();
+            //Ready();
         }
 
         private void InitUsers()
@@ -58,7 +57,7 @@ namespace Basra.Client.Room.Components
 
         //have something more than it's name, can be changes in the future
         [Rpc]
-        public void InitialDistribute(int[] hand, int[] ground)
+        private void InitialDistribute(int[] hand, int[] ground)
         {
             Ground.CreateInitialCards(ground);
             Distribute(hand);
@@ -67,30 +66,21 @@ namespace Basra.Client.Room.Components
         }
 
         [Rpc]
-        public void Distribute(int[] hand)
+        private void Distribute(int[] hand)
         {
-            for (var i = 0; i < PlayerCount; i++)
-            {
-                if (Users[i].Type == UserType.Me)
-                {
-                    Users[i].CreateCards_Me(hand);
-                }
-                else
-                {
-                    Users[i].CreateCards_Oppo();
-                }
-            }
+            //for (var i = 0; i < Logical.PlayerCount; i++)
+            //{
+            //    if (Users[i].Type == UserType.Me)
+            //    {
+            //        Users[i].CreateCards_Me(hand);
+            //    }
+            //    else
+            //    {
+            //        Users[i].CreateCards_Oppo();
+            //    }
+            //}
 
             Debug.Log($"hand cards are {hand[0]} {hand[1]} {hand[2]} {hand[3]}");
-        }
-
-        //rev rpc
-        /// <summary>
-        /// the room is loaded, so the player is ready
-        /// </summary>
-        public void Ready()
-        {
-            AppManager.I.HubConnection.SendAsync("Ready");
         }
 
         int PrevTurn;
@@ -107,15 +97,16 @@ namespace Basra.Client.Room.Components
         }
 
         [Rpc]
-        public void CurrentOppoThrow(int cardId)
+        private void CurrentOppoThrow(int cardId)
         {
             var randomCard = Random.Range(0, UserInTurn.Cards.Count);
-            UserInTurn.Cards[randomCard].OppoThrow(cardId);
+            //UserInTurn.Cards[randomCard].OppoThrow(cardId);
         }
+
         [Rpc]
-        public void OverrideMyLastThrow(int cardIndex)
+        private void OverrideMyLastThrow(int cardIndex)
         {
-            UserInTurn.Cards[cardIndex].Throw();
+            //UserInTurn.Cards[cardIndex].Throw();
         }
 
     }
@@ -123,9 +114,6 @@ namespace Basra.Client.Room.Components
 
 namespace Basra.Client.Room
 {
-    //room has user room info like turn id
-    //hand has 2 types.. oppo, mine
-
     public class RoomManager
     {
         public int Genre;
@@ -140,11 +128,19 @@ namespace Basra.Client.Room
 
         private User UserInTurn => Users[CurrentTurn];
 
-        public RoomManager()
+        public AppManager AppManager;
+
+        public RoomManager(AppManager appManager, int genre, int playerCount)
         {
-            AppManager.I.RoomManager = this;
-            // AppManager.I.Currents.RemoveAll(c => c.GetType() == GetType());
-            AppManager.I.Managers.Add(this);
+            AppManager = appManager;
+
+            Genre = genre;
+            PlayerCount = playerCount;
+
+            AppManager.RoomManager = this;
+
+            // _appManager.Currents.RemoveAll(c => c.GetType() == GetType());
+            AppManager.Managers.Add(this);
 
             InitUsers();
             Ground = new Ground(this);
@@ -152,11 +148,19 @@ namespace Basra.Client.Room
             Ready();
         }
 
-        ~RoomManager()
+        public void Start(int myTurnId, string[] userNames)
         {
-            AppManager.I.Managers.Remove(this);
+            MyTurnId = myTurnId;
+            UserNames = userNames;
         }
 
+        ~RoomManager()
+        {
+            AppManager.Managers.Remove(this);
+        }
+
+        //things that doesn't have refernces is exposed utility
+        //things that is called by the system, mostly isn't legal to extend it
         private void InitUsers()
         {
             Users = new User[PlayerCount];
@@ -168,6 +172,7 @@ namespace Basra.Client.Room
         }
 
         //have something more than it's name, can be changes in the future
+        public event System.Action<int[], int[]> OnInitialDistribute;
         [Rpc]
         public void InitialDistribute(int[] hand, int[] ground)
         {
@@ -175,6 +180,8 @@ namespace Basra.Client.Room
             Distribute(hand);
 
             UserInTurn.EnterTurn();
+
+            OnInitialDistribute?.Invoke(hand, ground);
         }
 
         [Rpc]
@@ -199,9 +206,9 @@ namespace Basra.Client.Room
         /// <summary>
         /// the room is loaded, so the player is ready
         /// </summary>
-        public void Ready()
+        private void Ready()
         {
-            AppManager.I.HubConnection.SendAsync("Ready");
+            AppManager.HubConnection.SendAsync("Ready");
         }
 
         int PrevTurn;

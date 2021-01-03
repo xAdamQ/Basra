@@ -53,28 +53,27 @@ namespace Basra.Client.Room.Components
             user._construct(lUser);
             return user;
         }
-        private void _construct(Room.User lUser)
+        private void _construct(Room.User logicUser)
         {
             if (Constructed) throw new System.Exception("the object is already constructed");
             Constructed = true;
 
             SetName(name);
 
-            transform.position = UserPositions[lUser.TurnId];
-            transform.eulerAngles = UserRotations[lUser.TurnId];
+            transform.position = UserPositions[logicUser.TurnId];
+            transform.eulerAngles = UserRotations[logicUser.TurnId];
 
             TurnTimer.Construct(Logical.UniTaskTimer);
         }
 
+        //automated utility
+        //so some tasks are exposed for the logical layer system
         public void EnterTurn()
         {
-            Logical.EnterTurn();
             TurnTimer.Play();
         }
-
         public void CancelTurn()
         {
-            Logical.CancelTurn();
             TurnTimer.Stop();
         }
 
@@ -168,7 +167,7 @@ namespace Basra.Client.Room
             //transform.position = UserPositions[turnId];
             //transform.eulerAngles = UserRotations[turnId];
 
-            Type = turnId == RoomManager.MyTurnId ? UserType.Me : UserType.Oppo;
+            Type = turnId == room.MyTurnId ? UserType.Me : UserType.Oppo;
 
             UniTaskTimer = new UniTaskTimer(HandTime, 100);
 
@@ -180,12 +179,13 @@ namespace Basra.Client.Room
 
         private void OnTurnTimeout()
         {
-            AppManager.I.HubConnection.Send("InformTurnTimeout");
+            Room.AppManager.HubConnection.Send("InformTurnTimeout");
             //this can't be instant because the random algo is not excpected
         }
 
         public void EnterTurn()
         {
+            Debug.Log($"player {Name} in turn");
             UniTaskTimer.Play().Forget((ecx) => Debug.LogError(ecx.Message));
         }
 

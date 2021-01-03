@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace Basra.Client
 {
     public class StartGameButton : MonoBehaviour
@@ -12,7 +13,7 @@ namespace Basra.Client
 
         public void StartGame()
         {
-            AppManager.I.LobbyManager.AskForRoom(RoomGenre, PlayerCount);
+            Components.AppManager.I.LobbyManager.AskForRoom(RoomGenre, PlayerCount);
         }
     }
 }
