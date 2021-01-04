@@ -60,7 +60,7 @@ namespace Basra.Client
 
         }
 
-        private async Task Start()
+        private async void Start()
         {
             Managers.Add(this);
 
@@ -110,7 +110,6 @@ namespace Basra.Client
             // hubConnection.On(nameof(Room.InitialDistribute), () => Lobby.RoomIsFilling());
 
 
-
             User = new User
             {
                 FbId = fbigToken,
@@ -150,19 +149,7 @@ namespace Basra.Client
         }
         #endregion
 
-        #region helpers
-        [SerializeField]
-        private LoadingPanel LaodingPanel;
-
-        public void ShowLoadingPanel(string message = "")
-        {
-            LaodingPanel.MessageText.text = message;
-            LaodingPanel.gameObject.SetActive(true);
-        }
-        public void StopLoadingPanel()
-        {
-            LaodingPanel.gameObject.SetActive(false);
-        }
+        public LoadingPanel LaodingPanel;
 
         private void FetchManagersRpcs()
         {
@@ -188,7 +175,6 @@ namespace Basra.Client
                 }
             }
         }
-        #endregion
 
         #region testing
         [Rpc]

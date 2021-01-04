@@ -38,13 +38,13 @@ namespace Basra.Client
 
             SceneManager.LoadScene(2);
 
-            AppManager.I.StopLoadingPanel();//todo make it hide after async load scene
+            AppManager.I.LaodingPanel.Hide();//todo make it hide after async load scene
         }
 
         [Rpc]
         public void RoomIsFilling()
         {
-            AppManager.I.ShowLoadingPanel("Filling The Room");
+            AppManager.I.LaodingPanel.Show("Filling The Room");
         }
 
         //button
