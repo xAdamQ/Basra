@@ -9,18 +9,21 @@ using System.Reflection;
 using Cysharp.Threading.Tasks;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Basra.Client.Components
+namespace Basra.Client
 {
     public class LobbyManager : MonoBehaviour
     {
         private Client.LobbyManager Logical;
+        private Lobby Lobby;
 
         [SerializeField] Image UserPic;
         [SerializeField] Text UserName;
 
         private void Awake()
         {
-            AppManager.I.LobbyManager = this;
+            Lobby = new Lobby(AppManager.I.ServerManager);
+
+            //AppManager.I.LobbyManager = this;
         }
 
         void Start()
@@ -56,7 +59,6 @@ namespace Basra.Client.Components
         private void StartRoom(int myTurnId, string[] userNames)
         {
             SceneManager.LoadScene(2);
-
             AppManager.I.LaodingPanel.Hide();
         }
 
@@ -70,13 +72,36 @@ namespace Basra.Client.Components
         //button
         public void AskForRoom(int genre, int playerCount)
         {
-            Logical.AskForRoom(genre, playerCount);
+            Lobby.AskForRoom(genre, playerCount);
+            //Logical.AskForRoom(genre, playerCount);
         }
 
     }
 }
 
 namespace Basra.Client
+{
+    public class Lobby
+    {
+        public Room.RoomManager PendingRoom;
+
+        public ServerManager ServerManager;
+
+        public Lobby(ServerManager serverManager)
+        {
+            ServerManager = serverManager;
+        }
+
+        public void AskForRoom(int genre, int playerCount)
+        {
+            PendingRoom = new Room.RoomManager(AppManager, genre, playerCount);
+
+            AppManager.HubConnection.Send("AskForRoom", genre, playerCount);
+        }
+    }
+}
+
+namespace Basra.Client.LogicSystem
 {
     public class LobbyManager
     {
@@ -96,30 +121,25 @@ namespace Basra.Client
             AppManager.Managers.Remove(this);
         }
 
-        [Rpc]
-        private void StartRoom(int myTurnId, string[] userNames)
-        {
-            PendingRoom.Start(myTurnId, userNames);
+        //[Rpc]
+        //private void StartRoom(int myTurnId, string[] userNames)
+        //{
+        //    PendingRoom.Start(myTurnId, userNames);
 
-            Debug.Log("entered room");
-        }
+        //    Debug.Log("entered room");
+        //}
 
-        [Rpc]
-        private void RoomIsFilling()
-        {
-            Debug.Log("room is filling");
-        }
+        //[Rpc]
+        //private void RoomIsFilling()
+        //{
+        //    Debug.Log("room is filling");
+        //}
 
         public void AskForRoom(int genre, int playerCount)
         {
             PendingRoom = new Room.RoomManager(AppManager, genre, playerCount);
 
             AppManager.HubConnection.Send("AskForRoom", genre, playerCount);
-        }
-
-        public void qq()
-        {
-
         }
     }
 }

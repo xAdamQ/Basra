@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Timers;
 using Basra.Client.Components;
 
-namespace Basra.Client.Room.Components
+namespace Basra.Client.Room
 {
     public class RoomManager : MonoBehaviour
     {
@@ -112,7 +112,12 @@ namespace Basra.Client.Room.Components
     }
 }
 
-namespace Basra.Client.Room
+namespace Basra.Client.aa
+{
+
+}
+
+namespace Basra.Client.Room.LogicSystem
 {
     public class RoomManager
     {

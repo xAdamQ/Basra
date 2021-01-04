@@ -16,30 +16,28 @@ using BestHTTP;
 using BestHTTP.Logger;
 using Cysharp.Threading.Tasks;
 
-namespace Basra.Client.Components
+namespace Basra.Client
 {
     public class AppManager : MonoBehaviour
     {
-        public Client.AppManager Logical;
+        public ServerManager ServerManager;
 
         public static AppManager I;
 
-        public Room.Components.RoomManager RoomManager;
+        public Room.RoomManager RoomManager;
         public LobbyManager LobbyManager;
-
-        public Action LastRevertAction;
 
         private void Awake()
         {
-            Logical = new Client.AppManager();
-
-            Logical.HubConnection.OnConnected += OnConntected;
-
             I = this;
 
-            DontDestroyOnLoad(this);
+            ServerManager = new ServerManager();
 
-            Logical.FetchManagersRpcs("Basra.Client.Components", "Basra.Client.Components.Room");
+            ServerManager.FetchTypesRpcs(typeof(Room.RoomManager), typeof(LobbyManager));
+
+            ServerManager.HubConnection.OnConnected += OnConntected;
+
+            DontDestroyOnLoad(this);
         }
 
         private async void Start()
@@ -66,12 +64,12 @@ namespace Basra.Client.Components
         public InputField FbigInputField;
         public void ManualIdConnect()
         {
-            Logical.Connect(FbigInputField.text);
+            ServerManager.Connect(FbigInputField.text);
         }//button
     }
 }
 
-namespace Basra.Client
+namespace Basra.Client.LogicSystem
 {
     public class AppManager
     {
@@ -89,6 +87,18 @@ namespace Basra.Client
         public Action LastRevertAction;
 
         public string TestFbigInf;
+
+        //takes hubconnection
+        //perform related stuff on it
+        //connect to server with fbig id
+        //call rpcs OnMessage
+        //fetch rpcs
+        //sendunconfirmed action
+
+        //ConnectionManager
+        //Connection
+        //ServerGate
+        //ServerManager
 
         public AppManager()
         {
@@ -173,6 +183,10 @@ namespace Basra.Client
             Debug.Log($"OnError: {arg2}");
         }
 
+        /// <summary>
+        /// the rpc attribute is valid on type names ends with "Manager" only
+        /// </summary>
+        /// <param name="namespaces"></param>
         public void FetchManagersRpcs(params string[] namespaces)
         {
             var namespaceTypes = AppDomain.CurrentDomain.GetAssemblies()

@@ -1,5 +1,6 @@
 using System;
 using BestHTTP.SignalRCore;
+
 namespace Basra.Client
 {
     public class ReconnectPolicy : IRetryPolicy
