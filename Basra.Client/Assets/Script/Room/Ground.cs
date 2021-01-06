@@ -16,8 +16,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Basra.Client.Room
 {
-
-    public class Ground : MonoBehaviour, IGround
+    public class Ground : MonoBehaviour
     {
         public List<Card> Cards;
 
@@ -70,14 +69,21 @@ namespace Basra.Client.Room
             card.transform.position = new Vector3(xPoz, yPoz);
         }
 
-        public Card[] ThrowPt1(Card card)
+        private List<Card> EatenCardsPending;
+        public void AddPt1(Card card)
         {
             card.Type = CardOwner.Ground;
             PlaceCard(card);
-            return Cards.GetRange(0, 1).ToArray();
+            EatenCardsPending = Cards.GetRange(0, 1);
         }
-        public void ThrowPt2(Card card)
+        public void AddPt2(Card card)
         {
+            card.User.Eaten.AddRange(EatenCardsPending);
+            EatenCardsPending.ForEach((eatenCard) =>
+            {
+                eatenCard.gameObject.SetActive(false);
+            });
+
             card.User = null;
             Cards.Add(card);
         }

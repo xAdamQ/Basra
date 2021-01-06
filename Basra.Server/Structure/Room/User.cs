@@ -19,6 +19,8 @@ namespace Basra.Server.Structure.Room
         public List<int> Cards { get; set; }
         public const int HandTime = 11;
 
+        public List<int> EatenCards;
+
         // private Timer TurnTimer;
 
         /// <summary>
@@ -77,7 +79,8 @@ namespace Basra.Server.Structure.Room
 
             var card = Cards.Cut(cardIndexInHand);
 
-            Active.Ground.Eat(card);//sibling relation is not premited
+            var eaten = Active.Ground.Eat(card);//sibling relation is not permited
+            EatenCards.AddRange(eaten);
 
             Active.NextTurn();
 

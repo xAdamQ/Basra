@@ -60,14 +60,14 @@ namespace Basra.Client.Room
         {
             User.TurnTimer.Stop();//no reverse
 
-            User.Room.Ground.ThrowPt1(this);
+            User.Room.Ground.AddPt1(this);
 
             User.Room.NextTurn();
         }
         private void ThrowPt2()
         {
             User.Cards.Remove(this);
-            User.Room.Ground.ThrowPt2(this);
+            User.Room.Ground.AddPt2(this);
         }
         private void RevertThrow()
         {
@@ -114,14 +114,6 @@ namespace Basra.Client.Room
             Front.transform.localPosition = Vector3.back * .01f;
             Front.Set(id);
         }
-
-        /*
-        add calc funs and ui
-        get the winner and add the ui
-         */
-
-        //focus and make the right or die and start over
-        //but if testing you would be more consistant
 
     }
 }

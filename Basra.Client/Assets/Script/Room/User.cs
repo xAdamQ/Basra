@@ -176,5 +176,8 @@ namespace Basra.Client.Room
             Cards.Add(card);
             return card;
         }
+
+        public List<Card> Eaten;
+
     }
 }
