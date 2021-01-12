@@ -13,7 +13,7 @@ namespace Basra.Server
 {
 
     /// <summary>
-    /// radnom in multithreads
+    /// random in multithreads
     /// I don't understand the impl, it should do the job
     /// </summary>
     public static class StaticRandom
@@ -32,48 +32,16 @@ namespace Basra.Server
         }
     }
 
-    public enum someVType { vlaue11, vlaue22, value33, ooo }
-
     public class Program
     {
         public static IHubContext<MasterHub> HubContext;
 
-        // private class tstCla
-        // {
-        //     public someVType v;
-
-        //     public tstCla()
-        //     {
-        //         v = someVType.value33;
-        //         var saved = new Dictionary<string, object>();
-        //         saved.Add(nameof(v), v);
-        //         v = someVType.vlaue22;
-
-        //         void someFun(ref someVType vrqq)
-        //         {
-        //             var a = nameof(vrqq);
-        //         }
-
-        //         someFun(ref v);
-
-        //         foreach (var kvp in saved)
-        //         {
-        //             GetType().GetField(kvp.Key).SetValue(this, kvp.Value);
-        //         }
-
-        //         var qq = (object)this;
-        //         qq.GetType().GetField("v").SetValue(qq, someVType.ooo);
-
-        //         Console.ReadLine();
-        //     }
-        // }
-
         public static void Main(string[] args)
         {
-            // new tstCla();
-
             var host = CreateHostBuilder(args).Build();
+
             HubContext = host.Services.GetService(typeof(IHubContext<MasterHub>)) as IHubContext<MasterHub>;
+
             host.Run();
         }
 

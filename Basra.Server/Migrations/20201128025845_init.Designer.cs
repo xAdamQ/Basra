@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Basra.Server.Migrations
 {
-    [DbContext(typeof(MasterContext))]
+    [DbContext(typeof(Identity.IdentityConetxt))]
     [Migration("20201128025845_init")]
     partial class init
     {

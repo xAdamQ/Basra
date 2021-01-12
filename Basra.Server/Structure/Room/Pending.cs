@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Basra.Server.Structure.Room
+namespace Basra.Server.Room
 {
-    public class Pending
+    public class Pending : IPending
     {
         public int Genre { get; }
-        public List<User> Users { get; } = new List<User>();
+        public List<IUser> Users { get; } = new List<IUser>();
         public int PlayerCount { get; }
         public int Id { get; }
         public static int LastId { get; set; }
@@ -42,12 +42,12 @@ namespace Basra.Server.Structure.Room
 
             var initiator = hub.GetCurrentUser();
 
-            initiator.RUser = new User
+            initiator.RoomUser = new User
             {
                 Structure = initiator,
             };
 
-            pRoom.Users.Add(initiator.RUser);
+            pRoom.Users.Add(initiator.RoomUser);
 
             pRoom.Users.RemoveAll(u => u.Structure.Disconncted);
 

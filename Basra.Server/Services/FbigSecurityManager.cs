@@ -19,11 +19,11 @@ namespace Basra.Server.Services
         //it defines who can use the token and the token maker
         private readonly string _appSecret;
         private readonly IConfiguration _configuration;
-        private readonly SignInManager<BasraIdentityUser> _signInManager;
-        private readonly UserManager<BasraIdentityUser> _userManager;
-        private readonly MasterContext _masterContext;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly IdentityConetxt _masterContext;
 
-        public FbigSecurityManager(IConfiguration configuration, SignInManager<BasraIdentityUser> signInManager, UserManager<BasraIdentityUser> userManager, MasterContext masterContext)
+        public FbigSecurityManager(IConfiguration configuration, SignInManager<User> signInManager, UserManager<User> userManager, IdentityConetxt masterContext)
         {
             _configuration = configuration;
             _appSecret = _configuration["Secrets:AppSecret"];
@@ -80,7 +80,7 @@ namespace Basra.Server.Services
         /// <summary>
         /// check if the user exist and make a new one if note
         /// </summary>
-        public async Task<BasraIdentityUser> SignInAsync(string fbUserId)
+        public async Task<User> SignInAsync(string fbUserId)
         {
             //todo if (_userManager.FindByIdAsync(fbUserId) == null)
             // _userManager.FindByLoginAsync()
@@ -99,15 +99,15 @@ namespace Basra.Server.Services
             //issues a cookie
         }
 
-        private async Task<BasraIdentityUser> SignUpAsync(string fbUserId)
+        private async Task<User> SignUpAsync(string fbUserId)
         {
-            var user = new BasraIdentityUser
+            var user = new User
             {
                 FbId = fbUserId,
                 UserName = "AsAName_" + fbUserId,
             };
 
-            var result = await _userManager.CreateAsync(user);
+            await _userManager.CreateAsync(user);
 
             //todo the result maybe failure
             return user;

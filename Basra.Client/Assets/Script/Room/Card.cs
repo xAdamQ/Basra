@@ -58,6 +58,8 @@ namespace Basra.Client.Room
         }
         private void ThrowPt1()
         {
+            Debug.Log($"ThrowPt1 on user {User.TurnId} and card {Front.Id} with index {User.Cards.IndexOf(this)}");
+
             User.TurnTimer.Stop();//no reverse
 
             User.Room.Ground.AddPt1(this);

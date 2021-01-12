@@ -21,7 +21,6 @@ using Cysharp.Threading.Tasks;
 //so for every scoped life object we fetch it's actions with reflections (methodInfo to action with an object)
 //the id for a method in server side(sendAsync) is a single string, so function name must be unique acreoss all types
 
-
 namespace Basra.Client
 {
     public class AppManager : MonoBehaviour
@@ -126,7 +125,6 @@ namespace Basra.Client
         }
         private bool OnMessage(HubConnection arg1, Message message)
         {
-            Debug.Log($"OnMessage {message}");
             //call the rpcs using reflection and lobby, room objects
             // [Invocation Id: , Target: 'EnterRoom', Argument count: 2, Stream Ids: 0]
 
@@ -190,16 +188,16 @@ namespace Basra.Client
 
             var realArgs = HubConnection.Protocol.GetRealArguments(method.GetParameterTypes(), message.arguments);
 
+            var debugMessage = "HandleInvocationMessage " + message.target;
             if (realArgs != null)
             {
-                var debugMessage = "args are:  ";
+                debugMessage += "  with args:  ";
                 foreach (var item in realArgs)
                 {
                     debugMessage += item.ToString() + "  --  ";
                 }
-                Debug.Log(debugMessage);
             }
-            //debug args
+            Debug.Log(debugMessage);
 
             var manager = Managers.First(obj => obj.GetType() == method.DeclaringType);
 
@@ -208,8 +206,6 @@ namespace Basra.Client
                 LastRevertAction?.Invoke();
                 LastRevertAction = null;
             }
-
-            // InstantRpcRecord.Current?.Revert();
 
             method.Invoke(manager, realArgs);//the only problem
         }

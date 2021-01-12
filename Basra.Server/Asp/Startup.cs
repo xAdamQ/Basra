@@ -10,8 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Basra.Server.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Basra.Server.Identity;
+//using Microsoft.AspNetCore.Identity;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql;
 using Microsoft.AspNetCore.SignalR;
@@ -29,7 +28,18 @@ namespace Basra.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<MasterContext>(options =>
+            // services.AddDbContextPool<Identity.IdentityConetxt>(options =>
+            //{
+            //    options.UseMySql
+            //    (
+            //        _configuration.GetConnectionString("Main"),
+            //        new MySqlServerVersion(new Version(8, 0, 21)),
+            //        mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)
+            //    );
+            //    // .EnableSensitiveDataLogging()
+            //    // .EnableDetailedErrors();
+            //});
+            services.AddDbContextPool<Data.GameContext>(options =>
             {
                 options.UseMySql
                 (
@@ -37,8 +47,6 @@ namespace Basra.Server
                     new MySqlServerVersion(new Version(8, 0, 21)),
                     mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)
                 );
-                // .EnableSensitiveDataLogging()
-                // .EnableDetailedErrors();
             });
 
             // services.AddDbContext<MasterContext>(options =>
@@ -47,10 +55,10 @@ namespace Basra.Server
             // });
 
 
-            services.AddIdentityCore<BasraIdentityUser>()//this is responsible for UserManager, SignInManger registeration
-            .AddSignInManager<SignInManager<BasraIdentityUser>>()
-            .AddUserManager<UserManager<BasraIdentityUser>>()
-            .AddEntityFrameworkStores<MasterContext>();
+            services.AddIdentityCore<Identity.User>()//this is responsible for UserManager, SignInManger registeration
+            .AddSignInManager<SignInManager<Identity.User>>()
+            .AddUserManager<UserManager<Identity.User>>()
+            .AddEntityFrameworkStores<Identity.IdentityConetxt>();
 
             services.AddScoped<FbigSecurityManager>();
 
@@ -70,9 +78,9 @@ namespace Basra.Server
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCors(builder => builder
-           .AllowAnyOrigin()
-           .AllowAnyHeader()
-           .AllowAnyMethod()
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
            );
 
             // if (env.IsDevelopment())

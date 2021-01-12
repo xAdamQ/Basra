@@ -15,9 +15,9 @@
         // "Basra.Client/Logs/": true,
         // "Basra.Client/Packages/": true,
         // "Basra.Client/UserSettings/": true,
-        "Basra.Client/": true,
+        //"Basra.Client/": true,
         ".vs/": true
     },
-    "omnisharp.useGlobalMono": "never",
-    "workbench.colorTheme": "Night Owl",
+    //"omnisharp.useGlobalMono": "never",
+    //"workbench.colorTheme": "Night Owl",
 }

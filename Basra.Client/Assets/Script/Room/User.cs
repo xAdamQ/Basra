@@ -53,7 +53,7 @@ namespace Basra.Client.Room
 
         public List<Card> Cards { get; set; } = new List<Card>();
 
-        public IRoomManager Room { get; set; }
+        public RoomManager Room { get; set; }
 
         public TurnTimer TurnTimer;
 
@@ -78,13 +78,13 @@ namespace Basra.Client.Room
             Prefab = await Addressables.LoadAssetAsync<GameObject>("User");
         }
 
-        public static User Construct(IRoomManager room, string name, int turnId)
+        public static User Construct(RoomManager room, string name, int turnId)
         {
             var user = Object.Instantiate(Prefab).GetComponent<User>();
             user._construct(room, name, turnId);
             return user;
         }
-        private void _construct(IRoomManager room, string name, int turnId)
+        private void _construct(RoomManager room, string name, int turnId)
         {
             if (Constructed) throw new System.Exception("the object is already constructed");
             Constructed = true;
@@ -150,7 +150,8 @@ namespace Basra.Client.Room
         {
             for (var i = 0; i < hand.Length; i++)
             {
-                var card = CreateCard_Me(hand[i]);
+                var card = Card.Construct(user: this, frontId: hand[i]);
+                Cards.Add(card);
                 card.Type = CardOwner.Me;
             }
             PlaceCards();
@@ -159,25 +160,13 @@ namespace Basra.Client.Room
         {
             for (var i = 0; i < Size; i++)
             {
-                CreateCard_Oppo();
+                var card = Card.Construct(user: this);
+                Cards.Add(card);
             }
             PlaceCards();
         }
 
-        private Card CreateCard_Me(int id)
-        {
-            var card = Card.Construct(user: this, frontId: id);
-            Cards.Add(card);
-            return card;
-        }
-        private Card CreateCard_Oppo()
-        {
-            var card = Object.Instantiate(Card.Prefab, transform).GetComponent<Card>();
-            Cards.Add(card);
-            return card;
-        }
-
-        public List<Card> Eaten;
+        [SerializeField] public List<Card> Eaten;
 
     }
 }

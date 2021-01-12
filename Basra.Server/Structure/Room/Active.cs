@@ -7,13 +7,14 @@ using Basra.Server.Exceptions;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace Basra.Server.Structure.Room
+namespace Basra.Server.Room
 {
     public enum CardNames { One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Boy, Girl, Old }
     public enum ShapeNames { Club, Diamond, Heart, Spade }
 
     public class Active
     {
+
         //todo ready timeout
         //timouts overall as defensive strategy
         //todo action that happened after it's time e.g. play card
@@ -22,14 +23,18 @@ namespace Basra.Server.Structure.Room
         public int ShapeSize => 13;
 
         public int Genre { get; }
-        public User[] Users { get; }
-        public Ground Ground { get; }
+        public IUser[] Users { get; }
+        public List<int> GroundCards { get; }
         public bool[] IsReady { get; }
         public int Id { get; }
         private static int LastId { get; set; }
         public List<int> Deck { get; }
         public int CurrentTurn { get; private set; }
-        private User UserInTurn => Users[CurrentTurn];
+        private IUser UserInTurn => Users[CurrentTurn];
+
+        private static readonly int[] GenreBets = new int[] { 50, 100, 200 };
+
+        public int TotalBet;
 
         public static List<Active> All { get; } = new List<Active>();
 
@@ -38,8 +43,6 @@ namespace Basra.Server.Structure.Room
             var userNames = Users.Select(u => u.Structure.Name).ToArray();
             var tasks = new List<Task>();
 
-            Users[0].StartTurn();
-
             for (int i = 0; i < Users.Length; i++)
             {
                 tasks.Add(Program.HubContext.Groups.AddToGroupAsync(Users[i].Structure.ConnectionId, "room" + Id));
@@ -47,9 +50,11 @@ namespace Basra.Server.Structure.Room
             }
 
             await Task.WhenAll(tasks);
+
+            Users[0].StartTurn();
         }
 
-        public Active(Pending pendingRoom)
+        public Active(IPending pendingRoom)
         {
             All.Add(this);
 
@@ -59,9 +64,11 @@ namespace Basra.Server.Structure.Room
 
             IsReady = new bool[Users.Length];
 
+            TotalBet = GenreBets[Genre] * Users.Length;
+
             Deck = GenerateDeck();
 
-            Ground = new Ground(Deck.CutRange(User.HandSize));
+            GroundCards = Deck.CutRange(User.HandSize);
         }
 
         private List<int> GenerateDeck()
@@ -126,8 +133,56 @@ namespace Basra.Server.Structure.Room
             UserInTurn.StartTurn();
         }
 
+        public void FinalizeGame()
+        {
+            var biggestEatenCount = Users.Max(u => u.EatenCardsCount);
+            var biggestEaters = Users.Where(u => u.EatenCardsCount == biggestEatenCount);
+
+            for (int u = 0; u < Users.Length; u++)
+            {
+                Users[u].Score =
+                    Users[u].BasraCount * 10 +
+                    Users[u].BigBasraCount * 30 +
+                    (biggestEaters.Contains(Users[u]) ? 30 : 0);
+            }
+
+            var maxScore = Users.Max(u => u.Score);
+            var winners = Users.Where(u => u.Score == maxScore).ToArray();
+
+            //draw
+            if (winners.Length > 1)
+            {
+                var moneyPart = TotalBet / winners.Length;
+                foreach (var user in winners)
+                {
+                    var sUser = user.Structure;
+                    sUser.PlayedGames++;
+                    sUser.Draws++;
+                    sUser.Money += moneyPart;
+                }
+            }
+            //win
+            else
+            {
+                var sUser = winners[0].Structure;
+                sUser.PlayedGames++;
+                sUser.Wins++;
+                sUser.Money += TotalBet;
+            }
+
+            //lose
+            foreach (var user in Users)
+            {
+                if (winners.Contains(user)) continue;
+
+                var sUser = user.Structure;
+                sUser.PlayedGames++;
+            }
+
+        }
+
         #region helpers
-        private int GetUserRoomId(string userId) => Array.FindIndex(Users, u => u.Structure.Id == userId);
+        private int GetUserRoomId(string userId) => Array.FindIndex(Users, u => u.Structure.IdentityUserId == userId);
 
         /// <summary>
         /// check if the given index is equal to all similar indices, e.g. 7, 7+13, 7+26 (different colors of 7)

@@ -9,7 +9,7 @@ namespace Basra.Client.Room
     //room has user room info like turn id
     //hand has 2 types.. oppo, mine
 
-    public class RoomManager : MonoBehaviour, IRoomManager
+    public class RoomManager : MonoBehaviour
     {
         //this will work because room follows "Current" pattern
         //any static you have to reinit
@@ -117,6 +117,8 @@ namespace Basra.Client.Room
         [Rpc]
         public void CurrentOppoThrow(int cardId)
         {
+            Debug.Log($"CurrentOppoThrow on user: {CurrentTurn} and card index: {cardId}");
+
             var randomCard = Random.Range(0, UserInTurn.Cards.Count);
             UserInTurn.Cards[randomCard].OppoThrow(cardId);
         }

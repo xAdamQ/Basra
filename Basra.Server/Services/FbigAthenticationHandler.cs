@@ -1,4 +1,3 @@
-using Basra.Server.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -21,12 +20,8 @@ namespace Basra.Server.Services
 
         private readonly FbigSecurityManager _fbigSecurityManager;
 
-        public FbigAuthenticationHandler(
-            IOptionsMonitor<FbigAuthenticationSchemeOptions> options,
-            ILoggerFactory logger,
-            UrlEncoder encoder,
-            ISystemClock clock,
-            FbigSecurityManager fbigSecurityManager)
+        public FbigAuthenticationHandler(IOptionsMonitor<FbigAuthenticationSchemeOptions> options, ILoggerFactory logger,
+            UrlEncoder encoder, ISystemClock clock, FbigSecurityManager fbigSecurityManager)
         : base(options, logger, encoder, clock)
         {
             _fbigSecurityManager = fbigSecurityManager;

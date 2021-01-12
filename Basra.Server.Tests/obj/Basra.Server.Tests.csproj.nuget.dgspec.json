@@ -1,31 +1,37 @@
 {
   "format": 1,
   "restore": {
-    "/home/adam/Projects/Basra/Basra.Server.Tests/Basra.Server.Tests.csproj": {}
+    "C:\\Projects\\Basra\\Basra.Server.Tests\\Basra.Server.Tests.csproj": {}
   },
   "projects": {
-    "/home/adam/Projects/Basra/Basra.Server.Tests/Basra.Server.Tests.csproj": {
+    "C:\\Projects\\Basra\\Basra.Server.Tests\\Basra.Server.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/adam/Projects/Basra/Basra.Server.Tests/Basra.Server.Tests.csproj",
+        "projectUniqueName": "C:\\Projects\\Basra\\Basra.Server.Tests\\Basra.Server.Tests.csproj",
         "projectName": "Basra.Server.Tests",
-        "projectPath": "/home/adam/Projects/Basra/Basra.Server.Tests/Basra.Server.Tests.csproj",
-        "packagesPath": "/home/adam/.nuget/packages/",
-        "outputPath": "/home/adam/Projects/Basra/Basra.Server.Tests/obj/",
+        "projectPath": "C:\\Projects\\Basra\\Basra.Server.Tests\\Basra.Server.Tests.csproj",
+        "packagesPath": "C:\\Users\\xadam\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\Basra\\Basra.Server.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/adam/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\xadam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.1"
+          "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
-            "projectReferences": {}
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Projects\\Basra\\Basra.Server\\Basra.Server.csproj": {
+                "projectPath": "C:\\Projects\\Basra\\Basra.Server\\Basra.Server.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -35,12 +41,16 @@
         }
       },
       "frameworks": {
-        "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
+        "net5.0": {
+          "targetAlias": "net5.0",
           "dependencies": {
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[16.5.0, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.15.2, )"
             },
             "coverlet.collector": {
               "target": "Package",
@@ -65,18 +75,96 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[3.1.8, 3.1.8]"
-            }
-          ],
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.100/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Projects\\Basra\\Basra.Server\\Basra.Server.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\Basra\\Basra.Server\\Basra.Server.csproj",
+        "projectName": "Basra.Server",
+        "projectPath": "C:\\Projects\\Basra\\Basra.Server\\Basra.Server.csproj",
+        "packagesPath": "C:\\Users\\xadam\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\Basra\\Basra.Server\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\xadam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspnetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[5.0.0-alpha.2, )"
+            },
+            "System.Reactive": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

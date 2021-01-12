@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Basra.Server.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using Basra.Server.Extensions;
 using System.Linq;
-using Basra.Server.Structure;
 using Basra.Server.Exceptions;
 using System.Threading;
 
@@ -22,15 +20,15 @@ namespace Basra.Server
         // public static MasterHub Current;//I don't know if this is thread safe
         //hub life time is not even per connection, it's per request!
 
-        private readonly SignInManager<BasraIdentityUser> _signInManager;
+        private readonly SignInManager<Identity.User> _signInManager;
 
-        private static List<User> ConnectedUsers { get; } = new List<User>();
+        private static List<Data.User> ConnectedUsers { get; } = new List<Data.User>();
 
         // public RuntimeUser GetUser(string connectionId) => RuntimeUsers.First(u => u.ConnectionId == connectionId);
-        public User GetCurrentUser() => ConnectedUsers.First(u => u.ConnectionId == Context.ConnectionId);
+        public Data.User GetCurrentUser() => ConnectedUsers.First(u => u.ConnectionId == Context.ConnectionId);
         //the system will allow one connections per user
 
-        public MasterHub(SignInManager<BasraIdentityUser> signInManager, MasterContext masterContext)
+        public MasterHub(SignInManager<Identity.User> signInManager)
         {
             _signInManager = signInManager;
         }
@@ -39,9 +37,9 @@ namespace Basra.Server
         {
             System.Console.WriteLine($"connection established: {Context.ConnectionId} {Context.UserIdentifier}");
 
-            var user = new User
+            var user = new Data.User
             {
-                Id = Context.UserIdentifier,
+                IdentityUserId = Context.UserIdentifier,
                 ConnectionId = Context.ConnectionId,
                 Name = Context.User.Identity.Name,
             };
@@ -65,46 +63,25 @@ namespace Basra.Server
             await base.OnDisconnectedAsync(exception);
         }
 
-        //sends the message to other contacts
-        //public async Task SendMessageAsync(string message)
-        //{
-        //    var messageObject = JsonConvert.DeserializeObject<Message>(message);
-        //    // JsonConvert.DeserializeObject<dynamic>(message); //you clould use it like this without strict types
-
-        //    System.Console.WriteLine("message from: " + Context.ConnectionId);
-
-        //    if (string.IsNullOrEmpty(messageObject.To))
-        //    {
-        //        await Clients.All.SendAsync("ShowMessage", messageObject.Value);
-        //        //what's the method
-        //    }
-        //    else
-        //    {
-        //        await Clients.Client(messageObject.To).SendAsync("ShowMessage", messageObject.Value);
-        //    }
-        //}
-
         #region rpc
 
         public async Task AskForRoom(int roomGenre, int roomPlayerCount)
         {
-            await Structure.Room.Pending.AskForRoom(this, roomGenre, roomPlayerCount);
+            await Room.Pending.AskForRoom(this, roomGenre, roomPlayerCount);
         }
 
         public async Task Ready()
         {
-            await GetCurrentUser().RUser.Ready();
+            await GetCurrentUser().RoomUser.Ready();
         }
 
         public async Task Throw(int indexInHand)
         {
-            throw new BadUserInputException();
-
-            await GetCurrentUser().RUser.Play(indexInHand);
+            await GetCurrentUser().RoomUser.Play(indexInHand);
         }//automatic actions happen from serevr side and the client knows this overrides his action and do the revert 
         public async Task InformTurnTimeout()
         {
-            await GetCurrentUser().RUser.RandomPlay();
+            await GetCurrentUser().RoomUser.RandomPlay();
         }
 
         #region testing
