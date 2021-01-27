@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace Basra.Server.Room.Tests
+namespace Basra.Server.Tests
 {
     public class Logic
     {
@@ -18,7 +18,7 @@ namespace Basra.Server.Room.Tests
         [MemberData(nameof(BasraEat_ShouldWork_Data))]
         public void BasraEat_ShouldWork(int cardId, List<int> ground, List<int> eaten, bool basra, bool bigBasra)
         {
-            var actualEaten = Room.Logic.Eat(cardId, ground, out bool actualBasra, out bool actualBigBasra);
+            var actualEaten = RoomLogic.Eat(cardId, ground, out bool actualBasra, out bool actualBigBasra);
 
             Assert.Equal(eaten, actualEaten);
             Assert.Equal(basra, actualBasra);

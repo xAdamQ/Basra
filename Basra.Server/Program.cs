@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Basra.Server
 {
-
     /// <summary>
     /// random in multithreads
     /// I don't understand the impl, it should do the job

@@ -17,71 +17,90 @@ namespace Basra.Server
     [Authorize]
     public class MasterHub : Hub
     {
+        private readonly IMasterRepo _masterRepo;
+        private readonly RoomManager _roomManager;
+
         // public static MasterHub Current;//I don't know if this is thread safe
         //hub life time is not even per connection, it's per request!
 
-        private readonly SignInManager<Identity.User> _signInManager;
+        //private readonly SignInManager<Identity.User> _signInManager;
 
-        private static List<Data.User> ConnectedUsers { get; } = new List<Data.User>();
+        //private static List<ActiveUser> ActiveUsers { get; } = new List<ActiveUser>();
 
         // public RuntimeUser GetUser(string connectionId) => RuntimeUsers.First(u => u.ConnectionId == connectionId);
-        public Data.User GetCurrentUser() => ConnectedUsers.First(u => u.ConnectionId == Context.ConnectionId);
+        //public ActiveUser GetCurrentUser() => ActiveUsers.First(u => u.ConnectionId == Context.ConnectionId);
         //the system will allow one connections per user
 
-        public MasterHub(SignInManager<Identity.User> signInManager)
+        public MasterHub(IMasterRepo masterRepo, RoomManager roomManager)
         {
-            _signInManager = signInManager;
+            _masterRepo = masterRepo;
+            _roomManager = roomManager;
         }
 
         public override async Task OnConnectedAsync()
         {
-            System.Console.WriteLine($"connection established: {Context.ConnectionId} {Context.UserIdentifier}");
+            Console.WriteLine($"connection established: {Context.UserIdentifier} {Context.UserIdentifier}");
 
-            var user = new Data.User
-            {
-                IdentityUserId = Context.UserIdentifier,
-                ConnectionId = Context.ConnectionId,
-                Name = Context.User.Identity.Name,
-            };
+            //var user = new ActiveUser
+            //{
+            //    Id = Context.UserIdentifier,
+            //    ConnectionId = Context.ConnectionId,
+            //    //Name = Context.User.
+            //    Name = Context.User.Identity.Name,
+            //};
 
-            ConnectedUsers.Add(user);
+            //ActiveUsers.Add(user);
             //the claims principle shoud pass the id here
 
-            await base.OnConnectedAsync();
+            var user = await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier);
+            await _masterRepo.GetNameOfUserAsync(Context.UserIdentifier);
 
-            // Context.Abort(); //this hiw to close connection
+            user.IsActive = true;
+            _masterRepo.SaveChanges();
+
+            await base.OnConnectedAsync();
+            // Context.Abort(); //this how to close connection
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            System.Console.WriteLine($"{Context.ConnectionId} Disconnected");
+            Console.WriteLine($"{Context.UserIdentifier} Disconnected");
 
-            var currentUser = GetCurrentUser();
-            currentUser.Disconncted = true;
-            ConnectedUsers.Remove(currentUser);
+            //var currentUser = GetCurrentUser();
+            //currentUser.Disconncted = true;
+            //ActiveUsers.Remove(currentUser);
+
+            var user = await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier);
+            user.IsActive = false;
+            _masterRepo.SaveChanges();
+
             //removed from groups automatically
             await base.OnDisconnectedAsync(exception);
         }
+
+        private IRoomUser GetRoomUser() => RoomUser.All[Context.UserIdentifier];
+
+
 
         #region rpc
 
         public async Task AskForRoom(int roomGenre, int roomPlayerCount)
         {
-            await Room.Pending.AskForRoom(this, roomGenre, roomPlayerCount);
+            await PendingRoom.AskForRoom(this, roomGenre, roomPlayerCount, _masterRepo);
         }
 
         public async Task Ready()
         {
-            await GetCurrentUser().RoomUser.Ready();
+            await GetRoomUser().Ready();
         }
 
         public async Task Throw(int indexInHand)
         {
-            await GetCurrentUser().RoomUser.Play(indexInHand);
+            await GetRoomUser().Play(indexInHand);
         }//automatic actions happen from serevr side and the client knows this overrides his action and do the revert 
         public async Task InformTurnTimeout()
         {
-            await GetCurrentUser().RoomUser.RandomPlay();
+            await GetRoomUser().RandomPlay();
         }
 
         #region testing

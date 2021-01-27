@@ -39,7 +39,7 @@ namespace Basra.Server
             //    // .EnableSensitiveDataLogging()
             //    // .EnableDetailedErrors();
             //});
-            services.AddDbContextPool<Data.GameContext>(options =>
+            services.AddDbContextPool<MasterContext>(options =>
             {
                 options.UseMySql
                 (
@@ -55,12 +55,14 @@ namespace Basra.Server
             // });
 
 
-            services.AddIdentityCore<Identity.User>()//this is responsible for UserManager, SignInManger registeration
-            .AddSignInManager<SignInManager<Identity.User>>()
-            .AddUserManager<UserManager<Identity.User>>()
-            .AddEntityFrameworkStores<Identity.IdentityConetxt>();
+            //services.AddIdentityCore<Identity.User>()//this is responsible for UserManager, SignInManger registeration
+            //.AddSignInManager<SignInManager<Identity.User>>()
+            //.AddUserManager<UserManager<Identity.User>>()
+            //.AddEntityFrameworkStores<Identity.IdentityConetxt>();
 
             services.AddScoped<FbigSecurityManager>();
+
+            services.AddScoped<MasterRepo>();
 
             services.AddAuthentication(FbigAuthenticationHandler.PROVIDER_NAME)
             .AddScheme<FbigAuthenticationSchemeOptions, FbigAuthenticationHandler>(FbigAuthenticationHandler.PROVIDER_NAME, null);
@@ -75,7 +77,7 @@ namespace Basra.Server
 
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MasterRepo masterRepo)
         {
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
@@ -90,9 +92,10 @@ namespace Basra.Server
 
 
             // app.UseHttpsRedirection();
-            app.UseRouting();
 
             app.UseAuthentication();
+
+            app.UseRouting();
 
             app.UseAuthorization();
 
@@ -102,6 +105,9 @@ namespace Basra.Server
             });
 
             app.UseEndpoints(endpoint => endpoint.MapHub<MasterHub>("connect"));
+
+            masterRepo.MarkAllUsersNotActive();
+            masterRepo.SaveChanges();
         }
     }
 }

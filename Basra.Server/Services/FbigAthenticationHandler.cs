@@ -95,10 +95,12 @@ namespace Basra.Server.Services
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id),
                      //this is the identifier used in the signalr, this claim type "NameIdentifier" could be changed with IUserIdProvider
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Email, "tst mail"),
+                    //new Claim(ClaimTypes.Name, user.UserName),
+                    //new Claim(ClaimTypes.Email, user.Email),
                     // new Claim("UserType", "General"),//role?
                 };//this the only claims I can obtain from the payload
+
+                //ActiveUser.All.Add(new )
 
                 var genericIdentity = new ClaimsIdentity(genericClaims, /*Scheme.Name*/ PROVIDER_NAME);
                 //fbig shoud (in theory) have more than idnetity, but the auth provider is the same.. how to differentiat
@@ -107,11 +109,11 @@ namespace Basra.Server.Services
 
                 var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
-                Debug.WriteLine($"login succeeded for player: {user}");
+                Console.WriteLine($"login succeeded for player: {user}");
 
                 return AuthenticateResult.Success(ticket);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return AuthenticateResult.Fail("Unauthorized");
             }//todo: are you sure it's a bad request not internal server error?, you should use specific excepected errors for user fault
