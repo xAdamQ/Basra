@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Basra.Server.Extensions;
 using System.Linq;
 using Basra.Server.Exceptions;
+using Basra.Server.Data;
 using System.Threading;
 
 //todo learn about thread safety
@@ -53,7 +54,7 @@ namespace Basra.Server
             //the claims principle shoud pass the id here
 
             var user = await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier);
-            await _masterRepo.GetNameOfUserAsync(Context.UserIdentifier);
+            await _masterRepo.GetUserNameAsync(Context.UserIdentifier);
 
             user.IsActive = true;
             _masterRepo.SaveChanges();
@@ -78,24 +79,28 @@ namespace Basra.Server
             await base.OnDisconnectedAsync(exception);
         }
 
-        private IRoomUser GetRoomUser() => RoomUser.All[Context.UserIdentifier];
+        private RoomUser GetRoomUser() => RoomUser.All[Context.UserIdentifier];
 
 
 
         #region rpc
 
-        public async Task AskForRoom(int roomGenre, int roomPlayerCount)
+        public async Task AskForRoom(int genre, int playerCount)
         {
-            await PendingRoom.AskForRoom(this, roomGenre, roomPlayerCount, _masterRepo);
+            await _roomManager.AskForRoom(genre, playerCount, new RoomUser { UserId = Context.UserIdentifier, ConnectionId = Context.ConnectionId });
+            //await PendingRoom.AskForRoom(this, roomGenre, roomPlayerCount, _masterRepo);
         }
 
         public async Task Ready()
         {
+            //_roomManager.SetReady(roomUser);
+            //_roomManager.SetReady(id/connId);
             await GetRoomUser().Ready();
         }
 
         public async Task Throw(int indexInHand)
         {
+            //_roomManager.Play(id, indexInHand);
             await GetRoomUser().Play(indexInHand);
         }//automatic actions happen from serevr side and the client knows this overrides his action and do the revert 
         public async Task InformTurnTimeout()

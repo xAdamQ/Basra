@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-
+using Basra.Server.Data;
 
 namespace Basra.Server
 {
@@ -12,7 +12,8 @@ namespace Basra.Server
         public MasterContext(DbContextOptions<MasterContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Data.PendingRoom> PendingRoom { get; set; }
+        public DbSet<RoomUser> RoomUsers { get; set; }
+        public DbSet<Room> Rooms { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{

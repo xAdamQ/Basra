@@ -6,6 +6,7 @@ using System;
 using Basra.Server.Exceptions;
 using System.Threading.Tasks;
 using System.Timers;
+using Basra.Server.Data;
 
 namespace Basra.Server
 {
@@ -22,7 +23,7 @@ namespace Basra.Server
 
     //}
 
-    public class ActiveRoom
+    public class Room
     {
         //todo ready timeout
         //timouts overall as defensive strategy
@@ -31,44 +32,53 @@ namespace Basra.Server
         public int DeckSize => 52;
         public int ShapeSize => 13;
 
-        public int Genre { get; }
-        public IRoomUser[] Users { get; }
-        public List<int> GroundCards { get; }
-        public int Id { get; }
-        public List<int> Deck { get; }
-        public int CurrentTurn { get; private set; }
-        private IRoomUser UserInTurn => Users[CurrentTurn];
+        public string Id { get; set; }
 
-        private static int LastId { get; set; }
+        public int Genre { get; set; }
+        public int UserCount { get; set; }
+
+        public int EnteredUserCount { get; set; }
+
+        public string[] UsersIds { get; set; }
+        public List<int> GroundCards { get; set; }
+        public List<int> Deck { get; set; }
+        public int CurrentTurn { get; private set; }
+
+        public RoomUser[] Users { get; set; }
+        private RoomUser UserInTurn => Users[CurrentTurn];
+
+
+
+        //private static int LastId { get; set; }
         private static readonly int[] GenreBets = new int[] { 50, 100, 200 };
 
         public int TotalBet;
 
-        public static List<ActiveRoom> All { get; } = new List<ActiveRoom>();
+        public static List<Room> All { get; } = new List<Room>();
         public IMasterRepo _masterRepo { get; }
 
-        public ActiveRoom(IPendingRoom pendingRoom, IMasterRepo masterRepo)
-        {
-            All.Add(this);
+        //public Room(int genre, int userCount, IMasterRepo masterRepo)
+        //{
+        //    All.Add(this);
 
-            Genre = pendingRoom.Genre;
-            Users = pendingRoom.Users.ToArray();
-            Id = LastId++;
+        //    Genre = genre;
+        //    Users = new RoomUser[userCount];
+        //    Id = LastId++;
 
-            TotalBet = GenreBets[Genre] * Users.Length;
+        //    TotalBet = GenreBets[Genre] * Users.Length;
 
-            Deck = GenerateDeck();
+        //    Deck = GenerateDeck();
 
-            GroundCards = Deck.CutRange(RoomUser.HandSize);
-            _masterRepo = masterRepo;
-        }
+        //    GroundCards = Deck.CutRange(RoomUser.HandSize);
+        //    _masterRepo = masterRepo;
+        //}
 
         public async Task Start()
         {
             var userNames = new string[Users.Length];
             for (int i = 0; i < Users.Length; i++)
             {
-                userNames[i] = await _masterRepo.GetNameOfUserAsync(Users[i].UserId);
+                userNames[i] = await _masterRepo.GetUserNameAsync(Users[i].UserId);
             }
             //var userNames = Users.Select(u => u.ActiveUser.Name).ToArray();
 
