@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Basra.Server.Data;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Basra.Server
 {
+
+    //what should be strored in db?
+    //things that live after server restart
+    //things that should live after server broke, like rooms!
+    //so everything is in db!?
+    //can I instantaite non services/entities?
     public class RoomManager
     {
         private readonly IMasterRepo _masterRepo;
@@ -102,10 +109,10 @@ namespace Basra.Server
         //    //await Program.HubContext.Clients.Client(ConnectionId).SendAsync("StartRoom", TurnId, playerNames);
         //}
 
-        public void StartTurn()
+        public void StartTurn(RoomUser roomUser)
         {
-            TurnTimoutCancelation = new CancellationTokenSource();
-            Task.Delay(HandTime * 1000).ContinueWith(t => RandomPlay(), TurnTimoutCancelation.Token);
+            var TurnTimoutCancelation = new CancellationTokenSource();
+            Task.Delay(RoomUser.HandTime * 1000).ContinueWith(t => RandomPlay(roomUser), TurnTimoutCancelation.Token);
         }
 
         /// <summary>
@@ -135,6 +142,18 @@ namespace Basra.Server
         //        await InitialDistribute(activeRoom);
         //    }
         //}
+
+        public async Task RandomPlay(RoomUser roomUser)
+        {
+            var randomCardIndex = StaticRandom.GetRandom(roomUser.Cards.Count);
+
+            await Task.WhenAll
+            (
+                Play(randomCardIndex),
+                Program.HubContext.Clients.Client(roomUser.ConnectionId).SendAsync("OverrideMyLastThrow", randomCardIndex)
+            // Structure.SendAsync("OverrideThrow", card)
+            );
+        }
 
     }
 }
