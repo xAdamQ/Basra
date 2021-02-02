@@ -45,9 +45,8 @@ namespace Basra.Server
         public int TotalBet;
 
         public static List<ActiveRoom> All { get; } = new List<ActiveRoom>();
-        public IMasterRepo _masterRepo { get; }
 
-        public ActiveRoom(IPendingRoom pendingRoom, IMasterRepo masterRepo)
+        public ActiveRoom(IPendingRoom pendingRoom)
         {
             All.Add(this);
 
@@ -60,15 +59,14 @@ namespace Basra.Server
             Deck = GenerateDeck();
 
             GroundCards = Deck.CutRange(RoomUser.HandSize);
-            _masterRepo = masterRepo;
         }
 
-        public async Task Start()
+        public async Task Start(IMasterRepo masterRepo)
         {
             var userNames = new string[Users.Length];
             for (int i = 0; i < Users.Length; i++)
             {
-                userNames[i] = await _masterRepo.GetNameOfUserAsync(Users[i].UserId);
+                userNames[i] = await masterRepo.GetNameOfUserAsync(Users[i].UserId);
             }
             //var userNames = Users.Select(u => u.ActiveUser.Name).ToArray();
 
@@ -146,7 +144,7 @@ namespace Basra.Server
             UserInTurn.StartTurn();
         }
 
-        public async Task FinalizeGame()
+        public async Task FinalizeGame(IMasterRepo masterRepo)
         {
             var biggestEatenCount = Users.Max(u => u.EatenCardsCount);
             var biggestEaters = Users.Where(u => u.EatenCardsCount == biggestEatenCount);
@@ -169,7 +167,7 @@ namespace Basra.Server
                 foreach (var user in winners)
                 {
                     //var sUser = user.ActiveUser.Data;
-                    var dUser = await _masterRepo.GetUserByIdAsyc(user.UserId);
+                    var dUser = await masterRepo.GetUserByIdAsyc(user.UserId);
                     dUser.PlayedGames++;
                     dUser.Draws++;
                     dUser.Money += moneyPart;
@@ -179,7 +177,7 @@ namespace Basra.Server
             else
             {
                 //var sUser = winners[0].Data;
-                var dUser = await _masterRepo.GetUserByIdAsyc(winners[0].UserId);
+                var dUser = await masterRepo.GetUserByIdAsyc(winners[0].UserId);
                 dUser.PlayedGames++;
                 dUser.Wins++;
                 dUser.Money += TotalBet;
@@ -191,11 +189,11 @@ namespace Basra.Server
                 if (winners.Contains(user)) continue;
 
                 //var sUser = user.Data;
-                var dUser = await _masterRepo.GetUserByIdAsyc(user.UserId);
+                var dUser = await masterRepo.GetUserByIdAsyc(user.UserId);
                 dUser.PlayedGames++;
             }
 
-            _masterRepo.SaveChanges();
+            masterRepo.SaveChanges();
         }
 
         #region helpers

@@ -18,7 +18,6 @@ namespace Basra.Server
     public class MasterHub : Hub
     {
         private readonly IMasterRepo _masterRepo;
-        private readonly RoomManager _roomManager;
 
         // public static MasterHub Current;//I don't know if this is thread safe
         //hub life time is not even per connection, it's per request!
@@ -31,10 +30,9 @@ namespace Basra.Server
         //public ActiveUser GetCurrentUser() => ActiveUsers.First(u => u.ConnectionId == Context.ConnectionId);
         //the system will allow one connections per user
 
-        public MasterHub(IMasterRepo masterRepo, RoomManager roomManager)
+        public MasterHub(IMasterRepo masterRepo)
         {
             _masterRepo = masterRepo;
-            _roomManager = roomManager;
         }
 
         public override async Task OnConnectedAsync()
@@ -79,8 +77,6 @@ namespace Basra.Server
         }
 
         private IRoomUser GetRoomUser() => RoomUser.All[Context.UserIdentifier];
-
-
 
         #region rpc
 

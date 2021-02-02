@@ -59,15 +59,13 @@ namespace Basra.Server
 
                 All.Remove(this);
 
-                var active = new ActiveRoom(this, masterRepo);
-                await active.Start();
+                var active = new ActiveRoom(this);
+                await active.Start(masterRepo);
             }
             else
             {
                 await hub.Clients.Caller.SendAsync("RoomIsFilling");
             }
         }
-
-
     }
 }
