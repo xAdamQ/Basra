@@ -113,7 +113,7 @@ namespace Basra.Server.Services
 
                 return AuthenticateResult.Success(ticket);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return AuthenticateResult.Fail("Unauthorized");
             }//todo: are you sure it's a bad request not internal server error?, you should use specific excepected errors for user fault

@@ -7,6 +7,6 @@ namespace Basra.Server
         int Genre { get; }
         int Id { get; }
         int PlayerCount { get; }
-        List<IRoomUser> Users { get; }
+        List<RoomUser> Users { get; }
     }
 }

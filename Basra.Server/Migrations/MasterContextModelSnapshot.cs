@@ -16,6 +16,138 @@ namespace Basra.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
+            modelBuilder.Entity("Basra.Server.Data.PendingRoom", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("EnteredUsers")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Genre")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RoomId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("UserCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("PendingRooms");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EnteredUsers = 0,
+                            Genre = 0,
+                            RoomId = "1",
+                            UserCount = 0
+                        });
+                });
+
+            modelBuilder.Entity("Basra.Server.Room", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("CurrentTurn")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Genre")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rooms");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "0",
+                            CurrentTurn = 0,
+                            Genre = 0
+                        },
+                        new
+                        {
+                            Id = "1",
+                            CurrentTurn = 0,
+                            Genre = 0
+                        });
+                });
+
+            modelBuilder.Entity("Basra.Server.RoomUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ActiveRoomId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("BasraCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BigBasraCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConnectionId")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("EatenCardsCount")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReady")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("RoomId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActiveRoomId");
+
+                    b.HasIndex("RoomId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RoomUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "0",
+                            BasraCount = 0,
+                            BigBasraCount = 0,
+                            EatenCardsCount = 0,
+                            IsReady = false,
+                            RoomId = "0",
+                            Score = 0,
+                            UserId = "3"
+                        },
+                        new
+                        {
+                            Id = "1",
+                            BasraCount = 0,
+                            BigBasraCount = 0,
+                            EatenCardsCount = 0,
+                            IsReady = false,
+                            RoomId = "1",
+                            Score = 0,
+                            UserId = "0"
+                        });
+                });
+
             modelBuilder.Entity("Basra.Server.User", b =>
                 {
                     b.Property<string>("Id")
@@ -49,6 +181,87 @@ namespace Basra.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "0",
+                            Draws = 0,
+                            Fbid = "0",
+                            IsActive = false,
+                            Money = 0,
+                            Name = "hany",
+                            PlayedGames = 3,
+                            Wins = 4
+                        },
+                        new
+                        {
+                            Id = "1",
+                            Draws = 0,
+                            Fbid = "1",
+                            IsActive = false,
+                            Money = 0,
+                            Name = "samy",
+                            PlayedGames = 7,
+                            Wins = 11
+                        },
+                        new
+                        {
+                            Id = "2",
+                            Draws = 0,
+                            Fbid = "2",
+                            IsActive = false,
+                            Money = 0,
+                            Name = "anni",
+                            PlayedGames = 9,
+                            Wins = 1
+                        },
+                        new
+                        {
+                            Id = "3",
+                            Draws = 0,
+                            Fbid = "3",
+                            IsActive = false,
+                            Money = 0,
+                            Name = "ali",
+                            PlayedGames = 2,
+                            Wins = 0
+                        });
+                });
+
+            modelBuilder.Entity("Basra.Server.Data.PendingRoom", b =>
+                {
+                    b.HasOne("Basra.Server.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId");
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Basra.Server.RoomUser", b =>
+                {
+                    b.HasOne("Basra.Server.Room", "ActiveRoom")
+                        .WithMany()
+                        .HasForeignKey("ActiveRoomId");
+
+                    b.HasOne("Basra.Server.Room", "Room")
+                        .WithMany("RoomUsers")
+                        .HasForeignKey("RoomId");
+
+                    b.HasOne("Basra.Server.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("ActiveRoom");
+
+                    b.Navigation("Room");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Basra.Server.Room", b =>
+                {
+                    b.Navigation("RoomUsers");
                 });
 #pragma warning restore 612, 618
         }

@@ -20,13 +20,13 @@ namespace Basra.Server.Services
         //it defines who can use the token and the token maker
         private readonly string _appSecret;
         private readonly IConfiguration _configuration;
-        private readonly MasterRepo _masterRepo;
+        private readonly IMasterRepo _masterRepo;
 
         //private readonly SignInManager<User> _signInManager;
         //private readonly UserManager<User> _userManager;
         //private readonly IdentityConetxt _masterContext;
 
-        public FbigSecurityManager(IConfiguration configuration, MasterRepo masterRepo)
+        public FbigSecurityManager(IConfiguration configuration, IMasterRepo masterRepo)
         //SignInManager<User> signInManager, UserManager<User> userManager, IdentityConetxt masterContext)
         {
             _configuration = configuration;

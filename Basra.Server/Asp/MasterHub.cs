@@ -10,6 +10,7 @@ using Basra.Server.Extensions;
 using System.Linq;
 using Basra.Server.Exceptions;
 using System.Threading;
+using Basra.Server.Services;
 
 //todo learn about thread safety
 namespace Basra.Server
@@ -18,6 +19,7 @@ namespace Basra.Server
     public class MasterHub : Hub
     {
         private readonly IMasterRepo _masterRepo;
+        private readonly IRoomManager _roomManager;
 
         // public static MasterHub Current;//I don't know if this is thread safe
         //hub life time is not even per connection, it's per request!
@@ -30,9 +32,10 @@ namespace Basra.Server
         //public ActiveUser GetCurrentUser() => ActiveUsers.First(u => u.ConnectionId == Context.ConnectionId);
         //the system will allow one connections per user
 
-        public MasterHub(IMasterRepo masterRepo)
+        public MasterHub(IMasterRepo masterRepo, IRoomManager roomManager)
         {
             _masterRepo = masterRepo;
+            _roomManager = roomManager;
         }
 
         public override async Task OnConnectedAsync()
@@ -51,7 +54,8 @@ namespace Basra.Server
             //the claims principle shoud pass the id here
 
             var user = await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier);
-            await _masterRepo.GetNameOfUserAsync(Context.UserIdentifier);
+
+            // await _masterRepo.GetNameOfUserAsync(Context.UserIdentifier);
 
             user.IsActive = true;
             _masterRepo.SaveChanges();
@@ -76,34 +80,40 @@ namespace Basra.Server
             await base.OnDisconnectedAsync(exception);
         }
 
-        private IRoomUser GetRoomUser() => RoomUser.All[Context.UserIdentifier];
+
+        // private IRoomUser GetRoomUser() => RoomUser.All[Context.UserIdentifier];
+        // private IRoomUser GetRoomUser() => _masterRepo;
+        private RoomUser GetRoomUser() => _masterRepo.GetRoomUserWithId(Context.UserIdentifier);
 
         #region rpc
 
-        public async Task AskForRoom(int roomGenre, int roomPlayerCount)
-        {
-            await PendingRoom.AskForRoom(this, roomGenre, roomPlayerCount, _masterRepo);
-        }
-
-        public async Task Ready()
-        {
-            await GetRoomUser().Ready();
-        }
-
-        public async Task Throw(int indexInHand)
-        {
-            await GetRoomUser().Play(indexInHand);
-        }//automatic actions happen from serevr side and the client knows this overrides his action and do the revert 
-        public async Task InformTurnTimeout()
-        {
-            await GetRoomUser().RandomPlay();
-        }
+        //
+        // public async Task AskForRoom(int roomGenre, int roomPlayerCount)
+        // {
+        //    await _roomManager.AskForRoom(roomGenre, roomPlayerCount, Context.UserIdentifier,Context.ConnectionId);
+        // }
+        //
+        // public async Task Ready()
+        // {
+        //     await GetRoomUser().Ready();
+        // }
+        //
+        // public async Task Throw(int indexInHand)
+        // {
+        //     await GetRoomUser().Play(indexInHand);
+        // }//automatic actions happen from serevr side and the client knows this overrides his action and do the revert 
+        // public async Task InformTurnTimeout()
+        // {
+        //     await GetRoomUser().RandomPlay();
+        // }
 
         #region testing
+
         public void MakeBadUserInputException()
         {
             throw new BadUserInputException();
         }
+
         public void DummyFunction()
         {
             System.Console.WriteLine("dummy called");
@@ -128,9 +138,9 @@ namespace Basra.Server
 
         //System.Console.WriteLine("success 7985255555555");
         //}
-        #endregion
 
         #endregion
 
+        #endregion
     }
 }

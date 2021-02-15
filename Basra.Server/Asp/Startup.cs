@@ -48,11 +48,15 @@ namespace Basra.Server
                 );
             });
 
+
+            services.AddScoped<IMasterRepo, MasterRepo>();
+
             // services.AddDbContext<MasterContext>(options =>
             // {
             //     options.UseMySQL(_configuration.GetConnectionString("Main"));
             // });
 
+            services.AddHostedService<ServerLoop>();
 
             //services.AddIdentityCore<Identity.User>()//this is responsible for UserManager, SignInManger registeration
             //.AddSignInManager<SignInManager<Identity.User>>()
@@ -61,28 +65,27 @@ namespace Basra.Server
 
             services.AddScoped<FbigSecurityManager>();
 
-            services.AddScoped<MasterRepo>();
-
             services.AddAuthentication(FbigAuthenticationHandler.PROVIDER_NAME)
-            .AddScheme<FbigAuthenticationSchemeOptions, FbigAuthenticationHandler>(FbigAuthenticationHandler.PROVIDER_NAME, null);
+                .AddScheme<FbigAuthenticationSchemeOptions, FbigAuthenticationHandler>(
+                    FbigAuthenticationHandler.PROVIDER_NAME, null);
             //is it ok to make the scheme name and provider name the same?
 
             services.AddCors();
             services.AddControllers();
-            services.AddSignalR(options =>
-            {
-                options.AddFilter<BadUserInputFilter>();
-            });
+            services.AddSignalR(options => { options.AddFilter<BadUserInputFilter>(); });
 
+            services.AddScoped<IRoomManager, RoomManager>();
+            // services.AddSingleton<RoomFactory>();
+            //the factory seems useles in terms of AskForRoom(), made to make us able to change the MakeRoom impl, but it's not even an interface yet
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MasterRepo masterRepo)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMasterRepo masterRepo)
         {
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-           );
+            );
 
             // if (env.IsDevelopment())
             // {
@@ -98,10 +101,7 @@ namespace Basra.Server
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
             app.UseEndpoints(endpoint => endpoint.MapHub<MasterHub>("connect"));
 

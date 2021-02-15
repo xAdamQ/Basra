@@ -2,12 +2,16 @@
 
 namespace Basra.Server.Data
 {
-    public class PendingRoom : IPendingRoom
+    public class PendingRoom
     {
-        public int Genre { set; get; }
-        public List<IRoomUser> Users { set; get; } = new List<IRoomUser>();
-        public int PlayerCount { set; get; }
         public int Id { set; get; }
-        public static int LastId { get; set; }
+
+        public int Genre { set; get; }
+        public int UserCount { set; get; }
+
+        public int EnteredUsers { get; set; }
+        
+        public Room Room { set; get; }
+        public string RoomId { get; set; }
     }
 }

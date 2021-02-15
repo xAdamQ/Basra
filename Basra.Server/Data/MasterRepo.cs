@@ -1,44 +1,58 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Basra.Server.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Basra.Server
 {
+    public interface IMasterRepo
+    {
+        Task<User> CreateUserAsync(string fbid);
+        Task<string> GetNameOfUserAsync(string id);
+        bool GetUserActiveState(string id);
+        Task<User> GetUserByFbidAsync(string fbid);
+        Task<User> GetUserByIdAsyc(string id);
+        void MarkAllUsersNotActive();
+        bool SaveChanges();
+
+        // Task<Room> GetPendingRoomWithSpecs(int genre, int playerCount);
+        // Task<Room> CreatePendingRoom(int genre, int playerCount);
+        PendingRoom GetPendingRoomWithSpecs(int genre, int playerCount);
+        PendingRoom MakeRoom(int genre, int userCount);
+        RoomUser GetRoomUserWithId(string id);
+        void DeleteRoom(Room room);
+        RoomUser AddRoomUser(string id, string connId, PendingRoom pRoom);
+        void RemovePendingRoom(PendingRoom pendingRoom);
+
+        List<DisplayUser> GetRoomDisplayUsersAsync(PendingRoom pendingRoom);
+        // void StartRoomUser(RoomUser roomUser, int turnId, string roomId);
+    }
+
     /// <summary>
     /// hide queries
     /// reause queries
     /// </summary>
     public class MasterRepo : IMasterRepo
     {
-        private MasterContext _context;
+        private readonly MasterContext _context;
 
         public MasterRepo(MasterContext context)
         {
             _context = context;
         }
 
-        //how to use exp
-        //undertand db updates
-        //try to get sql statement
-
-        public void UpdateFieldsSave<T>(T entity, params System.Linq.Expressions.Expression<Func<T, object>>[] includeProperties)
+        public bool SaveChanges()
         {
-            var dbEntry = _context.Entry(entity);
-
-            foreach (var includeProperty in includeProperties)
-            {
-                //includeProperty.Compile().Invoke();
-                //dbEntry.Property(includeProperty.).IsModified = true;
-            }
-
-            _context.SaveChanges();
+            return _context.SaveChanges() >= 0;
         }
+
+        #region user
 
         public async Task<User> CreateUserAsync(string fbid)
         {
-            var user = new User { Fbid = fbid };
+            var user = new User {Fbid = fbid};
             await _context.AddAsync(user);
             //await _context.Users.AddAsync(user);
             return user;
@@ -48,6 +62,7 @@ namespace Basra.Server
         {
             return await _context.Users.FirstAsync(u => u.Fbid == fbid);
         }
+
         public async Task<User> GetUserByIdAsyc(string id)
         {
             return await _context.Users.FirstAsync(u => u.Id == id);
@@ -60,9 +75,9 @@ namespace Basra.Server
 
             return await _context.Users.Where(u => u.Id == id).Select(u => u.Name).FirstAsync();
         }
+
         public bool GetUserActiveState(string id)
         {
-            //_context.E
             return _context.Users.Where(u => u.Id == id).Select(u => u.IsActive).First();
         }
 
@@ -71,21 +86,82 @@ namespace Basra.Server
             _context.Users.ToList().ForEach(u => u.IsActive = false);
         }
 
-        public bool SaveChanges()
+        public List<DisplayUser> GetRoomDisplayUsersAsync(PendingRoom pendingRoom)
         {
-            return _context.SaveChanges() >= 0;
+            return _context.Entry(pendingRoom)
+                .Reference(pr => pr.Room)
+                .Query()
+                .SelectMany(c => c.RoomUsers)
+                .Select(ru => ru.User)
+                .Select(DisplayUser.Projection)
+                .ToList();
         }
 
-        public async Task<Data.PendingRoom> GetPendingRoomWithSpecs(int genre, int playerCount)
+        #endregion
+
+        #region room
+
+        public void DeleteRoom(Room room)
         {
-            return await _context.PendingRoom.FirstOrDefaultAsync(r => r.Genre == genre && r.PlayerCount == playerCount);
+            _context.Rooms.Remove(room);
         }
 
-        public async Task<Data.PendingRoom> CreatePendingRoom(int genre, int playerCount)
+        #endregion
+
+        #region pending room
+
+        public PendingRoom GetPendingRoomWithSpecs(int genre, int playerCount)
         {
-            var pRoom = new Data.PendingRoom { Genre = genre, PlayerCount = playerCount };
-            await _context.AddAsync(pRoom);
+            return _context.PendingRooms.FirstOrDefault(r => r.Genre == genre && r.UserCount == playerCount);
+        }
+
+        public RoomUser AddRoomUser(string id, string connId, PendingRoom pRoom)
+        {
+            var rUser = new RoomUser {UserId = id, ConnectionId = connId, RoomId = pRoom.RoomId};
+            _context.RoomUsers.Add(rUser);
+
+            pRoom.EnteredUsers++;
+
+            SaveChanges();
+
+            return rUser;
+        }
+
+        public PendingRoom MakeRoom(int genre, int userCount)
+        {
+            var room = new Room( /*genre, userCount*/);
+            _context.Rooms.Add(room);
+
+            var pRoom = new PendingRoom {Room = room, Genre = room.Genre, UserCount = room.UserCount};
+            _context.PendingRooms.Add(pRoom);
+
+            SaveChanges();
+
             return pRoom;
         }
+
+        public void RemovePendingRoom(PendingRoom pendingRoom)
+        {
+            _context.PendingRooms.Remove(pendingRoom);
+        }
+
+        #endregion
+
+        #region room user
+
+        public RoomUser GetRoomUserWithId(string id)
+        {
+            return _context.RoomUsers.First(u => u.UserId == id);
+        }
+
+        // public void StartRoomUser(RoomUser roomUser, int turnId, string roomId)
+        // {
+        //     roomUser.Id = turnId;
+        //     roomUser.RoomId = roomId;
+        //     
+        //     
+        // }
+
+        #endregion
     }
 }

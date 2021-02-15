@@ -4,13 +4,6 @@ namespace Basra.Server
 {
     public class User
     {
-        //how to save -- on singup
-        //how to load -- on signin
-        //how to access -- 
-        //how to update --
-
-        //public ActiveUser ActiveUser;
-
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
         public string Fbid { get; set; }
@@ -25,6 +18,5 @@ namespace Basra.Server
         public string Email { get; set; }
 
         public bool IsActive { get; set; }
-
     }
 }
