@@ -1,35 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\Basra\\Basra.Server.Tests\\Basra.Server.Tests.csproj": {}
+    "/home/adam/Projects/Basra/Basra.Server.Tests/Basra.Server.Tests.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\Basra\\Basra.Server.Tests\\Basra.Server.Tests.csproj": {
+    "/home/adam/Projects/Basra/Basra.Server.Tests/Basra.Server.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\Basra\\Basra.Server.Tests\\Basra.Server.Tests.csproj",
+        "projectUniqueName": "/home/adam/Projects/Basra/Basra.Server.Tests/Basra.Server.Tests.csproj",
         "projectName": "Basra.Server.Tests",
-        "projectPath": "C:\\Projects\\Basra\\Basra.Server.Tests\\Basra.Server.Tests.csproj",
-        "packagesPath": "C:\\Users\\xadam\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\Basra\\Basra.Server.Tests\\obj\\",
+        "projectPath": "/home/adam/Projects/Basra/Basra.Server.Tests/Basra.Server.Tests.csproj",
+        "packagesPath": "/home/adam/.nuget/packages/",
+        "outputPath": "/home/adam/Projects/Basra/Basra.Server.Tests/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\xadam\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/adam/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Projects\\Basra\\Basra.Server\\Basra.Server.csproj": {
-                "projectPath": "C:\\Projects\\Basra\\Basra.Server\\Basra.Server.csproj"
+              "/home/adam/Projects/Basra/Basra.Server/Basra.Server.csproj": {
+                "projectPath": "/home/adam/Projects/Basra/Basra.Server/Basra.Server.csproj"
               }
             }
           }
@@ -44,25 +42,37 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[16.5.0, )"
+              "version": "[16.7.1, )"
             },
             "Moq": {
               "target": "Package",
-              "version": "[4.15.2, )"
+              "version": "[4.16.0, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[5.0.0-alpha.2, )"
             },
             "coverlet.collector": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[1.2.0, )"
+              "version": "[1.3.0, )"
             },
             "xunit": {
               "target": "Package",
-              "version": "[2.4.0, )"
+              "version": "[2.4.1, )"
             },
             "xunit.runner.visualstudio": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[2.4.0, )"
+              "version": "[2.4.3, )"
             }
           },
           "imports": [
@@ -83,28 +93,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.103/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Projects\\Basra\\Basra.Server\\Basra.Server.csproj": {
+    "/home/adam/Projects/Basra/Basra.Server/Basra.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\Basra\\Basra.Server\\Basra.Server.csproj",
+        "projectUniqueName": "/home/adam/Projects/Basra/Basra.Server/Basra.Server.csproj",
         "projectName": "Basra.Server",
-        "projectPath": "C:\\Projects\\Basra\\Basra.Server\\Basra.Server.csproj",
-        "packagesPath": "C:\\Users\\xadam\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\Basra\\Basra.Server\\obj\\",
+        "projectPath": "/home/adam/Projects/Basra/Basra.Server/Basra.Server.csproj",
+        "packagesPath": "/home/adam/.nuget/packages/",
+        "outputPath": "/home/adam/Projects/Basra/Basra.Server/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\xadam\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/adam/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -164,7 +172,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.103/RuntimeIdentifierGraph.json"
         }
       }
     }

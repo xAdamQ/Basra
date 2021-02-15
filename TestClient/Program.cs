@@ -11,7 +11,10 @@ namespace TestClient
                           .WithUrl("http://localhost:5000/connect?access_token=1")
                           .Build();
 
+
             connection.StartAsync();
+
+            System.Console.WriteLine("client started");
 
             Console.ReadLine();
         }

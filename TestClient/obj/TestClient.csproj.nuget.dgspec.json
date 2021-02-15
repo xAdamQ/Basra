@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\Basra\\TestClient\\TestClient.csproj": {}
+    "/home/adam/Projects/Basra/TestClient/TestClient.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\Basra\\TestClient\\TestClient.csproj": {
+    "/home/adam/Projects/Basra/TestClient/TestClient.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\Basra\\TestClient\\TestClient.csproj",
+        "projectUniqueName": "/home/adam/Projects/Basra/TestClient/TestClient.csproj",
         "projectName": "TestClient",
-        "projectPath": "C:\\Projects\\Basra\\TestClient\\TestClient.csproj",
-        "packagesPath": "C:\\Users\\xadam\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\Basra\\TestClient\\obj\\",
+        "projectPath": "/home/adam/Projects/Basra/TestClient/TestClient.csproj",
+        "packagesPath": "/home/adam/.nuget/packages/",
+        "outputPath": "/home/adam/Projects/Basra/TestClient/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\xadam\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/adam/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -60,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.102/RuntimeIdentifierGraph.json"
         }
       }
     }

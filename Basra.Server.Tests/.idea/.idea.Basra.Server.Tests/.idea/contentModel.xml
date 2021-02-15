@@ -10,8 +10,11 @@
     <e p="$USER_HOME$/.nuget/packages/xunit.runner.visualstudio/2.4.3/build/netcoreapp2.1/xunit.runner.utility.netcoreapp10.dll" t="Include" />
     <e p="$USER_HOME$/.nuget/packages/xunit.runner.visualstudio/2.4.3/build/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll" t="Include" />
     <e p="$PROJECT_DIR$" t="IncludeRecursive">
+      <e p="Active.cs" t="Include" />
       <e p="Basra.Server.Tests.csproj" t="IncludeRecursive" />
       <e p="Basra.Server.Tests.sln" t="IncludeFlat" />
+      <e p="Logic.cs" t="Include" />
+      <e p="PendingRoom.cs" t="Include" />
       <e p="UnitTest1.cs" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
       <e p="obj" t="ExcludeRecursive">
