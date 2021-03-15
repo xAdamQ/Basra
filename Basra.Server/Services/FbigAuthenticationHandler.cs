@@ -15,6 +15,7 @@ namespace Basra.Server.Services
         public const string PROVIDER_NAME = "Fbig";
 
         private readonly FbigSecurityManager _fbigSecurityManager;
+        private ILogger _logger;
 
         public FbigAuthenticationHandler(IOptionsMonitor<FbigAuthenticationSchemeOptions> options,
             ILoggerFactory logger,
@@ -22,6 +23,7 @@ namespace Basra.Server.Services
             : base(options, logger, encoder, clock)
         {
             _fbigSecurityManager = fbigSecurityManager;
+            _logger = logger.CreateLogger("category test");
         }
 
 
@@ -83,23 +85,16 @@ namespace Basra.Server.Services
                 //2343 var fbUserId = connectBody.PlayerId;
 
                 var user = await _fbigSecurityManager.SignInAsync(token /*the token is the fbid for testing*/);
-                // if (user == null)
-                // {
-                // return AuthenticateResult.Fail("Unauthorized");
-                // }//why it maybe null? when createAsync result is false
 
                 var genericClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new(ClaimTypes.NameIdentifier, user.Id),
 
                     //this is the identifier used in the signalr, this claim type "NameIdentifier" could be changed with IUserIdProvider
                     //new Claim(ClaimTypes.Name, user.UserName),
                     //new Claim(ClaimTypes.Email, user.Email),
                     // new Claim("UserType", "General"),//role?
                 }; //this the only claims I can obtain from the payload
-
-                Console.WriteLine("us id is " + user.Id);
-                //ActiveUser.All.Add(new )
 
                 var genericIdentity = new ClaimsIdentity(genericClaims, /*Scheme.Name*/ PROVIDER_NAME);
                 //fbig shoud (in theory) have more than idnetity, but the auth provider is the same.. how to differentiat
@@ -108,12 +103,12 @@ namespace Basra.Server.Services
 
                 var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
-                Console.WriteLine($"login succeeded for player: {user}");
-
+                _logger.LogInformation($"login succeeded for player: {user.Id}");
                 return AuthenticateResult.Success(ticket);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                _logger.LogInformation($"login failed due to exception for player: {exception}");
                 return AuthenticateResult.Fail("Unauthorized");
             } //todo: are you sure it's a bad request not internal server error?, you should use specific excepected errors for user fault
         }

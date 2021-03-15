@@ -9,8 +9,30 @@ using System.Timers;
 
 namespace Basra.Server
 {
-    public enum CardNames { One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Boy, Girl, Old }
-    public enum ShapeNames { Club, Diamond, Heart, Spade }
+    public enum CardNames
+    {
+        One,
+        Two,
+        Three,
+        Four,
+        Five,
+        Six,
+        Seven,
+        Eight,
+        Nine,
+        Ten,
+        Boy,
+        Girl,
+        Old
+    }
+
+    public enum ShapeNames
+    {
+        Club,
+        Diamond,
+        Heart,
+        Spade
+    }
 
     // public interface IRoom
     // {
@@ -35,41 +57,47 @@ namespace Basra.Server
     //     Task Start(IMasterRepo masterRepo);
     // }
 
-    public class Room 
+    public class Room
     {
         //todo ready timeout
         //timeouts overall as defensive strategy
         //todo action that happened after it's time e.g. play card
 
-        public int DeckSize => 52;
+        public const int DeckSize = 52;
         public int ShapeSize => 13;
 
+        public List<int> GroundCards { get; set; }
+
         public int Genre { get; set; }
-        public ICollection<RoomUser> RoomUsers { get; set; }
-        public int UserCount { get; }
+
+        public List<RoomUser> RoomUsers { get; set; } = new List<RoomUser>();
+        // public int UserCount { get; }
 
         // public List<int> GroundCards { get; set; }
-        public string Id { get; set; }
-        // public List<int> Deck { get; set; }
+        public int Id { get; set; }
+
+        public List<int> Deck { get; set; }
         public int CurrentTurn { get; set; }
-        
+        public int Capacity { get; set; }
+
         // public int EnteredUsersCount { get; set; }
         // private RoomUser UserInTurn => null;// RoomUsers[CurrentTurn];
         //
         // private static int LastId { get; set; }
-        // private static readonly int[] GenreBets = new int[] { 50, 100, 200 };
+        public static readonly int[] GenreBets = new int[] {50, 100, 200};
+
         //
-        // public int TotalBet;
+        private int TotalBet { get; set; }
 
         // public Room(int genre, int playerCount)
         // {
         //     Genre = genre;
-        //     UserCount = playerCount;
+        //     Capacity = playerCount;
         //
-        //     RoomUsers = new List<RoomUser>();
-        //     Id = LastId++;
+        //     // RoomUsers = new List<RoomUser>();
+        //     // Id = LastId++;
         //
-        //     TotalBet = GenreBets[Genre] * UserCount;
+        //     TotalBet = GenreBets[Genre] * Capacity;
         //
         //     Deck = GenerateDeck();
         //
@@ -251,6 +279,7 @@ namespace Basra.Server
         // }
 
         #region helpers
+
         //private int GetUserRoomId(string userId) => Array.FindIndex(Users, u => u.ActiveUser.Id == userId);
 
         /// <summary>
@@ -270,7 +299,7 @@ namespace Basra.Server
         //
         //     return false;
         // }
-        #endregion
 
+        #endregion
     }
 }

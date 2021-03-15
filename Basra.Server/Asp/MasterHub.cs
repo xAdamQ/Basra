@@ -12,30 +12,31 @@ using Basra.Server.Exceptions;
 using System.Threading;
 using Basra.Server.Services;
 
-//todo learn about thread safety
 namespace Basra.Server
 {
+    public interface IRoomHub
+    {
+        Task StartRoom(int genre, int bet, int playerCount);
+
+        Task BuyCardback(int id);
+        Task BuyBackground(int id);
+    }
+
     [Authorize]
     public class MasterHub : Hub
     {
         private readonly IMasterRepo _masterRepo;
+        private readonly ISessionRepo _sessionRepo;
         private readonly IRoomManager _roomManager;
 
-        // public static MasterHub Current;//I don't know if this is thread safe
-        //hub life time is not even per connection, it's per request!
-
-        //private readonly SignInManager<Identity.User> _signInManager;
-
-        //private static List<ActiveUser> ActiveUsers { get; } = new List<ActiveUser>();
-
-        // public RuntimeUser GetUser(string connectionId) => RuntimeUsers.First(u => u.ConnectionId == connectionId);
         //public ActiveUser GetCurrentUser() => ActiveUsers.First(u => u.ConnectionId == Context.ConnectionId);
         //the system will allow one connections per user
 
-        public MasterHub(IMasterRepo masterRepo, IRoomManager roomManager)
+        public MasterHub(IMasterRepo masterRepo, IRoomManager roomManager, ISessionRepo sessionRepo)
         {
             _masterRepo = masterRepo;
             _roomManager = roomManager;
+            _sessionRepo = sessionRepo;
         }
 
         public override async Task OnConnectedAsync()
@@ -53,12 +54,12 @@ namespace Basra.Server
             //ActiveUsers.Add(user);
             //the claims principle shoud pass the id here
 
-            var user = await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier);
+            // var user = await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier);
 
             // await _masterRepo.GetNameOfUserAsync(Context.UserIdentifier);
-
-            user.IsActive = true;
-            _masterRepo.SaveChanges();
+            //
+            // user.IsActive = true;
+            // _masterRepo.SaveChanges();
 
             await base.OnConnectedAsync();
             // Context.Abort(); //this how to close connection
@@ -68,44 +69,45 @@ namespace Basra.Server
         {
             Console.WriteLine($"{Context.UserIdentifier} Disconnected");
 
+            _sessionRepo.RemoveActiveUser(Context.UserIdentifier);
+
             //var currentUser = GetCurrentUser();
             //currentUser.Disconncted = true;
             //ActiveUsers.Remove(currentUser);
+            //
+            // var user = await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier);
+            // user.IsActive = false;
+            // _masterRepo.SaveChanges();
 
-            var user = await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier);
-            user.IsActive = false;
-            _masterRepo.SaveChanges();
+            // _sessionRepo
 
             //removed from groups automatically
             await base.OnDisconnectedAsync(exception);
         }
 
-
-        // private IRoomUser GetRoomUser() => RoomUser.All[Context.UserIdentifier];
-        // private IRoomUser GetRoomUser() => _masterRepo;
-        private RoomUser GetRoomUser() => _masterRepo.GetRoomUserWithId(Context.UserIdentifier);
+        private RoomUser GetRoomUser() => _sessionRepo.GetRoomUserWithId(Context.UserIdentifier);
 
         #region rpc
 
-        //
-        // public async Task AskForRoom(int roomGenre, int roomPlayerCount)
-        // {
-        //    await _roomManager.AskForRoom(roomGenre, roomPlayerCount, Context.UserIdentifier,Context.ConnectionId);
-        // }
-        //
-        // public async Task Ready()
-        // {
-        //     await GetRoomUser().Ready();
-        // }
-        //
-        // public async Task Throw(int indexInHand)
-        // {
-        //     await GetRoomUser().Play(indexInHand);
-        // }//automatic actions happen from serevr side and the client knows this overrides his action and do the revert 
-        // public async Task InformTurnTimeout()
-        // {
-        //     await GetRoomUser().RandomPlay();
-        // }
+        public async Task AskForRoom(int genre, int bet, int capacity)
+        {
+            await _roomManager.RequestRoom(genre, bet, capacity, Context.UserIdentifier, Context.ConnectionId);
+        }
+
+        public async Task Ready()
+        {
+            await _roomManager.Ready(GetRoomUser());
+        }
+
+        public async Task Throw(int indexInHand)
+        {
+            await _roomManager.Play(GetRoomUser(), indexInHand);
+        } //automatic actions happen from server side and the client knows this overrides his action and do the revert 
+
+        public async Task InformTurnTimeout()
+        {
+            await _roomManager.RandomPlay(GetRoomUser());
+        }
 
         #region testing
 

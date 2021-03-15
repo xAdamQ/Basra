@@ -10,33 +10,6 @@ using System.Linq;
 
 namespace Basra.Server
 {
-    // public interface IRoomUser
-    // {
-    //     //ActiveUser ActiveUser { get; set; }
-    //
-    //     Room ActiveRoom { get; set; }
-    //     int BasraCount { get; set; }
-    //     int BigBasraCount { get; set; }
-    //     List<int> Cards { get; set; }
-    //     int Score { get; set; }
-    //     int EatenCardsCount { get; set; }
-    //
-    //     string ConnectionId { get; set; }
-    //     string UserId { get; set; }
-    //
-    //     bool IsReady { get; set; }
-    //
-    //
-    //     Task Distribute();
-    //     Task InitialDistribute();
-    //     bool IsMyTurn();
-    //     Task Play(int cardIndexInHand);
-    //     Task RandomPlay();
-    //     Task Ready();
-    //     Task StartRoom(Room room, int id, string[] playerNames);
-    //     void StartTurn();
-    // }
-    //
     public class RoomUser
     {
         public static int HandSize => 4;
@@ -46,6 +19,7 @@ namespace Basra.Server
 
         //props for active, so if the user made ready and cancel, this will die without usage
         public Room ActiveRoom { get; set; }
+
         // public List<int> Cards { get; set; }
         public int Score { get; set; }
         public int BasraCount { get; set; }
@@ -54,18 +28,25 @@ namespace Basra.Server
 
         public bool IsReady { get; set; }
 
+        /// <summary>
+        /// we keep the room user even if he is disconnected
+        /// </summary>
+        public bool IsActive { get; set; }
+
         public string ConnectionId { get; set; }
-        
+
         public string UserId { get; set; }
+
         public User User { get; set; }
 
-        public string RoomId { get; set; }
         public Room Room { get; set; }
+
+        public List<int> Hand { get; set; }
 
         /// <summary>
         /// id in room, turn id
         /// </summary>
-        public int IdInRoom;
+        public int TurnId;
 
         //public ActiveUser ActiveUser { get; set; }
 
@@ -208,21 +189,22 @@ namespace Basra.Server
         //    }
         //}
 
-        #region helpers
+        // #region helpers
 
-        public bool IsMyTurn() => IdInRoom == ActiveRoom.CurrentTurn;
+        // public bool IsMyTurn => TurnId == Room.CurrentTurn;
 
-        #endregion
+        // #endregion
     }
 
     public static partial class RoomLogic
     {
+        private const int KOMI_ID = 19,
+            BOY_VALUE = 11;
+
+        private static readonly int[] BOY_IDS = new int[] {10, 23, 36, 49};
+
         public static List<int> Eat(int cardId, List<int> ground, out bool basra, out bool bigBasra)
         {
-            var KOMI_ID = 19;
-            var BOY_VALUE = 11;
-            var BOY_IDS = new int[] {10, 23, 36, 49};
-
             basra = false;
             bigBasra = false;
 

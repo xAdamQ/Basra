@@ -4,7 +4,7 @@ namespace Basra.Server.Services
 {
     public interface IRoomManager
     {
-        Task RequestRoom(int genre, int bet, int capacity, string userId, string connId)
+        Task RequestRoom(int genre, int bet, int capacity, string userId, string connId);
         Task FinalizeGame(Room room);
 
         /// <summary>

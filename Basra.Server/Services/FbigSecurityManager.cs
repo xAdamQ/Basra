@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Basra.Server.Helpers;
 using Microsoft.EntityFrameworkCore;
+
 //using Basra.Server.Identity;
 
 namespace Basra.Server.Services
@@ -21,16 +22,18 @@ namespace Basra.Server.Services
         private readonly string _appSecret;
         private readonly IConfiguration _configuration;
         private readonly IMasterRepo _masterRepo;
+        private readonly ISessionRepo _sessionRepo;
 
         //private readonly SignInManager<User> _signInManager;
         //private readonly UserManager<User> _userManager;
         //private readonly IdentityConetxt _masterContext;
 
-        public FbigSecurityManager(IConfiguration configuration, IMasterRepo masterRepo)
-        //SignInManager<User> signInManager, UserManager<User> userManager, IdentityConetxt masterContext)
+        public FbigSecurityManager(IConfiguration configuration, IMasterRepo masterRepo, ISessionRepo sessionRepo)
+            //SignInManager<User> signInManager, UserManager<User> userManager, IdentityConetxt masterContext)
         {
             _configuration = configuration;
             _masterRepo = masterRepo;
+            _sessionRepo = sessionRepo;
             _appSecret = _configuration["Secrets:AppSecret"];
 
             //_signInManager = signInManager;
@@ -88,60 +91,29 @@ namespace Basra.Server.Services
         /// </summary>
         public async Task<User> SignInAsync(string fbUserId)
         {
-            //todo if (_userManager.FindByIdAsync(fbUserId) == null)
-            // _userManager.FindByLoginAsync()
-            // if (_masterContext.Users.Any(u => u.FbId == fbUserId))
-            //var user = await _masterContext.Users.FirstOrDefaultAsync(u => u.FbId == fbUserId);
-
-            User user = null;
-
-            try
-            {
-                user = await _masterRepo.GetUserByFbidAsync(fbUserId);
-            }
-            catch (Exception)
-            {
-                user = await SignUpAsync(fbUserId);
-            }
+            var user = await _masterRepo.GetUserByFbidAsync(fbUserId);
 
             if (user == null)
             {
-                user = await SignUpAsync(fbUserId);
+                return await SignUpAsync(fbUserId);
             }
-            else if (user.IsActive)
+
+            if (_sessionRepo.IsUserActive(user.Id))
             {
-                throw new Exception("the user is already logged in");
+                return null;
             }
-            //else if (ActiveUser.All.Any(u => u.Id == user.Id))
-            //{
-            //    throw new Exception("the user is already logged in");
-            //}
+
+            _sessionRepo.AddActiveUser(user.Id);
 
             return user;
-
-            // todo 
-            // await _signInManager.SignInWithClaimsAsync()
-            // SignInAsync(new BasraIdentityUser(), isPersistent: false, "fbig");
-            //issues a cookie
         }
 
         private async Task<User> SignUpAsync(string fbUserId)
         {
-            //var user = new User
-            //{
-            //    FbId = fbUserId,
-            //    UserName = "AsAName_" + fbUserId,
-            //};
-
-            //await _userManager.CreateAsync(user);
-
             var user = await _masterRepo.CreateUserAsync(fbUserId);
+            //todo the result of creation maybe failure
             _masterRepo.SaveChanges();
             return user;
-
-            //todo the result maybe failure
-            //return user;
         }
-
     }
 }

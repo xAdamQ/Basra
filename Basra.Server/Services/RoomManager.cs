@@ -3,120 +3,259 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Basra.Server.Data;
+using Basra.Server.Exceptions;
+using Basra.Server.Extensions;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace Basra.Server.Services
 {
-    public interface IRoomManager
-    {
-        Task AskForRoom(int genre, int playerCount, string userId, string connId);
-        Task AddUser(PendingRoom pRoom, string userId, string connId);
-    }
-
     public class RoomManager : IRoomManager
     {
         private readonly ILogger _logger;
         private readonly IHubContext<MasterHub> _masterHub;
         private readonly IMasterRepo _masterRepo;
-        private readonly ServerLoop _serverLoop;
+        private readonly ISessionRepo _sessionRepo;
+        private readonly IServerLoop _serverLoop;
 
-        public RoomManager(IHubContext<MasterHub> masterHub, IMasterRepo masterRepo, ServerLoop serverLoop)
+        public RoomManager(ILogger<RoomManager> logger, IHubContext<MasterHub> masterHub, IMasterRepo masterRepo,
+            ISessionRepo sessionRepo,
+            IServerLoop serverLoop)
         {
             _masterHub = masterHub;
             _masterRepo = masterRepo;
+            _sessionRepo = sessionRepo;
             _serverLoop = serverLoop;
-            // _logger = logger;
+            _logger = logger;
         }
 
-        public async Task AskForRoom(int genre, int playerCount, string userId, string connId)
+        //thread safe
+        //trivial to test
+        public async Task RequestRoom(int genre, int bet, int capacity, string userId, string connId)
         {
-            var room = _masterRepo.GetPendingRoomWithSpecs(genre, playerCount);
+            var room = _sessionRepo.GetPendingRoom(bet, capacity);
             if (room == null)
             {
-                room = _masterRepo.MakeRoom(genre, playerCount); //should save
+                room = _sessionRepo.MakeRoom(bet, capacity);
                 _logger.LogInformation("a new room is made");
             }
 
             await AddUser(room, userId, connId);
         }
 
-        public async Task AddUser(PendingRoom pRoom, string userId, string connId)
+        public async Task RequestFriendlyRoom(int[] userIds, int bet, int capacity)
         {
-            var rUser = _masterRepo.AddRoomUser(userId, connId, pRoom); //should save
+            throw new NotImplementedException();
+        }
 
-            if (pRoom.UserCount == pRoom.EnteredUsers)
+        public async Task BuyCardBack()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task BuyBackground()
+        {
+            throw new NotImplementedException();
+        }
+
+        //trivial logic to test
+        private async Task AddUser(Room room, string userId, string connId)
+        {
+            var rUser = _sessionRepo.AddRoomUser(userId, connId, room);
+
+            if (room.Capacity == room.RoomUsers.Count)
             {
                 _logger.LogInformation("a room is ready and will start");
-                // await Start(pRoom);
+                await StartRoom(room);
             }
             else
             {
+                _sessionRepo.KeepRoom(room);
                 await _masterHub.Clients.User(rUser.UserId).SendAsync("RoomIsFilling");
             }
         }
 
-        // public async Task Start(PendingRoom pRoom)
-        // {
-        //     var dUsers = _masterRepo.GetRoomDisplayUsersAsync(pRoom);
-        //     var rUsers = new List<RoomUser>();
-        //     //room user
-        //     //display user
-        //
-        //     // var userNames = new string[pRoom.UserCount];
-        //     // for (int i = 0; i < userNames.Length; i++)
-        //     // {
-        //     //     
-        //     //     userNames[i] = await _masterRepo.GetNameOfUserAsync(Users[i].UserId);
-        //     // }
-        //     //var userNames = Users.Select(u => u.ActiveUser.Name).ToArray();
-        //
-        //     //start game
-        //     //dinsplay users
-        //
-        //     var tasks = new List<Task>();
-        //     for (int i = 0; i < pRoom.UserCount; i++)
-        //     {
-        //         tasks.Add(_masterHub.Groups.AddToGroupAsync(rUsers[i].ConnectionId, "room" + pRoom.RoomId));
-        //
-        //         _masterRepo.StartRoomUser(rUsers[i], i, pRoom.RoomId);
-        //
-        //         rUsers[i].IdInRoom = i;
-        //         rUsers[i].RoomId = pRoom.RoomId;
-        //
-        //         tasks.Add(_masterHub.Clients.User(rUsers[i].UserId).SendAsync("StartRoom", i, rUsers));
-        //
-        //         // tasks.Add(Users[i].StartRoom(this, i, userNames));
-        //     }
-        //
-        //     _masterRepo.SaveChanges();
-        //
-        //     await Task.WhenAll(tasks);
-        //
-        //     //server weq3
-        //     // Task.Run()
-        //     
-        //     Users[0].StartTurn();
-        //
-        //     _masterRepo.RemovePendingRoom(pRoom);
-        // }
+        private async Task StartRoom(Room room)
+        {
+            room.Deck = GenerateDeck();
 
-        //mapping them to users
+            List<int> GenerateDeck()
+            {
+                var deck = new List<int>();
+                for (int i = 0; i < Room.DeckSize; i++)
+                {
+                    deck.Add(i);
+                }
 
+                deck.Shuffle();
+                return deck;
+            }
 
-        // public async Task StartRoom(Room room, int id, string[] playerNames)
-        // {
-        //     IdInRoom = id;
-        //     ActiveRoom = room;
-        //
-        //     await Program.HubContext.Clients.User(UserId).SendAsync("StartRoom", IdInRoom, playerNames);
-        // }
+            room.GroundCards = room.Deck.CutRange(RoomUser.HandSize);
 
-        // public void StartTurn()
-        // {
-        //     TurnTimoutCancelation = new CancellationTokenSource();
-        //     Task.Delay(HandTime * 1000).ContinueWith(t => RandomPlay(), TurnTimoutCancelation.Token);
-        // }
+            var dUsers = _masterRepo.GetRoomDisplayUsersAsync(room);
+            var rUsers = room.RoomUsers;
+
+            var tasks = new List<Task>();
+            for (int i = 0; i < room.Capacity; i++)
+            {
+                rUsers[i].TurnId = i;
+
+                tasks.Add(_masterHub.Groups.AddToGroupAsync(rUsers[i].ConnectionId, "room" + room.Id));
+                tasks.Add(_masterHub.Clients.User(rUsers[i].UserId).SendAsync("StartRoom", i, dUsers));
+            }
+
+            await Task.WhenAll(tasks);
+
+            StartTurn(rUsers[0]);
+        }
+
+        //todo logic to test
+        public async Task FinalizeGame(Room room)
+        {
+            _sessionRepo.DeleteRoom(room);
+
+            var biggestEatenCount = room.RoomUsers.Max(u => u.EatenCardsCount);
+            var biggestEaters = room.RoomUsers.Where(u => u.EatenCardsCount == biggestEatenCount).ToArray();
+
+            for (int u = 0; u < room.Capacity; u++)
+            {
+                room.RoomUsers[u].Score =
+                    room.RoomUsers[u].BasraCount * 10 +
+                    room.RoomUsers[u].BigBasraCount * 30 +
+                    (biggestEaters.Contains(room.RoomUsers[u]) ? 30 : 0);
+            }
+
+            var maxScore = room.RoomUsers.Max(u => u.Score);
+            var winners = room.RoomUsers.Where(u => u.Score == maxScore).ToArray();
+            var totalBet = Room.GenreBets[room.Genre] * room.Capacity;
+
+            //draw
+            if (winners.Length > 1)
+            {
+                var moneyPart = totalBet / winners.Length;
+                foreach (var user in winners)
+                {
+                    //var sUser = user.ActiveUser.Data;
+                    var dUser = await _masterRepo.GetUserByIdAsyc(user.UserId);
+                    dUser.PlayedGames++;
+                    dUser.Draws++;
+                    dUser.Money += moneyPart;
+                }
+            }
+            //win
+            else
+            {
+                //var sUser = winners[0].Data;
+                var dUser = await _masterRepo.GetUserByIdAsyc(winners[0].UserId);
+                dUser.PlayedGames++;
+                dUser.Wins++;
+                dUser.Money += totalBet;
+            }
+
+            //lose
+            foreach (var user in room.RoomUsers)
+            {
+                if (winners.Contains(user)) continue;
+
+                //var sUser = user.Data;
+                var dUser = await _masterRepo.GetUserByIdAsyc(user.UserId);
+                dUser.PlayedGames++;
+            }
+
+            _masterRepo.SaveChanges();
+        }
+
+        private void NextTurn(Room room)
+        {
+            room.CurrentTurn = ++room.CurrentTurn % room.Capacity;
+            StartTurn(room.RoomUsers[room.CurrentTurn]);
+        }
+
+        private async void StartTurn(RoomUser roomUser)
+        {
+            await _serverLoop.SetupTurnTimout(roomUser);
+        }
+
+        //rpc
+        /// <summary>
+        /// get ready for the room to start distribute cards
+        /// </summary>
+        public async Task Ready(RoomUser roomUser)
+        {
+            roomUser.IsReady = true;
+            await CheckAllPlayersAreReady(roomUser.Room);
+        }
+
+        private async Task CheckAllPlayersAreReady(Room room)
+        {
+            var readyUsersCount = room.RoomUsers.Count(u => u.IsReady);
+            if (readyUsersCount == room.Capacity)
+            {
+                await InitialDistribute(room);
+            }
+        }
+
+        private async Task InitialDistribute(Room room)
+        {
+            foreach (var roomUser in room.RoomUsers)
+            {
+                roomUser.Hand = roomUser.Room.Deck.CutRange(RoomUser.HandSize);
+                await _masterHub.Clients.User(roomUser.UserId)
+                    .SendAsync("InitialDistribute", roomUser.Hand.ToArray(), roomUser.Room.GroundCards.ToArray());
+            }
+        }
+
+        private async Task Distribute(Room room)
+        {
+            foreach (var roomUser in room.RoomUsers)
+            {
+                roomUser.Hand = roomUser.Room.Deck.CutRange(RoomUser.HandSize);
+                await _masterHub.Clients.User(roomUser.UserId).SendAsync("Distribute", roomUser.Hand.ToArray());
+            }
+        }
+
+        public async Task RandomPlay(RoomUser roomUser)
+        {
+            var randomCardIndex = StaticRandom.GetRandom(roomUser.Hand.Count);
+
+            await Task.WhenAll
+            (
+                Play(roomUser, randomCardIndex),
+                _masterHub.Clients.User(roomUser.UserId)
+                    .SendAsync("OverrideMyLastThrow", randomCardIndex)
+            );
+        }
+
+        // rpc
+        public async Task Play(RoomUser roomUser, int cardIndexInHand)
+        {
+            if (roomUser.TurnId != roomUser.Room.CurrentTurn || !cardIndexInHand.InRange(roomUser.Hand.Count))
+                throw new BadUserInputException();
+            //this is invoked by the server also, and may be a server error and it's handle way is ignoring and terminate the action
+            //hub exc are not handled when the actor is the system
+
+            _serverLoop.CutTurnTimout(roomUser);
+
+            var eaten = RoomLogic.Eat(roomUser.Hand[cardIndexInHand], roomUser.Room.GroundCards, out bool basra,
+                out bool bigBasra);
+            roomUser.Room.GroundCards.RemoveAll(c => eaten.Contains(c));
+
+            roomUser.EatenCardsCount += eaten.Count;
+            if (basra) roomUser.BasraCount++;
+            if (bigBasra) roomUser.BigBasraCount++;
+
+            NextTurn(roomUser.Room);
+
+            await _masterHub.Clients.GroupExcept("room" + roomUser.Room.Id, roomUser.ConnectionId)
+                .SendAsync("CurrentOppoThrow", roomUser.Hand[cardIndexInHand]);
+            //what do you mean by await?, waiting for deliver or timeout?
+
+            if (roomUser.Hand.Count == 0 && roomUser.TurnId == roomUser.Room.Capacity - 1)
+            {
+                await Distribute(roomUser.Room);
+            }
+        }
     }
 }

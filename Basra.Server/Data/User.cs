@@ -6,6 +6,7 @@ namespace Basra.Server
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
+
         public string Fbid { get; set; }
 
         public int PlayedGames { get; set; }
@@ -17,6 +18,6 @@ namespace Basra.Server
         public string Name { get; set; }
         public string Email { get; set; }
 
-        public bool IsActive { get; set; }
+        // public bool IsActive { get; set; }
     }
 }

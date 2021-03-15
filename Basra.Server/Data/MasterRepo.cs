@@ -10,23 +10,29 @@ namespace Basra.Server
     public interface IMasterRepo
     {
         Task<User> CreateUserAsync(string fbid);
+
         Task<string> GetNameOfUserAsync(string id);
-        bool GetUserActiveState(string id);
+
+        // bool GetUserActiveState(string id);
         Task<User> GetUserByFbidAsync(string fbid);
+
         Task<User> GetUserByIdAsyc(string id);
-        void MarkAllUsersNotActive();
+
+        // void MarkAllUsersNotActive();
         bool SaveChanges();
+        List<DisplayUser> GetRoomDisplayUsersAsync(Room room);
 
-        // Task<Room> GetPendingRoomWithSpecs(int genre, int playerCount);
-        // Task<Room> CreatePendingRoom(int genre, int playerCount);
-        PendingRoom GetPendingRoomWithSpecs(int genre, int playerCount);
-        PendingRoom MakeRoom(int genre, int userCount);
-        RoomUser GetRoomUserWithId(string id);
-        void DeleteRoom(Room room);
-        RoomUser AddRoomUser(string id, string connId, PendingRoom pRoom);
-        void RemovePendingRoom(PendingRoom pendingRoom);
-
-        List<DisplayUser> GetRoomDisplayUsersAsync(PendingRoom pendingRoom);
+        //
+        // // Task<Room> GetPendingRoomWithSpecs(int genre, int playerCount);
+        // // Task<Room> CreatePendingRoom(int genre, int playerCount);
+        // PendingRoom GetPendingRoomWithSpecs(int genre, int playerCount);
+        // PendingRoom MakeRoom(int genre, int userCount);
+        // RoomUser GetRoomUserWithId(string id);
+        // void DeleteRoom(Room room);
+        // RoomUser AddRoomUser(string id, string connId, PendingRoom pRoom);
+        // void RemovePendingRoom(PendingRoom pendingRoom);
+        //
+        // List<DisplayUser> GetRoomDisplayUsersAsync(PendingRoom pendingRoom);
         // void StartRoomUser(RoomUser roomUser, int turnId, string roomId);
     }
 
@@ -60,7 +66,7 @@ namespace Basra.Server
 
         public async Task<User> GetUserByFbidAsync(string fbid)
         {
-            return await _context.Users.FirstAsync(u => u.Fbid == fbid);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Fbid == fbid);
         }
 
         public async Task<User> GetUserByIdAsyc(string id)
@@ -76,91 +82,29 @@ namespace Basra.Server
             return await _context.Users.Where(u => u.Id == id).Select(u => u.Name).FirstAsync();
         }
 
-        public bool GetUserActiveState(string id)
-        {
-            return _context.Users.Where(u => u.Id == id).Select(u => u.IsActive).First();
-        }
-
-        public void MarkAllUsersNotActive()
-        {
-            _context.Users.ToList().ForEach(u => u.IsActive = false);
-        }
-
-        public List<DisplayUser> GetRoomDisplayUsersAsync(PendingRoom pendingRoom)
-        {
-            return _context.Entry(pendingRoom)
-                .Reference(pr => pr.Room)
-                .Query()
-                .SelectMany(c => c.RoomUsers)
-                .Select(ru => ru.User)
-                .Select(DisplayUser.Projection)
-                .ToList();
-        }
-
-        #endregion
-
-        #region room
-
-        public void DeleteRoom(Room room)
-        {
-            _context.Rooms.Remove(room);
-        }
-
-        #endregion
-
-        #region pending room
-
-        public PendingRoom GetPendingRoomWithSpecs(int genre, int playerCount)
-        {
-            return _context.PendingRooms.FirstOrDefault(r => r.Genre == genre && r.UserCount == playerCount);
-        }
-
-        public RoomUser AddRoomUser(string id, string connId, PendingRoom pRoom)
-        {
-            var rUser = new RoomUser {UserId = id, ConnectionId = connId, RoomId = pRoom.RoomId};
-            _context.RoomUsers.Add(rUser);
-
-            pRoom.EnteredUsers++;
-
-            SaveChanges();
-
-            return rUser;
-        }
-
-        public PendingRoom MakeRoom(int genre, int userCount)
-        {
-            var room = new Room( /*genre, userCount*/);
-            _context.Rooms.Add(room);
-
-            var pRoom = new PendingRoom {Room = room, Genre = room.Genre, UserCount = room.UserCount};
-            _context.PendingRooms.Add(pRoom);
-
-            SaveChanges();
-
-            return pRoom;
-        }
-
-        public void RemovePendingRoom(PendingRoom pendingRoom)
-        {
-            _context.PendingRooms.Remove(pendingRoom);
-        }
-
-        #endregion
-
-        #region room user
-
-        public RoomUser GetRoomUserWithId(string id)
-        {
-            return _context.RoomUsers.First(u => u.UserId == id);
-        }
-
-        // public void StartRoomUser(RoomUser roomUser, int turnId, string roomId)
+        // public bool GetUserActiveState(string id)
         // {
-        //     roomUser.Id = turnId;
-        //     roomUser.RoomId = roomId;
-        //     
-        //     
+        //     return _context.Users.Where(u => u.Id == id).Select(u => u.IsActive).First();
         // }
+
+        // public void MarkAllUsersNotActive()
+        // {
+        //     _context.Users.ToList().ForEach(u => u.IsActive = false);
+        // }
+
+        //todo should test query
+        public List<DisplayUser> GetRoomDisplayUsersAsync(Room room)
+        {
+            // return _context.Entry(pendingRoom)
+            //     .Reference(pr => pr.Room)
+            //     .Query()
+            //     .SelectMany(c => c.RoomUsers)
+            //     .Select(ru => ru.User)
+            //     .Select(DisplayUser.Projection)
+            //     .ToList();
+            var userIds = room.RoomUsers.Select(ru => ru.UserId);
+            return _context.Users.Where(u => userIds.Contains(u.Id)).Select(DisplayUser.Projection).ToList();
+        }
 
         #endregion
     }

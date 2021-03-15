@@ -11,9 +11,9 @@ namespace Basra.Server
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<RoomUser> RoomUsers { get; set; }
-        public DbSet<Room> Rooms { get; set; }
-        public DbSet<PendingRoom> PendingRooms { get; set; }
+        // public DbSet<RoomUser> RoomUsers { get; set; }
+        // public DbSet<Room> Rooms { get; set; }
+        // public DbSet<PendingRoom> PendingRooms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,10 +22,10 @@ namespace Basra.Server
 
         private void SeedData(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Room>()
-                .HasMany<RoomUser>(g => g.RoomUsers)
-                .WithOne(s => s.Room)
-                .HasForeignKey(s => s.RoomId);
+            // modelBuilder.Entity<Room>()
+            //     .HasMany<RoomUser>(g => g.RoomUsers)
+            //     .WithOne(s => s.Room)
+            //     .HasForeignKey(s => s.RoomId);
 
             modelBuilder.Entity<User>().HasData(
                 new List<User>()
@@ -64,47 +64,48 @@ namespace Basra.Server
                     },
                 }
             );
-            modelBuilder.Entity<RoomUser>().HasData
-            (
-                new List<RoomUser>()
-                {
-                    new RoomUser
-                    {
-                        Id = "0",
-                        RoomId = "0",
-                        UserId = "3" //ali
-                    },
-                    new RoomUser
-                    {
-                        Id = "1",
-                        RoomId = "1",
-                        UserId = "0" //hany
-                    },
-                }
-            );
-            modelBuilder.Entity<Room>().HasData(
-                new List<Room>
-                {
-                    new Room
-                    {
-                        Id = "0",
-                    },
-                    new Room
-                    {
-                        Id = "1",
-                    },
-                }
-            );
-            modelBuilder.Entity<PendingRoom>().HasData(
-                new List<PendingRoom>
-                {
-                    new PendingRoom
-                    {
-                        Id = 1,
-                        RoomId = "1"
-                    }
-                }
-            );
+
+            // modelBuilder.Entity<RoomUser>().HasData
+            // (
+            //     new List<RoomUser>()
+            //     {
+            //         new RoomUser
+            //         {
+            //             Id = "0",
+            //             RoomId = "0",
+            //             UserId = "3" //ali
+            //         },
+            //         new RoomUser
+            //         {
+            //             Id = "1",
+            //             RoomId = "1",
+            //             UserId = "0" //hany
+            //         },
+            //     }
+            // );
+            // modelBuilder.Entity<Room>().HasData(
+            //     new List<Room>
+            //     {
+            //         new Room
+            //         {
+            //             Id = "0",
+            //         },
+            //         new Room
+            //         {
+            //             Id = "1",
+            //         },
+            //     }
+            // );
+            // modelBuilder.Entity<PendingRoom>().HasData(
+            //     new List<PendingRoom>
+            //     {
+            //         new PendingRoom
+            //         {
+            //             Id = 1,
+            //             RoomId = "1"
+            //         }
+            //     }
+            // );
         }
     }
 }

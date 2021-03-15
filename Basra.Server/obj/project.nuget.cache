@@ -1,13 +1,22 @@
 {
   "version": 2,
-  "dgSpecHash": "x3CbEfdpG00FfDbHuJMWPAT/CTpSmaZEhxdxXhrH+7QNmskwr7AiqqOie4FdKC8xP1/oLaSileBCv0LrXe8LTg==",
+  "dgSpecHash": "qp2XRSxgpeHq0fTId3qcQTm4ieZmqjnbFl/8XCnw/3JBrrVEDsZIDEcPb5rNwJJ49HGoFXDHOw4osrsKYXYd3g==",
   "success": true,
   "projectFilePath": "/home/adam/Projects/Basra/Basra.Server/Basra.Server.csproj",
   "expectedPackageFiles": [
+    "/home/adam/.nuget/packages/concurrenthashset/1.1.0/concurrenthashset.1.1.0.nupkg.sha512",
     "/home/adam/.nuget/packages/humanizer.core/2.8.26/humanizer.core.2.8.26.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.connections.abstractions/5.0.4/microsoft.aspnetcore.connections.abstractions.5.0.4.nupkg.sha512",
     "/home/adam/.nuget/packages/microsoft.aspnetcore.cryptography.internal/5.0.0/microsoft.aspnetcore.cryptography.internal.5.0.0.nupkg.sha512",
     "/home/adam/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/5.0.0/microsoft.aspnetcore.cryptography.keyderivation.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.http.connections.client/5.0.4/microsoft.aspnetcore.http.connections.client.5.0.4.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.http.connections.common/5.0.4/microsoft.aspnetcore.http.connections.common.5.0.4.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.http.features/5.0.4/microsoft.aspnetcore.http.features.5.0.4.nupkg.sha512",
     "/home/adam/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/5.0.0/microsoft.aspnetcore.identity.entityframeworkcore.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.signalr.client/5.0.4/microsoft.aspnetcore.signalr.client.5.0.4.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.signalr.client.core/5.0.4/microsoft.aspnetcore.signalr.client.core.5.0.4.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.signalr.common/5.0.4/microsoft.aspnetcore.signalr.common.5.0.4.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.signalr.protocols.json/5.0.4/microsoft.aspnetcore.signalr.protocols.json.5.0.4.nupkg.sha512",
     "/home/adam/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
     "/home/adam/.nuget/packages/microsoft.entityframeworkcore/5.0.0/microsoft.entityframeworkcore.5.0.0.nupkg.sha512",
     "/home/adam/.nuget/packages/microsoft.entityframeworkcore.abstractions/5.0.0/microsoft.entityframeworkcore.abstractions.5.0.0.nupkg.sha512",
@@ -17,7 +26,7 @@
     "/home/adam/.nuget/packages/microsoft.extensions.caching.abstractions/5.0.0/microsoft.extensions.caching.abstractions.5.0.0.nupkg.sha512",
     "/home/adam/.nuget/packages/microsoft.extensions.caching.memory/5.0.0/microsoft.extensions.caching.memory.5.0.0.nupkg.sha512",
     "/home/adam/.nuget/packages/microsoft.extensions.configuration.abstractions/5.0.0/microsoft.extensions.configuration.abstractions.5.0.0.nupkg.sha512",
-    "/home/adam/.nuget/packages/microsoft.extensions.dependencyinjection/5.0.0/microsoft.extensions.dependencyinjection.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.extensions.dependencyinjection/5.0.1/microsoft.extensions.dependencyinjection.5.0.1.nupkg.sha512",
     "/home/adam/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/5.0.0/microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
     "/home/adam/.nuget/packages/microsoft.extensions.identity.core/5.0.0/microsoft.extensions.identity.core.5.0.0.nupkg.sha512",
     "/home/adam/.nuget/packages/microsoft.extensions.identity.stores/5.0.0/microsoft.extensions.identity.stores.5.0.0.nupkg.sha512",
@@ -31,7 +40,9 @@
     "/home/adam/.nuget/packages/system.collections.immutable/5.0.0/system.collections.immutable.5.0.0.nupkg.sha512",
     "/home/adam/.nuget/packages/system.componentmodel.annotations/5.0.0/system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "/home/adam/.nuget/packages/system.diagnostics.diagnosticsource/5.0.0/system.diagnostics.diagnosticsource.5.0.0.nupkg.sha512",
-    "/home/adam/.nuget/packages/system.reactive/5.0.0/system.reactive.5.0.0.nupkg.sha512"
+    "/home/adam/.nuget/packages/system.io.pipelines/5.0.1/system.io.pipelines.5.0.1.nupkg.sha512",
+    "/home/adam/.nuget/packages/system.reactive/5.0.0/system.reactive.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/system.threading.channels/5.0.0/system.threading.channels.5.0.0.nupkg.sha512"
   ],
   "logs": []
 }

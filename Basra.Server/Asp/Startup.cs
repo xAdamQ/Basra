@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 
 namespace Basra.Server
 {
@@ -50,13 +51,15 @@ namespace Basra.Server
 
 
             services.AddScoped<IMasterRepo, MasterRepo>();
-
+            services.AddScoped<ISessionRepo, SessionRepo>();
+            // services.AddHostedService<ServerLoop>();
+            services.AddSingleton<IServerLoop, ServerLoop>();
+            services.AddScoped<IRoomManager, RoomManager>();
             // services.AddDbContext<MasterContext>(options =>
             // {
             //     options.UseMySQL(_configuration.GetConnectionString("Main"));
             // });
 
-            services.AddHostedService<ServerLoop>();
 
             //services.AddIdentityCore<Identity.User>()//this is responsible for UserManager, SignInManger registeration
             //.AddSignInManager<SignInManager<Identity.User>>()
@@ -65,16 +68,19 @@ namespace Basra.Server
 
             services.AddScoped<FbigSecurityManager>();
 
-            services.AddAuthentication(FbigAuthenticationHandler.PROVIDER_NAME)
-                .AddScheme<FbigAuthenticationSchemeOptions, FbigAuthenticationHandler>(
-                    FbigAuthenticationHandler.PROVIDER_NAME, null);
-            //is it ok to make the scheme name and provider name the same?
+            services.AddHttpContextAccessor();
+
+            services.AddAuthentication(options =>
+            {
+                options.AddScheme<FbigAuthenticationHandler>(FbigAuthenticationHandler.PROVIDER_NAME,
+                    FbigAuthenticationHandler.PROVIDER_NAME);
+                options.DefaultScheme = FbigAuthenticationHandler.PROVIDER_NAME;
+            });
 
             services.AddCors();
             services.AddControllers();
             services.AddSignalR(options => { options.AddFilter<BadUserInputFilter>(); });
 
-            services.AddScoped<IRoomManager, RoomManager>();
             // services.AddSingleton<RoomFactory>();
             //the factory seems useles in terms of AskForRoom(), made to make us able to change the MakeRoom impl, but it's not even an interface yet
         }
@@ -105,8 +111,9 @@ namespace Basra.Server
 
             app.UseEndpoints(endpoint => endpoint.MapHub<MasterHub>("connect"));
 
-            masterRepo.MarkAllUsersNotActive();
-            masterRepo.SaveChanges();
+            // //tododone check if this is needed
+            // masterRepo.MarkAllUsersNotActive();
+            // masterRepo.SaveChanges();
         }
     }
 }

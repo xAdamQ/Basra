@@ -8,18 +8,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace Basra.Server.Services
 {
-    //return money to every player
-    //
-
-    //session are sticky
-
-    public class ServerLoop : BackgroundService
+    public class ServerLoop : IServerLoop
     {
-        private Dictionary<string, CancellationTokenSource> TurnCancellations =
-            new Dictionary<string, CancellationTokenSource>();
-
-        private Dictionary<string, RoomUser> RoomUsers = new Dictionary<string, RoomUser>();
-
+        private Dictionary<RoomUser, CancellationTokenSource> TurnCancellations;
 
         private static int creations = 0;
 
@@ -27,52 +18,75 @@ namespace Basra.Server.Services
 
         public ServerLoop(IServiceScopeFactory serviceScopeFactory)
         {
+            TurnCancellations = new Dictionary<RoomUser, CancellationTokenSource>();
+
             _serviceScopeFactory = serviceScopeFactory;
 
             creations++;
             Console.WriteLine($"sl is  created {creations} times");
-
-            StartTurn("");
         }
 
-        public void StartTurn(string userId)
+        private const int TurnTime = 10000;
+
+        public async Task SetupTurnTimout(RoomUser roomUser)
         {
-            var turnTime = 10000;
             var cSource = new CancellationTokenSource();
-            TurnCancellations.Add(userId, cSource);
+            TurnCancellations.Add(roomUser, cSource);
 
-            using (var scope = _serviceScopeFactory.CreateScope())
+            try
             {
-                var mr = scope.ServiceProvider.GetService<MasterRepo>();
+                await Task.Delay(TurnTime, cSource.Token);
+
+                using (var scope = _serviceScopeFactory.CreateScope())
+                {
+                    var roomManager = scope.ServiceProvider.GetService(typeof(RoomManager)) as RoomManager;
+                    roomManager.RandomPlay(roomUser);
+                }
             }
-
-            Task.Delay(turnTime).ContinueWith(t => OnTurnTimout(userId), cSource.Token);
+            catch (TaskCanceledException)
+            {
+                Console.WriteLine("user played normally within time");
+            }
         }
 
-        private async Task OnTurnTimout(string userId)
+        public void CutTurnTimout(RoomUser roomUser)
         {
-            await RandomPlay();
+            TurnCancellations[roomUser].Cancel();
         }
 
-        private async Task RandomPlay(string userId)
-        {
-            //pick user
-            //
+        // public void StartTurn(string userId)
+        // {
+        //     var turnTime = 10000;
+        //     var cSource = new CancellationTokenSource();
+        //     TurnCancellations.Add(userId, cSource);
+        //
+        //     Task.Delay(turnTime).ContinueWith(t => OnTurnTimout(userId), cSource.Token);
+        // }
+        //
+        // private async Task OnTurnTimout(string userId)
+        // {
+        //     // await RandomPlay(userId);
+        // }
 
-            var randomCardIndex = StaticRandom.GetRandom(Cards.Count);
+        // private async Task RandomPlay(string userId)
+        // {
+        //     //pick user
+        //     //
+        //
+        //     var randomCardIndex = StaticRandom.GetRandom(Cards.Count);
+        //
+        //     await Task.WhenAll
+        //     (
+        //         Play(randomCardIndex),
+        //         Program.HubContext.Clients.Client(ConnectionId).SendAsync("OverrideMyLastThrow", randomCardIndex)
+        //         // Structure.SendAsync("OverrideThrow", card)
+        //     );
+        // }
 
-            await Task.WhenAll
-            (
-                Play(randomCardIndex),
-                Program.HubContext.Clients.Client(ConnectionId).SendAsync("OverrideMyLastThrow", randomCardIndex)
-                // Structure.SendAsync("OverrideThrow", card)
-            );
-        }
 
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            Console.WriteLine("excute,,,,,,");
-        }
+        // protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        // {
+        //     Console.WriteLine("excute,,,,,,");
+        // }
     }
 }
