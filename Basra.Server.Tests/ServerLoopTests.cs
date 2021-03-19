@@ -1,4 +1,13 @@
-$HEADER$namespace $NAMESPACE$
+using Microsoft.Extensions.DependencyInjection;
+using Xunit;
+
+namespace Basra.Server.Tests
 {
-  public class $CLASS$ {$END$}
+    public class ServerLoopTests
+    {
+        [Fact]
+        public void TurnTimeout()
+        {
+        }
+    }
 }

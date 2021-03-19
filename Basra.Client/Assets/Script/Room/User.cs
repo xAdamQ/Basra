@@ -73,7 +73,7 @@ namespace Basra.Client.Room
 
         static GameObject Prefab;
 
-        public async static UniTask StaticInit()
+        public static async UniTask StaticInit()
         {
             Prefab = await Addressables.LoadAssetAsync<GameObject>("User");
         }

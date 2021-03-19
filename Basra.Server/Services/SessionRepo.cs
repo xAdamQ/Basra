@@ -10,7 +10,7 @@ namespace Basra.Server.Services
     public interface ISessionRepo
     {
         void DeleteRoom(Room room);
-        Room GetPendingRoom(int genre, int capacity);
+        Room GetPendingRoom(int betChoice, int capacityChoice);
 
         /// <summary>
         /// if the room is still pending 
@@ -18,10 +18,12 @@ namespace Basra.Server.Services
         void KeepRoom(Room room);
 
         RoomUser AddRoomUser(string id, string connId, Room room);
-        Room MakeRoom(int genre, int capacity);
+        Room MakeRoom(int betChoice, int capacityChoice);
+
         RoomUser GetRoomUserWithId(string id);
-        bool CheckRoomUserActive(string id);
-        void RemoveRoomUser(string id);
+
+        // bool CheckRoomUserActive(string id);
+        // void RemoveRoomUser(string id);
         void RemoveActiveUser(string id);
         bool IsUserActive(string id);
         void AddActiveUser(string id);
@@ -72,28 +74,29 @@ namespace Basra.Server.Services
             Rooms.TryRemove(room.Id, out _);
         }
 
-        public Room GetPendingRoom(int genre, int capacity)
-        {
-            PendingRooms[(genre, capacity)].TryTake(out Room room);
-            return room;
-        }
 
         /// <summary>
         /// if the room is still pending 
         /// </summary>
-        public void KeepRoom(Room room)
+        public Room MakeRoom(int betChoice, int capacityChoice)
         {
-            PendingRooms[(room.Genre, room.Capacity)].Add(room);
-        }
-
-        public Room MakeRoom(int genre, int capacity)
-        {
-            var room = new Room {Genre = genre, Capacity = capacity};
+            var room = new Room(betChoice, capacityChoice);
 
             Rooms.Append(ref LastRoomId, room);
-            PendingRooms[(room.Genre, room.Capacity)].Add(room);
+            // PendingRooms[(betChoice, capacityChoice)].Add(room);
 
             return room;
+        }
+
+        public Room GetPendingRoom(int betChoice, int capacityChoice)
+        {
+            PendingRooms[(betChoice, capacityChoice)].TryTake(out Room room);
+            return room;
+        }
+
+        public void KeepRoom(Room room)
+        {
+            PendingRooms[(room.BetChoice, room.CapacityChoice)].Add(room);
         }
 
         public RoomUser AddRoomUser(string id, string connId, Room room)
@@ -120,15 +123,15 @@ namespace Basra.Server.Services
         //     
         // }
 
-        public bool CheckRoomUserActive(string id)
-        {
-            return RoomUsers.ContainsKey(id);
-        }
-
-        public void RemoveRoomUser(string id)
-        {
-            RoomUsers.TryRemove(id, out _);
-        }
+        // public bool CheckRoomUserActive(string id)
+        // {
+        //     return RoomUsers.ContainsKey(id);
+        // }
+        //
+        // public void RemoveRoomUser(string id)
+        // {
+        //     RoomUsers.TryRemove(id, out _);
+        // }
 
         public bool IsUserActive(string id)
         {

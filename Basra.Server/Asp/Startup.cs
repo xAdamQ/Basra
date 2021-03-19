@@ -51,7 +51,7 @@ namespace Basra.Server
 
 
             services.AddScoped<IMasterRepo, MasterRepo>();
-            services.AddScoped<ISessionRepo, SessionRepo>();
+            services.AddSingleton<ISessionRepo, SessionRepo>();
             // services.AddHostedService<ServerLoop>();
             services.AddSingleton<IServerLoop, ServerLoop>();
             services.AddScoped<IRoomManager, RoomManager>();

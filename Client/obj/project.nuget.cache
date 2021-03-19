@@ -1,11 +1,33 @@
 {
   "version": 2,
-  "dgSpecHash": "0adzSy3ozNdLOgaxdz7mu/3hKcLa3bJWfP/lQj0jFOA9tuKPzT4mTNQM01ezsFh5o6s2aVBls9gzL7FzOLZT/A==",
+  "dgSpecHash": "TT1LKc3KmYAw3mxIicFXZ5nmcBl/YjNUMrugGaQeaNl+JZt4oOzwLrR3h8obxpD12rX9rekbrjuzTgxreTrZiQ==",
   "success": true,
   "projectFilePath": "/home/adam/Projects/Basra/Client/Client.csproj",
   "expectedPackageFiles": [
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.connections.abstractions/5.0.4/microsoft.aspnetcore.connections.abstractions.5.0.4.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.http.features/5.0.4/microsoft.aspnetcore.http.features.5.0.4.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.signalr.client.core/5.0.4/microsoft.aspnetcore.signalr.client.core.5.0.4.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.signalr.common/5.0.4/microsoft.aspnetcore.signalr.common.5.0.4.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.aspnetcore.signalr.protocols.json/5.0.4/microsoft.aspnetcore.signalr.protocols.json.5.0.4.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.bcl.asyncinterfaces/5.0.0/microsoft.bcl.asyncinterfaces.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.extensions.dependencyinjection/5.0.1/microsoft.extensions.dependencyinjection.5.0.1.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/5.0.0/microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.extensions.logging/5.0.0/microsoft.extensions.logging.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.extensions.logging.abstractions/5.0.0/microsoft.extensions.logging.abstractions.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.extensions.options/5.0.0/microsoft.extensions.options.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/microsoft.extensions.primitives/5.0.0/microsoft.extensions.primitives.5.0.0.nupkg.sha512",
     "/home/adam/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "/home/adam/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512"
+    "/home/adam/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512",
+    "/home/adam/.nuget/packages/system.buffers/4.5.1/system.buffers.4.5.1.nupkg.sha512",
+    "/home/adam/.nuget/packages/system.diagnostics.diagnosticsource/5.0.0/system.diagnostics.diagnosticsource.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/system.io.pipelines/5.0.1/system.io.pipelines.5.0.1.nupkg.sha512",
+    "/home/adam/.nuget/packages/system.memory/4.5.4/system.memory.4.5.4.nupkg.sha512",
+    "/home/adam/.nuget/packages/system.numerics.vectors/4.5.0/system.numerics.vectors.4.5.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/system.runtime.compilerservices.unsafe/5.0.0/system.runtime.compilerservices.unsafe.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/system.text.encodings.web/5.0.0/system.text.encodings.web.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/system.text.json/5.0.1/system.text.json.5.0.1.nupkg.sha512",
+    "/home/adam/.nuget/packages/system.threading.channels/5.0.0/system.threading.channels.5.0.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512"
   ],
   "logs": []
 }

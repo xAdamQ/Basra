@@ -8,6 +8,12 @@ using Microsoft.Extensions.Hosting;
 
 namespace Basra.Server.Services
 {
+    public interface IServerLoop
+    {
+        Task SetupTurnTimout(RoomUser roomUser);
+        void CutTurnTimout(RoomUser roomUser);
+    }
+
     public class ServerLoop : IServerLoop
     {
         private Dictionary<RoomUser, CancellationTokenSource> TurnCancellations;
@@ -23,7 +29,6 @@ namespace Basra.Server.Services
             _serviceScopeFactory = serviceScopeFactory;
 
             creations++;
-            Console.WriteLine($"sl is  created {creations} times");
         }
 
         private const int TurnTime = 10000;
@@ -39,8 +44,8 @@ namespace Basra.Server.Services
 
                 using (var scope = _serviceScopeFactory.CreateScope())
                 {
-                    var roomManager = scope.ServiceProvider.GetService(typeof(RoomManager)) as RoomManager;
-                    roomManager.RandomPlay(roomUser);
+                    var roomManager = scope.ServiceProvider.GetService<IRoomManager>();
+                    await roomManager.RandomPlay(roomUser);
                 }
             }
             catch (TaskCanceledException)

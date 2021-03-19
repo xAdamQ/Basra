@@ -18,12 +18,13 @@ namespace Basra.Server.Services
         private ILogger _logger;
 
         public FbigAuthenticationHandler(IOptionsMonitor<FbigAuthenticationSchemeOptions> options,
-            ILoggerFactory logger,
-            UrlEncoder encoder, ISystemClock clock, FbigSecurityManager fbigSecurityManager)
-            : base(options, logger, encoder, clock)
+            ILoggerFactory loggerFac,
+            UrlEncoder encoder, ISystemClock clock, ILogger<FbigSecurityManager> logger, FbigSecurityManager fbigSecurityManager)
+            : base(options, loggerFac, encoder, clock)
         {
             _fbigSecurityManager = fbigSecurityManager;
-            _logger = logger.CreateLogger("category test");
+            _logger = logger;
+            // _logger = loggerFac.CreateLogger<FbigSecurityManager>();
         }
 
 

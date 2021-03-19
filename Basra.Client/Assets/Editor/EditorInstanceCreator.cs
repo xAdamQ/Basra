@@ -11,6 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -27,7 +29,7 @@ namespace TheGamedevGuru
         [MenuItem("Window/The Gamedev Guru/Editor Instance Creator")]
         static void Init()
         {
-            ((EditorInstanceCreator)EditorWindow.GetWindow(typeof(EditorInstanceCreator))).Show();
+            ((EditorInstanceCreator) EditorWindow.GetWindow(typeof(EditorInstanceCreator))).Show();
         }
 
         void OnGUI()
@@ -36,18 +38,18 @@ namespace TheGamedevGuru
             {
                 _projectInstanceName = PlayerSettings.productName + "_Slave_1";
             }
-            
+
             EditorGUILayout.Separator();
             EditorGUILayout.LabelField("The Gamedev Guru - Project Instance Creator");
             EditorGUILayout.Separator();
             EditorGUILayout.LabelField("Slave Project Name");
             _projectInstanceName = EditorGUILayout.TextField("", _projectInstanceName);
             EditorGUILayout.Separator();
-            
+
             EditorGUILayout.LabelField("Include Project Settings? (Recommended)");
             _includeProjectSettings = EditorGUILayout.Toggle("", _includeProjectSettings);
             EditorGUILayout.Separator();
-            
+
             EditorGUILayout.LabelField("Extra Subdirectories? (Separate by comma)");
             _extraSubdirectories = EditorGUILayout.TextField("", _extraSubdirectories);
             EditorGUILayout.Separator();
@@ -56,16 +58,18 @@ namespace TheGamedevGuru
             {
                 CreateProjectInstance(_projectInstanceName, _includeProjectSettings, _extraSubdirectories);
             }
-            
+
             if (GUILayout.Button("Help"))
             {
                 Application.OpenURL("https://thegamedev.guru/multiple-unity-editor-instances-within-a-single-project/");
             }
         }
 
-        static void CreateProjectInstance(string projectInstanceName, bool includeProjectSettings, string extraSubdirectories)
+        static void CreateProjectInstance(string projectInstanceName, bool includeProjectSettings,
+            string extraSubdirectories)
         {
-            var targetDirectory = Path.Combine(Directory.GetCurrentDirectory(), ".." + Path.DirectorySeparatorChar, projectInstanceName);
+            var targetDirectory = Path.Combine(Directory.GetCurrentDirectory(), ".." + Path.DirectorySeparatorChar,
+                projectInstanceName);
             Debug.Log(targetDirectory);
             if (Directory.Exists(targetDirectory))
             {
@@ -75,7 +79,7 @@ namespace TheGamedevGuru
 
             Directory.CreateDirectory(targetDirectory);
 
-            List<string> subdirectories = new List<string>{"Assets", "Packages"};
+            List<string> subdirectories = new List<string> {"Assets", "Packages"};
             if (includeProjectSettings)
             {
                 subdirectories.Add("ProjectSettings");
@@ -89,16 +93,22 @@ namespace TheGamedevGuru
             foreach (var subdirectory in subdirectories)
             {
                 var args = GetLinkCommand(subdirectory, targetDirectory);
+                Debug.Log(subdirectory + " ** " + targetDirectory);
+
                 System.Diagnostics.Process.Start("CMD.exe", args);
             }
 
             EditorUtility.RevealInFinder(targetDirectory + Path.DirectorySeparatorChar + "Assets");
-            EditorUtility.DisplayDialog("Done!", $"Done! Feel free to add it as an existing project at: {targetDirectory}", "Ok :)");
+            EditorUtility.DisplayDialog("Done!",
+                $"Done! Feel free to add it as an existing project at: {targetDirectory}", "Ok :)");
         }
 
         static string GetLinkCommand(string subdirectory, string targetDirectory)
         {
-            return $"/c mklink /J \"{targetDirectory}{Path.DirectorySeparatorChar}{subdirectory}\" \"{Directory.GetCurrentDirectory()}{Path.DirectorySeparatorChar}{subdirectory}\"";
+            //sub--> assets
+            //target--> current../salve1
+            return
+                $"/c mklink /J \"{targetDirectory}{Path.DirectorySeparatorChar}{subdirectory}\" \"{Directory.GetCurrentDirectory()}{Path.DirectorySeparatorChar}{subdirectory}\"";
         }
     }
 }

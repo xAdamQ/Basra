@@ -6,6 +6,7 @@ using System;
 using Basra.Server.Exceptions;
 using System.Threading.Tasks;
 using System.Timers;
+using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
 
 namespace Basra.Server
 {
@@ -68,17 +69,19 @@ namespace Basra.Server
 
         public List<int> GroundCards { get; set; }
 
-        public int Genre { get; set; }
+        public int Bet { get; set; }
 
         public List<RoomUser> RoomUsers { get; set; } = new List<RoomUser>();
         // public int UserCount { get; }
 
         // public List<int> GroundCards { get; set; }
         public int Id { get; set; }
+        public int BetChoice { get; }
+        public int Capacity { get; }
+        public int CapacityChoice { get; }
 
         public List<int> Deck { get; set; }
         public int CurrentTurn { get; set; }
-        public int Capacity { get; set; }
 
         // public int EnteredUsersCount { get; set; }
         // private RoomUser UserInTurn => null;// RoomUsers[CurrentTurn];
@@ -89,6 +92,17 @@ namespace Basra.Server
         //
         private int TotalBet { get; set; }
 
+
+        public static readonly int[] Bets = new[] {50, 100, 200};
+        public static readonly int[] Capacities = new[] {2, 3, 4};
+
+        public Room(int betChoice, int capacityChoice)
+        {
+            BetChoice = betChoice;
+            CapacityChoice = capacityChoice;
+            Bet = Bets[betChoice];
+            Capacity = Capacities[capacityChoice];
+        }
         // public Room(int genre, int playerCount)
         // {
         //     Genre = genre;

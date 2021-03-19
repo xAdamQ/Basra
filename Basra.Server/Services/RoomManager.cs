@@ -11,6 +11,20 @@ using Microsoft.Extensions.Logging;
 
 namespace Basra.Server.Services
 {
+    public interface IRoomManager
+    {
+        Task RequestRoom(int genre, int betChoice, int capacityChoice, string userId, string connId);
+        Task FinalizeGame(Room room);
+
+        /// <summary>
+        /// get ready for the room to start distribute cards
+        /// </summary>
+        Task Ready(RoomUser roomUser);
+
+        Task RandomPlay(RoomUser roomUser);
+        Task Play(RoomUser roomUser, int cardIndexInHand);
+    }
+
     public class RoomManager : IRoomManager
     {
         private readonly ILogger _logger;
@@ -32,31 +46,16 @@ namespace Basra.Server.Services
 
         //thread safe
         //trivial to test
-        public async Task RequestRoom(int genre, int bet, int capacity, string userId, string connId)
+        public async Task RequestRoom(int genre, int betChoice, int capacityChoice, string userId, string connId)
         {
-            var room = _sessionRepo.GetPendingRoom(bet, capacity);
+            var room = _sessionRepo.GetPendingRoom(betChoice, capacityChoice);
             if (room == null)
             {
-                room = _sessionRepo.MakeRoom(bet, capacity);
+                room = _sessionRepo.MakeRoom(betChoice, capacityChoice);
                 _logger.LogInformation("a new room is made");
             }
 
             await AddUser(room, userId, connId);
-        }
-
-        public async Task RequestFriendlyRoom(int[] userIds, int bet, int capacity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task BuyCardBack()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task BuyBackground()
-        {
-            throw new NotImplementedException();
         }
 
         //trivial logic to test
@@ -107,8 +106,6 @@ namespace Basra.Server.Services
             }
 
             await Task.WhenAll(tasks);
-
-            StartTurn(rUsers[0]);
         }
 
         //todo logic to test
@@ -129,7 +126,7 @@ namespace Basra.Server.Services
 
             var maxScore = room.RoomUsers.Max(u => u.Score);
             var winners = room.RoomUsers.Where(u => u.Score == maxScore).ToArray();
-            var totalBet = Room.GenreBets[room.Genre] * room.Capacity;
+            var totalBet = Room.GenreBets[room.Bet] * room.Capacity;
 
             //draw
             if (winners.Length > 1)
@@ -194,6 +191,7 @@ namespace Basra.Server.Services
             if (readyUsersCount == room.Capacity)
             {
                 await InitialDistribute(room);
+                StartTurn(room.RoomUsers[0]);
             }
         }
 
@@ -256,6 +254,22 @@ namespace Basra.Server.Services
             {
                 await Distribute(roomUser.Room);
             }
+        }
+
+
+        public async Task RequestFriendlyRoom(int[] userIds, int bet, int capacity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task BuyCardBack()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task BuyBackground()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -3,7 +3,6 @@
   <component name="ContentModelUserStore">
     <attachedFolders />
     <explicitIncludes>
-      <Path>Assets</Path>
       <Path>Library/PackageCache/com.cysharp.unitask@3115efb672</Path>
       <Path>Library/PackageCache/com.unity.2d.pixel-perfect@4.0.1</Path>
       <Path>Library/PackageCache/com.unity.addressables@1.16.15</Path>

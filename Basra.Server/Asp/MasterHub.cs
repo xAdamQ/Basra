@@ -29,9 +29,6 @@ namespace Basra.Server
         private readonly ISessionRepo _sessionRepo;
         private readonly IRoomManager _roomManager;
 
-        //public ActiveUser GetCurrentUser() => ActiveUsers.First(u => u.ConnectionId == Context.ConnectionId);
-        //the system will allow one connections per user
-
         public MasterHub(IMasterRepo masterRepo, IRoomManager roomManager, ISessionRepo sessionRepo)
         {
             _masterRepo = masterRepo;
@@ -43,26 +40,7 @@ namespace Basra.Server
         {
             Console.WriteLine($"connection established: {Context.UserIdentifier} {Context.UserIdentifier}");
 
-            //var user = new ActiveUser
-            //{
-            //    Id = Context.UserIdentifier,
-            //    ConnectionId = Context.ConnectionId,
-            //    //Name = Context.User.
-            //    Name = Context.User.Identity.Name,
-            //};
-
-            //ActiveUsers.Add(user);
-            //the claims principle shoud pass the id here
-
-            // var user = await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier);
-
-            // await _masterRepo.GetNameOfUserAsync(Context.UserIdentifier);
-            //
-            // user.IsActive = true;
-            // _masterRepo.SaveChanges();
-
             await base.OnConnectedAsync();
-            // Context.Abort(); //this how to close connection
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
@@ -71,27 +49,15 @@ namespace Basra.Server
 
             _sessionRepo.RemoveActiveUser(Context.UserIdentifier);
 
-            //var currentUser = GetCurrentUser();
-            //currentUser.Disconncted = true;
-            //ActiveUsers.Remove(currentUser);
-            //
-            // var user = await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier);
-            // user.IsActive = false;
-            // _masterRepo.SaveChanges();
-
-            // _sessionRepo
-
-            //removed from groups automatically
             await base.OnDisconnectedAsync(exception);
         }
 
         private RoomUser GetRoomUser() => _sessionRepo.GetRoomUserWithId(Context.UserIdentifier);
 
-        #region rpc
 
-        public async Task AskForRoom(int genre, int bet, int capacity)
+        public async Task RequestRoom(int genre, int betChoice, int capacityChoice)
         {
-            await _roomManager.RequestRoom(genre, bet, capacity, Context.UserIdentifier, Context.ConnectionId);
+            await _roomManager.RequestRoom(genre, betChoice, capacityChoice, Context.UserIdentifier, Context.ConnectionId);
         }
 
         public async Task Ready()
@@ -109,40 +75,5 @@ namespace Basra.Server
             await _roomManager.RandomPlay(GetRoomUser());
         }
 
-        #region testing
-
-        public void MakeBadUserInputException()
-        {
-            throw new BadUserInputException();
-        }
-
-        public void DummyFunction()
-        {
-            System.Console.WriteLine("dummy called");
-        }
-
-        //public static CancellationTokenSource testSource;
-        //public async Task TestAsync()
-        //{
-        //testSource = new CancellationTokenSource();
-
-        //testSource.CancelAfter(3500);
-
-        //try
-        //{
-        //    await Task.Delay(3000, testSource.Token);
-        //}
-        //catch (TaskCanceledException)
-        //{
-        //    System.Console.WriteLine("Task cancelled");
-        //    return;
-        //}
-
-        //System.Console.WriteLine("success 7985255555555");
-        //}
-
-        #endregion
-
-        #endregion
     }
 }

@@ -114,3 +114,16 @@
 /home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.InMemory.dll
 /home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/Microsoft.Extensions.DependencyInjection.dll
 /home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/System.Diagnostics.DiagnosticSource.dll
+/home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.deps.json
+/home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.runtimeconfig.json
+/home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.runtimeconfig.dev.json
+/home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/ConcurrentCollections.dll
+/home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.Connections.Abstractions.dll
+/home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.Http.Connections.Client.dll
+/home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.Http.Connections.Common.dll
+/home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.Http.Features.dll
+/home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.SignalR.Client.dll
+/home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.SignalR.Client.Core.dll
+/home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.SignalR.Common.dll
+/home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+/home/adam/Projects/Basra/Basra.Server.Tests/bin/Debug/net5.0/System.IO.Pipelines.dll
