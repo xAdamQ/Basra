@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.WebUtilities;
 using System;
+using System.Linq;
 using Newtonsoft.Json;
 using System.Text;
 using Basra.Server.Models;
@@ -9,7 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Basra.Server.Helpers;
 using Microsoft.EntityFrameworkCore;
-using Basra.Server.Identity;
+
+//using Basra.Server.Identity;
 
 namespace Basra.Server.Services
 {
@@ -19,17 +21,24 @@ namespace Basra.Server.Services
         //it defines who can use the token and the token maker
         private readonly string _appSecret;
         private readonly IConfiguration _configuration;
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
-        private readonly IdentityConetxt _masterContext;
+        private readonly IMasterRepo _masterRepo;
+        private readonly ISessionRepo _sessionRepo;
 
-        public FbigSecurityManager(IConfiguration configuration, SignInManager<User> signInManager, UserManager<User> userManager, IdentityConetxt masterContext)
+        //private readonly SignInManager<User> _signInManager;
+        //private readonly UserManager<User> _userManager;
+        //private readonly IdentityConetxt _masterContext;
+
+        public FbigSecurityManager(IConfiguration configuration, IMasterRepo masterRepo, ISessionRepo sessionRepo)
+            //SignInManager<User> signInManager, UserManager<User> userManager, IdentityConetxt masterContext)
         {
             _configuration = configuration;
+            _masterRepo = masterRepo;
+            _sessionRepo = sessionRepo;
             _appSecret = _configuration["Secrets:AppSecret"];
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _masterContext = masterContext;
+
+            //_signInManager = signInManager;
+            //_userManager = userManager;
+            //_masterContext = masterContext;
         }
 
         private bool VerifySignature(string[] token)
@@ -51,7 +60,7 @@ namespace Basra.Server.Services
             return JsonConvert.DeserializeObject<ConnectBody>(json, Helper.SnakePropertyNaming);
         }
 
-        private bool RecentConnection(int timestamp)
+        private bool IsRecentConnection(int timestamp)
         {
             return true;
         }
@@ -69,7 +78,7 @@ namespace Basra.Server.Services
 
             connectBody = DeserialzeConnectBody(tokenParts[1]);
 
-            if (!RecentConnection(connectBody.IssuedAt))
+            if (!IsRecentConnection(connectBody.IssuedAt))
             {
                 return false;
             }
@@ -82,36 +91,29 @@ namespace Basra.Server.Services
         /// </summary>
         public async Task<User> SignInAsync(string fbUserId)
         {
-            //todo if (_userManager.FindByIdAsync(fbUserId) == null)
-            // _userManager.FindByLoginAsync()
-            // if (_masterContext.Users.Any(u => u.FbId == fbUserId))
-            var user = await _masterContext.Users.FirstOrDefaultAsync(u => u.FbId == fbUserId);
+            var user = await _masterRepo.GetUserByFbidAsync(fbUserId);
+
             if (user == null)
             {
-                user = await SignUpAsync(fbUserId);
+                return await SignUpAsync(fbUserId);
             }
 
-            return user;
+            if (_sessionRepo.IsUserActive(user.Id))
+            {
+                return null;
+            }
 
-            // todo 
-            // await _signInManager.SignInWithClaimsAsync()
-            // SignInAsync(new BasraIdentityUser(), isPersistent: false, "fbig");
-            //issues a cookie
+            _sessionRepo.AddActiveUser(user.Id);
+
+            return user;
         }
 
         private async Task<User> SignUpAsync(string fbUserId)
         {
-            var user = new User
-            {
-                FbId = fbUserId,
-                UserName = "AsAName_" + fbUserId,
-            };
-
-            await _userManager.CreateAsync(user);
-
-            //todo the result maybe failure
+            var user = await _masterRepo.CreateUserAsync(fbUserId);
+            //todo the result of creation maybe failure
+            _masterRepo.SaveChanges();
             return user;
         }
-
     }
 }

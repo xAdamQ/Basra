@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -33,10 +34,10 @@ namespace Basra.Server.Extensions
             T[] data = source.ToArray();
 
             return Enumerable
-              .Range(0, 1 << (data.Length))
-              .Select(index => data
-                 .Where((v, i) => (index & (1 << i)) != 0)
-                 .ToArray());
+                .Range(0, 1 << (data.Length))
+                .Select(index => data
+                    .Where((v, i) => (index & (1 << i)) != 0)
+                    .ToArray());
         }
 
         public static List<T> CutRange<T>(this List<T> from, int count, bool fromEnd = true)
@@ -70,6 +71,11 @@ namespace Basra.Server.Extensions
         public static bool InRange(this int value, int max, int min = 0)
         {
             return (value < max && value >= min);
+        }
+
+        public static void Append<T>(this ConcurrentDictionary<int, T> concurrentDictionary, ref int lastId, T value)
+        {
+            concurrentDictionary.TryAdd(Interlocked.Increment(ref lastId), value);
         }
     }
 }

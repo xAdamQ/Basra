@@ -10,10 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Basra.Server.Services;
 using Microsoft.EntityFrameworkCore;
-//using Microsoft.AspNetCore.Identity;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 
 namespace Basra.Server
 {
@@ -39,7 +39,7 @@ namespace Basra.Server
             //    // .EnableSensitiveDataLogging()
             //    // .EnableDetailedErrors();
             //});
-            services.AddDbContextPool<Data.GameContext>(options =>
+            services.AddDbContextPool<MasterContext>(options =>
             {
                 options.UseMySql
                 (
@@ -49,39 +49,49 @@ namespace Basra.Server
                 );
             });
 
+
+            services.AddScoped<IMasterRepo, MasterRepo>();
+            services.AddSingleton<ISessionRepo, SessionRepo>();
+            // services.AddHostedService<ServerLoop>();
+            services.AddSingleton<IServerLoop, ServerLoop>();
+            services.AddScoped<IRoomManager, RoomManager>();
             // services.AddDbContext<MasterContext>(options =>
             // {
             //     options.UseMySQL(_configuration.GetConnectionString("Main"));
             // });
 
 
-            services.AddIdentityCore<Identity.User>()//this is responsible for UserManager, SignInManger registeration
-            .AddSignInManager<SignInManager<Identity.User>>()
-            .AddUserManager<UserManager<Identity.User>>()
-            .AddEntityFrameworkStores<Identity.IdentityConetxt>();
+            //services.AddIdentityCore<Identity.User>()//this is responsible for UserManager, SignInManger registeration
+            //.AddSignInManager<SignInManager<Identity.User>>()
+            //.AddUserManager<UserManager<Identity.User>>()
+            //.AddEntityFrameworkStores<Identity.IdentityConetxt>();
 
             services.AddScoped<FbigSecurityManager>();
 
-            services.AddAuthentication(FbigAuthenticationHandler.PROVIDER_NAME)
-            .AddScheme<FbigAuthenticationSchemeOptions, FbigAuthenticationHandler>(FbigAuthenticationHandler.PROVIDER_NAME, null);
-            //is it ok to make the scheme name and provider name the same?
+            services.AddHttpContextAccessor();
+
+            services.AddAuthentication(options =>
+            {
+                options.AddScheme<FbigAuthenticationHandler>(FbigAuthenticationHandler.PROVIDER_NAME,
+                    FbigAuthenticationHandler.PROVIDER_NAME);
+                options.DefaultScheme = FbigAuthenticationHandler.PROVIDER_NAME;
+            });
 
             services.AddCors();
             services.AddControllers();
-            services.AddSignalR(options =>
-            {
-                options.AddFilter<BadUserInputFilter>();
-            });
+            services.AddSignalR(options => { options.AddFilter<BadUserInputFilter>(); });
 
+            // services.AddSingleton<RoomFactory>();
+            //the factory seems useles in terms of AskForRoom(), made to make us able to change the MakeRoom impl, but it's not even an interface yet
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMasterRepo masterRepo)
         {
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-           );
+            );
 
             // if (env.IsDevelopment())
             // {
@@ -90,18 +100,20 @@ namespace Basra.Server
 
 
             // app.UseHttpsRedirection();
-            app.UseRouting();
 
             app.UseAuthentication();
 
+            app.UseRouting();
+
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
             app.UseEndpoints(endpoint => endpoint.MapHub<MasterHub>("connect"));
+
+            // //tododone check if this is needed
+            // masterRepo.MarkAllUsersNotActive();
+            // masterRepo.SaveChanges();
         }
     }
 }

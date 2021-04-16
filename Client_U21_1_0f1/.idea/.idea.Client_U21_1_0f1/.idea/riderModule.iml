@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.2d.animation@5.0.3" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.2d.common@4.0.3" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.2d.path@4.0.1" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.2d.pixel-perfect@4.0.1" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.2d.psdimporter@4.0.2" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.2d.spriteshape@5.1.0" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.addressables@1.16.16" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.collab-proxy@1.3.9" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.ext.nunit@1.0.6" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.ide.rider@3.0.5" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.ide.visualstudio@2.0.7" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.ide.vscode@1.2.3" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.mathematics@1.2.1" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.scriptablebuildpipeline@1.15.2" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.settings-manager@1.0.3" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.sysroot.linux-x86_64@0.1.14-preview" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.sysroot@0.1.19-preview" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.test-framework@1.1.24" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.testtools.codecoverage@1.0.0" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.textmeshpro@3.0.4" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.timeline@1.5.2" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.toolchain.linux-x86_64@0.1.18-preview" />
+    <content url="file://$USER_HOME$/.config/unity3d/cache/packages/packages.unity.com/com.unity.visualscripting@1.5.2" />
+    <content url="file://$MODULE_DIR$/../../../Basra.Client/Library/PackageCache/com.cysharp.unitask@3115efb672" />
+    <content url="file://$MODULE_DIR$/../.." />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

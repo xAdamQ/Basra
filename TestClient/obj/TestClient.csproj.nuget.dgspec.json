@@ -1,0 +1,66 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/adam/Projects/Basra/TestClient/TestClient.csproj": {}
+  },
+  "projects": {
+    "/home/adam/Projects/Basra/TestClient/TestClient.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/adam/Projects/Basra/TestClient/TestClient.csproj",
+        "projectName": "TestClient",
+        "projectPath": "/home/adam/Projects/Basra/TestClient/TestClient.csproj",
+        "packagesPath": "/home/adam/.nuget/packages/",
+        "outputPath": "/home/adam/Projects/Basra/TestClient/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/adam/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.SignalR.Client": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.102/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

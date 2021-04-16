@@ -15,6 +15,7 @@ using System.Linq;
 using BestHTTP;
 using BestHTTP.Logger;
 using Cysharp.Threading.Tasks;
+using Random = UnityEngine.Random;
 
 //action is function instances(require object)
 //methodInfo is not
@@ -26,6 +27,7 @@ namespace Basra.Client
     public class AppManager : MonoBehaviour
     {
         #region props
+
         public static AppManager I;
 
         public List<object> Managers = new List<object>();
@@ -40,6 +42,7 @@ namespace Basra.Client
 
         public Room.RoomManager RoomManager;
         public LobbyManager LobbyManager;
+
         #endregion
 
         public Action LastRevertAction;
@@ -54,9 +57,8 @@ namespace Basra.Client
 
 #if UNITY_EDITOR
             // SceneManager.UnloadSceneAsync(1);
-            Connect("5");
+            Connect(Random.Range(0, 1000).ToString());
 #endif
-
         }
 
         private async void Start()
@@ -80,6 +82,7 @@ namespace Basra.Client
         {
             Connect(TestFbigInf.text);
         }
+
         public void Connect(string fbigToken)
         {
             var protocol = new JsonProtocol(new LitJsonEncoder());
@@ -118,11 +121,13 @@ namespace Basra.Client
         }
 
         #region events
+
         private void OnConntected(HubConnection obj)
         {
             //HubConnection.Send("TestAsync");
             SceneManager.LoadScene(1);
         }
+
         private bool OnMessage(HubConnection arg1, Message message)
         {
             //call the rpcs using reflection and lobby, room objects
@@ -137,14 +142,17 @@ namespace Basra.Client
             return true;
             //if i returned false the message will be discarded internally, (no action of besthttp)
         }
+
         private void OnClosed(HubConnection obj)
         {
             Debug.Log("OnClosed");
         }
+
         private void OnError(HubConnection arg1, string arg2)
         {
             Debug.Log($"OnError: {arg2}");
         }
+
         #endregion
 
         public LoadingPanel LaodingPanel;
@@ -155,8 +163,8 @@ namespace Basra.Client
             //get the type of each one and pass the right object
 
             var namespaceTypes = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(a => a.GetTypes())
-            .Where(t => t.IsClass && (t.Namespace == "Basra.Client" || t.Namespace == "Basra.Client.Room"));
+                .SelectMany(a => a.GetTypes())
+                .Where(t => t.IsClass && (t.Namespace == "Basra.Client" || t.Namespace == "Basra.Client.Room"));
 
             foreach (var type in namespaceTypes)
             {
@@ -175,15 +183,21 @@ namespace Basra.Client
         }
 
         #region testing
+
         [Rpc]
         public void TestCall()
         {
             Debug.Log("TestCall *******************************************8");
         }
+
         #endregion
 
         private void HandleInvocationMessage(Message message)
         {
+            if (message.target == "StartRoom")
+            {
+
+            }
             var method = Rpcs.Find(m => m.Name == message.target);
 
             var realArgs = HubConnection.Protocol.GetRealArguments(method.GetParameterTypes(), message.arguments);
@@ -197,6 +211,7 @@ namespace Basra.Client
                     debugMessage += item.ToString() + "  --  ";
                 }
             }
+
             Debug.Log(debugMessage);
 
             var manager = Managers.First(obj => obj.GetType() == method.DeclaringType);
@@ -207,12 +222,13 @@ namespace Basra.Client
                 LastRevertAction = null;
             }
 
-            method.Invoke(manager, realArgs);//the only problem
+            method.Invoke(manager, realArgs); //the only problem
         }
     }
 }
 
 #region general instant feedback with reflection, currenlty deprecated
+
 // public void SendUnconfirmed(string method, params object[] args)
 // {
 //     HubConnection.Send(method, args)
@@ -226,4 +242,5 @@ namespace Basra.Client
 //         Debug.Log("error happened on serevr: " + exc);
 //     });
 // }
+
 #endregion

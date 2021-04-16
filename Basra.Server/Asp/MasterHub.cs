@@ -10,112 +10,70 @@ using Basra.Server.Extensions;
 using System.Linq;
 using Basra.Server.Exceptions;
 using System.Threading;
+using Basra.Server.Services;
 
-//todo learn about thread safety
 namespace Basra.Server
 {
+    public interface IRoomHub
+    {
+        Task StartRoom(int genre, int bet, int playerCount);
+
+        Task BuyCardback(int id);
+        Task BuyBackground(int id);
+    }
+
     [Authorize]
     public class MasterHub : Hub
     {
-        // public static MasterHub Current;//I don't know if this is thread safe
-        //hub life time is not even per connection, it's per request!
+        private readonly IMasterRepo _masterRepo;
+        private readonly ISessionRepo _sessionRepo;
+        private readonly IRoomManager _roomManager;
 
-        private readonly SignInManager<Identity.User> _signInManager;
-
-        private static List<Data.User> ConnectedUsers { get; } = new List<Data.User>();
-
-        // public RuntimeUser GetUser(string connectionId) => RuntimeUsers.First(u => u.ConnectionId == connectionId);
-        public Data.User GetCurrentUser() => ConnectedUsers.First(u => u.ConnectionId == Context.ConnectionId);
-        //the system will allow one connections per user
-
-        public MasterHub(SignInManager<Identity.User> signInManager)
+        public MasterHub(IMasterRepo masterRepo, IRoomManager roomManager, ISessionRepo sessionRepo)
         {
-            _signInManager = signInManager;
+            _masterRepo = masterRepo;
+            _roomManager = roomManager;
+            _sessionRepo = sessionRepo;
         }
 
         public override async Task OnConnectedAsync()
         {
-            System.Console.WriteLine($"connection established: {Context.ConnectionId} {Context.UserIdentifier}");
-
-            var user = new Data.User
-            {
-                IdentityUserId = Context.UserIdentifier,
-                ConnectionId = Context.ConnectionId,
-                Name = Context.User.Identity.Name,
-            };
-
-            ConnectedUsers.Add(user);
-            //the claims principle shoud pass the id here
+            Console.WriteLine($"connection established: {Context.UserIdentifier} {Context.UserIdentifier}");
 
             await base.OnConnectedAsync();
-
-            // Context.Abort(); //this hiw to close connection
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            System.Console.WriteLine($"{Context.ConnectionId} Disconnected");
+            Console.WriteLine($"{Context.UserIdentifier} Disconnected");
 
-            var currentUser = GetCurrentUser();
-            currentUser.Disconncted = true;
-            ConnectedUsers.Remove(currentUser);
-            //removed from groups automatically
+            _sessionRepo.RemoveActiveUser(Context.UserIdentifier);
+
             await base.OnDisconnectedAsync(exception);
         }
 
-        #region rpc
+        private RoomUser GetRoomUser() => _sessionRepo.GetRoomUserWithId(Context.UserIdentifier);
 
-        public async Task AskForRoom(int roomGenre, int roomPlayerCount)
+
+        public async Task RequestRoom(int genre, int betChoice, int capacityChoice)
         {
-            await Room.Pending.AskForRoom(this, roomGenre, roomPlayerCount);
+            await _roomManager.RequestRoom(genre, betChoice, capacityChoice, Context.UserIdentifier,
+                Context.ConnectionId);
         }
 
         public async Task Ready()
         {
-            await GetCurrentUser().RoomUser.Ready();
+            await _roomManager.Ready(GetRoomUser());
         }
 
         public async Task Throw(int indexInHand)
         {
-            await GetCurrentUser().RoomUser.Play(indexInHand);
-        }//automatic actions happen from serevr side and the client knows this overrides his action and do the revert 
+            await _roomManager.Play(GetRoomUser(), indexInHand);
+        } //automatic actions happen from server side and the client knows this overrides his action and do the revert 
+
         public async Task InformTurnTimeout()
         {
-            await GetCurrentUser().RoomUser.RandomPlay();
+            await _roomManager.RandomPlay(GetRoomUser());
         }
-
-        #region testing
-        public void MakeBadUserInputException()
-        {
-            throw new BadUserInputException();
-        }
-        public void DummyFunction()
-        {
-            System.Console.WriteLine("dummy called");
-        }
-
-        //public static CancellationTokenSource testSource;
-        //public async Task TestAsync()
-        //{
-        //testSource = new CancellationTokenSource();
-
-        //testSource.CancelAfter(3500);
-
-        //try
-        //{
-        //    await Task.Delay(3000, testSource.Token);
-        //}
-        //catch (TaskCanceledException)
-        //{
-        //    System.Console.WriteLine("Task cancelled");
-        //    return;
-        //}
-
-        //System.Console.WriteLine("success 7985255555555");
-        //}
-        #endregion
-
-        #endregion
-
     }
 }

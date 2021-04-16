@@ -98,6 +98,7 @@ namespace Basra.Client.Room
         /// </summary>
         public void Ready()
         {
+            Debug.Log("calling ready");
             AppManager.I.HubConnection.SendAsync("Ready");
         }
 

@@ -19,6 +19,7 @@ namespace Basra.Client
             AppManager.I.LobbyManager = this;
             AppManager.I.Managers.Add(this);
         }
+
         private void OnDestroy()
         {
             AppManager.I.Managers.Remove(this);
@@ -38,7 +39,7 @@ namespace Basra.Client
 
             SceneManager.LoadScene(2);
 
-            AppManager.I.LaodingPanel.Hide();//todo make it hide after async load scene
+            AppManager.I.LaodingPanel.Hide(); //todo make it hide after async load scene
         }
 
         [Rpc]
@@ -48,13 +49,11 @@ namespace Basra.Client
         }
 
         //button
-        public void AskForRoom(int genre, int playerCount)
+        public void RequestRoom(int genre, int playerCount)
         {
             Room.RoomManager.Genre = genre;
             Room.RoomManager.PlayerCount = playerCount;
-            AppManager.I.HubConnection.Send("AskForRoom", genre, playerCount);
+            AppManager.I.HubConnection.Send("RequestRoom", 0, genre, playerCount);
         }
-
-
     }
 }
