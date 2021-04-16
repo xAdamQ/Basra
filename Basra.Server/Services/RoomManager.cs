@@ -44,10 +44,11 @@ namespace Basra.Server.Services
             _logger = logger;
         }
 
-        //thread safe
-        //trivial to test
+
         public async Task RequestRoom(int genre, int betChoice, int capacityChoice, string userId, string connId)
         {
+            if (_sessionRepo.DoesRoomUserExist(connId)) throw new BadUserInputException();
+
             var room = _sessionRepo.GetPendingRoom(betChoice, capacityChoice);
             if (room == null)
             {
@@ -58,7 +59,6 @@ namespace Basra.Server.Services
             await AddUser(room, userId, connId);
         }
 
-        //trivial logic to test
         private async Task AddUser(Room room, string userId, string connId)
         {
             var rUser = _sessionRepo.AddRoomUser(userId, connId, room);
@@ -66,7 +66,7 @@ namespace Basra.Server.Services
             if (room.Capacity == room.RoomUsers.Count)
             {
                 _logger.LogInformation("a room is ready and will start");
-                await StartRoom(room);
+                await PrepareRoom(room);
             }
             else
             {
@@ -75,7 +75,7 @@ namespace Basra.Server.Services
             }
         }
 
-        private async Task StartRoom(Room room)
+        private async Task PrepareRoom(Room room)
         {
             room.Deck = GenerateDeck();
 
@@ -108,7 +108,6 @@ namespace Basra.Server.Services
             await Task.WhenAll(tasks);
         }
 
-        //todo logic to test
         public async Task FinalizeGame(Room room)
         {
             _sessionRepo.DeleteRoom(room);
@@ -126,7 +125,7 @@ namespace Basra.Server.Services
 
             var maxScore = room.RoomUsers.Max(u => u.Score);
             var winners = room.RoomUsers.Where(u => u.Score == maxScore).ToArray();
-            var totalBet = Room.GenreBets[room.Bet] * room.Capacity;
+            var totalBet = Room.GenreBets[room.BetChoice] * room.Capacity;
 
             //draw
             if (winners.Length > 1)
@@ -134,7 +133,6 @@ namespace Basra.Server.Services
                 var moneyPart = totalBet / winners.Length;
                 foreach (var user in winners)
                 {
-                    //var sUser = user.ActiveUser.Data;
                     var dUser = await _masterRepo.GetUserByIdAsyc(user.UserId);
                     dUser.PlayedGames++;
                     dUser.Draws++;
@@ -144,7 +142,6 @@ namespace Basra.Server.Services
             //win
             else
             {
-                //var sUser = winners[0].Data;
                 var dUser = await _masterRepo.GetUserByIdAsyc(winners[0].UserId);
                 dUser.PlayedGames++;
                 dUser.Wins++;
@@ -156,7 +153,6 @@ namespace Basra.Server.Services
             {
                 if (winners.Contains(user)) continue;
 
-                //var sUser = user.Data;
                 var dUser = await _masterRepo.GetUserByIdAsyc(user.UserId);
                 dUser.PlayedGames++;
             }
@@ -175,7 +171,6 @@ namespace Basra.Server.Services
             await _serverLoop.SetupTurnTimout(roomUser);
         }
 
-        //rpc
         /// <summary>
         /// get ready for the room to start distribute cards
         /// </summary>
@@ -190,9 +185,14 @@ namespace Basra.Server.Services
             var readyUsersCount = room.RoomUsers.Count(u => u.IsReady);
             if (readyUsersCount == room.Capacity)
             {
-                await InitialDistribute(room);
-                StartTurn(room.RoomUsers[0]);
+                await StartRoom(room);
             }
+        }
+
+        private async Task StartRoom(Room room)
+        {
+            await InitialDistribute(room);
+            StartTurn(room.RoomUsers[0]);
         }
 
         private async Task InitialDistribute(Room room)
@@ -201,7 +201,7 @@ namespace Basra.Server.Services
             {
                 roomUser.Hand = roomUser.Room.Deck.CutRange(RoomUser.HandSize);
                 await _masterHub.Clients.User(roomUser.UserId)
-                    .SendAsync("InitialDistribute", roomUser.Hand.ToArray(), roomUser.Room.GroundCards.ToArray());
+                    .SendAsync("InitialDistribute", roomUser.Hand, roomUser.Room.GroundCards);
             }
         }
 
@@ -236,26 +236,91 @@ namespace Basra.Server.Services
 
             _serverLoop.CutTurnTimout(roomUser);
 
-            var eaten = RoomLogic.Eat(roomUser.Hand[cardIndexInHand], roomUser.Room.GroundCards, out bool basra,
+            var eaten = Eat(roomUser.Hand[cardIndexInHand], roomUser.Room.GroundCards, out bool basra,
                 out bool bigBasra);
-            roomUser.Room.GroundCards.RemoveAll(c => eaten.Contains(c));
 
-            roomUser.EatenCardsCount += eaten.Count;
-            if (basra) roomUser.BasraCount++;
-            if (bigBasra) roomUser.BigBasraCount++;
+            var card = roomUser.Hand.Cut(cardIndexInHand);
+
+            if (eaten != null)
+            {
+                roomUser.Room.GroundCards.RemoveAll(c => eaten.Contains(c));
+                roomUser.EatenCardsCount += eaten.Length;
+                if (basra) roomUser.BasraCount++;
+                if (bigBasra) roomUser.BigBasraCount++;
+            }
+            else
+            {
+                roomUser.Room.GroundCards.Add(card);
+            }
 
             NextTurn(roomUser.Room);
 
             await _masterHub.Clients.GroupExcept("room" + roomUser.Room.Id, roomUser.ConnectionId)
-                .SendAsync("CurrentOppoThrow", roomUser.Hand[cardIndexInHand]);
+                .SendAsync("CurrentOppoThrow", card);
             //what do you mean by await?, waiting for deliver or timeout?
 
             if (roomUser.Hand.Count == 0 && roomUser.TurnId == roomUser.Room.Capacity - 1)
             {
-                await Distribute(roomUser.Room);
+                if (roomUser.Room.Deck.Count == 0)
+                {
+                    await FinalizeGame(roomUser.Room);
+                }
+                else
+                {
+                    await Distribute(roomUser.Room);
+                }
             }
         }
 
+        private const int KOMI_ID = 19, BOY_VALUE = 11;
+        private static readonly int[] BOY_IDS = new int[] { 10, 23, 36, 49 };
+
+        private int[] Eat(int cardId, List<int> ground, out bool basra, out bool bigBasra)
+        {
+            basra = false;
+            bigBasra = false;
+
+            var cardValue = CardValueFromId(cardId);
+
+            if (cardId == KOMI_ID)
+            {
+                basra = ground.Count == 1;
+
+                return ground.ToArray();
+            }
+            else if (cardValue == BOY_VALUE)
+            {
+                bigBasra = ground.Count == 1 && BOY_IDS.Contains(ground[0]);
+
+                return ground.ToArray();
+            }
+            else if (cardValue > 10)
+            {
+                return ground.Where(c => CardValueFromId(c) == cardValue).ToArray();
+            }
+            else
+            {
+                var groups = ground.Permutations();
+
+                var bestGroupLength = -1;
+                int[] bestGroup = null;
+                foreach (var group in groups)
+                {
+                    if (group.Select(c => CardValueFromId(c)).Sum() == cardValue && group.Length > bestGroupLength)
+                    {
+                        bestGroup = group;
+                        bestGroupLength = bestGroup.Length;
+                    }
+                }
+
+                return bestGroup;
+            }
+
+            int CardValueFromId(int id)
+            {
+                return (id % 13) + 1;
+            }
+        }
 
         public async Task RequestFriendlyRoom(int[] userIds, int bet, int capacity)
         {

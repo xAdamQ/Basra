@@ -194,6 +194,10 @@ namespace Basra.Client
 
         private void HandleInvocationMessage(Message message)
         {
+            if (message.target == "StartRoom")
+            {
+
+            }
             var method = Rpcs.Find(m => m.Name == message.target);
 
             var realArgs = HubConnection.Protocol.GetRealArguments(method.GetParameterTypes(), message.arguments);

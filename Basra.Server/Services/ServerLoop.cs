@@ -52,6 +52,10 @@ namespace Basra.Server.Services
             {
                 Console.WriteLine("user played normally within time");
             }
+            finally
+            {
+                TurnCancellations.Remove(roomUser);
+            }
         }
 
         public void CutTurnTimout(RoomUser roomUser)

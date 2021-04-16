@@ -10,6 +10,10 @@ using Microsoft.Extensions.Options;
 
 namespace Basra.Server.Services
 {
+    public class FbigAuthenticationSchemeOptions : AuthenticationSchemeOptions
+    {
+    }
+
     public class FbigAuthenticationHandler : AuthenticationHandler<FbigAuthenticationSchemeOptions>
     {
         public const string PROVIDER_NAME = "Fbig";
@@ -19,7 +23,8 @@ namespace Basra.Server.Services
 
         public FbigAuthenticationHandler(IOptionsMonitor<FbigAuthenticationSchemeOptions> options,
             ILoggerFactory loggerFac,
-            UrlEncoder encoder, ISystemClock clock, ILogger<FbigSecurityManager> logger, FbigSecurityManager fbigSecurityManager)
+            UrlEncoder encoder, ISystemClock clock, ILogger<FbigSecurityManager> logger,
+            FbigSecurityManager fbigSecurityManager)
             : base(options, loggerFac, encoder, clock)
         {
             _fbigSecurityManager = fbigSecurityManager;

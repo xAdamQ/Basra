@@ -27,6 +27,7 @@ namespace Basra.Server.Services
         void RemoveActiveUser(string id);
         bool IsUserActive(string id);
         void AddActiveUser(string id);
+        bool DoesRoomUserExist(string id);
     }
 
     //no test, system funs only
@@ -49,8 +50,8 @@ namespace Basra.Server.Services
 
         private ConcurrentDictionary<(int, int), ConcurrentBag<Room>> PendingRooms;
 
-        private readonly int[] GenrePosses = {0, 1, 2, 3};
-        private readonly int[] UserCountPosses = {2, 3, 4};
+        private readonly int[] GenrePosses = { 0, 1, 2, 3 };
+        private readonly int[] UserCountPosses = { 2, 3, 4 };
 
         public SessionRepo()
         {
@@ -101,7 +102,7 @@ namespace Basra.Server.Services
 
         public RoomUser AddRoomUser(string id, string connId, Room room)
         {
-            var rUser = new RoomUser {UserId = id, ConnectionId = connId, Room = room};
+            var rUser = new RoomUser { UserId = id, ConnectionId = connId, Room = room };
 
             room.RoomUsers.Add(rUser);
             RoomUsers.TryAdd(id, rUser);
@@ -115,6 +116,10 @@ namespace Basra.Server.Services
             return roomUser;
         }
 
+        public bool DoesRoomUserExist(string id)
+        {
+            return RoomUsers.ContainsKey(id);
+        }
         // public void StartRoomUser(RoomUser roomUser, int turnId, string roomId)
         // {
         //     roomUser.Id = turnId;

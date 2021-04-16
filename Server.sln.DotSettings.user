@@ -8,6 +8,7 @@
     &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.SessionRepoTests.MakeRoom&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.SessionRepoTests.Scenario1&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.RoomTests.RequestRoom&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.RoomTests.FinalizeGame_ScoreAndWinnersCheck&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d661559c_002D8a47_002D4334_002D8384_002D1eea99d9d0f7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
@@ -19,5 +20,8 @@
     &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.SessionRepoTests.MakeRoom&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.SessionRepoTests.Scenario1&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.RoomTests.RequestRoom&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.RoomTests.FinalizeGame_ScoreAndWinnersCheck&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.IntegrationTests.simpleTest&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.IntegrationTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

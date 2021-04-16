@@ -57,7 +57,8 @@ namespace Basra.Server
 
         public async Task RequestRoom(int genre, int betChoice, int capacityChoice)
         {
-            await _roomManager.RequestRoom(genre, betChoice, capacityChoice, Context.UserIdentifier, Context.ConnectionId);
+            await _roomManager.RequestRoom(genre, betChoice, capacityChoice, Context.UserIdentifier,
+                Context.ConnectionId);
         }
 
         public async Task Ready()
@@ -74,6 +75,5 @@ namespace Basra.Server
         {
             await _roomManager.RandomPlay(GetRoomUser());
         }
-
     }
 }

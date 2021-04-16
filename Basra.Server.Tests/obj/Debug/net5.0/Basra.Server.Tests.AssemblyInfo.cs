@@ -10,6 +10,7 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("Basra.Server, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "/home/adam/Projects/Basra/Basra.Server", "Basra.Server.csproj", "0")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Basra.Server.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]

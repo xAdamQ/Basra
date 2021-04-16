@@ -24,17 +24,20 @@ namespace TesterClient
                 {
                     if (cmd == "nu")
                     {
-                        MakeClient();
+                        await MakeClient();
                         break;
                     }
                     else if (cmd.StartsWith("call "))
                     {
                         var words = cmd.Split(' ');
-                        var clientIndex = int.Parse(words[1]);
+                        if (!int.TryParse(words[1], out int clientIndex))
+                        {
+                            System.Console.WriteLine("you must specify the user");
+                            return;
+                        }
                         var rpc = words[2];
 
-                        if (words.Length != 3)
-                            Clients[clientIndex].RpcCall(rpc, ProcessArgs(words, 3));
+                        Clients[clientIndex].RpcCall(rpc, ProcessArgs(words, 3));
                     }
                 }
 
@@ -70,14 +73,13 @@ namespace TesterClient
             return rpcArgs.ToArray();
         }
 
-        static async void MakeClient()
+        static async Task MakeClient()
         {
             var c = new Client(Clients.Count);
             Clients.Add(c);
             Console.WriteLine("a new client is made with index: " + (Clients.Count - 1));
             await c.Connect();
         }
-
 
 
     }

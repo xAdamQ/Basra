@@ -1,24 +1,23 @@
+using System.Collections.Generic;
+using Microsoft.AspNetCore.SignalR;
 using Moq;
 using Xunit;
 
 namespace Basra.Server.Tests
 {
-    public static partial class TestingHelper
-    {
-        // public IMasterRepo
-    }
-
     public class MasterHubTests
     {
-        [Fact]
-        public void AskForRoom()
+        public static Mock<IHubContext<MasterHub>> GetMockWithSendFuns()
         {
-            // var hub = new MasterHub(new Mock<IMasterRepo>().Object,);
-            //what's missing?
-            //authentication --should be skipped
-            //long session --integration or manual?
-            
-            //
+            var hub = new Mock<IHubContext<MasterHub>>();
+            var mockClients = new Mock<IHubClients>();
+            var groups = new Mock<IClientProxy>();
+
+            mockClients.Setup(_ => _.GroupExcept(It.IsAny<string>(), It.IsAny<IReadOnlyList<string>>())).Returns(groups.Object);
+            hub.Setup(_ => _.Clients).Returns(mockClients.Object);
+
+            return hub;
         }
+
     }
 }
