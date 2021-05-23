@@ -7,8 +7,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
 
-public class PersonalActiveUserView : PublicMinUserView
+public class PersonalActiveUserView : MinUserView
 {
+    private IRepository _repository;
+    private PersonalFullUserView _personalFullUserView;
     [Inject]
     public void Construct(IRepository repository, PersonalFullUserView personalFullUserView)
     {
@@ -26,6 +28,7 @@ public class PersonalActiveUserView : PublicMinUserView
     {
         base.Init(personalFullUserInfo);
         Money = personalFullUserInfo.Money;
+        MoneyAimTimeLeft = personalFullUserInfo.MoneyAimTimeLeft;
     }
 
     public void ShowFullView()
@@ -72,10 +75,6 @@ public class PersonalActiveUserView : PublicMinUserView
         }
     }
 
-
     [SerializeField] private Text money;
     [SerializeField] private Text moneyAimTimeLeft;
-
-    private IRepository _repository;
-    private PersonalFullUserView _personalFullUserView;
 }

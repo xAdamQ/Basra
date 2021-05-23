@@ -1,32 +1,59 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.XR;
 using Zenject;
 
-public interface IPlayer
+public interface IPlayer : IPlayerBase
 {
+    UniTask Throw(Card card); //tested
+    void Distribute(int[] cardIds); //tested
+    void ServerThrow(int cardHandIndex, ThrowResponse throwResponse); //trivial to test
+    bool IsPlayable(); //trivial to test
 }
 
 public class Player : PlayerBase, IPlayer
 {
-    private IController _controller;
+    [Inject] private readonly TurnTimer _turnTimer;
 
-    [Inject]
-    public void Construct(IController controller)
+    public async UniTask Throw(Card card)
     {
-        _controller = controller;
+        var response = await _controller.ThrowCard(HandCards.IndexOf(card));
+
+        ThrowBase(card, response);
     }
 
-    public async UniTask Throw(int cardHandIndex)
+    private void Start()
     {
-        await _controller.SendAsync("Throw", cardHandIndex);
-        OrganizeHand();
-        throw new NotImplementedException();
+        _turnTimer.uniTaskTimer.Elapsed += MissTurn;
+    }
+
+    private void MissTurn()
+    {
+        _controller.NotifyTurnMiss(); //async forgotten
+    }
+
+    public bool IsPlayable()
+    {
+        return _roomController.CurrentTurn == Turn && _turnTimer.uniTaskTimer.Active;
     }
 
     public void Distribute(int[] cardIds)
     {
+        foreach (var cardId in cardIds)
+        {
+            var card = _cardFactory.CreateMyPlayerCard(cardId, transform);
+            card.Player = this;
+            HandCards.Add(card);
+        }
+
         OrganizeHand();
-        throw new NotImplementedException();
+    }
+
+    public void ServerThrow(int cardHandIndex, ThrowResponse throwResponse)
+    {
+        ThrowBase(HandCards[cardHandIndex], throwResponse);
     }
 }

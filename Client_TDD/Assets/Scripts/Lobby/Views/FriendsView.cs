@@ -3,7 +3,7 @@ using Zenject;
 
 public class FriendsView : MonoBehaviour
 {
-    private PublicMinUserView.BasicFactory _minUserViewFactory;
+    private MinUserView.BasicFactory _minUserViewFactory;
     private IRepository _repository;
 
     /// <summary>
@@ -12,7 +12,7 @@ public class FriendsView : MonoBehaviour
     [SerializeField] private Transform container;
 
     [Inject]
-    public void Construct(PublicMinUserView.BasicFactory minUserViewFactory, IRepository repository)
+    public void Construct(MinUserView.BasicFactory minUserViewFactory, IRepository repository)
     {
         _minUserViewFactory = minUserViewFactory;
         _repository = repository;

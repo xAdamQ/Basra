@@ -7,7 +7,10 @@
         "Zenject",
         "Zenject-TestFramework",
         "MyScripts",
-        "UniTask"
+        "UniTask",
+        "Unity.Addressables",
+        "UniTask.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

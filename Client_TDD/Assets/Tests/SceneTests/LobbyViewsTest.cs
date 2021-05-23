@@ -12,9 +12,8 @@ namespace LobbyTests
 {
     public class LobbyViewsTest : SceneTestFixture
     {
-        [UnityTest]
-        [Timeout(999999999)]
-        public IEnumerator TestScene()
+        [SetUp]
+        private void SetupTestRepoUserData()
         {
             var personalInfo = new PersonalFullUserInfo
             {
@@ -34,7 +33,7 @@ namespace LobbyTests
             };
             var topFriends = new[]
             {
-                new PublicMinUserInfo
+                new MinUserInfo
                 {
                     Id = "tstFriendId",
                     Level = 13,
@@ -42,7 +41,7 @@ namespace LobbyTests
                     Picture = Texture2D.grayTexture,
                     Title = "I am a normal human being"
                 },
-                new PublicMinUserInfo
+                new MinUserInfo
                 {
                     Id = "tstFriendId2",
                     Level = 93,
@@ -53,7 +52,7 @@ namespace LobbyTests
             };
             var yesterdayChampions = new[]
             {
-                new PublicMinUserInfo
+                new MinUserInfo
                 {
                     Id = "tstChampionId",
                     Level = 33,
@@ -61,7 +60,7 @@ namespace LobbyTests
                     Picture = Texture2D.blackTexture,
                     Title = "SuperMan with good company"
                 },
-                new PublicMinUserInfo
+                new MinUserInfo
                 {
                     Id = "tstChampionId2",
                     Level = 7,
@@ -73,7 +72,7 @@ namespace LobbyTests
 
             var controller = new Mock<IController>();
             controller.Setup(_ => _.GetPublicFullUserInfo(topFriends[0].Id)).Returns(UniTask.FromResult(
-                new PublicFullUserInfo
+                new FullUserInfo
                 {
                     BasrasCount = 3,
                     BigBasrasCount = 3,
@@ -88,7 +87,7 @@ namespace LobbyTests
                     Picture = Texture2D.redTexture,
                 }));
             controller.Setup(_ => _.GetPublicFullUserInfo(topFriends[1].Id)).Returns(UniTask.FromResult(
-                new PublicFullUserInfo
+                new FullUserInfo
                 {
                     BasrasCount = 7,
                     BigBasrasCount = 1,
@@ -109,18 +108,15 @@ namespace LobbyTests
             repo.PersonalFullInfo = personalInfo;
             repo.TopFriends = topFriends;
             repo.YesterdayChampions = yesterdayChampions;
-            //server calls this with this info
+        }
+
+        [UnityTest]
+        [Timeout(999999999)]
+        public IEnumerator TestScene()
+        {
             Debug.Log("ProjectContext is gathered" + ProjectContext.Instance.Container);
-            // StaticContext.Container.Resolve<IController>()
-            // .SetGameInfo(personalInfo, yesterdayChampions, topFriends);
 
             yield return LoadScene("Lobby");
-
-            //
-            // while (true)
-            // {
-            //     yield return null;
-            // }
 
             yield return new WaitForSeconds(999999);
 

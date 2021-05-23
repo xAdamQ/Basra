@@ -4,7 +4,6 @@ using Zenject;
 
 public interface ILobby
 {
-    // void SetGameInfo(MinUserInfo myUserInfo);
 }
 
 public class Lobby : ILobby, IInitializable
@@ -20,6 +19,9 @@ public class Lobby : ILobby, IInitializable
     public void Initialize()
     {
         Debug.Log("lobby is initialized");
-        _repository.PersonalFullInfo.DecreaseMoneyAimTimeLeft().Forget(e => throw e);
+    }
+
+    public class Factory : PlaceholderFactory<Lobby>
+    {
     }
 }

@@ -7,7 +7,7 @@ using Zenject;
 /// only single instance possible at a time
 /// 
 /// </summary>
-public class PersonalFullUserView : PublicFullUserView
+public class PersonalFullUserView : FullUserView
 {
     [SerializeField] private Text money;
     //todo  [SerializeField] private Text[] flipWin;
