@@ -6,20 +6,21 @@ using Zenject;
 public class BlockingOperationManager
 {
     private readonly IBlockingPanel _blockingPanel;
+
     [Inject]
     public BlockingOperationManager(IBlockingPanel blockingPanel)
     {
         _blockingPanel = blockingPanel;
     }
 
-    /// <summary>
-    /// invoke, block, and forget
-    /// </summary>
-    public void Forget(Func<UniTask> operation)
+    // /// <summary>
+    // /// invoke, block, and forget
+    // /// </summary>
+    public void Forget(Func<UniTask> operation, Action onComplete = null)
     {
         Start(operation).Forget(e => throw e);
     }
-    private async UniTask Start(Func<UniTask> operation)
+    public async UniTask Start(Func<UniTask> operation)
     {
         _blockingPanel.Show();
         try
@@ -29,8 +30,28 @@ public class BlockingOperationManager
         }
         catch (BadUserInputException e) //todo test if you can get bad user input exc here
         {
-            Debug.LogError(e); //should I throw this? what's the difference between throw and debug error
             _blockingPanel.Hide("operation is not allowed");
+            throw;
+        }
+    }
+
+    public void Forget<T>(Func<UniTask<T>> operation, Action<T> onComplete)
+    {
+        Start(operation).ContinueWith(onComplete).Forget(e => throw e); //the error exception happens normally inside start
+    }
+    public async UniTask<T> Start<T>(Func<UniTask<T>> operation)
+    {
+        _blockingPanel.Show();
+        try
+        {
+            var result = await operation();
+            _blockingPanel.Hide();
+            return result;
+        }
+        catch (BadUserInputException e) //todo test if you can get bad user input exc here
+        {
+            _blockingPanel.Hide("operation is not allowed");
+            throw;
         }
     }
 }

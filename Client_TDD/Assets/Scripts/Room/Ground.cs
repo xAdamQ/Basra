@@ -9,9 +9,8 @@ using Random = UnityEngine.Random;
 
 public interface IGround
 {
-    
-    void Throw(Card thrownCard, int[] eatenCardsIds);//tested
-    void InitialDistribute(int[] cardIds);//tested
+    void Throw(Card thrownCard, int[] eatenCardsIds); //tested
+    void InitialDistribute(List<int> cardIds); //tested
 }
 
 public class Ground : MonoBehaviour, IGround
@@ -21,7 +20,7 @@ public class Ground : MonoBehaviour, IGround
     private List<Card> Cards { get; } = new List<Card>();
     private static readonly Vector2 Bounds = new Vector2(1.5f, 2.5f);
 
-    public void InitialDistribute(int[] cardIds)
+    public void InitialDistribute(List<int> cardIds)
     {
         foreach (var cardId in cardIds)
         {

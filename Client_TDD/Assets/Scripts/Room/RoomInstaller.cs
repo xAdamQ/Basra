@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
-using Object = UnityEngine.Object;
 
 public class RoomInstaller : MonoInstaller
 {
@@ -19,8 +15,9 @@ public class RoomInstaller : MonoInstaller
     [SerializeField] private GameObject personalFullUserViewPrefab;
     [SerializeField] private GameObject standardCanvasPrefab;
     [SerializeField] private GameObject turnTimerPrefab;
-
     [SerializeField] private GameObject CameraPrefab, EventSystemPrefab;
+
+    [Inject] private readonly RoomSettings _roomSettings;
 
     public class Settings
     {
@@ -66,7 +63,10 @@ public class RoomInstaller : MonoInstaller
     public override void InstallBindings()
     {
         if (_settings.EnableRoomController)
-            Container.BindInterfacesTo<RoomController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<RoomController>().AsSingle().NonLazy();
+
+        // Container.BindInstance(_roomSettings).AsSingle();
+        Container.Bind<RoomSettings>().FromInstance(_roomSettings).AsSingle();
 
         //custom factories
         if (_settings.EnableFrontFactory)
@@ -78,19 +78,17 @@ public class RoomInstaller : MonoInstaller
 
         if (_settings.EnableGround)
             Container.BindInterfacesTo<Ground>().FromComponentInNewPrefab(groundPrefab).AsSingle();
-        //
+
         if (_settings.EnableRoomUserViewFactory)
             Container.Bind<RoomUserView.Factory>().AsSingle().WithArguments(roomUserViewPrefabs, StandardCanvas);
 
         if (_settings.EnableFullUserView)
-            Container.Bind<FullUserView>().FromComponentInNewPrefab(fullUserViewPrefab)
-                .AsSingle();
+            Container.Bind<FullUserView>().FromComponentInNewPrefab(fullUserViewPrefab).AsSingle();
+
         if (_settings.EnablePersonalUserView)
-            Container.Bind<PersonalFullUserView>().FromComponentInNewPrefab(personalFullUserViewPrefab)
-                .AsSingle();
+            Container.Bind<PersonalFullUserView>().FromComponentInNewPrefab(personalFullUserViewPrefab).AsSingle();
 
         if (_settings.EnableTurnTimer)
-            Container.Bind<TurnTimer>().FromComponentInNewPrefab(turnTimerPrefab).UnderTransform(StandardCanvas)
-                .AsSingle();
+            Container.AddInstantSceneModule<TurnTimer>(turnTimerPrefab, StandardCanvas);
     }
 }

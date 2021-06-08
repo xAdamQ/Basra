@@ -5,13 +5,13 @@ using Zenject;
 
 public class RoomUserView : MinUserView
 {
-    [Inject] private IRoomRepo _roomRepo;
+    [Inject] private RoomSettings _roomSettings;
     [Inject] private IRepository _repository;
 
     public override void ShowFullInfo()
     {
-        var oppoFullInfo = _roomRepo.OpposInfo.FirstOrDefault(_ => _.Id == id);
-        _fullUserView.Show(oppoFullInfo ?? _repository.PersonalFullInfo);
+        var oppoFullInfo = _roomSettings.OpposInfo.First(_ => _.FullUserInfo.Id == id);
+        _fullUserView.Show(oppoFullInfo.FullUserInfo ?? _repository.PersonalFullInfo);
     }
 
     public class Factory

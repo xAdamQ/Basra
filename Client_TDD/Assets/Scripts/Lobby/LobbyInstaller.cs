@@ -55,7 +55,7 @@ public class LobbyInstaller : MonoInstaller
         var standardCanvas = Container.InstantiatePrefab(standardCanvasPrefab).transform;
 
         if (_settings.EnableLobbyController)
-            Container.BindInterfacesAndSelfTo<Lobby>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<LobbyController>().AsSingle().NonLazy();
 
         if (_settings.EnableMinUserViewFactory)
             Container.BindFactory<MinUserView, MinUserView.BasicFactory>()
@@ -77,6 +77,6 @@ public class LobbyInstaller : MonoInstaller
                 .WithArguments(cardbackSheetRef, cardbackShopItemPrefab);
 
         if (_settings.EnableRoomChoicesView)
-            Container.InstantiatePrefab(roomChoiceViewPrefab, standardCanvas); //see if you want a service from it
+            Container.AddInstantSceneModule<RoomRequester>(roomChoiceViewPrefab, standardCanvas);
     }
 }

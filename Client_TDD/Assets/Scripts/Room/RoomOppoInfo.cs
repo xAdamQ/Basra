@@ -1,7 +1,5 @@
-namespace Room
+public class RoomOppoInfo
 {
-    public class RoomOppoInfo
-    {
-        
-    }
+    public FullUserInfo FullUserInfo { get; set; }
+    public int TurnId;
 }

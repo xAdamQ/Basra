@@ -1,22 +1,25 @@
-using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public interface ILobbyController
 {
-    void StartRequestedRoom(FullUserInfo[] fullUsersInfos);
+    void StartRequestedRoomRpc(List<RoomOppoInfo> roomOppoInfo, int myTurn);
 }
 
 public class LobbyController : ILobbyController, IInitializable
 {
-    private IRepository _repository;
     private readonly IController _controller;
+    private readonly RoomController.Factory _roomFactory;
+    private readonly RoomRequester _roomRequester;
 
     [Inject]
-    public LobbyController(IRepository repository, IController controller)
+    public LobbyController(IController controller, RoomController.Factory roomFactory,
+        RoomRequester roomRequester)
     {
-        _repository = repository;
         _controller = controller;
+        _roomFactory = roomFactory;
+        _roomRequester = roomRequester;
     }
 
     public void Initialize()
@@ -28,7 +31,20 @@ public class LobbyController : ILobbyController, IInitializable
     {
     }
 
-    public void StartRequestedRoom(FullUserInfo[] fullUsersInfos)
+    public void StartRequestedRoomRpc(List<RoomOppoInfo> roomOppoInfo, int myTurn)
     {
+        DestroyLobby();
+
+        var roomChoice = _roomRequester.LastChoice;
+
+        _roomFactory.Create(new RoomSettings(roomChoice.Item1, roomChoice.Item2, roomOppoInfo, myTurn));
+    }
+
+    private void DestroyLobby()
+    {
+        _controller.RemoveLobbyRpcs();
+
+        //todo find better way to locate it
+        Object.Destroy(Object.FindObjectOfType<LobbyInstaller>().gameObject);
     }
 }

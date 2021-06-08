@@ -9,7 +9,7 @@ using Zenject;
 public interface IPlayer : IPlayerBase
 {
     UniTask Throw(Card card); //tested
-    void Distribute(int[] cardIds); //tested
+    void Distribute(List<int> cardIds); //tested
     void ServerThrow(int cardHandIndex, ThrowResponse throwResponse); //trivial to test
     bool IsPlayable(); //trivial to test
 }
@@ -40,7 +40,7 @@ public class Player : PlayerBase, IPlayer
         return _roomController.CurrentTurn == Turn && _turnTimer.uniTaskTimer.Active;
     }
 
-    public void Distribute(int[] cardIds)
+    public void Distribute(List<int> cardIds)
     {
         foreach (var cardId in cardIds)
         {

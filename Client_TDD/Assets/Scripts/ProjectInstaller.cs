@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -13,18 +14,20 @@ public class ProjectInstaller : MonoInstaller
     {
         if (!FindObjectOfType<Camera>()) ProjectContext.Instance.Container.InstantiatePrefab(cameraPrefab);
         if (!FindObjectOfType<EventSystem>()) ProjectContext.Instance.Container.InstantiatePrefab(eventSystemPrefab);
-        var standardCanvas = Container.InstantiatePrefab(standardCanvasPrefab).transform;
+        // var standardCanvas = Container.InstantiatePrefab(standardCanvasPrefab).transform;
+        var standardCanvas = FindObjectOfType<Canvas>().transform;
         //each module set has a canvas
-
 
         Container.BindInterfacesTo<Controller>().AsSingle();
         Container.BindInterfacesTo<Repository>().AsSingle();
 
-        Container.BindFactory<Lobby, Lobby.Factory>().FromSubContainerResolve()
+        Container.BindFactory<LobbyController, LobbyController.Factory>()
+            .FromSubContainerResolve()
             .ByNewContextPrefab(lobbyContextPrefab);
 
-        Container.BindFactory<RoomController, RoomController.Factory>().FromSubContainerResolve()
-            .ByNewContextPrefab(roomContextPrefab);
+        Container.BindFactory<RoomSettings, RoomController, RoomController.Factory>()
+            .FromSubContainerResolve()
+            .ByNewContextPrefab<RoomInstaller>(roomContextPrefab);
 
         Container.AddInstantSceneModule<BlockingPanel>(blockingPanelPrefab, standardCanvas, hasAbstraction: true);
         Container.Bind<BlockingOperationManager>().AsSingle();

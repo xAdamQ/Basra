@@ -130,29 +130,37 @@ namespace PlayModeTests
             repo.TopFriends = topFriends;
             repo.YesterdayChampions = yesterdayChampions;
 
-            var opposInfo = new[]
+            var opposInfo = new List<RoomOppoInfo>()
             {
-                new FullUserInfo
+                new RoomOppoInfo
                 {
-                    Id = "tstFriendId",
-                    Level = 13,
-                    DisplayName = "Hany Shaker",
-                    Picture = Texture2D.grayTexture,
-                    Title = "I am a normal human being"
+                    FullUserInfo = new FullUserInfo
+                    {
+                        Id = "tstFriendId",
+                        Level = 13,
+                        DisplayName = "Hany Shaker",
+                        Picture = Texture2D.grayTexture,
+                        Title = "I am a normal human being"
+                    },
+                    TurnId = 0
                 },
-                new FullUserInfo
+                new RoomOppoInfo
                 {
-                    Id = "tstFriendId2",
-                    Level = 93,
-                    DisplayName = "Emad Ta3ban",
-                    Picture = Texture2D.linearGrayTexture,
-                    Title = "abo fa45a"
+                    FullUserInfo = new FullUserInfo
+                    {
+                        Id = "tstFriendId2",
+                        Level = 93,
+                        DisplayName = "Emad Ta3ban",
+                        Picture = Texture2D.linearGrayTexture,
+                        Title = "abo fa45a"
+                    },
+                    TurnId = 1
                 }
             };
 
 
-            StaticContext.Container.BindInstance(new RoomRepo.Settings(0, 0, opposInfo))
-                .WhenInjectedInto<RoomRepo>();
+            StaticContext.Container.BindInstance(new RoomSettings(0, 0, opposInfo, 0))
+                .WhenInjectedInto<RoomSettings>();
 
             StaticContext.Container.BindInstance(false);
 
@@ -356,7 +364,7 @@ namespace PlayModeTests
             var player = (IPlayer) fac.Create(PlayerType.Me, 1);
             var oppo0 = (IOppo) fac.Create(PlayerType.Oppo, 0);
 
-            player.Distribute(new[] {1, 2, 3, 4});
+            player.Distribute(new List<int>() {1, 2, 3, 4});
             oppo0.Distribute();
 
 
@@ -381,7 +389,7 @@ namespace PlayModeTests
             var fac = Container.Resolve<PlayerBase.Factory>();
             var player = (IPlayer) fac.Create(PlayerType.Me, 0);
 
-            player.Distribute(new[] {1, 2, 3, 4});
+            player.Distribute(new List<int>() {1, 2, 3, 4});
 
             yield return new WaitForSeconds(999999);
         }
@@ -430,7 +438,7 @@ namespace PlayModeTests
             InstallMockController();
 
             var ground = Container.Resolve<IGround>();
-            ground.InitialDistribute(new[] {1, 2, 3, 4});
+            ground.InitialDistribute(new List<int>() {1, 2, 3, 4});
 
             var cFac = Container.Resolve<Card.Factory>();
 
@@ -454,7 +462,7 @@ namespace PlayModeTests
             InstallMockController();
 
             var ground = Container.Resolve<IGround>();
-            ground.InitialDistribute(new[] {1, 2, 3, 4});
+            ground.InitialDistribute(new List<int>() {1, 2, 3, 4});
 
             var cFac = Container.Resolve<Card.Factory>();
 
@@ -508,7 +516,7 @@ namespace PlayModeTests
             var oppo1 = (IOppo) fac.Create(PlayerType.Oppo, 2);
             var oppo2 = (IOppo) fac.Create(PlayerType.Oppo, 3);
 
-            player.Distribute(new[] {1, 2, 3, 4});
+            player.Distribute(new List<int>() {1, 2, 3, 4});
             oppo0.Distribute();
             oppo1.Distribute();
             oppo2.Distribute();
@@ -571,6 +579,5 @@ namespace PlayModeTests
 
             yield return new WaitForSeconds(float.MaxValue);
         }
-        
     }
 }

@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.UI;
 using Zenject;
 
 public class CardbackShop : MonoBehaviour
@@ -18,11 +20,13 @@ public class CardbackShop : MonoBehaviour
     [SerializeField] private Transform gridView;
     [SerializeField] private GameObject shopPanel;
 
+    [SerializeField] private Button OpenGate;
+
     private readonly List<CardbackShopItem> cardbackShopItems = new List<CardbackShopItem>();
 
-    public void ShowPanel()
+    public async void ShowPanel()
     {
-        _blockingOperationManager.Forget(LoadCardbacks);
+        await _blockingOperationManager.Start(LoadCardbacks);
         shopPanel.SetActive(true);
     }
     public void HidePanel()

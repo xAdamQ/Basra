@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
-using Random = UnityEngine.Random;
 
 public interface IRoomController
 {
@@ -15,9 +12,10 @@ public interface IRoomController
 
     int CurrentTurn { get; }
 
-    void StartGameRpc(int[] handCardIds, int[] groundCardIds); //trivial to test
+    void StartGameRpc(List<int> handCardIds, List<int> groundCardIds); //trivial to test
     void OppoThrowRpc(int cardId, ThrowResponse throwResponse); //trivial to test
     void ServerThrowMyCardRpc(int cardHandIndex, ThrowResponse throwResponse); //trivial to test
+    void Destroy();
 }
 
 public enum PlayerType
@@ -26,35 +24,38 @@ public enum PlayerType
     Oppo
 }
 
-[UsedImplicitly]
+//todo update view
+//turn timer
+//oppos
+
 public class RoomController : IRoomController, IInitializable
 {
-    //services
     private readonly IRepository _repository;
     private readonly IGround _ground;
     private readonly PlayerBase.Factory _playerFactory;
     private readonly RoomUserView.Factory _roomUserViewFactory;
     private readonly IController _controller;
     private readonly TurnTimer _turnTimer;
-    private readonly IRoomRepo _roomRepo;
+    private readonly RoomSettings _roomSettings;
+    private readonly IBlockingPanel _blockingPanel;
+
+    // [Inject]
+    // public RoomController(IController controller, IRepository repository, IGround ground,
+    //     PlayerBase.Factory playerFactory, RoomUserView.Factory roomUserViewFactory, TurnTimer turnTimer)
+    // {
+    //     _repository = repository;
+    //     _ground = ground;
+    //     _playerFactory = playerFactory;
+    //     _roomUserViewFactory = roomUserViewFactory;
+    //     _controller = controller;
+    //     _turnTimer = turnTimer;
+    //     // _roomSettings = roomSettings;
+    //     // _blockingPanel = blockingPanel;
+    // }
 
     private List<PlayerBase> Players { get; }
     private PlayerBase PlayerInTurn => Players[CurrentTurn];
     public int CurrentTurn { get; private set; }
-
-
-    [Inject]
-    public RoomController(IRepository repository, IGround ground, PlayerBase.Factory playerFactory,
-        RoomUserView.Factory roomUserViewFactory, IController controller, TurnTimer turnTimer, IRoomRepo roomRepo)
-    {
-        _repository = repository;
-        _ground = ground;
-        _playerFactory = playerFactory;
-        _roomUserViewFactory = roomUserViewFactory;
-        _controller = controller;
-        _turnTimer = turnTimer;
-        _roomRepo = roomRepo;
-    }
 
     public void Initialize()
     {
@@ -65,25 +66,25 @@ public class RoomController : IRoomController, IInitializable
         CreateUserViews();
 
         _controller.SendAsync("Ready").Forget(e => throw e);
+
+        _blockingPanel.Hide();
     }
 
     private void CreatePlayers()
     {
         Players.Add(_playerFactory.Create(PlayerType.Me, 0));
 
-        for (var i = 1; i < _roomRepo.Capacity; i++)
-        {
+        for (var i = 1; i < _roomSettings.Capacity; i++)
             Players.Add(_playerFactory.Create(PlayerType.Oppo, i));
-        }
     }
 
     private void CreateUserViews()
     {
         _roomUserViewFactory.Create(0, _repository.PersonalFullInfo);
 
-        for (var i = 1; i < _roomRepo.Capacity; i++)
+        for (var i = 1; i < _roomSettings.Capacity; i++)
         {
-            _roomUserViewFactory.Create(i, _roomRepo.OpposInfo[i - 1]);
+            _roomUserViewFactory.Create(i, _roomSettings.OpposInfo[i - 1].FullUserInfo);
         }
     }
 
@@ -99,11 +100,11 @@ public class RoomController : IRoomController, IInitializable
         throw new System.NotImplementedException();
     }
 
-    public void StartGameRpc(int[] handCardIds, int[] groundCardIds)
+    public void StartGameRpc(List<int> handCardIds, List<int> groundCardIds)
     {
         _ground.InitialDistribute(groundCardIds);
 
-        for (var i = 0; i < _roomRepo.CapacityChoice; i++)
+        for (var i = 0; i < _roomSettings.CapacityChoice; i++)
         {
             if (Players[i] is IOppo)
             {
@@ -132,13 +133,12 @@ public class RoomController : IRoomController, IInitializable
         ((IOppo) PlayerInTurn).Throw(cardId, throwResponse);
     }
 
+    public void Destroy()
+    {
+        Object.Destroy(Object.FindObjectOfType<LobbyInstaller>().gameObject);
+    }
 
-// private void InitVisuals()
-// {
-//     _roomInterface.BetChoice = BetChoice.ToString();
-// }
-
-    public class Factory : PlaceholderFactory<RoomController>
+    public class Factory : PlaceholderFactory<RoomSettings, RoomController>
     {
     }
 }

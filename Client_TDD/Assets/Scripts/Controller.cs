@@ -1,54 +1,62 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 using BestHTTP;
 using BestHTTP.SignalRCore;
 using BestHTTP.SignalRCore.Encoders;
-using BestHTTP.SignalRCore.Messages;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
-using Object = System.Object;
+using Object = UnityEngine.Object;
 
 public interface IController
 {
     void InitGame(PersonalFullUserInfo myFullUserInfo, MinUserInfo[] yesterdayChampions,
         MinUserInfo[] topFriends);
 
-    UniTask ConnectToServer(string token);
+    //they are unitasks because they are rpcs
     UniTask<FullUserInfo> GetPublicFullUserInfo(string userId);
     UniTask<object> SendAsync(string method, params object[] args);
     UniTask<ThrowResponse> ThrowCard(int cardId);
     UniTask NotifyTurnMiss();
     UniTask SelectCardback(int cardbackIndex);
     UniTask BuyCardback(int Index);
+    UniTask RequestRandomRoom(int betChoice, int capacityChoice);
+    void AddLobbyRpcs(ILobbyController lobbyController);
+    UniTask Surrender();
+    void RemoveLobbyRpcs();
+
+    void TstStartClient(string id);
 }
 
 public class Controller : IController, IInitializable
 {
-    private readonly ZenjectSceneLoader _zenjectSceneLoader;
     private readonly IRepository _repository;
-    private readonly Lobby.Factory _lobbyFactory;
+    private readonly LobbyController.Factory _lobbyFactory;
     private readonly RoomController.Factory _roomFactory;
-    private readonly IBlockingPanel _blockingPanel;
 
     [Inject]
-    public Controller(ZenjectSceneLoader zenjectSceneLoader, IRepository repository,
-        Lobby.Factory lobbyFactory, RoomController.Factory roomFactory, IBlockingPanel blockingPanel)
+    public Controller(IRepository repository,
+        LobbyController.Factory lobbyFactory, RoomController.Factory roomFactory)
     {
-        _zenjectSceneLoader = zenjectSceneLoader;
         _repository = repository;
         _lobbyFactory = lobbyFactory;
         _roomFactory = roomFactory;
-        _blockingPanel = blockingPanel;
     }
 
     public void Initialize()
     {
         HTTPManager.Logger = new MyBestHttpLogger();
 
+#if UNITY_EDITOR
+        Object.Destroy(GameObject.Find("tst client buttons"));
         ConnectToServer("0").Forget();
+        AssignGeneralRpcs();
+#endif
+    }
+
+    public void TstStartClient(string id)
+    {
+        ConnectToServer(id).Forget();
         AssignGeneralRpcs();
     }
 
@@ -77,9 +85,12 @@ public class Controller : IController, IInitializable
 
     private void LoadAppropriateModules()
     {
-        //depending on in room or in lobby
-        _lobbyFactory.Create();
+        _roomFactory.Create(new RoomSettings(0, 0,
+            new List<RoomOppoInfo> {new RoomOppoInfo {TurnId = 1, FullUserInfo = new FullUserInfo {Id = "0"}}}, 0));
+
+        // _lobbyFactory.Create();
         Debug.Log("the lobby modules are loaded");
+        //depending on in room or in lobby
         //lobby modules is loaded by it's context
     }
 
@@ -88,17 +99,18 @@ public class Controller : IController, IInitializable
         HubConnection.On<PersonalFullUserInfo, MinUserInfo[], MinUserInfo[]>(nameof(InitGame), InitGame);
     }
 
-    // private List<>
-    public void AddRpc()
+    private List<string> LobbyRpcNames;
+    public void AddLobbyRpcs(ILobbyController lobbyController)
     {
-        HubConnection.On("StartGameRpc", (int[] handCardIds, int[] groundCardIds) =>
-        {
-            // get the current room manager
-            //and call the rpc on it
-        });
+        LobbyRpcNames = new List<string>();
+
+        HubConnection.On<List<RoomOppoInfo>, int>(nameof(lobbyController.StartRequestedRoomRpc),
+            lobbyController.StartRequestedRoomRpc);
+        LobbyRpcNames.Add(nameof(lobbyController.StartRequestedRoomRpc));
     }
-    public void RemoveRpc()
+    public void RemoveLobbyRpcs()
     {
+        LobbyRpcNames.ForEach(_ => HubConnection.Remove(_));
     }
 
     public const string ADDRESS = "http://localhost:5000/connect";
@@ -106,7 +118,7 @@ public class Controller : IController, IInitializable
     private IProtocol Protocol = new JsonProtocol(new LitJsonEncoder());
     private MyReconnectPolicy _myReconnectPolicy = new MyReconnectPolicy();
 
-    public async UniTask ConnectToServer(string fbigToken)
+    private async UniTask ConnectToServer(string fbigToken)
     {
         Debug.Log("connecting with token " + fbigToken);
 
@@ -142,6 +154,7 @@ public class Controller : IController, IInitializable
         Debug.Log($"OnError: {arg2}");
     }
 
+
     //call the server
     public async UniTask<FullUserInfo> GetPublicFullUserInfo(string userId)
     {
@@ -163,6 +176,15 @@ public class Controller : IController, IInitializable
     {
         await HubConnection.SendAsync("BuyCardback", Index);
     }
+    public async UniTask RequestRandomRoom(int betChoice, int capacityChoice)
+    {
+        await HubConnection.SendAsync("RequestRandomRoom", betChoice, capacityChoice);
+    }
+    public async UniTask Surrender()
+    {
+        await HubConnection.SendAsync("Surrender");
+    }
+
     public async UniTask<object> SendAsync(string method, params object[] args)
     {
         return await HubConnection.SendAsync(method, args);

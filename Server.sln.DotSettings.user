@@ -1,16 +1,10 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=446d8f04_002D9b7a_002D433e_002Db956_002D73e41766a10c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="selectselect" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.EfQueryTests.selectselect&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.EfQueryTests.GetDisplayUsers&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::5D834D91-E917-449A-8DAA-3A036397C816::net5.0::GeneralTests.ConcurrencyTest.IntInNoInterlock&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::5D834D91-E917-449A-8DAA-3A036397C816::net5.0::GeneralTests.ConcurrencyTest&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.SessionRepoTests.MakeRoom&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.SessionRepoTests.Scenario1&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.RoomTests.RequestRoom&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.RoomTests.FinalizeGame_ScoreAndWinnersCheck&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
-&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/ActualSeverity/@EntryValue">INFO</s:String>
+	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/Storage/@EntryValue">ThisComputer</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/PredefinedNamingRules/=PrivateInstanceFields/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="_" Suffix="" Style="aaBb"&gt;&lt;ExtraRule Prefix="" Suffix="" Style="aaBb" /&gt;&lt;/Policy&gt;</s:String>
+	<s:Boolean x:Key="/Default/Environment/InlayHints/GeneralInlayHintsOptions/EnableInlayHints/@EntryValue">True</s:Boolean>
+	
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d661559c_002D8a47_002D4334_002D8384_002D1eea99d9d0f7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.EfQueryTests.selectselect&lt;/TestId&gt;
@@ -23,5 +17,22 @@
     &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.RoomTests.FinalizeGame_ScoreAndWinnersCheck&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.IntegrationTests.simpleTest&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.IntegrationTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.LobbyManagerTests.RequestRoom_ShouldPassValidation&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.LobbyManagerTests.RequestRoom_ShouldFailValidation&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::5D834D91-E917-449A-8DAA-3A036397C816::net5.0::GeneralTests.UnitTest1.Test1&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.LobbyManagerTests.Room_GenerateDeck&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.LobbyManagerTests.GetRoomDisplayUsers&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.LobbyManagerTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.EfQueryTests.TestQuery0013&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::5D834D91-E917-449A-8DAA-3A036397C816::net5.0::GeneralTests.UnitTest1.Test3&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::5D834D91-E917-449A-8DAA-3A036397C816::net5.0::GeneralTests.UnitTest1.Test4&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.Integration.IntegrationTests.RequestRoom&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.Integration.IntegrationTests.TestForcePlay&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.Integration.IntegrationTests.TestMissedTurn&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.Integration.IntegrationTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.RoomManagerTests.FinalizeGame&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EC2393C2-CAD1-4A13-9F12-738FB81795DC::net5.0::Basra.Server.Tests.RoomManagerTests.LevelWorks&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=cardback/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Oppos/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

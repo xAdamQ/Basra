@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class RoomInfo
+public class RoomStateData
 {
     public List<int> MyCards { get; set; }
     public List<int> GroundCards { get; set; }
