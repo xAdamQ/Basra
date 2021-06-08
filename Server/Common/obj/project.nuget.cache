@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "YGDIO1UkJtbmQvfykX03T7T8uBEnzcUt4lHanSIr0igKNTIigDzieZWwes8f7r786tVot2C7Ywn2gPg0O7vzkw==",
+  "success": true,
+  "projectFilePath": "/home/adam/Projects/Basra/Common/Common.csproj",
+  "expectedPackageFiles": [
+    "/home/adam/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

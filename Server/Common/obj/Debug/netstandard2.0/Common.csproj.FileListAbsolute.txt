@@ -1,0 +1,9 @@
+/home/adam/Projects/Basra/Common/bin/Debug/netstandard2.0/Common.deps.json
+/home/adam/Projects/Basra/Common/bin/Debug/netstandard2.0/Common.dll
+/home/adam/Projects/Basra/Common/bin/Debug/netstandard2.0/Common.pdb
+/home/adam/Projects/Basra/Common/obj/Debug/netstandard2.0/Common.csproj.AssemblyReference.cache
+/home/adam/Projects/Basra/Common/obj/Debug/netstandard2.0/Common.AssemblyInfoInputs.cache
+/home/adam/Projects/Basra/Common/obj/Debug/netstandard2.0/Common.AssemblyInfo.cs
+/home/adam/Projects/Basra/Common/obj/Debug/netstandard2.0/Common.csproj.CoreCompileInputs.cache
+/home/adam/Projects/Basra/Common/obj/Debug/netstandard2.0/Common.dll
+/home/adam/Projects/Basra/Common/obj/Debug/netstandard2.0/Common.pdb
