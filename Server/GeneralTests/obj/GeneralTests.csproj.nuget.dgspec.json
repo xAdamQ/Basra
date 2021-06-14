@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/adam/Projects/Basra/GeneralTests/GeneralTests.csproj": {}
+    "/home/adam/Projects/Basra/Server/GeneralTests/GeneralTests.csproj": {}
   },
   "projects": {
-    "/home/adam/Projects/Basra/GeneralTests/GeneralTests.csproj": {
+    "/home/adam/Projects/Basra/Server/GeneralTests/GeneralTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/adam/Projects/Basra/GeneralTests/GeneralTests.csproj",
+        "projectUniqueName": "/home/adam/Projects/Basra/Server/GeneralTests/GeneralTests.csproj",
         "projectName": "GeneralTests",
-        "projectPath": "/home/adam/Projects/Basra/GeneralTests/GeneralTests.csproj",
+        "projectPath": "/home/adam/Projects/Basra/Server/GeneralTests/GeneralTests.csproj",
         "packagesPath": "/home/adam/.nuget/packages/",
-        "outputPath": "/home/adam/Projects/Basra/GeneralTests/obj/",
+        "outputPath": "/home/adam/Projects/Basra/Server/GeneralTests/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/adam/.nuget/NuGet/NuGet.Config"
@@ -74,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.300/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
         }
       }
     }

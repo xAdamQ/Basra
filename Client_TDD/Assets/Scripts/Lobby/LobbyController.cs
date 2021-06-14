@@ -4,7 +4,7 @@ using Zenject;
 
 public interface ILobbyController
 {
-    void StartRequestedRoomRpc(List<RoomOppoInfo> roomOppoInfo, int myTurn);
+    void PrepareRequestedRoomRpc(List<RoomOppoInfo> roomOppoInfo, int myTurn);
 }
 
 public class LobbyController : ILobbyController, IInitializable
@@ -31,7 +31,7 @@ public class LobbyController : ILobbyController, IInitializable
     {
     }
 
-    public void StartRequestedRoomRpc(List<RoomOppoInfo> roomOppoInfo, int myTurn)
+    public void PrepareRequestedRoomRpc(List<RoomOppoInfo> roomOppoInfo, int myTurn)
     {
         DestroyLobby();
 

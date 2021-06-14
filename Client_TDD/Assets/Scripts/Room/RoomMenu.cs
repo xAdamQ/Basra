@@ -12,7 +12,7 @@ public class RoomMenu : MonoBehaviour
     {
         await _blockingOperationManager.Start(_controller.Surrender);
 
-        _roomController.Destroy();
+        _roomController.DestroyModule();
         _lobbyFactory.Create();
     }
 }

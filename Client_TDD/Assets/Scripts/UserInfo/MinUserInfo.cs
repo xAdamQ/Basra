@@ -4,14 +4,28 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
+using Zenject;
 
 public class MinUserInfo
 {
+    //transferred model
     public string Id { get; set; }
     public virtual int Level { get; set; }
-    public virtual string Title { get; set; }
-    public string DisplayName { get; set; }
+    public virtual int SelectedTitleId
+    {
+        get;
+        set;
+        // get => selectedTitleId;
+        // set
+        // {
+        //     selectedTitleId = value;
+        //     Title = Repository.Titles[SelectedTitleId]; //todo, 
+        // }
+    }
+    private int selectedTitleId;
+    public string Name { get; set; }
     public string PictureUrl { get; set; }
+
     public Texture2D Picture { get; set; }
 
     public event Action<Texture2D> PictureLoaded;

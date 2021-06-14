@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 public interface IGround
 {
-    void Throw(Card thrownCard, int[] eatenCardsIds); //tested
+    void Throw(Card thrownCard, List<int> eatenCardsIds); //tested
     void InitialDistribute(List<int> cardIds); //tested
 }
 
@@ -40,9 +40,9 @@ public class Ground : MonoBehaviour, IGround
         card.transform.DOMove(new Vector3(xPoz, yPoz), .75f);
     }
 
-    public void Throw(Card thrownCard, int[] eatenCardsIds)
+    public void Throw(Card thrownCard, List<int> eatenCardsIds)
     {
-        if (eatenCardsIds.Length == 0)
+        if (eatenCardsIds.Count == 0)
         {
             Cards.Add(thrownCard);
             PlaceCard(thrownCard);
@@ -52,7 +52,7 @@ public class Ground : MonoBehaviour, IGround
 
         var eatenCards = Cards.Where(c => eatenCardsIds.Contains(c.Front.Index)).ToArray();
 
-        if (eatenCards.Length != eatenCardsIds.Length)
+        if (eatenCards.Length != eatenCardsIds.Count)
             throw new Exception("the passed eaten cards on the server doesn't exist on the ground");
 
         foreach (var eatenCard in eatenCards)

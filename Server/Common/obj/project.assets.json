@@ -185,11 +185,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/adam/Projects/Basra/Common/Common.csproj",
+      "projectUniqueName": "/home/adam/Projects/Basra/Server/Common/Common.csproj",
       "projectName": "Common",
-      "projectPath": "/home/adam/Projects/Basra/Common/Common.csproj",
+      "projectPath": "/home/adam/Projects/Basra/Server/Common/Common.csproj",
       "packagesPath": "/home/adam/.nuget/packages/",
-      "outputPath": "/home/adam/Projects/Basra/Common/obj/",
+      "outputPath": "/home/adam/Projects/Basra/Server/Common/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/adam/.nuget/NuGet/NuGet.Config"
@@ -233,7 +233,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.300/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
       }
     }
   }

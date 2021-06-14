@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Basra.Models.Client;
 using BestHTTP;
 using BestHTTP.SignalRCore;
 using BestHTTP.SignalRCore.Encoders;
+using BestHTTP.SignalRCore.Messages;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
-using Object = UnityEngine.Object;
 
 public interface IController
 {
@@ -16,16 +17,17 @@ public interface IController
     //they are unitasks because they are rpcs
     UniTask<FullUserInfo> GetPublicFullUserInfo(string userId);
     UniTask<object> SendAsync(string method, params object[] args);
-    UniTask<ThrowResponse> ThrowCard(int cardId);
+    void ThrowCard(int cardId);
     UniTask NotifyTurnMiss();
     UniTask SelectCardback(int cardbackIndex);
-    UniTask BuyCardback(int Index);
+    UniTask BuyCardback(int index);
     UniTask RequestRandomRoom(int betChoice, int capacityChoice);
     void AddLobbyRpcs(ILobbyController lobbyController);
     UniTask Surrender();
     void RemoveLobbyRpcs();
 
     void TstStartClient(string id);
+    void UpdatePersonalInfo(PersonalFullUserInfo obj);
 }
 
 public class Controller : IController, IInitializable
@@ -48,7 +50,7 @@ public class Controller : IController, IInitializable
         HTTPManager.Logger = new MyBestHttpLogger();
 
 #if UNITY_EDITOR
-        Object.Destroy(GameObject.Find("tst client buttons"));
+        UnityEngine.Object.Destroy(GameObject.Find("tst client buttons"));
         ConnectToServer("0").Forget();
         AssignGeneralRpcs();
 #endif
@@ -85,10 +87,10 @@ public class Controller : IController, IInitializable
 
     private void LoadAppropriateModules()
     {
-        _roomFactory.Create(new RoomSettings(0, 0,
-            new List<RoomOppoInfo> {new RoomOppoInfo {TurnId = 1, FullUserInfo = new FullUserInfo {Id = "0"}}}, 0));
+        // _roomFactory.Create(new RoomSettings(0, 0,
+        // new List<RoomOppoInfo> { new RoomOppoInfo { TurnId = 1, FullUserInfo = new FullUserInfo { Id = "0" } } }, 0));
 
-        // _lobbyFactory.Create();
+        _lobbyFactory.Create();
         Debug.Log("the lobby modules are loaded");
         //depending on in room or in lobby
         //lobby modules is loaded by it's context
@@ -96,51 +98,91 @@ public class Controller : IController, IInitializable
 
     private void AssignGeneralRpcs()
     {
-        HubConnection.On<PersonalFullUserInfo, MinUserInfo[], MinUserInfo[]>(nameof(InitGame), InitGame);
+        hubConnection.On<PersonalFullUserInfo, MinUserInfo[], MinUserInfo[]>(nameof(InitGame), InitGame);
+        hubConnection.On<PersonalFullUserInfo>(nameof(UpdatePersonalInfo), UpdatePersonalInfo);
     }
 
-    private List<string> LobbyRpcNames;
+
+    private List<string> lobbyRpcNames;
     public void AddLobbyRpcs(ILobbyController lobbyController)
     {
-        LobbyRpcNames = new List<string>();
+        lobbyRpcNames = new List<string>();
 
-        HubConnection.On<List<RoomOppoInfo>, int>(nameof(lobbyController.StartRequestedRoomRpc),
-            lobbyController.StartRequestedRoomRpc);
-        LobbyRpcNames.Add(nameof(lobbyController.StartRequestedRoomRpc));
+        hubConnection.On<List<RoomOppoInfo>, int>(nameof(lobbyController.PrepareRequestedRoomRpc),
+            lobbyController.PrepareRequestedRoomRpc);
+        lobbyRpcNames.Add(nameof(lobbyController.PrepareRequestedRoomRpc));
     }
     public void RemoveLobbyRpcs()
     {
-        LobbyRpcNames.ForEach(_ => HubConnection.Remove(_));
+        lobbyRpcNames.ForEach(_ => hubConnection.Remove(_));
     }
 
-    public const string ADDRESS = "http://localhost:5000/connect";
-    private HubConnection HubConnection;
-    private IProtocol Protocol = new JsonProtocol(new LitJsonEncoder());
-    private MyReconnectPolicy _myReconnectPolicy = new MyReconnectPolicy();
+    private List<string> roomRpcNames;
+    public void AddRoomRpcs(IRoomController roomController)
+    {
+        roomRpcNames = new List<string>();
+
+        hubConnection.On<ThrowResult>(nameof(roomController.MyThrowResult),
+            roomController.MyThrowResult);
+        lobbyRpcNames.Add(nameof(roomController.MyThrowResult));
+
+        hubConnection.On<List<int>, List<int>>(nameof(roomController.StartRoomRpc),
+            roomController.StartRoomRpc);
+        lobbyRpcNames.Add(nameof(roomController.StartRoomRpc));
+
+        hubConnection.On<List<int>>("Distribute",
+            roomController.PlayersDistribute);
+        lobbyRpcNames.Add("Distribute");
+        //* this is an exc on naming convention
+
+        hubConnection.On<ThrowResult>(nameof(roomController.ForcePlay),
+            roomController.ForcePlay);
+        lobbyRpcNames.Add(nameof(roomController.ForcePlay));
+
+        hubConnection.On<ThrowResult>(nameof(roomController.CurrentOppoThrow),
+            roomController.CurrentOppoThrow);
+        lobbyRpcNames.Add(nameof(roomController.CurrentOppoThrow));
+
+
+    }
+    public void RemoveRoomRpcs()
+    {
+        roomRpcNames.ForEach(_ => hubConnection.Remove(_));
+    }
+
+    private HubConnection hubConnection;
+    private readonly string address = "http://localhost:5000/connect";
+    private readonly IProtocol protocol = new JsonProtocol(new LitJsonEncoder());
+    private readonly MyReconnectPolicy myReconnectPolicy = new MyReconnectPolicy();
 
     private async UniTask ConnectToServer(string fbigToken)
     {
         Debug.Log("connecting with token " + fbigToken);
 
-        var uriBuilder = new UriBuilder(ADDRESS);
+        var uriBuilder = new UriBuilder(address);
         uriBuilder.Query += $"access_token={fbigToken}";
 
-        HubConnection = new HubConnection(uriBuilder.Uri, Protocol)
+        hubConnection = new HubConnection(uriBuilder.Uri, protocol)
         {
-            ReconnectPolicy = _myReconnectPolicy
+            ReconnectPolicy = myReconnectPolicy
         };
 
         //I don't have this term "authentication" despite I make token authentication
         // HubConnection.AuthenticationProvider = new DefaultAccessTokenAuthenticator(HubConnection);
 
-        HubConnection.OnConnected += OnConnected;
-        HubConnection.OnError += OnError;
-        HubConnection.OnClosed += OnClosed;
-        // HubConnection.OnMessage += OnMessage;
+        hubConnection.OnConnected += OnConnected;
+        hubConnection.OnError += OnError;
+        hubConnection.OnClosed += OnClosed;
+        hubConnection.OnMessage += OnMessage;
 
-        await HubConnection.ConnectAsync();
+        await hubConnection.ConnectAsync();
     }
 
+    private bool OnMessage(HubConnection arg1, Message msg)
+    {
+        Debug.Log($"msg is {JsonUtility.ToJson(msg)}");
+        return true;
+    }
     private void OnConnected(HubConnection obj)
     {
         Debug.Log("connected to server");
@@ -155,38 +197,44 @@ public class Controller : IController, IInitializable
     }
 
 
+    public void UpdatePersonalInfo(PersonalFullUserInfo personalFullUserInfo)
+    {
+        _repository.PersonalFullInfo = personalFullUserInfo;
+    }
+
+
     //call the server
     public async UniTask<FullUserInfo> GetPublicFullUserInfo(string userId)
     {
-        return await HubConnection.InvokeAsync<FullUserInfo>("GetPublicInfo");
+        return await hubConnection.InvokeAsync<FullUserInfo>("GetPublicInfo");
     }
     public async UniTask NotifyTurnMiss()
     {
-        await HubConnection.SendAsync("MissTurn");
+        await hubConnection.SendAsync("MissTurn");
     }
-    public async UniTask<ThrowResponse> ThrowCard(int cardId)
+    public void ThrowCard(int cardId)
     {
-        return await HubConnection.InvokeAsync<ThrowResponse>("Throw", cardId);
+        hubConnection.Send("Throw", cardId).OnError(e => throw e);
     }
     public async UniTask SelectCardback(int cardbackIndex)
     {
-        await HubConnection.SendAsync("SelectCardback", cardbackIndex);
+        await hubConnection.SendAsync("SelectCardback", cardbackIndex);
     }
-    public async UniTask BuyCardback(int Index)
+    public async UniTask BuyCardback(int index)
     {
-        await HubConnection.SendAsync("BuyCardback", Index);
+        await hubConnection.SendAsync("BuyCardback", index);
     }
     public async UniTask RequestRandomRoom(int betChoice, int capacityChoice)
     {
-        await HubConnection.SendAsync("RequestRandomRoom", betChoice, capacityChoice);
+        await hubConnection.SendAsync("RequestRandomRoom", betChoice, capacityChoice);
     }
     public async UniTask Surrender()
     {
-        await HubConnection.SendAsync("Surrender");
+        await hubConnection.SendAsync("Surrender");
     }
 
     public async UniTask<object> SendAsync(string method, params object[] args)
     {
-        return await HubConnection.SendAsync(method, args);
+        return await hubConnection.SendAsync(method, args);
     }
 }

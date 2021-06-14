@@ -34,6 +34,8 @@ namespace PlayModeTests
         {
             LoadProjectModules(); //if the lobby is self contained, it should have this like camera
 
+            Container.BindInterfacesTo<ConsoleToast>().AsSingle();
+
             var repoMock = new Mock<IRepository>();
             repoMock.Setup(r => r.CardbackPrices).Returns(new int[] {100, 150, 300, 600, 960, 6000, 70003, 10007});
             repoMock.Setup(r => r.PersonalFullInfo).Returns(new PersonalFullUserInfo

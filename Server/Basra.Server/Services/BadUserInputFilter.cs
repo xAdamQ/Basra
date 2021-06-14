@@ -70,11 +70,20 @@ namespace Basra.Server.Services
                 // return new ValueTask<User>(new User {Name = "test name on the returned user"});
                 // return new ValueTask<object>($"there's a buie exc on the server {e.Message}");
             }
-            catch (Exception ex)
+            // catch (Exception ex)
+            // {
+            //     _logger.LogInformation($"Exception calling '{invocationContext.HubMethodName}': {ex}");
+            //     throw;
+            // }
+            finally
             {
-                _logger.LogInformation($"Exception calling '{invocationContext.HubMethodName}': {ex}");
-                throw;
+                //check againest the called funtion if it's a trigger
+                //is it throw?
+                //call the serverloop to create new scope to check for distribute or finalize
+                //my issue is the place
+                //so create a trigger system
             }
+
         }
 
         // Optional method

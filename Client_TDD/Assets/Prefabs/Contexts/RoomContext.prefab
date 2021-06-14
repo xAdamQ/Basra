@@ -63,10 +63,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomUserViewPrefabs:
-  - {fileID: 3492071717562404668, guid: 81b3a0754f231326cb1f9a0951e36a55, type: 3}
-  - {fileID: 6253361810169390938, guid: eef0c730a3c735c70978451bd3e1b631, type: 3}
-  - {fileID: 2550380363839882296, guid: 5e353ec5888db261fb7f6ff24502237f, type: 3}
-  - {fileID: 6145702710296032070, guid: 705680ab78daf200187ace01f2fc1854, type: 3}
+  - {fileID: 440758228559811135, guid: 075222e41633a6ff09ccf8e619053bee, type: 3}
+  - {fileID: 6513530795172220441, guid: e484b8f8bf6d1147c97ae1d756659e56, type: 3}
+  - {fileID: 3801320763732651490, guid: 1c4e8c2bf0e1fb8cf9ef12a5e22d133e, type: 3}
+  - {fileID: 8335044926221963486, guid: 237ca89691d0e5ebea1b97773cc2fab5, type: 3}
   frontPrefab: {fileID: 6318510277521361182, guid: 8d7fc7449ba5f5d4c8bf3fbe2ef81ffb, type: 3}
   frontSprites:
   - {fileID: 6601591887075733081, guid: 39883e13245f1054aac7b33760e03982, type: 3}

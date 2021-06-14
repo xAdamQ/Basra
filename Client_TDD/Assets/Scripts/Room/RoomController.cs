@@ -12,10 +12,12 @@ public interface IRoomController
 
     int CurrentTurn { get; }
 
-    void StartGameRpc(List<int> handCardIds, List<int> groundCardIds); //trivial to test
-    void OppoThrowRpc(int cardId, ThrowResponse throwResponse); //trivial to test
-    void ServerThrowMyCardRpc(int cardHandIndex, ThrowResponse throwResponse); //trivial to test
-    void Destroy();
+    void StartRoomRpc(List<int> handCardIds, List<int> groundCardIds); //trivial to test
+    void CurrentOppoThrow(ThrowResult throwResult); //trivial to test
+    void ForcePlay(ThrowResult throwResult); //trivial to test
+    void DestroyModule();
+    void MyThrowResult(ThrowResult throwResult);
+    void PlayersDistribute(List<int> handCardIds);
 }
 
 public enum PlayerType
@@ -23,10 +25,6 @@ public enum PlayerType
     Me,
     Oppo
 }
-
-//todo update view
-//turn timer
-//oppos
 
 public class RoomController : IRoomController, IInitializable
 {
@@ -39,29 +37,33 @@ public class RoomController : IRoomController, IInitializable
     private readonly RoomSettings _roomSettings;
     private readonly IBlockingPanel _blockingPanel;
 
-    // [Inject]
-    // public RoomController(IController controller, IRepository repository, IGround ground,
-    //     PlayerBase.Factory playerFactory, RoomUserView.Factory roomUserViewFactory, TurnTimer turnTimer)
-    // {
-    //     _repository = repository;
-    //     _ground = ground;
-    //     _playerFactory = playerFactory;
-    //     _roomUserViewFactory = roomUserViewFactory;
-    //     _controller = controller;
-    //     _turnTimer = turnTimer;
-    //     // _roomSettings = roomSettings;
-    //     // _blockingPanel = blockingPanel;
-    // }
+    [Inject]
+    public RoomController(IController controller, IRepository repository, IGround ground,
+        PlayerBase.Factory playerFactory, RoomUserView.Factory roomUserViewFactory, TurnTimer turnTimer,
+        RoomSettings roomSettings, IBlockingPanel blockingPanel)
+    {
+        _repository = repository;
+        _ground = ground;
+        _playerFactory = playerFactory;
+        _roomUserViewFactory = roomUserViewFactory;
+        _controller = controller;
+        _turnTimer = turnTimer;
+        _roomSettings = roomSettings;
+        _blockingPanel = blockingPanel;
+    }
 
-    private List<PlayerBase> Players { get; }
+    private List<PlayerBase> Players { get; } = new List<PlayerBase>();
     private PlayerBase PlayerInTurn => Players[CurrentTurn];
     public int CurrentTurn { get; private set; }
 
+    public void MyThrowResult(ThrowResult throwResult)
+    {
+        //todo am i always 0 despite my turn id?
+        (Players[0] as IPlayer).MyThrowResult(throwResult);
+    }
+
     public void Initialize()
     {
-        // BetChoice = _settings.BetChoice;
-        // CapacityChoice = _settings.CapacityChoice;
-
         CreatePlayers();
         CreateUserViews();
 
@@ -90,8 +92,8 @@ public class RoomController : IRoomController, IInitializable
 
     public void NextTurn()
     {
+        //todo suppress next turn on finalize
         CurrentTurn = ++CurrentTurn % Players.Count;
-
         _turnTimer.uniTaskTimer.Play().Forget();
     }
 
@@ -100,40 +102,38 @@ public class RoomController : IRoomController, IInitializable
         throw new System.NotImplementedException();
     }
 
-    public void StartGameRpc(List<int> handCardIds, List<int> groundCardIds)
+    public void StartRoomRpc(List<int> handCardIds, List<int> groundCardIds)
     {
         _ground.InitialDistribute(groundCardIds);
 
-        for (var i = 0; i < _roomSettings.CapacityChoice; i++)
-        {
-            if (Players[i] is IOppo)
-            {
-                ((IOppo) Players[i]).Distribute();
-            }
-            else
-            {
-                ((IPlayer) Players[i]).Distribute(handCardIds);
-            }
-        }
+        PlayersDistribute(handCardIds);
 
         Debug.Log($"hand cards are {string.Join(", ", handCardIds)}");
 
-        CurrentTurn = 0;
-        _turnTimer.uniTaskTimer.Play().Forget();
+        CurrentTurn = -1;
+        NextTurn();
     }
 
-    public void ServerThrowMyCardRpc(int cardHandIndex, ThrowResponse throwResponse)
+    public void PlayersDistribute(List<int> handCardIds)
     {
-        ((IPlayer) PlayerInTurn).ServerThrow(cardHandIndex, throwResponse);
+        (Players[0] as IPlayer).Distribute(handCardIds);
+
+        for (var i = 1; i < _roomSettings.Capacity; i++)
+            (Players[i] as IOppo).Distribute();
     }
 
-    public void OppoThrowRpc(int cardId, ThrowResponse throwResponse)
+    public void ForcePlay(ThrowResult throwResult)
     {
-        Debug.Log($"CurrentOppoThrow on user: {CurrentTurn} and card index: {cardId}");
-        ((IOppo) PlayerInTurn).Throw(cardId, throwResponse);
+        ((IPlayer)PlayerInTurn).ServerThrow(throwResult);
     }
 
-    public void Destroy()
+    public void CurrentOppoThrow(ThrowResult throwResult)
+    {
+        Debug.Log($"CurrentOppoThrow on user: {CurrentTurn} and card index: {throwResult.ThrownCard}");
+        ((IOppo)PlayerInTurn).Throw(throwResult);
+    }
+
+    public void DestroyModule()
     {
         Object.Destroy(Object.FindObjectOfType<LobbyInstaller>().gameObject);
     }

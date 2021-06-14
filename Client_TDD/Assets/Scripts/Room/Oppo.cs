@@ -8,18 +8,18 @@ using Zenject;
 public interface IOppo : IPlayerBase
 {
     //tested
-    void Throw(int cardId, ThrowResponse throwResponse);
+    void Throw(ThrowResult throwResult);
     //tested
     void Distribute();
 }
 
 public class Oppo : PlayerBase, IOppo
 {
-    public void Throw(int cardId, ThrowResponse throwResponse)
+    public void Throw(ThrowResult throwResult)
     {
         var randCard = HandCards.GetRandom();
-        randCard.AddFront(cardId);
-        ThrowBase(randCard, throwResponse);
+        randCard.AddFront(throwResult.ThrownCard);
+        ThrowBase(throwResult);
     }
 
     public void Distribute()

@@ -6,6 +6,7 @@ using Basra.Server.Exceptions;
 using Basra.Server.Extensions;
 using Basra.Server.Helpers;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 
 namespace Basra.Server.Services
 {
@@ -24,16 +25,18 @@ namespace Basra.Server.Services
         private readonly IHubContext<MasterHub> _masterHub;
         private readonly IRoomManager _roomManager;
         private readonly IServerLoop _serverLoop;
+        private readonly ILogger<IMatchMaker> _logger;
         private readonly IMasterRepo _masterRepo;
         private readonly ISessionRepo _sessionRepo;
         public MatchMaker(IHubContext<MasterHub> masterHub, IMasterRepo masterRepo, ISessionRepo sessionRepo,
-            IRoomManager roomManager, IServerLoop serverLoop)
+            IRoomManager roomManager, IServerLoop serverLoop, ILogger<IMatchMaker> logger)
         {
             _masterHub = masterHub;
             _masterRepo = masterRepo;
             _sessionRepo = sessionRepo;
             _roomManager = roomManager;
             _serverLoop = serverLoop;
+            _logger = logger;
         }
 
         public async Task RequestRandomRoom(int betChoice, int capacityChoice, ActiveUser activeUser)
@@ -46,6 +49,8 @@ namespace Basra.Server.Services
             room.RoomUsers.Add(roomUser);
             room.RoomActors.Add(roomUser);
 
+            RemoveDisconnectedUsers(room);
+
             if (room.IsFull)
             {
                 _serverLoop.CancelPendingRoomTimeout(room);
@@ -53,10 +58,17 @@ namespace Basra.Server.Services
             }
             else
             {
+                activeUser.Domain = typeof(UserDomain.App.Lobby.Pending);
                 _serverLoop.SetupPendingRoomTimeoutIfNotExist(room);
                 _sessionRepo.KeepRoom(room);
-                activeUser.Domain = typeof(UserDomain.App.Lobby.Pending);
             }
+        }
+        private void RemoveDisconnectedUsers(Room room)
+        {
+            var disconnectedUsers = room.RoomUsers.Where(ru => ru.ActiveUser.Disconnected);
+            room.RoomUsers.RemoveAll(ru => disconnectedUsers.Contains(ru));
+            room.RoomActors.RemoveAll(ra => disconnectedUsers.Contains(ra));
+            foreach (var ru in disconnectedUsers) _sessionRepo.DeleteRoomUser(ru);
         }
         /// <summary>
         /// called by timeout
@@ -68,7 +80,7 @@ namespace Basra.Server.Services
             for (int i = 0; i < botsCount; i++)
             {
                 var botId = StaticRandom.GetRandom(RoomBot.IdRange).ToString();
-                room.RoomBots.Add(new RoomBot {Id = botId, Room = room});
+                room.RoomBots.Add(new RoomBot { Id = botId, Room = room });
             }
 
             room.RoomActors.AddRange(room.RoomBots);
@@ -77,18 +89,15 @@ namespace Basra.Server.Services
         }
         public async Task MakeRoomUserReadyRpc(ActiveUser activeUser, RoomUser roomUser)
         {
-            roomUser.IsReady = true;
             activeUser.Domain = typeof(UserDomain.App.Lobby.WaitingForOthers);
+            roomUser.IsReady = true;
 
             await StartRoomIfAllReady(roomUser.Room);
         } //doesn't fit into unit testing
 
-        /// <summary>
-        /// convert from pending to active
-        /// </summary>
         private async Task PrepareRoom(Room room)
         {
-            SetRoomUsersDomainGettingReady(room);
+            room.SetUsersDomains(typeof(UserDomain.App.Lobby.GettingReady));
             _serverLoop.SetForceStartRoomTimeout(room);
 
             var userIds = room.RoomUsers.Select(ru => ru.Id).ToList();
@@ -104,7 +113,7 @@ namespace Basra.Server.Services
             {
                 room.RoomActors[i].TurnId = i;
                 roomOpposInfo.Add(new RoomOppoInfo
-                    {FullUserInfo = fullUsersInfo[i], TurnId = i /*possible issue in this*/});
+                { FullUserInfo = fullUsersInfo[i], TurnId = i /*possible issue in this*/});
             }
             //get oppos info list
 
@@ -150,11 +159,6 @@ namespace Basra.Server.Services
             return roomUser;
         }
 
-        private void SetRoomUsersDomainGettingReady(Room room)
-        {
-            foreach (var ru in room.RoomUsers)
-                ru.ActiveUser.Domain = typeof(UserDomain.App.Lobby.GettingReady);
-        }
         private async Task StartRoomIfAllReady(Room room)
         {
             var readyUsersCount = room.RoomUsers.Count(u => u.IsReady);
@@ -163,6 +167,22 @@ namespace Basra.Server.Services
                 _serverLoop.CancelForceStart(room);
                 await _roomManager.StartRoom(room);
             }
+        }
+
+        public void RemovePendingUser(RoomUser roomUser)
+        {
+            _logger.LogInformation($"removing pending room user {roomUser.Id}");
+
+            roomUser.Room.RoomActors.Remove(roomUser);
+            roomUser.Room.RoomUsers.Remove(roomUser);
+
+            if (roomUser.Room.RoomUsers.Count == 0) //maybe the remaining are bots, or non
+            {
+                _serverLoop.CancelPendingRoomTimeout(roomUser.Room);
+                _sessionRepo.DeleteRoom(roomUser.Room);
+            }
+
+            _sessionRepo.DeleteRoomUser(roomUser);
         }
 
         //grouping is canceled, I don't send to many players at once

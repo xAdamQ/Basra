@@ -69,7 +69,7 @@ namespace Basra.Server.Services
         }
 
         private Dictionary<Room, CancellationTokenSource> PendingRoomCancellations { get; } = new();
-        private const int PendingRoomTimeout = 1000; //todo change
+        private const int PendingRoomTimeout = 99999999; //todo change
         public void SetupPendingRoomTimeoutIfNotExist(Room room)
         {
             if (PendingRoomCancellations.ContainsKey(room)) return;
@@ -98,7 +98,7 @@ namespace Basra.Server.Services
         }
 
         private Dictionary<Room, CancellationTokenSource> ForceStartCancellations { get; } = new();
-        private const int ReadyTimeout = 7000;
+        private const int ReadyTimeout = 99999999;
         public void SetForceStartRoomTimeout(Room room)
         {
             var cSource = new CancellationTokenSource();

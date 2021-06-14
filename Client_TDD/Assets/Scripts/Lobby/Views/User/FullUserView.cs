@@ -1,3 +1,4 @@
+using Basra.Models.Client;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -20,9 +21,9 @@ public class FullUserView : MinUserView
         wonRoomsText.text = fullUserInfo.WonRoomsCount.ToString();
         eatenCardsText.text = fullUserInfo.EatenCardsCount.ToString();
         winStreakText.text = fullUserInfo.WinStreak.ToString();
-        basrasText.text = fullUserInfo.BasrasCount.ToString();
-        bigBasrasText.text = fullUserInfo.BigBasrasCount.ToString();
-        winRatioText.text = fullUserInfo.WinRatio.ToString("p2");
+        basrasText.text = fullUserInfo.BasraCount.ToString();
+        bigBasrasText.text = fullUserInfo.BigBasraCount.ToString();
+        winRatioText.text = ((float) fullUserInfo.WonRoomsCount / fullUserInfo.PlayedRoomsCount).ToString("p2");
 
         gameObject.SetActive(true);
     }

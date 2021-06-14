@@ -43,74 +43,68 @@ namespace Basra.Server.Tests.Integration
 
         private void SetupRpcs()
         {
-            Connection.On("RoomIsFilling",
-                () => { _testOutputHelper.WriteLine("RoomIsFilling is called on client " + Id); });
-
             Connection.On<PersonalFullUserInfo, MinUserInfo[], MinUserInfo[]>("InitGame",
                 (p, y, t) =>
                 {
                     _testOutputHelper.WriteLine($"init game called on {Id} with\n" +
-                                                $"personal info is {JsonSerializer.Serialize(p)}\n" +
-                                                $"yesterday champs are {JsonSerializer.Serialize(y)}\n" +
-                                                $"topFriends are {JsonSerializer.Serialize(t)}\n");
+                                      $"personal info is {JsonSerializer.Serialize(p)}\n" +
+                                      $"yesterday champs are {JsonSerializer.Serialize(y)}\n" +
+                                      $"topFriends are {JsonSerializer.Serialize(t)}\n");
                 });
 
             Connection.On<List<RoomOppoInfo>, int>("PrepareRequestedRoomRpc", (oppos, turn) =>
                 _testOutputHelper.WriteLine($"PrepareRequestedRoomRpc called on {Id} with\n" +
-                                            $"oppo info are {JsonSerializer.Serialize(oppos)}\n" +
-                                            $"and turn {turn}\n"));
+                                  $"oppo info are {JsonSerializer.Serialize(oppos)}\n" +
+                                  $"and turn {turn}\n"));
 
-            Connection.On<int, List<DisplayUser>>("StartRoom", (turn, du) =>
-            {
-                _testOutputHelper.WriteLine(
-                    $"StartRoom is called on {Id}, my turn is: {turn} all users: {string.Join("\n", du)}\n");
-            });
 
-            Connection.On<List<int>>("MyThrowResult", ints =>
+            Connection.On<ThrowResult>("MyThrowResult", res =>
                 _testOutputHelper.WriteLine($"MyThrowResult is called on {Id} with\n" +
-                                            $"eaten card ids {JsonSerializer.Serialize(ints)}\n" +
-                                            $"with values {JsonSerializer.Serialize(ints.Select(ConvertCardIndexToValue))}\n"));
+                                  $"with res {JsonSerializer.Serialize(res)}\n" +
+                                  $"with values {JsonSerializer.Serialize(res.EatenCardsIds.Select(ConvertCardIndexToValue))}\n"));
 
-            Connection.On<List<int>, List<int>>("InitialDistribute", (hand, ground) =>
-            {
+            Connection.On<List<int>, List<int>>("StartGameRpc", (hand, ground) =>
                 _testOutputHelper.WriteLine
                 (
-                    $"InitialDistribute is called on {Id},\n" +
+                    $"StartGameRpc is called on {Id},\n" +
                     $"hand is: {string.Join(", ", hand)} with values {string.Join(", ", hand.Select(ConvertCardIndexToValue))}\n" +
                     $"ground is: {string.Join(", ", ground)} with values {string.Join(", ", ground.Select(ConvertCardIndexToValue))}\n"
-                );
-            });
+                ));
 
-            Connection.On<int[]>("Distribute",
-                (hand) =>
-                {
-                    _testOutputHelper.WriteLine(
-                        $"Distribute is called on {Id}\n" +
-                        $"my hand is: {string.Join(", ", hand)}\n" +
-                        $"with values {string.Join(", ", hand.Select(v => ConvertCardIndexToValue(v)))}\n");
-                });
+            Connection.On<int[]>("Distribute", hand =>
+                _testOutputHelper.WriteLine
+                (
+                     $"Distribute is called on {Id}\n" +
+                     $"my hand is: {string.Join(", ", hand)}\n" +
+                     $"with values {string.Join(", ", hand.Select(v => ConvertCardIndexToValue(v)))}\n"
+                ));
 
-            Connection.On<int, int[]>("ForcePlay",
-                (c, e) =>
+            Connection.On<ThrowResult>("ForcePlay",
+                res =>
                 {
                     _testOutputHelper.WriteLine($"ForcePlay is called on client {Id}\n" +
-                                                $"with card {c} with value {ConvertCardIndexToValue(c)}\n" +
-                                                $"and eaten {JsonSerializer.Serialize(e)}\n" +
-                                                $"with values {JsonSerializer.Serialize(e.Select(_ => ConvertCardIndexToValue(_)))}\n");
+                                      $"with card {res.ThrownCard} with value {ConvertCardIndexToValue(res.ThrownCard)}\n" +
+                                      $"and full res {JsonSerializer.Serialize(res)}\n" +
+                                      $"with values {JsonSerializer.Serialize(res.EatenCardsIds.Select(_ => ConvertCardIndexToValue(_)))}\n");
                 });
 
-            Connection.On<int, int[]>("CurrentOppoThrow",
-                (c, e) =>
+            Connection.On<ThrowResult>("CurrentOppoThrow",
+                res =>
                 {
                     _testOutputHelper.WriteLine($"CurrentOppoThrow is called on client {Id}\n" +
-                                                $"with card {c} with value {ConvertCardIndexToValue(c)}\n" +
-                                                $"and eaten {JsonSerializer.Serialize(e)}\n" +
-                                                $"with values {JsonSerializer.Serialize(e.Select(_ => ConvertCardIndexToValue(_)))}\n");
+                                      $"with card {res.ThrownCard} with value {ConvertCardIndexToValue(res.ThrownCard)}\n" +
+                                      $"and full res {JsonSerializer.Serialize(res)}\n" +
+                                      $"with values {JsonSerializer.Serialize(res.EatenCardsIds.Select(_ => ConvertCardIndexToValue(_)))}\n");
                 });
+
 
             Connection.On<PersonalFullUserInfo>("UpdatePersonalInfo", info =>
                 _testOutputHelper.WriteLine($"UpdatePersonalInfo is called on {Id} with\n" +
-                                            $"info is {JsonSerializer.Serialize(info)}\n"));
+                                  $"info is {JsonSerializer.Serialize(info)}\n"));
+
+            Connection.On<FinalizeResult>("FinalizeResult", (res) =>
+                _testOutputHelper.WriteLine($"UpdatePersonalInfo is called on {Id} with\n" +
+                                  $"res {JsonSerializer.Serialize(res)}\n"));
 
             int ConvertCardIndexToValue(int index)
             {

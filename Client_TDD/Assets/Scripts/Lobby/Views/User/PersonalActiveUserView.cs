@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.ComponentModel;
-using System.Globalization;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
 
@@ -38,19 +35,20 @@ public class PersonalActiveUserView : MinUserView
 
     protected virtual void OnInfoChanged(object sender, PropertyChangedEventArgs e)
     {
+        var info = _repository.PersonalFullInfo;
         switch (e.PropertyName)
         {
-            case nameof(MoneyAimTimeLeft):
-                MoneyAimTimeLeft = _repository.PersonalFullInfo.MoneyAimTimeLeft;
+            case nameof(info.MoneyAimTimeLeft):
+                MoneyAimTimeLeft = info.MoneyAimTimeLeft;
                 break;
-            case nameof(Level):
-                Level = _repository.PersonalFullInfo.Level;
+            case nameof(info.Level):
+                Level = info.Level;
                 break;
-            case nameof(Title):
-                Title = _repository.PersonalFullInfo.Title;
+            case nameof(info.SelectedTitleId):
+                Title = Repository.Titles[info.SelectedTitleId];
                 break;
-            case nameof(Money):
-                Money = _repository.PersonalFullInfo.Money;
+            case nameof(info.Money):
+                Money = info.Money;
                 break;
         }
     }

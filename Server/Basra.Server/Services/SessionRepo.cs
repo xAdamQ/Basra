@@ -22,6 +22,7 @@ namespace Basra.Server.Services
         bool IsUserActive(string id);
         void RemoveActiveUser(string id);
         void AddActiveUser(ActiveUser activeUser);
+        void DeleteRoomUser(RoomUser roomUser);
     }
 
 
@@ -47,8 +48,8 @@ namespace Basra.Server.Services
 
         private ConcurrentDictionary<(int, int), ConcurrentBag<Room>> PendingRooms;
 
-        private readonly int[] GenrePosses = {0, 1, 2, 3};
-        private readonly int[] UserCountPosses = {2, 3, 4};
+        private readonly int[] GenrePosses = { 0, 1, 2, 3 };
+        private readonly int[] UserCountPosses = { 2, 3, 4 };
 
         public SessionRepo(ILogger<SessionRepo> logger)
         {
@@ -73,6 +74,10 @@ namespace Basra.Server.Services
             Rooms.TryRemove(room.Id, out _);
         }
 
+        public void DeleteRoomUser(RoomUser roomUser)
+        {
+            RoomUsers.TryRemove(roomUser.Id, out _);
+        }
 
         /// <summary>
         /// if the room is still pending 

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "C2AaWYh55XGadu/ZdGCka2Y1F8LLy70INyWL+SzjjmSQUgFO+YY0dcoMBVgZkD2rCPcqOWbVrXUaDIk6nvYsLw==",
+  "dgSpecHash": "WUpsdMVaM09XcVmrBrlgmoKf6u6B7WXp+WGV5Zncsrk0peXIlvAz2CsP+7dDbcwVeucbGyprQyI7upBIE2bZvQ==",
   "success": true,
-  "projectFilePath": "/home/adam/Projects/Basra/GeneralTests/GeneralTests.csproj",
+  "projectFilePath": "/home/adam/Projects/Basra/Server/GeneralTests/GeneralTests.csproj",
   "expectedPackageFiles": [
     "/home/adam/.nuget/packages/coverlet.collector/1.3.0/coverlet.collector.1.3.0.nupkg.sha512",
     "/home/adam/.nuget/packages/microsoft.codecoverage/16.10.0/microsoft.codecoverage.16.10.0.nupkg.sha512",

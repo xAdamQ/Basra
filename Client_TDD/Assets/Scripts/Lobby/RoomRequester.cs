@@ -17,5 +17,6 @@ public class RoomRequester : MonoBehaviour
         await _blockingOperationManager.Start(() => _controller.RequestRandomRoom(betChoice, 0));
 
         _blockingPanel.Show("room is pending");
+        //this is shown even if the room is started, it's removed before game start directly
     }
 }

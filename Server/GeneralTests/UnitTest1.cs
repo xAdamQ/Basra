@@ -53,6 +53,25 @@ namespace GeneralTests
             // });
         }
 
+        [Fact]
+        public void Test5()
+        {
+            var arr = new List<int>() { 0, 5, 6 };
+            _testOutputHelper.WriteLine(arr.IndexOf(6).ToString());
+
+        }
+
+        [Fact]
+        public void Test6()
+        {
+            var a = 17;
+            var b = 5;
+
+            b = a += 3;
+            // a += b = 3;
+            _testOutputHelper.WriteLine($"{a},,,{b}");
+        }
+
         public class a
         {
             private readonly ITestOutputHelper _testOutputHelper;
@@ -65,5 +84,6 @@ namespace GeneralTests
                 Console.WriteLine("tst fun called");
             }
         }
+
     }
 }

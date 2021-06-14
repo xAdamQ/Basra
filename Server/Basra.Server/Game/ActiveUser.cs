@@ -48,6 +48,9 @@ namespace Basra.Server
 
             public class Room : App
             {
+                // public class FinalizingRoom : Room
+                // {
+                // }
                 public class FinishedRoom : Room
                 {
                 }

@@ -7,11 +7,7 @@ using Zenject;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using System.Linq;
-using UnityEditor;
 using UnityEngine.AddressableAssets;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 namespace PlayModeTests
@@ -32,8 +28,8 @@ namespace PlayModeTests
         {
             var personalInfo = new PersonalFullUserInfo
             {
-                BasrasCount = 3,
-                BigBasrasCount = 3,
+                BasraCount = 3,
+                BigBasraCount = 3,
                 Level = 23,
                 Money = 433,
                 PlayedRoomsCount = 56,
@@ -41,8 +37,8 @@ namespace PlayModeTests
                 EatenCardsCount = 298,
                 WinStreak = 3,
                 Id = "tstId",
-                DisplayName = "7oda el gamed",
-                Title = "uooo7, I am so funky",
+                Name = "7oda el gamed",
+                SelectedTitleId = 0,
                 Picture = Texture2D.redTexture,
                 MoneyAimTimeLeft = TimeSpan.FromMinutes(2),
             };
@@ -52,17 +48,17 @@ namespace PlayModeTests
                 {
                     Id = "tstFriendId",
                     Level = 13,
-                    DisplayName = "Hany Shaker",
+                    Name = "Hany Shaker",
                     Picture = Texture2D.grayTexture,
-                    Title = "I am a normal human being"
+                    SelectedTitleId = 1,
                 },
                 new MinUserInfo
                 {
                     Id = "tstFriendId2",
                     Level = 93,
-                    DisplayName = "Emad Ta3ban",
+                    Name = "Emad Ta3ban",
                     Picture = Texture2D.linearGrayTexture,
-                    Title = "abo fa45a"
+                    SelectedTitleId = 2,
                 }
             };
             var yesterdayChampions = new[]
@@ -71,17 +67,17 @@ namespace PlayModeTests
                 {
                     Id = "tstChampionId",
                     Level = 33,
-                    DisplayName = "Ben Awad",
+                    Name = "Ben Awad",
                     Picture = Texture2D.blackTexture,
-                    Title = "SuperMan with good company"
+                    SelectedTitleId = 3,
                 },
                 new MinUserInfo
                 {
                     Id = "tstChampionId2",
                     Level = 7,
-                    DisplayName = "Ola Sameh",
+                    Name = "Ola Sameh",
                     Picture = Texture2D.normalTexture,
-                    Title = "Take it easy"
+                    SelectedTitleId = 0,
                 }
             };
 
@@ -89,31 +85,31 @@ namespace PlayModeTests
             controller.Setup(_ => _.GetPublicFullUserInfo(topFriends[0].Id)).Returns(UniTask.FromResult(
                 new FullUserInfo
                 {
-                    BasrasCount = 3,
-                    BigBasrasCount = 3,
+                    BasraCount = 3,
+                    BigBasraCount = 3,
                     Level = 23,
                     PlayedRoomsCount = 56,
                     WonRoomsCount = 22,
                     EatenCardsCount = 298,
                     WinStreak = 3,
                     Id = "tstId",
-                    DisplayName = "7oda el gamed dsf",
-                    Title = "uooo7, I am so funky sssssss",
+                    Name = "7oda el gamed dsf",
+                    SelectedTitleId = 2,
                     Picture = Texture2D.redTexture,
                 }));
             controller.Setup(_ => _.GetPublicFullUserInfo(topFriends[1].Id)).Returns(UniTask.FromResult(
                 new FullUserInfo
                 {
-                    BasrasCount = 7,
-                    BigBasrasCount = 1,
+                    BasraCount = 7,
+                    BigBasraCount = 1,
                     Level = 977,
                     PlayedRoomsCount = 561,
                     WonRoomsCount = 242,
                     EatenCardsCount = 2898,
                     WinStreak = 36,
                     Id = "tstId55",
-                    DisplayName = "ss7soda el gamed",
-                    Title = "uooo7, I adm so funky",
+                    Name = "ss7soda el gamed",
+                    SelectedTitleId = 1,
                     Picture = Texture2D.redTexture,
                 }));
 
@@ -138,9 +134,9 @@ namespace PlayModeTests
                     {
                         Id = "tstFriendId",
                         Level = 13,
-                        DisplayName = "Hany Shaker",
+                        Name = "Hany Shaker",
                         Picture = Texture2D.grayTexture,
-                        Title = "I am a normal human being"
+                        SelectedTitleId = 1,
                     },
                     TurnId = 0
                 },
@@ -150,9 +146,9 @@ namespace PlayModeTests
                     {
                         Id = "tstFriendId2",
                         Level = 93,
-                        DisplayName = "Emad Ta3ban",
+                        Name = "Emad Ta3ban",
                         Picture = Texture2D.linearGrayTexture,
-                        Title = "abo fa45a"
+                        SelectedTitleId = 1,
                     },
                     TurnId = 1
                 }
@@ -205,8 +201,8 @@ namespace PlayModeTests
 
         PersonalFullUserInfo personalInfo = new PersonalFullUserInfo
         {
-            BasrasCount = 3,
-            BigBasrasCount = 3,
+            BasraCount = 3,
+            BigBasraCount = 3,
             Level = 23,
             Money = 433,
             PlayedRoomsCount = 56,
@@ -214,8 +210,8 @@ namespace PlayModeTests
             EatenCardsCount = 298,
             WinStreak = 3,
             Id = "tstId",
-            DisplayName = "7oda el gamed",
-            Title = "uooo7, I am so funky",
+            Name = "7oda el gamed",
+            SelectedTitleId = 1,
             Picture = Texture2D.redTexture,
             MoneyAimTimeLeft = TimeSpan.FromMinutes(2),
         };
@@ -226,17 +222,17 @@ namespace PlayModeTests
             {
                 Id = "tstFriendId",
                 Level = 13,
-                DisplayName = "Hany Shaker",
+                Name = "Hany Shaker",
                 Picture = Texture2D.grayTexture,
-                Title = "I am a normal human being"
+                SelectedTitleId = 1,
             },
             new MinUserInfo
             {
                 Id = "tstFriendId2",
                 Level = 93,
-                DisplayName = "Emad Ta3ban",
+                Name = "Emad Ta3ban",
                 Picture = Texture2D.linearGrayTexture,
-                Title = "abo fa45a"
+                SelectedTitleId = 1,
             }
         };
 
@@ -246,17 +242,17 @@ namespace PlayModeTests
             {
                 Id = "tstChampionId",
                 Level = 33,
-                DisplayName = "Ben Awad",
+                Name = "Ben Awad",
                 Picture = Texture2D.blackTexture,
-                Title = "SuperMan with good company"
+                SelectedTitleId = 1,
             },
             new MinUserInfo
             {
                 Id = "tstChampionId2",
                 Level = 7,
-                DisplayName = "Ola Sameh",
+                Name = "Ola Sameh",
                 Picture = Texture2D.normalTexture,
-                Title = "Take it easy"
+                SelectedTitleId = 1,
             }
         };
 
@@ -268,31 +264,31 @@ namespace PlayModeTests
             controller.Setup(_ => _.GetPublicFullUserInfo(topFriends[0].Id)).Returns(UniTask.FromResult(
                 new FullUserInfo
                 {
-                    BasrasCount = 3,
-                    BigBasrasCount = 3,
+                    BasraCount = 3,
+                    BigBasraCount = 3,
                     Level = 23,
                     PlayedRoomsCount = 56,
                     WonRoomsCount = 22,
                     EatenCardsCount = 298,
                     WinStreak = 3,
                     Id = "tstId",
-                    DisplayName = "7oda el gamed dsf",
-                    Title = "uooo7, I am so funky sssssss",
+                    Name = "7oda el gamed dsf",
+                    SelectedTitleId = 1,
                     Picture = Texture2D.redTexture,
                 }));
             controller.Setup(_ => _.GetPublicFullUserInfo(topFriends[1].Id)).Returns(UniTask.FromResult(
                 new FullUserInfo
                 {
-                    BasrasCount = 7,
-                    BigBasrasCount = 1,
+                    BasraCount = 7,
+                    BigBasraCount = 1,
                     Level = 977,
                     PlayedRoomsCount = 561,
                     WonRoomsCount = 242,
                     EatenCardsCount = 2898,
                     WinStreak = 36,
                     Id = "tstId55",
-                    DisplayName = "ss7soda el gamed",
-                    Title = "uooo7, I adm so funky",
+                    Name = "ss7soda el gamed",
+                    SelectedTitleId = 1,
                     Picture = Texture2D.redTexture,
                 }));
 
@@ -302,8 +298,9 @@ namespace PlayModeTests
                 return UniTask.FromResult(new object());
             });
 
-            controller.Setup(_ => _.ThrowCard(It.IsAny<int>()))
-                .Returns(UniTask.FromResult(new ThrowResponse {EatenCardsIds = new int[] { }, Basra = true}));
+            controller.Setup(_ => _.ThrowCard(It.IsAny<int>()));
+            // .Returns(UniTask.FromResult(new ThrowResult { EatenCardsIds = new List<int>(), Basra = true }));
+            //* the logic here has changed
 
             controller.Setup(_ => _.NotifyTurnMiss()).Callback(() => Debug.Log("notify turn miss called"));
 
@@ -312,7 +309,7 @@ namespace PlayModeTests
         private void InstallMockGround()
         {
             var ground = new Mock<IGround>();
-            ground.Setup(_ => _.Throw(It.IsAny<Card>(), It.IsAny<int[]>()))
+            ground.Setup(_ => _.Throw(It.IsAny<Card>(), It.IsAny<List<int>>()))
                 .Callback<Card, int[]>((c, arr) => Object.Destroy(c));
             Container.Bind<IGround>().FromMock();
         }
@@ -361,10 +358,10 @@ namespace PlayModeTests
             Container.Bind<IGround>().FromMock();
 
             var fac = Container.Resolve<PlayerBase.Factory>();
-            var player = (IPlayer) fac.Create(PlayerType.Me, 1);
-            var oppo0 = (IOppo) fac.Create(PlayerType.Oppo, 0);
+            var player = (IPlayer)fac.Create(PlayerType.Me, 1);
+            var oppo0 = (IOppo)fac.Create(PlayerType.Oppo, 0);
 
-            player.Distribute(new List<int>() {1, 2, 3, 4});
+            player.Distribute(new List<int>() { 1, 2, 3, 4 });
             oppo0.Distribute();
 
 
@@ -387,9 +384,9 @@ namespace PlayModeTests
             InstallGround();
 
             var fac = Container.Resolve<PlayerBase.Factory>();
-            var player = (IPlayer) fac.Create(PlayerType.Me, 0);
+            var player = (IPlayer)fac.Create(PlayerType.Me, 0);
 
-            player.Distribute(new List<int>() {1, 2, 3, 4});
+            player.Distribute(new List<int>() { 1, 2, 3, 4 });
 
             yield return new WaitForSeconds(999999);
         }
@@ -409,19 +406,19 @@ namespace PlayModeTests
             InstallGround();
 
             var fac = Container.Resolve<PlayerBase.Factory>();
-            var oppo = (IOppo) fac.Create(PlayerType.Oppo, 0);
+            var oppo = (IOppo)fac.Create(PlayerType.Oppo, 0);
 
             oppo.Distribute();
 
-            oppo.Throw(0, new ThrowResponse {EatenCardsIds = new int[] { }, BigBasra = true});
-            yield return new WaitForSeconds(3);
-            oppo.Throw(1, new ThrowResponse {EatenCardsIds = new int[] { }, Basra = true});
-            yield return new WaitForSeconds(3);
-            oppo.Throw(2, new ThrowResponse {EatenCardsIds = new int[] { }});
-            yield return new WaitForSeconds(3);
-            oppo.Throw(2, new ThrowResponse {EatenCardsIds = new int[] { }});
+            // oppo.Throw(new ThrowResult { ThrownCard = 0, EatenCardsIds = new List<int>(), BigBasra = true });
+            // yield return new WaitForSeconds(3);
+            // oppo.Throw(1, new ThrowResult { ThrownCard = 1, EatenCardsIds = new List<int>(), Basra = true });
+            // yield return new WaitForSeconds(3);
+            // oppo.Throw(2, new ThrowResult { EatenCardsIds = new List<int>() });
+            // yield return new WaitForSeconds(3);
+            // oppo.Throw(2, new ThrowResult { EatenCardsIds = new List<int>() });
 
-            // Assert.Throws(typeof(Exception), () => oppo.Throw(2, new ThrowResponse {EatenCardsIds = new int[] { }}));
+            // Assert.Throws(typeof(Exception), () => oppo.Throw(2, new ThrowResponse {EatenCardsIds = new List<int>()}));
 
             yield return new WaitForSeconds(999999);
         }
@@ -438,14 +435,14 @@ namespace PlayModeTests
             InstallMockController();
 
             var ground = Container.Resolve<IGround>();
-            ground.InitialDistribute(new List<int>() {1, 2, 3, 4});
+            ground.InitialDistribute(new List<int>() { 1, 2, 3, 4 });
 
             var cFac = Container.Resolve<Card.Factory>();
 
             yield return new WaitForSeconds(2);
-            ground.Throw(cFac.CreateGroundCard(11, null), new int[] { });
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>());
             yield return new WaitForSeconds(2);
-            ground.Throw(cFac.CreateGroundCard(11, null), new int[] { });
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>());
 
             yield return new WaitForSeconds(999999);
         }
@@ -462,16 +459,16 @@ namespace PlayModeTests
             InstallMockController();
 
             var ground = Container.Resolve<IGround>();
-            ground.InitialDistribute(new List<int>() {1, 2, 3, 4});
+            ground.InitialDistribute(new List<int>() { 1, 2, 3, 4 });
 
             var cFac = Container.Resolve<Card.Factory>();
 
-            ground.Throw(cFac.CreateGroundCard(11, null), new int[] {1});
-            ground.Throw(cFac.CreateGroundCard(11, null), new int[] {2, 3});
-            ground.Throw(cFac.CreateGroundCard(11, null), new int[] { });
-            ground.Throw(cFac.CreateGroundCard(11, null), new int[] { });
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 1 });
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 2, 3 });
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>());
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>());
 
-            Assert.Throws(typeof(Exception), () => { ground.Throw(cFac.CreateGroundCard(11, null), new int[] {2}); });
+            Assert.Throws(typeof(Exception), () => { ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 2 }); });
 
             // yield return new WaitForSeconds(999999);
         }
@@ -511,12 +508,12 @@ namespace PlayModeTests
             Container.Bind<IGround>().FromMock();
 
             var fac = Container.Resolve<PlayerBase.Factory>();
-            var player = (IPlayer) fac.Create(PlayerType.Me, 0);
-            var oppo0 = (IOppo) fac.Create(PlayerType.Oppo, 1);
-            var oppo1 = (IOppo) fac.Create(PlayerType.Oppo, 2);
-            var oppo2 = (IOppo) fac.Create(PlayerType.Oppo, 3);
+            var player = (IPlayer)fac.Create(PlayerType.Me, 0);
+            var oppo0 = (IOppo)fac.Create(PlayerType.Oppo, 1);
+            var oppo1 = (IOppo)fac.Create(PlayerType.Oppo, 2);
+            var oppo2 = (IOppo)fac.Create(PlayerType.Oppo, 3);
 
-            player.Distribute(new List<int>() {1, 2, 3, 4});
+            player.Distribute(new List<int>() { 1, 2, 3, 4 });
             oppo0.Distribute();
             oppo1.Distribute();
             oppo2.Distribute();
@@ -537,7 +534,7 @@ namespace PlayModeTests
 
             tt.uniTaskTimer.Elapsed += () => Debug.Log("timer is done");
 
-            tt.uniTaskTimer.Play();
+            tt.uniTaskTimer.Play().Forget();
 
             Assert.True(tt.uniTaskTimer.Active);
 
@@ -550,7 +547,7 @@ namespace PlayModeTests
             Container.Bind<IRepository>().FromMock();
             Container.Bind<IController>().FromMock();
             InstallerRoomServices(new RoomInstaller.Settings(false)
-                {EnableRoomUserViewFactory = true, EnableFullUserView = true, EnablePersonalUserView = true});
+            { EnableRoomUserViewFactory = true, EnableFullUserView = true, EnablePersonalUserView = true });
 
             var viewFac = Container.Resolve<RoomUserView.Factory>();
 
@@ -568,7 +565,7 @@ namespace PlayModeTests
             Container.Bind<IRepository>().FromMock();
             Container.Bind<IController>().FromMock();
             InstallerRoomServices(new RoomInstaller.Settings(false)
-                {EnableRoomUserViewFactory = true, EnableFullUserView = true, EnablePersonalUserView = true});
+            { EnableRoomUserViewFactory = true, EnableFullUserView = true, EnablePersonalUserView = true });
 
             var viewFac = Container.Resolve<RoomUserView.Factory>();
 

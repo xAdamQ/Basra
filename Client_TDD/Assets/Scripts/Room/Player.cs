@@ -8,21 +8,29 @@ using Zenject;
 
 public interface IPlayer : IPlayerBase
 {
-    UniTask Throw(Card card); //tested
+    void Throw(Card card); //tested
     void Distribute(List<int> cardIds); //tested
-    void ServerThrow(int cardHandIndex, ThrowResponse throwResponse); //trivial to test
+    void ServerThrow(ThrowResult throwResult); //trivial to test
     bool IsPlayable(); //trivial to test
+    void MyThrowResult(ThrowResult result);
 }
 
 public class Player : PlayerBase, IPlayer
 {
     [Inject] private readonly TurnTimer _turnTimer;
 
-    public async UniTask Throw(Card card)
-    {
-        var response = await _controller.ThrowCard(HandCards.IndexOf(card));
 
-        ThrowBase(card, response);
+    public void Throw(Card card)
+    {
+        //no await for return style because of server inability to do following actions
+        _controller.ThrowCard(HandCards.IndexOf(card));
+        //blocking here is custom
+        // ThrowBase(card, response);
+    }
+
+    public void MyThrowResult(ThrowResult result)
+    {
+        ThrowBase(result);
     }
 
     private void Start()
@@ -52,8 +60,8 @@ public class Player : PlayerBase, IPlayer
         OrganizeHand();
     }
 
-    public void ServerThrow(int cardHandIndex, ThrowResponse throwResponse)
+    public void ServerThrow(ThrowResult throwResult)
     {
-        ThrowBase(HandCards[cardHandIndex], throwResponse);
+        ThrowBase(throwResult);
     }
 }

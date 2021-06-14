@@ -1,403 +1,259 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="29ce90fb-7306-4d68-834b-9ea82ea6bfed" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/AutoMapper.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.Internal.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.Extensions.Identity.Core.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.Extensions.Identity.Stores.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Basra.Server/Game/RoomActor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Basra.Server/Game/RoomBot.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Basra.Server/Migrations/20210526130838_ef 6.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Basra.Server/Models/Client/RoomOppoInfo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.Internal.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.Extensions.Identity.Core.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.Extensions.Identity.Stores.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Client_TDD/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lobby/LobbyController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lobby/RoomRequester.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lobby/RoomRequester.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Room/RoomMenu.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Room/RoomMenu.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Room/RoomOppoInfo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Room/RoomOppoInfo.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Room/RoomSettings.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/RoomStateData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/startClientTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/startClientTest.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Tests/PlayGround/NewBehaviourScript.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Tests/PlayGround/NewBehaviourScript.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Tests/PlayGround/asyncTst.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Tests/PlayModeTests/ZenjectMoqExtensions.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Tests/PlayModeTests/ZenjectMoqExtensions.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/.idea.Server/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/.idea.Server/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/.idea.Server/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/.idea.Server/.idea/indexLayout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/.idea.Server/.idea/riderModule.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Client/.idea/.idea.Basra.Client/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Client/.idea/.idea.Basra.Client/.idea/indexLayout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Client/.idea/.idea.Basra.Client/.idea/riderModule.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/Basra.Server.Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/Basra.Server.Tests.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/EfQueryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/EfQueryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/Intergration/Client.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/Intergration/Client.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/Intergration/IntegrationTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/Intergration/IntegrationTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/LobbyManagerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/LobbyManagerTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/MasterHubTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/MasterHubTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/RoomTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/RoomTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.Tests.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.Tests.deps.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.Tests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.Tests.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.Tests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.Tests.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.deps.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.Mvc.Testing.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.Mvc.Testing.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.TestHost.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.AspNetCore.TestHost.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Abstractions.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Abstractions.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Relational.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Relational.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.TestPlatform.CommunicationUtilities.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.TestPlatform.CommunicationUtilities.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.TestPlatform.CoreUtilities.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.TestPlatform.CoreUtilities.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.TestPlatform.CrossPlatEngine.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.TestPlatform.CrossPlatEngine.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.TestPlatform.PlatformAbstractions.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.TestPlatform.PlatformAbstractions.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.TestPlatform.Utilities.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.TestPlatform.Utilities.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.VisualStudio.TestPlatform.Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.VisualStudio.TestPlatform.Common.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/System.Configuration.ConfigurationManager.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/System.Configuration.ConfigurationManager.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/System.Security.Cryptography.ProtectedData.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/System.Security.Cryptography.ProtectedData.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/cs/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/cs/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/cs/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/cs/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/cs/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/cs/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/de/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/de/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/de/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/de/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/de/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/de/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/de/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/de/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/es/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/es/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/es/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/es/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/es/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/es/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/es/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/es/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/fr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/fr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/fr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/fr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/fr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/fr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/it/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/it/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/it/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/it/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/it/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/it/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/it/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/it/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ja/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ja/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ja/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ja/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ja/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ja/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ko/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ko/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ko/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ko/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ko/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ko/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pl/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pl/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pl/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pl/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pl/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pl/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pt-BR/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pt-BR/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pt-BR/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pt-BR/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pt-BR/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pt-BR/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ref/Basra.Server.Tests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ref/Basra.Server.Tests.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/refs/Microsoft.AspNetCore.Cryptography.Internal.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/refs/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/refs/Microsoft.Extensions.Identity.Core.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/refs/Microsoft.Extensions.Identity.Stores.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/refs/System.Diagnostics.DiagnosticSource.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ru/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ru/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ru/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ru/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ru/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ru/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/testhost.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/testhost.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/tr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/tr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/tr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/tr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/tr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/tr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hans/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hans/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hans/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hans/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/bin/Debug/net5.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Basra.Server.Tests.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Basra.Server.Tests.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Basra.Server.Tests.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Basra.Server.Tests.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Basra.Server.Tests.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Basra.Server.Tests.csproj.nuget.g.targets" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.csproj.FileListAbsolute.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.csprojAssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/ref/Basra.Server.Tests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/Debug/net5.0/ref/Basra.Server.Tests.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server.Tests/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server.Tests/obj/rider.project.restore.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/AppManger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/AppManger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Asp/MasterHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Asp/MasterHub.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Asp/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Asp/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Basra.Server.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Basra.Server.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Data/MasterContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Data/MasterContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Data/MasterRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Data/MasterRepo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Data/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Data/User.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/DelayedStoredFunctions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/DelayedStoredFunctions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Exceptions/BadUserInputException.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Exceptions/BadUserInputException.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Extensions/General.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Extensions/General.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Game/ActiveUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Game/ActiveUser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Game/Room.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Game/Room.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Game/RoomUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Game/RoomUser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Migrations/20210517032220_last.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Migrations/20210517032220_last.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Migrations/20210517063235_edit models.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Migrations/20210517063235_edit models.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Migrations/20210518175349_user relation.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Migrations/20210518175349_user relation.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Migrations/20210520075055_add owned items lists.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Migrations/20210520075055_add owned items lists.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Migrations/20210520093150_seed more user data.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Migrations/20210520093150_seed more user data.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Migrations/20210523080402_add selected cardback.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Migrations/20210526130838_ef 6.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Migrations/20210523080402_add selected cardback.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Migrations/MasterContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Migrations/MasterContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Models/Client/FullUserInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Models/Client/FullUserInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Models/Client/MinUserInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Models/Client/MinUserInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Models/Client/PersonalFullUserInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Models/Client/PersonalFullUserInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Models/DisplayUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Models/DisplayUser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Services/BadUserInputFilter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Services/BadUserInputFilter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Services/FbigSecurityManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Services/FbigSecurityManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Services/RequestCache.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Services/RequestCache.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Services/RoomFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Services/RoomFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Services/ServerLoop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Services/ServerLoop.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/Services/SessionRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/Services/SessionRepo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Basra.Server" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Basra.Server" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Basra.Server.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Basra.Server.deps.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Basra.Server.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Basra.Server.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Basra.Server.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Abstractions.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Abstractions.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Design.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Design.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Relational.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Relational.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/ref/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/bin/Debug/net5.0/ref/Basra.Server.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/Basra.Server.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/Basra.Server.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/Basra.Server.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/Basra.Server.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/Basra.Server.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/Basra.Server.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.FileListAbsolute.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/Basra.Server.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/Basra.Server.csprojAssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/Basra.Server.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/Basra.Server.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/Basra.Server.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/apphost" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/apphost" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/project.razor.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/project.razor.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/ref/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/Debug/net5.0/ref/Basra.Server.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Server/obj/rider.project.restore.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Basra.Server/temp/LobbyController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Client_TDD/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Client_TDD/.idea/indexLayout.xml" afterDir="false" />
+    <list default="true" id="fbabdfed-e089-4bbf-b505-a0bd08dbdecd" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Plugins/Common.deps.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Plugins/Common.deps.json.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Plugins/Common.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Plugins/Common.dll.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ThrowResult.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Library/Artifacts/44/44fde99d52013af39743b39ce97fa8ac" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Library/Artifacts/4a/4a645ed96cea0b8be9e103ac6898d765" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Library/Artifacts/85/85878ae827f863561f0314646cea2916" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Library/Artifacts/a6/a628a1f6a4669d7e63652f7615fde564" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Library/Artifacts/af/af03b6ebde1f7744130bc6770aa5ceca" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Library/Artifacts/f2/f24ef76eace19ad222eb16447702e6af" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Library/ProtocolInstance.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/.idea/.idea.Server/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/.idea/.idea.Server/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/.idea/.idea.Server/.idea/projectSettingsUpdater.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/.idea/.idea.Server/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/.idea/.idea.Server/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/.vscode/launch.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/.vscode/tasks.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/Common/ClientModels/ActiveRoomState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/Common/ClientModels/RoomXpReport.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/Common/obj/Debug/netstandard2.0/PublishOutputs.f493a7d2e2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/GeneralTests/.vscode/launch.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/GeneralTests/.vscode/tasks.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/Server.sln" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/.vscode/launch.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/.vscode/tasks.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/Client.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/Program.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/TesterClient.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Common.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Common.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.Connections.Abstractions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.Http.Connections.Client.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.Http.Connections.Common.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.Http.Features.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.SignalR.Client.Core.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.SignalR.Client.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.SignalR.Common.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.SignalR.Protocols.Json.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.Extensions.DependencyInjection.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.Extensions.Logging.Abstractions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.Extensions.Logging.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.Extensions.Options.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/Microsoft.Extensions.Primitives.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/ReadLine.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/System.Diagnostics.DiagnosticSource.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/System.IO.Pipelines.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/System.Runtime.CompilerServices.Unsafe.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/System.Text.Encodings.Web.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/System.Text.Json.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/System.Threading.Channels.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/TesterClient" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/TesterClient.deps.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/TesterClient.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/TesterClient.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/TesterClient.runtimeconfig.dev.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/TesterClient.runtimeconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/bin/Debug/net5.0/ref/TesterClient.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/.NETCoreApp,Version=v5.0.AssemblyAttributes.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/TesterClient.AssemblyInfo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/TesterClient.AssemblyInfoInputs.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/TesterClient.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/TesterClient.assets.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/TesterClient.csproj.AssemblyReference.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/TesterClient.csproj.CopyComplete" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/TesterClient.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/TesterClient.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/TesterClient.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/TesterClient.genruntimeconfig.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/TesterClient.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/apphost" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/Debug/net5.0/ref/TesterClient.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/TesterClient.csproj.nuget.dgspec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/TesterClient.csproj.nuget.g.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/TesterClient.csproj.nuget.g.targets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/project.assets.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/project.nuget.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/project.packagespec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/TesterClient/obj/rider.project.restore.info" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/omnisharp.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Server/where you left.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../other_old/Basra.Server.Tests.sln" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../other_old/Basra.Server.Tests.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Client_TDD/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Client_TDD/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Client_TDD/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Zenject/OptionalExtras/ZenjectMoqExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Zenject/OptionalExtras/ZenjectMoqExtensions.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Contexts/ProjectInstaller.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Contexts/ProjectInstaller.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Lobby/room choices.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Lobby/room choices.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Room.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Room.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Startup.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Startup.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BlockingOperationManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BlockingOperationManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Controller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Controller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lobby/CardbackShop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lobby/CardbackShop.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lobby/Lobby.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lobby/Lobby.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lobby/LobbyController.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lobby/LobbyInstaller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lobby/LobbyInstaller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ProjectInstaller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ProjectInstaller.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lobby/LobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lobby/LobbyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lobby/RoomRequester.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lobby/RoomRequester.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lobby/Views/User/FullUserView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lobby/Views/User/FullUserView.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lobby/Views/User/MinUserView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lobby/Views/User/MinUserView.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lobby/Views/User/PersonalActiveUserView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lobby/Views/User/PersonalActiveUserView.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Repository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Room/Ground.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Room/Ground.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Room/Oppo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Room/Oppo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Room/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Room/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Room/PlayerBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Room/PlayerBase.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Room/RoomController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Room/RoomController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Room/RoomInstaller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Room/RoomInstaller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Room/RoomRepo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Room/RoomRepo.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Room/RoomSettings.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Room/RoomMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Room/RoomMenu.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Room/RoomOppoInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Room/RoomOppoInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Room/RoomUserView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Room/RoomUserView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RoomInfo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RoomInfo.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RoomStateData.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tests/PlayGround/InputHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/PlayGround/InputHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tests/PlayGround/MasterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/PlayGround/MasterController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tests/PlayGround/MasterInstaller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/PlayGround/MasterInstaller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tests/PlayGround/ShopController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/PlayGround/ShopController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tests/PlayGround/ShopInstaller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/PlayGround/ShopInstaller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tests/PlayModeTests/ControllerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/PlayModeTests/ControllerTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ThrowResponse.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ThrowResponse.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ThrowResult.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UserInfo/FullUserInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UserInfo/FullUserInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UserInfo/MinUserInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UserInfo/MinUserInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UserInfo/PersonalFullUserInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UserInfo/PersonalFullUserInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tests/PlayGround/asyncTst.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/PlayGround/asyncTst.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tests/PlayModeTests/LobbyTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/PlayModeTests/LobbyTests.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Tests/PlayModeTests/RoomTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/PlayModeTests/RoomTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tests/SceneTests/LobbyViewsTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/SceneTests/LobbyViewsTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyScripts.csproj.DotSettings" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_U21_1_0f1/.idea/.idea.Client_U21_1_0f1.dir/.idea/contentModel.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_U21_1_0f1/.idea/.idea.Client_U21_1_0f1.dir/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_U21_1_0f1/.idea/.idea.Client_U21_1_0f1.dir/.idea/indexLayout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_U21_1_0f1/.idea/.idea.Client_U21_1_0f1.dir/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_U21_1_0f1/.idea/.idea.Client_U21_1_0f1.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_U21_1_0f1/.idea/.idea.Client_U21_1_0f1.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/GeneralTests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/GeneralTests.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/UnitTest1.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/UnitTest1.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/GeneralTests.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/GeneralTests.deps.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/GeneralTests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/GeneralTests.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/GeneralTests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/GeneralTests.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.TestPlatform.CommunicationUtilities.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.TestPlatform.CommunicationUtilities.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.TestPlatform.CoreUtilities.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.TestPlatform.CoreUtilities.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.TestPlatform.CrossPlatEngine.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.TestPlatform.CrossPlatEngine.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.TestPlatform.PlatformAbstractions.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.TestPlatform.PlatformAbstractions.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.TestPlatform.Utilities.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.TestPlatform.Utilities.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.VisualStudio.TestPlatform.Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.VisualStudio.TestPlatform.Common.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/cs/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/cs/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/cs/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/cs/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/cs/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/cs/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/de/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/de/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/de/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/de/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/de/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/de/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/de/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/de/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/es/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/es/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/es/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/es/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/es/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/es/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/es/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/es/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/fr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/fr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/fr/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/fr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/fr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/fr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/fr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/it/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/it/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/it/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/it/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/it/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/it/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/it/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/it/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ja/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ja/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ja/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ja/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ja/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ja/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ja/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ko/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ko/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ko/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ko/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ko/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ko/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ko/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pl/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pl/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pl/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pl/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pl/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pl/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pl/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pt-BR/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pt-BR/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pt-BR/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pt-BR/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pt-BR/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pt-BR/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ref/GeneralTests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ref/GeneralTests.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ru/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ru/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ru/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ru/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ru/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ru/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ru/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/testhost.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/testhost.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/tr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/tr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/tr/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/tr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/tr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/tr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/tr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hans/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hans/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hans/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hans/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CommunicationUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/bin/Debug/net5.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/obj/Debug/net5.0/GeneralTests.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/obj/Debug/net5.0/GeneralTests.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/obj/Debug/net5.0/GeneralTests.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/obj/Debug/net5.0/GeneralTests.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/obj/Debug/net5.0/GeneralTests.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/obj/Debug/net5.0/GeneralTests.csprojAssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/obj/Debug/net5.0/GeneralTests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/obj/Debug/net5.0/GeneralTests.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/obj/Debug/net5.0/GeneralTests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/obj/Debug/net5.0/GeneralTests.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/obj/Debug/net5.0/ref/GeneralTests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/obj/Debug/net5.0/ref/GeneralTests.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/obj/GeneralTests.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/obj/GeneralTests.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/obj/GeneralTests.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/obj/GeneralTests.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/obj/GeneralTests.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/obj/GeneralTests.csproj.nuget.g.targets" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeneralTests/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/../GeneralTests/obj/rider.project.restore.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server.sln" beforeDir="false" afterPath="$PROJECT_DIR$/../Server.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/../Server.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/.idea/.idea.TestServer.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/.idea/.idea.TestServer.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/MasterHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/MasterHub.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Humanizer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Humanizer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Abstractions.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Abstractions.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Design.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Design.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Relational.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Relational.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/MySqlConnector.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/MySqlConnector.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Newtonsoft.Json.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Newtonsoft.Json.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Pomelo.EntityFrameworkCore.MySql.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/Pomelo.EntityFrameworkCore.MySql.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/System.Reactive.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/System.Reactive.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/TestServer.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/TestServer.deps.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/TestServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/TestServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/TestServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/TestServer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/TestServer.runtimeconfig.dev.json" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/TestServer.runtimeconfig.dev.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/TestServer.runtimeconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/TestServer.runtimeconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/ref/TestServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/bin/Debug/net5.0/ref/TestServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.RazorTargetAssemblyInfo.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.RazorTargetAssemblyInfo.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.csproj.FileListAbsolute.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.csprojAssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.genruntimeconfig.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/TestServer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/ref/TestServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/Debug/net5.0/ref/TestServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/TestServer.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/TestServer.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/TestServer.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/TestServer.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TestServer/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../TestServer/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TesterClient/obj/Debug/net5.0/TesterClient.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../TesterClient/obj/Debug/net5.0/TesterClient.csprojAssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TesterClient/obj/Debug/net5.0/apphost" beforeDir="false" afterPath="$PROJECT_DIR$/../TesterClient/obj/Debug/net5.0/apphost" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TesterClient/obj/TesterClient.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../TesterClient/obj/TesterClient.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TesterClient/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../TesterClient/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TesterClient/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../TesterClient/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TesterClient/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../TesterClient/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TesterClient/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/../TesterClient/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/Basra.Server.Tests.sln" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/Basra.Server.Tests.sln.DotSettings.user" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/Intergration/Client.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/Intergration/Client.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/Intergration/IntegrationTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/Intergration/IntegrationTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/RoomManagerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/RoomManagerTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Basra.Server" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Basra.Server" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.Tests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.Tests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.Tests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.Tests.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Basra.Server.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Common.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Common.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/Common.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/ref/Basra.Server.Tests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/bin/Debug/net5.0/ref/Basra.Server.Tests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Basra.Server.Tests.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Basra.Server.Tests.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.genruntimeconfig.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/Basra.Server.Tests.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/ref/Basra.Server.Tests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/Debug/net5.0/ref/Basra.Server.Tests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server.Tests/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/Asp/MasterHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/Asp/MasterHub.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/Data/MasterRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/Data/MasterRepo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/Extensions/General.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/Extensions/General.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/Game/ActiveUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/Game/ActiveUser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/Game/Room.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/Game/Room.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/Game/RoomUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/Game/RoomUser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/Services/BadUserInputFilter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/Services/BadUserInputFilter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/Services/Managers/MatchMaker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/Services/Managers/MatchMaker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/Services/Managers/RoomManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/Services/Managers/RoomManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/Services/SessionRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/Services/SessionRepo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/bin/Debug/net5.0/Basra.Server" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/bin/Debug/net5.0/Basra.Server" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/bin/Debug/net5.0/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/bin/Debug/net5.0/Basra.Server.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/bin/Debug/net5.0/Basra.Server.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/bin/Debug/net5.0/Basra.Server.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/bin/Debug/net5.0/Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/bin/Debug/net5.0/Common.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/bin/Debug/net5.0/Common.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/bin/Debug/net5.0/Common.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/bin/Debug/net5.0/ref/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/bin/Debug/net5.0/ref/Basra.Server.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/obj/Basra.Server.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/obj/Basra.Server.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/Basra.Server.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/Basra.Server.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/Basra.Server.genruntimeconfig.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/Basra.Server.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/Basra.Server.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/apphost" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/apphost" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/ref/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/obj/Debug/net5.0/ref/Basra.Server.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Basra.Server/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Basra.Server/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Common/bin/Debug/netstandard2.0/Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Common/bin/Debug/netstandard2.0/Common.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Common/bin/Debug/netstandard2.0/Common.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Common/bin/Debug/netstandard2.0/Common.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Common/obj/Common.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Common/obj/Common.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Common/obj/Debug/netstandard2.0/Common.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Common/obj/Debug/netstandard2.0/Common.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Common/obj/Debug/netstandard2.0/Common.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Common/obj/Debug/netstandard2.0/Common.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Common/obj/Debug/netstandard2.0/Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Common/obj/Debug/netstandard2.0/Common.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Common/obj/Debug/netstandard2.0/Common.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Common/obj/Debug/netstandard2.0/Common.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Common/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Common/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Common/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Common/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Common/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Common/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Common/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Common/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/UnitTest1.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/UnitTest1.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/bin/Debug/net5.0/GeneralTests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/bin/Debug/net5.0/GeneralTests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/bin/Debug/net5.0/GeneralTests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/bin/Debug/net5.0/GeneralTests.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/bin/Debug/net5.0/ref/GeneralTests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/bin/Debug/net5.0/ref/GeneralTests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/GeneralTests.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/GeneralTests.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/GeneralTests.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/GeneralTests.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/GeneralTests.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/GeneralTests.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/GeneralTests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/GeneralTests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/GeneralTests.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/GeneralTests.genruntimeconfig.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/GeneralTests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/GeneralTests.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/ref/GeneralTests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/obj/Debug/net5.0/ref/GeneralTests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/obj/GeneralTests.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/obj/GeneralTests.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/GeneralTests/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/GeneralTests/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/.vscode/launch.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/.vscode/settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/.vscode/tasks.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/Client.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/TesterClient.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.Connections.Abstractions.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.Http.Connections.Client.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.Http.Connections.Common.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.Http.Features.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.SignalR.Client.Core.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.SignalR.Client.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.SignalR.Common.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.AspNetCore.SignalR.Protocols.Json.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.Extensions.DependencyInjection.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.Extensions.Logging.Abstractions.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.Extensions.Logging.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.Extensions.Options.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/Microsoft.Extensions.Primitives.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/ReadLine.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/System.Diagnostics.DiagnosticSource.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/System.IO.Pipelines.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/System.Runtime.CompilerServices.Unsafe.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/System.Text.Encodings.Web.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/System.Text.Json.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/System.Threading.Channels.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/TesterClient" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/TesterClient.deps.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/TesterClient.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/TesterClient.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/TesterClient.runtimeconfig.dev.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/TesterClient.runtimeconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/bin/Debug/net5.0/ref/TesterClient.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/.NETCoreApp,Version=v5.0.AssemblyAttributes.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/TesterClient.AssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/TesterClient.AssemblyInfoInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/TesterClient.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/TesterClient.assets.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/TesterClient.csproj.AssemblyReference.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/TesterClient.csproj.CopyComplete" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/TesterClient.csproj.CoreCompileInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/TesterClient.csproj.FileListAbsolute.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/TesterClient.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/TesterClient.genruntimeconfig.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/TesterClient.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/apphost" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/Debug/net5.0/ref/TesterClient.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/TesterClient.csproj.nuget.dgspec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/TesterClient.csproj.nuget.g.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/TesterClient.csproj.nuget.g.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/project.assets.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/project.nuget.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/project.packagespec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../other_old/TesterClient/obj/rider.project.restore.info" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -415,99 +271,28 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Lobby/Views/CardBacksView.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Tests/SceneTests/SceneTests.asmdef" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/42A83429-BCB2-47AA-9823-FCBEC4E95A57/e2/191a770d/SendMouseEvents.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Room/Oppo.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Room/Card.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Room/Player.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Room/RoomController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Controller.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Tests/PlayModeTests/RoomTests.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Tests/PlayGround/asyncTst.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Room/PlayerBase.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Tests/PlayModeTests/PlayModeTests.asmdef" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5C2FC918-2D16-4F4F-94D1-6D203AEDBB00/59/faec1ec8/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F5B293C7-4049-457C-ABC2-8437C5A76392/e6/d38a0ebe/InjectAttribute.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F23BEE1D-D9AC-424F-81D6-B4107DC57323/41/8b365e7e/UnityWebRequest.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5C2FC918-2D16-4F4F-94D1-6D203AEDBB00/a5/5fe9c1f7/UsedImplicitlyAttribute.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.test-framework@1.1.24/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.test-framework@1.1.24/UnityEngine.TestRunner/NUnitExtensions/Commands/EnumerableTestMethodCommand.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99258562-0D64-4271-98DD-F3A0E1467733/f1/2a440e20/TimeSpan.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/UIBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F5B293C7-4049-457C-ABC2-8437C5A76392/aa/f5e3679a/InjectAttributeBase.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/784B40E9-3C41-4B90-B54E-F4AC9AD19734/e6/9bfcd626/AssetDatabase.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F23BEE1D-D9AC-424F-81D6-B4107DC57323/13/184b882a/UnityWebRequestAsyncOperation.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Tests/PlayGround/InputHandler.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5C2FC918-2D16-4F4F-94D1-6D203AEDBB00/85/08aa518f/Behaviour.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Tests/SceneTests/RoomTests.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5C2FC918-2D16-4F4F-94D1-6D203AEDBB00/fd/5eae6da1/AsyncOperation.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5C2FC918-2D16-4F4F-94D1-6D203AEDBB00/f4/4469a67c/Object.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Lobby/LobbyController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UserInfo/MinUserInfo.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5C2FC918-2D16-4F4F-94D1-6D203AEDBB00/09/78518d50/Component.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Repository.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Lobby/Views/User/MinUserView.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Lobby/LobbyInstaller.cs" root0="FORCE_HIGHLIGHTING" />
-  </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/Assets/Scripts/Room/PlayerBase.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/TurnTimer.cs" />
-      <option value="$PROJECT_DIR$/Assets/Tests/PlayGround/TestGetImage.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/MyBestHttpLogger.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/Views/FriendsView.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/Views/User/PersonalActiveUserView.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/Views/User/MinUserView.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/UserInfo/MinUserInfo.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/ItemLockState.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/ShopItemState.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/ShopItemStateView.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/exc.cs" />
-      <option value="$PROJECT_DIR$/Assets/Tests/PlayModeTests/MixedGeneralTests.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/LobbyInstaller.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/ZenjectExtensions.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/BlockingPanel.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/UserInfo/PersonalFullUserInfo.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Repository.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Toast.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/RoomRequestButton.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/RoomInfo.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/RoomStateData.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/UserInfo/FullUserInfo.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/Lobby.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/BlockingOperationManager.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/CardbackShopItem.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/CardbackShop.cs" />
-      <option value="$PROJECT_DIR$/Assets/Tests/PlayGround/asyncTst.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Room/RoomMenu.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/UserInfo/MinUserInfo.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/UserInfo/PersonalFullUserInfo.cs" />
+      <option value="$PROJECT_DIR$/Assets/Tests/SceneTests/LobbyViewsTest.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/Views/User/MinUserView.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/Views/User/PersonalActiveUserView.cs" />
       <option value="$PROJECT_DIR$/Assets/Tests/PlayModeTests/LobbyTests.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Room/RoomOppoInfo.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/startClientTest.cs" />
-      <option value="$PROJECT_DIR$/Assets/Tests/PlayGround/InputHandler.cs" />
-      <option value="$PROJECT_DIR$/Assets/Tests/PlayGround/ShopController.cs" />
-      <option value="$PROJECT_DIR$/Assets/Tests/PlayGround/ShopInstaller.cs" />
-      <option value="$PROJECT_DIR$/Assets/Tests/PlayGround/MasterInstaller.cs" />
-      <option value="$PROJECT_DIR$/Assets/Tests/PlayGround/MasterController.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Room/RoomUserView.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/RoomRequestPanel.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Room/RoomRepo.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Room/RoomSettings.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/RoomRequester.cs" />
-      <option value="$PROJECT_DIR$/Assets/Tests/PlayModeTests/ControllerTests.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Room/RoomInstaller.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/ProjectInstaller.cs" />
+      <option value="$PROJECT_DIR$/Assets/Tests/PlayModeTests/RoomTests.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/LobbyController.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Controller.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Room/Ground.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Lobby/RoomRequester.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Room/PlayerBase.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Room/Player.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Room/RoomController.cs" />
-      <option value="$PROJECT_DIR$/Assets/Tests/PlayModeTests/RoomTests.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Controller.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/ThrowResponse.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/ThrowResult.cs" />
     </changedPaths>
   </component>
-  <component name="ProjectId" id="1qf1af9uwakHxSAkleiswz128r7" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+  <component name="ProjectId" id="1tmHjcYf2AYO8JFYSdacniqUWhK" />
+  <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -516,16 +301,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.3819859" />
-    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="XThreadsFramesViewSplitterKey" value="0.458037" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Client_U21_1_0f1" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Server/Server.sln" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
@@ -560,51 +341,16 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="29ce90fb-7306-4d68-834b-9ea82ea6bfed" name="Default Changelist" comment="" />
-      <created>1617455894847</created>
+      <changelist id="fbabdfed-e089-4bbf-b505-a0bd08dbdecd" name="Default Changelist" comment="" />
+      <created>1623367487781</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1617455894847</updated>
-      <workItem from="1617455912649" duration="336000" />
-      <workItem from="1617676057459" duration="1581000" />
-      <workItem from="1617684104151" duration="772000" />
-      <workItem from="1617684905099" duration="764000" />
-      <workItem from="1617712312002" duration="2272000" />
-      <workItem from="1617716252445" duration="284000" />
-      <workItem from="1617722147699" duration="3110000" />
-      <workItem from="1617814684157" duration="5604000" />
-      <workItem from="1617840659198" duration="17908000" />
-      <workItem from="1617990532121" duration="3015000" />
-      <workItem from="1618062080916" duration="42003000" />
-      <workItem from="1618319071399" duration="17534000" />
-      <workItem from="1618521137603" duration="21440000" />
-      <workItem from="1618614488939" duration="1151000" />
-      <workItem from="1618698908936" duration="6856000" />
-      <workItem from="1618759307753" duration="13548000" />
-      <workItem from="1618837181497" duration="871000" />
-      <workItem from="1618865147768" duration="33572000" />
-      <workItem from="1619117288699" duration="8680000" />
-      <workItem from="1619200156125" duration="5915000" />
-      <workItem from="1619247420298" duration="24571000" />
-      <workItem from="1619466088110" duration="35000" />
-      <workItem from="1619466239783" duration="10586000" />
-      <workItem from="1619495567946" duration="26835000" />
-      <workItem from="1620191626646" duration="1062000" />
-      <workItem from="1621222617635" duration="659000" />
-      <workItem from="1621226749117" duration="13588000" />
-      <workItem from="1621503433909" duration="2376000" />
-      <workItem from="1621514525146" duration="19875000" />
-      <workItem from="1621667885865" duration="12431000" />
-      <workItem from="1621756840267" duration="15386000" />
-      <workItem from="1621873322159" duration="1315000" />
-      <workItem from="1621943958166" duration="602000" />
-      <workItem from="1621965377817" duration="7932000" />
-      <workItem from="1622022142771" duration="841000" />
-      <workItem from="1622036228087" duration="130000" />
-      <workItem from="1622038033286" duration="3807000" />
-      <workItem from="1622137603158" duration="1252000" />
-      <workItem from="1622206048267" duration="1254000" />
-      <workItem from="1622380352453" duration="1452000" />
+      <updated>1623367487781</updated>
+      <workItem from="1623367500533" duration="1496000" />
+      <workItem from="1623414589883" duration="1033000" />
+      <workItem from="1623415664524" duration="3022000" />
+      <workItem from="1623589139576" duration="3442000" />
+      <workItem from="1623603387200" duration="3000" />
     </task>
     <servers />
   </component>
@@ -624,10 +370,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
   </component>
 </project>

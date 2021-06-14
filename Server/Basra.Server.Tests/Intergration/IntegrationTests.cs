@@ -51,9 +51,7 @@ namespace Basra.Server.Tests.Integration
             for (int i = 0; i < 4; i++)
             {
                 await c.Connection.InvokeAsync("Throw", 0);
-                await Task.Delay(150);
                 await c2.Connection.InvokeAsync("Throw", 0);
-                await Task.Delay(150);
             }
         }
 
@@ -191,19 +189,14 @@ namespace Basra.Server.Tests.Integration
             await c.Connection.InvokeAsync("RequestRandomRoom", 0, 0);
             await c2.Connection.InvokeAsync("RequestRandomRoom", 0, 0);
 
-            await Task.Delay(50);
 
             await c.Connection.InvokeAsync("Ready");
             await c2.Connection.InvokeAsync("Ready");
 
-            await Task.Delay(50);
-
             for (int i = 0; i < 24; i++)
             {
                 await c.Connection.InvokeAsync("Throw", 0);
-                await Task.Delay(50);
                 await c2.Connection.InvokeAsync("Throw", 0);
-                await Task.Delay(50);
             }
         }
     }

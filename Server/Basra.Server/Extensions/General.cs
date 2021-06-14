@@ -77,10 +77,11 @@ namespace Basra.Server.Extensions
             concurrentDictionary.TryAdd(Interlocked.Increment(ref lastId), value);
         }
 
-        public static async Task<object> InvokeAsync(this MethodInfo @this, object obj, params object[] parameters)
+        public static async Task<object> InvokeAsync(this MethodInfo mi, object obj, params object[] parameters)
         {
-            dynamic awaitable = @this.Invoke(obj, parameters);
+            dynamic awaitable = mi.Invoke(obj, parameters);
             await awaitable;
+
             return awaitable.GetAwaiter().GetResult();
         }
     }

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using Zenject;
 using DG.Tweening;
 using UnityEngine.XR;
+using System.Linq;
 
 public interface IPlayerBase
 {
@@ -50,15 +51,17 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
     protected List<Card> HandCards { get; } = new List<Card>();
     protected int Turn { get; private set; }
 
-    protected void ThrowBase(Card card, ThrowResponse response)
+    protected void ThrowBase(ThrowResult result)
     {
-        _ground.Throw(card, response.EatenCardsIds);
+        var card = HandCards.First(c => c.Front.Index == result.ThrownCard);
 
-        if (response.Basra) AddBasra();
-        if (response.BigBasra) AddBigBasra();
+        _ground.Throw(card, result.EatenCardsIds);
 
-        eatenCount += response.EatenCardsIds.Length;
+        eatenCount += result.EatenCardsIds.Count;
         eatenText.text = eatenCount.ToString();
+
+        if (result.Basra) AddBasra();
+        if (result.BigBasra) AddBigBasra();
 
         HandCards.Remove(card);
         OrganizeHand();

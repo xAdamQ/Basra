@@ -22,7 +22,6 @@ public class PersonalFullUserInfo : FullUserInfo, INotifyPropertyChanged
         }
     }
     private int _money;
-
     /// <summary>
     /// I use this rather than timestamp when the request is done
     /// because datetime.now is not universal for all clients
@@ -39,17 +38,16 @@ public class PersonalFullUserInfo : FullUserInfo, INotifyPropertyChanged
         }
     }
     private TimeSpan? _moneyAimTimeLeft;
-
-    public override string Title
-    {
-        get => _title;
-        set
-        {
-            _title = value;
-            NotifyPropertyChanged();
-        }
-    }
-    private string _title;
+    // public override string Title
+    // {
+    //     get => _title;
+    //     set
+    //     {
+    //         _title = value;
+    //         NotifyPropertyChanged();
+    //     }
+    // }
+    // private string _title;
 
     public override int Level
     {
@@ -61,22 +59,17 @@ public class PersonalFullUserInfo : FullUserInfo, INotifyPropertyChanged
         }
     }
     private int _level;
-
     public int FlipWinCount { get; set; }
     public object ActiveRoomData { get; set; }
     public List<string> Titles { get; set; }
-
     public int SelectedCardback { get; set; }
     public int SelectedBackground { get; set; }
-
     public event PropertyChangedEventHandler PropertyChanged;
-
     [NotifyPropertyChangedInvocator]
     protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
     public async UniTask DecreaseMoneyAimTimeLeft()
     {
         var updateRate = 1;

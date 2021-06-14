@@ -1,4 +1,5 @@
 using System.Linq;
+using Basra.Models.Client;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;

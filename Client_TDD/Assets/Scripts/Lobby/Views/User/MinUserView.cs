@@ -29,9 +29,11 @@ public class MinUserView : MonoBehaviour
     {
         id = minUserInfo.Id;
         Level = minUserInfo.Level;
-        DisplayName = minUserInfo.DisplayName;
-        Title = minUserInfo.Title;
+        DisplayName = minUserInfo.Name;
+        Title = Repository.Titles[minUserInfo.SelectedTitleId];
 
+        //upgrade current types by inheritance 
+        //
 
         if (minUserInfo.IsPictureLoaded)
             SetPicture(minUserInfo.Picture);
@@ -39,11 +41,14 @@ public class MinUserView : MonoBehaviour
             minUserInfo.PictureLoaded += pic => SetPicture(pic);
     }
 
+
+    /// <summary>
+    /// personal view overrides this 
+    /// </summary>
     public virtual void ShowFullInfo()
     {
-        _controller.GetPublicFullUserInfo(id).ContinueWith(info => _fullUserView.Show(info));
-        //ask the server for it for all users except in personal
-        //this request public, the other request personal
+        //todo this forget thing maybe wrong
+        _controller.GetPublicFullUserInfo(id).ContinueWith(info => _fullUserView.Show(info)).Forget();
     }
 
     private void SetPicture(Texture2D texture2D)

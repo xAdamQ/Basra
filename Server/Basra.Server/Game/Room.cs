@@ -14,6 +14,23 @@ namespace Basra.Server
         public const int DeckSize = 52;
         public const int ShapeSize = 13;
 
+        //each bet has specific xp gain, when you lose for example you take only .25 only of it 
+        public const float LoseXpPercent = .25f;
+        public const float DrawXpPercent = .5f;
+        public const float WinXpPercent = 1f;
+        public const float BasraXpPercent = .05f;
+        public const float BigBasraXpPercent = 1f;
+        public const float GreatEatXpPercent = .3f;
+        public const int GreatEatThreshold = 38;
+
+
+        private const int MaxLevel = 999;
+        public static int GetLevelFromXp(int xp)
+        {
+            var level = (int)(MathF.Pow(xp, .55f) / 10);
+            return level < MaxLevel ? level : MaxLevel;
+        }
+
         public List<int> GroundCards { get; set; }
 
         //don't bother yourself because it's readonly because if converted to database
@@ -26,23 +43,7 @@ namespace Basra.Server
 
         public int BetChoice { get; }
         public int Bet => Bets[BetChoice];
-        public static int[] Bets => new[] {50, 100, 200};
-
-        //each bet has specific xp gain, when you lose for example you take only .25 only of it 
-        public static float LoseXpPercent = .25f;
-        public static float DrawXpPercent = .5f;
-        public static float WinXpPercent = 1f;
-
-        public static float BasraXpPercent = .1f;
-        public static float BigBasraXpPercent = 1f;
-
-
-        private const int MaxLevel = 999;
-        public static int GetLevelFromXp(int xp)
-        {
-            var level = (int) (MathF.Pow(xp, .55f) / 10);
-            return level < MaxLevel ? level : MaxLevel;
-        }
+        public static int[] Bets => new[] { 55, 110, 220 };
 
         /// <summary>
         /// used in money aim code
@@ -51,7 +52,7 @@ namespace Basra.Server
 
         public int CapacityChoice { get; }
         public int Capacity => Capacities[CapacityChoice];
-        public static int[] Capacities => new[] {2, 3, 4};
+        public static int[] Capacities => new[] { 2, 3, 4 };
 
         public List<int> Deck { get; set; }
         public int CurrentTurn { get; set; }
@@ -63,5 +64,10 @@ namespace Basra.Server
         }
 
         public bool IsFull => RoomUsers.Count == Capacity;
+
+        public void SetUsersDomains(Type domain)
+        {
+            foreach (var ru in RoomUsers) ru.ActiveUser.Domain = domain;
+        }
     }
 }

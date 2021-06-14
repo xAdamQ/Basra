@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Basra.Models.Client;
 using Basra.Server.Exceptions;
 using Basra.Server.Extensions;
 using Basra.Server.Helpers;
@@ -39,6 +40,7 @@ namespace Basra.Server.Services
         /// is called from timeout
         /// </summary>
         Task BotPlay(RoomBot roomBot);
+        Task<ActiveRoomState> GetFullRoomState(RoomUser roomUser);
     }
 
     /// <summary>
@@ -65,7 +67,7 @@ namespace Basra.Server.Services
 
         public async Task StartRoom(Room room)
         {
-            room.RoomUsers.ForEach(ru => ru.ActiveUser.Domain = typeof(UserDomain.App.Room));
+            room.SetUsersDomains(typeof(UserDomain.App.Room));
             GenerateRoomDeck(room);
 
             InitialTurn(room);
@@ -101,7 +103,7 @@ namespace Basra.Server.Services
 
             foreach (var roomUser in room.RoomUsers)
                 await _masterHub.Clients.User(roomUser.Id)
-                    .SendAsync("InitialDistribute", roomUser.Hand, roomUser.Room.GroundCards);
+                    .SendAsync("StartRoomRpc", roomUser.Hand, roomUser.Room.GroundCards);
             //todo check if the user disconnected this will give error or not
         } //the cut part can be tested, but it's relatively easy
 
@@ -110,6 +112,8 @@ namespace Basra.Server.Services
             foreach (var roomActor in room.RoomActors)
                 roomActor.Hand = roomActor.Room.Deck.CutRange(RoomActor.HandSize);
 
+            // return room.RoomUsers.Select(roomUser => new DistributeResult {MyHand = roomUser.Hand}).ToList();
+
             foreach (var roomUser in room.RoomUsers)
                 await _masterHub.Clients.User(roomUser.Id).SendAsync("Distribute", roomUser.Hand);
         } //trivial to test
@@ -117,26 +121,35 @@ namespace Basra.Server.Services
         private async Task NextTurn(Room room)
         {
             room.CurrentTurn = ++room.CurrentTurn % room.Capacity;
-            var roomActor = room.RoomActors[room.CurrentTurn];
+            var actorInTurn = room.RoomActors[room.CurrentTurn];
 
-            if (roomActor is RoomUser roomUser)
+            if (actorInTurn.Hand.Count == 0 && actorInTurn.TurnId == 0)
             {
-                _serverLoop.SetupTurnTimeout(roomUser);
+                if (actorInTurn.Room.Deck.Count == 0)
+                {
+                    await FinalizeGame(actorInTurn.Room);
+                    return;
+                }
+                else
+                {
+                    await Distribute(actorInTurn.Room);
+                }
+            }
+
+            if (actorInTurn is RoomUser roomUser)
+            {
+                if (roomUser.ActiveUser.Disconnected) await ForceUserPlay(roomUser);
+                else _serverLoop.SetupTurnTimeout(roomUser);
             }
             else
             {
-                _serverLoop.BotPlay(roomActor as RoomBot, StaticRandom.GetRandom(300, 2000));
+                // _serverLoop.BotPlay(actorInTurn as RoomBot, StaticRandom.GetRandom(300, 2000));
+                _serverLoop.BotPlay(actorInTurn as RoomBot, StaticRandom.GetRandom(99999999, 999999999));
                 //this is correct because sever loop is singleton not scoped
             }
-
-            if (roomActor.Hand.Count == 0 && roomActor.TurnId == 0)
-                if (roomActor.Room.Deck.Count == 0)
-                    await FinalizeGame(roomActor.Room);
-                else
-                    await Distribute(roomActor.Room);
         }
 
-        private (int, List<int>) PlayBase(RoomActor roomActor, int cardIndexInHand)
+        private ThrowResult PlayBase(RoomActor roomActor, int cardIndexInHand)
         {
             var eaten = Eat(roomActor.Hand[cardIndexInHand], roomActor.Room.GroundCards, out bool basra,
                 out bool bigBasra);
@@ -156,7 +169,13 @@ namespace Basra.Server.Services
                 roomActor.Room.GroundCards.Add(card);
             }
 
-            return (card, eaten);
+            return new ThrowResult
+            {
+                ThrownCard = card,
+                Basra = basra,
+                BigBasra = bigBasra,
+                EatenCardsIds = eaten,
+            };
         }
 
         public async Task UserPlayRpc(RoomUser roomUser, int cardIndexInHand)
@@ -172,17 +191,16 @@ namespace Basra.Server.Services
         {
             _serverLoop.CancelTurnTimeout(roomUser);
 
-            var cardAndEaten = PlayBase(roomUser, cardIndexInHand);
+            var throwResult = PlayBase(roomUser, cardIndexInHand);
 
             await Task.WhenAll(
-                _masterHub.Clients.User(roomUser.Id).SendAsync("MyThrowResult", cardAndEaten.Item2),
+                _masterHub.Clients.User(roomUser.Id).SendAsync("MyThrowResult", throwResult),
                 _masterHub.Clients.Users(roomUser.Room.RoomUsers.Where(ru => ru != roomUser)
                         .Select(ru => ru.Id))
-                    .SendAsync("CurrentOppoThrow", cardAndEaten.Item1, cardAndEaten.Item2)
+                    .SendAsync("CurrentOppoThrow", throwResult)
             );
 
             await NextTurn(roomUser.Room);
-
             _logger.LogInformation($"user has played card {cardIndexInHand} userId {roomUser.Id}");
         } //todo good candidate for unit testing
 
@@ -214,17 +232,17 @@ namespace Basra.Server.Services
             if (notification)
                 _serverLoop.CancelTurnTimeout(roomUser);
 
-            var cardAndEaten = PlayBase(roomUser, randomCardIndex);
+            var throwResult = PlayBase(roomUser, randomCardIndex);
 
             var tasks = new List<Task>();
 
             if (!roomUser.ActiveUser.Disconnected)
                 tasks.Add(_masterHub.Clients.User(roomUser.Id)
-                    .SendAsync("ForcePlay", randomCardIndex, cardAndEaten.Item2));
+                    .SendAsync("ForcePlay", throwResult));
 
             //todo then you have to do the same assertion on this!
             tasks.Add(_masterHub.Clients.Users(roomUser.Room.RoomUsers.Where(ru => ru != roomUser).Select(ru => ru.Id))
-                .SendAsync("CurrentOppoThrow", cardAndEaten.Item1, cardAndEaten.Item2));
+                .SendAsync("CurrentOppoThrow", throwResult));
 
             await Task.WhenAll(tasks);
 
@@ -237,12 +255,12 @@ namespace Basra.Server.Services
             //can happen with logic
             var randomCardIndex = StaticRandom.GetRandom(roomBot.Hand.Count);
 
-            var cardAndEaten = PlayBase(roomBot, randomCardIndex);
+            var throwResult = PlayBase(roomBot, randomCardIndex);
 
             await _masterHub.Clients
                 .Users(roomBot.Room.RoomUsers.Select(ru =>
                     ru.Id)) //send to all room users, no exception because you're a bot
-                .SendAsync("CurrentOppoThrow", cardAndEaten.Item1, cardAndEaten.Item2);
+                .SendAsync("CurrentOppoThrow", throwResult);
 
             await NextTurn(roomBot.Room);
             _logger.LogInformation($"bot {roomBot.Id} has played card {randomCardIndex}");
@@ -303,45 +321,43 @@ namespace Basra.Server.Services
             if (currentActor is RoomUser ru)
                 _serverLoop.CancelTurnTimeout(ru);
 
-            roomUser.Resigned = true;
-
             var otherUsers = room.RoomUsers.Where(ru => ru != roomUser);
-            await Task.WhenAll(otherUsers.Select(u => _masterHub.Clients.User(u.Id).SendAsync("UserSurrender", roomUser.TurnId)));
+            await Task.WhenAll(otherUsers.Select(u =>
+                _masterHub.Clients.User(u.Id).SendAsync("UserSurrender", roomUser.TurnId)));
             //blocks the client and waits for finalize result
 
-            await FinalizeGame(roomUser.Room);
+            await FinalizeGame(roomUser.Room, roomUser);
         }
 
-
-        private async Task FinalizeGame(Room room)
+        private async Task FinalizeGame(Room room, RoomUser resignedUser = null)
         {
-            _sessionRepo.DeleteRoom(room);
-
-
-            // var lastedActors = resginedUser != null ?
-            // room.RoomActors.Where(ra => ra != resginedUser).ToList() :
-            // room.RoomActors;
+            room.SetUsersDomains(typeof(UserDomain.App.Room.FinishedRoom));
 
             var roomDataUsers = await _masterRepo.GetUsersByIds(room.RoomActors.Select(_ => _.Id).ToList());
             //todo test if the result is the same order as roomUsers
 
-            await CalcAndApplyGameResults(room, roomDataUsers);
+            var scores = CalcScores(room.RoomActors, resignedUser);
+            var xpReports = UpdateUserStates(room, roomDataUsers, scores);
+            await Task.WhenAll(roomDataUsers.Select(u => LevelWorks(u)));
 
             await _masterRepo.SaveChangesAsync();
 
-            await SendUserInfo(room, roomDataUsers);
-
-            MakeUsersDomainFinishedRoom(room.RoomUsers);
+            await SendFinalizeResult(room, roomDataUsers, xpReports);
 
             RemoveDisconnectedUsers(room.RoomUsers);
+
+            room.RoomUsers.ForEach(ru => _sessionRepo.DeleteRoomUser(ru));
+            _sessionRepo.DeleteRoom(room);
+
+            // return GetFinalizeResult(roomDataUsers, xpReports);
         } //todo better split before test 
 
         /// <summary>
-        /// socre for resigned user is always 0
+        /// score for resigned user is -1
         /// </summary> 
-        private List<int> CalcScores(List<RoomActor> roomActors)
+        private List<int> CalcScores(List<RoomActor> roomActors, RoomUser resignedUser = null)
         {
-            var lastedUsers = roomActors.Where(_ => (_ is RoomUser ru && !ru.Resigned) || _ is not RoomUser);
+            var lastedUsers = resignedUser == null ? roomActors : roomActors.Where(_ => _ != resignedUser);
 
             var biggestEatenCount = lastedUsers.Max(u => u.EatenCardsCount);
             var biggestEaters = lastedUsers.Where(u => u.EatenCardsCount == biggestEatenCount).ToArray();
@@ -350,28 +366,30 @@ namespace Basra.Server.Services
 
             foreach (var roomActor in roomActors)
             {
-                if (roomActor is RoomUser ru && ru.Resigned)
+                if (roomActor == resignedUser)
                 {
                     scores.Add(-1);
                     continue;
                 }
 
                 scores.Add(roomActor.BasraCount * 10 +
-                            roomActor.BigBasraCount * 30 +
-                            (biggestEaters.Contains(roomActor) ? 30 : 0));
+                           roomActor.BigBasraCount * 30 +
+                           (biggestEaters.Contains(roomActor) ? 30 : 0));
             }
 
             return scores;
         }
-        private async Task CalcAndApplyGameResults(Room room, List<User> roomDataUsers)//todo split this
+
+        /// <returns> the added xp and for what </returns>
+        private RoomXpReport[] UpdateUserStates(Room room, List<User> dataUsers, List<int> scores)
         {
-            var scores = CalcScores(room.RoomActors);
-            var totalBet = room.Bet * room.Capacity;
+            var xpReports = new RoomXpReport[room.Capacity];
+            for (int i = 0; i < xpReports.Length; i++) xpReports[i] = new RoomXpReport();
+
+            var betWithoutTicket = (int)(room.Bet / 1.1f);
+            var totalBet = betWithoutTicket * room.Capacity;
             var maxScore = scores.Max();
             var betXp = CalcBetXp(room.BetChoice);
-
-            // var winners = scores.Where(_ => _.Value == maxScore).Select(_ => _.Key).ToList();
-            // var losers = scores.Keys.Except(winners);
 
             var winnerIndices = scores.Select((score, i) => score == maxScore ? i : -1)
                 .Where(scoreIndex => scoreIndex != -1)
@@ -379,6 +397,7 @@ namespace Basra.Server.Services
             var loserIndices = Enumerable.Range(0, room.Capacity)
                 .Where(i => !winnerIndices.Contains(i))
                 .ToList();
+            var resignedUserIndex = scores.IndexOf(-1); //if no resign it retrun -1
 
             //drawers
             if (winnerIndices.Count > 1)
@@ -386,49 +405,75 @@ namespace Basra.Server.Services
                 var moneyPart = totalBet / winnerIndices.Count;
                 foreach (var userIndex in winnerIndices)
                 {
-                    var dUser = roomDataUsers[userIndex];
+                    var dUser = dataUsers[userIndex];
                     dUser.Draws++;
                     dUser.Money += moneyPart;
                     dUser.TotalEarnedMoney += moneyPart;
-                    dUser.XP += (int)Room.DrawXpPercent * betXp;
+
+                    dUser.XP += xpReports[userIndex].Competition = (int)Room.DrawXpPercent * betXp;
                 }
             }
             //winner
             else
             {
-                var dUser = roomDataUsers[winnerIndices[0]];
+                var dUser = dataUsers[winnerIndices[0]];
                 dUser.WonRoomsCount++;
                 dUser.Money += totalBet;
                 dUser.TotalEarnedMoney += totalBet;
-                dUser.XP += (int)Room.WinXpPercent * betXp;
                 dUser.WinStreak++;
+
+                dUser.XP += xpReports[0].Competition = (int)Room.WinXpPercent * betXp;
             }
+
 
             //losers
             foreach (var loserIndex in loserIndices)
             {
-                var dUser = roomDataUsers[loserIndex];
-                dUser.XP += (int)Room.LoseXpPercent * betXp;
+                var dUser = dataUsers[loserIndex];
+                if (loserIndex != resignedUserIndex)
+                    dUser.XP += xpReports[loserIndex].Competition = (int)Room.LoseXpPercent * betXp;
+
                 dUser.WinStreak = 0;
             }
 
-            //this part of good deeds system
-            //todo more work on complete deeds system
-            //add in game great things xp like eating alot, basra with many cards, etc..
             for (int i = 0; i < room.Capacity; i++)
             {
-                roomDataUsers[i].PlayedRoomsCount++;
+                var dUser = dataUsers[i];
+                var roomActor = room.RoomActors[i];
 
-                roomDataUsers[i].EatenCardsCount += room.RoomUsers[i].EatenCardsCount;
-                roomDataUsers[i].BasraCount += room.RoomUsers[i].BasraCount;
-                roomDataUsers[i].BigBasraCount += room.RoomUsers[i].BigBasraCount;
+                dUser.PlayedRoomsCount++;
 
-                roomDataUsers[i].XP += (int)(room.RoomUsers[i].BasraCount * Room.BasraXpPercent * betXp);
-                roomDataUsers[i].XP += (int)(room.RoomUsers[i].BigBasraCount * Room.BigBasraXpPercent * betXp);
+                dUser.EatenCardsCount += roomActor.EatenCardsCount;
+                dUser.BasraCount += roomActor.BasraCount;
+                dUser.BigBasraCount += roomActor.BigBasraCount;
 
-                await LevelWorks(roomDataUsers[i]); //this uses xp and should be invoked after all xp edits
+                if (i != resignedUserIndex)
+                {
+                    dUser.XP += xpReports[i].Basra = roomActor.BasraCount * (int)Room.BasraXpPercent * betXp;
+                    dUser.XP += xpReports[i].BigBasra = roomActor.BigBasraCount * (int)Room.BigBasraXpPercent * betXp;
+
+                    if (roomActor.EatenCardsCount > Room.GreatEatThreshold)
+                        dataUsers[i].XP += xpReports[i].GreatEat = (int)Room.GreatEatXpPercent * betXp;
+                }
             }
+
+            return xpReports;
         }
+
+        private int CalcBetXp(int betChoice) => (int)(100 * MathF.Pow(betChoice, 1.4f)) + 100;
+
+        private void RemoveDisconnectedUsers(List<RoomUser> roomUsers)
+        {
+            foreach (var roomUser in roomUsers.Where(ru => ru.ActiveUser.Disconnected))
+                //where filtered with new collection, I don't know the performance but I will see how
+                //linq works under the hood, because I think the created collection doesn't affect performance
+                _sessionRepo.RemoveActiveUser(roomUser.ActiveUser.Id);
+        }
+
+        /// <summary>
+        /// check current level againest xp to level up and send to client
+        /// functions that takes data user as param dosn't save changes
+        /// </summary>
         private async Task LevelWorks(User roomDataUser) //separate this to be called on every XP change 
         {
             var calcedLevel = Room.GetLevelFromXp(roomDataUser.XP);
@@ -439,7 +484,7 @@ namespace Basra.Server.Services
                 for (int j = 0; j < increasedLevels; j++)
                 {
                     totalMoneyReward += 100;
-                    //todo give level up rewards (money equation)
+                    //todo give level up rewards (money equation), add to test
                     //todo test this function logic
                 }
 
@@ -450,27 +495,52 @@ namespace Basra.Server.Services
                     .SendAsync("LevelUp", calcedLevel, totalMoneyReward);
             }
         }
-        private int CalcBetXp(int betChoice) => (int)(100 * MathF.Pow(betChoice, 1.4f)) + 100;
-        private async Task SendUserInfo(Room room, List<User> roomDataUsers)
+
+        private async Task SendFinalizeResult(Room room, List<User> roomDataUsers, RoomXpReport[] roomXpReports)
         {
             var updateProfileTasks = new List<Task>();
-            for (int i = 0; i < room.Capacity; i++)
+            for (int i = 0; i < room.RoomUsers.Count; i++)
             {
-                updateProfileTasks.Add(_masterHub.Clients.User(room.RoomUsers[i].Id).SendAsync("UpdatePersonalInfo",
-                    Mapper.ConvertUserDataToClient(roomDataUsers[i])));
+                var finalizeResult = new FinalizeResult
+                {
+                    RoomXpReport = roomXpReports[i],
+                    PersonalFullUserInfo = Mapper.ConvertUserDataToClient(roomDataUsers[i]),
+                };
+
+                updateProfileTasks.Add(_masterHub.Clients.User(room.RoomUsers[i].Id)
+                    .SendAsync("FinalizeResult", finalizeResult));
             }
             await Task.WhenAll(updateProfileTasks);
         }
-        private void MakeUsersDomainFinishedRoom(List<RoomUser> roomUsers)
+
+        public async Task<ActiveRoomState> GetFullRoomState(RoomUser roomUser)
         {
-            roomUsers.ForEach(ru => ru.ActiveUser.Domain = typeof(UserDomain.App.Room.FinishedRoom));
-        }
-        private void RemoveDisconnectedUsers(List<RoomUser> roomUsers)
-        {
-            foreach (var roomUser in roomUsers.Where(ru => ru.ActiveUser.Disconnected))
-                //where filtered with new collection, I don't know the performance but I will see how
-                //linq works under the hood, because I think the created collection doesn't affect performance
-                _sessionRepo.RemoveActiveUser(roomUser.ActiveUser.Id);
+            var room = roomUser.Room;
+            var usersInfo = await _masterRepo.GetFullUserInfoListAsync(room.RoomActors.Select(ra => ra.Id));
+
+            var roomState = new ActiveRoomState
+            {
+                CurrentTurn = room.CurrentTurn,
+                FullUsersInfo = usersInfo,
+                Ground = room.GroundCards,
+                MyHand = roomUser.Hand,
+                TurnId = roomUser.TurnId,
+
+                OppoHandCounts = new List<int>(),
+                BasrasCounts = new List<int>(),
+                BigBasrasCounts = new List<int>(),
+                EatenCardsCounts = new List<int>(),
+            };
+
+            room.RoomActors.ForEach(ra =>
+            {
+                roomState.OppoHandCounts.Add(ra.Hand.Count);
+                roomState.BasrasCounts.Add(ra.BasraCount);
+                roomState.BigBasrasCounts.Add(ra.BigBasraCount);
+                roomState.EatenCardsCounts.Add(ra.EatenCardsCount);
+            });
+
+            return roomState;
         }
     }
 }

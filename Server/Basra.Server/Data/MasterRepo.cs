@@ -38,7 +38,7 @@ namespace Basra.Server
         // void StartRoomUser(RoomUser roomUser, int turnId, string roomId);
         Task<List<User>> GetUsersByIds(List<string> ids);
         Task<FullUserInfo> GetFullUserInfoAsync(string id);
-        Task<List<FullUserInfo>> GetFullUserInfoListAsync(List<string> ids);
+        Task<List<FullUserInfo>> GetFullUserInfoListAsync(IEnumerable<string> ids);
     }
 
     /// <summary>
@@ -56,14 +56,14 @@ namespace Basra.Server
 
         public async Task<bool> SaveChangesAsync()
         {
-            return _context.SaveChanges() >= 0;
+            return await _context.SaveChangesAsync() >= 0;
         }
 
         #region user
 
         public async Task<User> CreateUserAsync(string fbid)
         {
-            var user = new User {Fbid = fbid};
+            var user = new User { Fbid = fbid };
             await _context.AddAsync(user);
             //await _context.Users.AddAsync(user);
             return user;
@@ -125,9 +125,9 @@ namespace Basra.Server
         {
             return await _context.Users.Where(_ => _.Id == id).Select(Mapper.UserToFullUserInfoProjection).FirstAsync();
         }
-        public async Task<List<FullUserInfo>> GetFullUserInfoListAsync(List<string> ids)
+        public async Task<List<FullUserInfo>> GetFullUserInfoListAsync(IEnumerable<string> ids)
         {
-            return await _context.Users.Where(u => ids.Contains(u.Id)).Take(ids.Count)
+            return await _context.Users.Where(u => ids.Contains(u.Id)).Take(ids.Count())
                 .Select(Mapper.UserToFullUserInfoProjection)
                 .ToListAsync();
         }

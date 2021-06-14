@@ -7,7 +7,5 @@
         public bool IsReady { get; set; }
 
         public ActiveUser ActiveUser { get; set; }
-
-        public bool Resigned { get; set; }
     }
 }

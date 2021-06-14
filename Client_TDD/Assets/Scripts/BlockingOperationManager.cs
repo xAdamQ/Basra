@@ -13,22 +13,23 @@ public class BlockingOperationManager
         _blockingPanel = blockingPanel;
     }
 
-    // /// <summary>
-    // /// invoke, block, and forget
-    // /// </summary>
+    /// <summary>
+    /// invoke, block, and forget
+    /// </summary>
     public void Forget(Func<UniTask> operation, Action onComplete = null)
     {
         Start(operation).Forget(e => throw e);
     }
     public async UniTask Start(Func<UniTask> operation)
     {
+
         _blockingPanel.Show();
         try
         {
             await operation();
             _blockingPanel.Hide();
         }
-        catch (BadUserInputException e) //todo test if you can get bad user input exc here
+        catch (BadUserInputException) //todo test if you can get bad user input exc here
         {
             _blockingPanel.Hide("operation is not allowed");
             throw;
@@ -48,7 +49,7 @@ public class BlockingOperationManager
             _blockingPanel.Hide();
             return result;
         }
-        catch (BadUserInputException e) //todo test if you can get bad user input exc here
+        catch (BadUserInputException) //todo test if you can get bad user input exc here
         {
             _blockingPanel.Hide("operation is not allowed");
             throw;

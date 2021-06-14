@@ -9,6 +9,7 @@ using Basra.Models.Client;
 using Basra.Server.Helpers;
 using Basra.Server.Services;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace Basra.Server
 {
@@ -89,7 +90,7 @@ namespace Basra.Server
         {
             _logger.LogInformation($"{Context.UserIdentifier} Disconnected");
 
-            if (RoomUser != null)
+            if (RoomUser != null) //todo test get non existing user
                 ActiveUser.Disconnected = true;
             else
                 _sessionRepo.RemoveActiveUser(Context.UserIdentifier);
@@ -190,6 +191,16 @@ namespace Basra.Server
             await _roomManager.UserPlayRpc(RoomUser, indexInHand);
         }
 
+        /// <summary>
+        /// get what makes up the room for reconnected users
+        /// except for the turn remaining time
+        /// </summary>
+        [RpcDomain(typeof(UserDomain.App.Room))]
+        public async Task<ActiveRoomState> GetFullRoomState()
+        {
+            return await _roomManager.GetFullRoomState(RoomUser);
+        }
+
         #endregion
 
 
@@ -208,7 +219,7 @@ namespace Basra.Server
         [RpcDomain(typeof(UserDomain.App))]
         public MinUserInfo TestReturnObject()
         {
-            return new MinUserInfo { Name = "some data to test" };
+            return new MinUserInfo {Name = "some data to test"};
         }
 
         public class MethodDomains

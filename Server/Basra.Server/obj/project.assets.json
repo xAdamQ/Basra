@@ -6274,11 +6274,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/adam/Projects/Basra/Basra.Server/Basra.Server.csproj",
+      "projectUniqueName": "/home/adam/Projects/Basra/Server/Basra.Server/Basra.Server.csproj",
       "projectName": "Basra.Server",
-      "projectPath": "/home/adam/Projects/Basra/Basra.Server/Basra.Server.csproj",
+      "projectPath": "/home/adam/Projects/Basra/Server/Basra.Server/Basra.Server.csproj",
       "packagesPath": "/home/adam/.nuget/packages/",
-      "outputPath": "/home/adam/Projects/Basra/Basra.Server/obj/",
+      "outputPath": "/home/adam/Projects/Basra/Server/Basra.Server/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/adam/.nuget/NuGet/NuGet.Config"
@@ -6293,8 +6293,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "/home/adam/Projects/Basra/Common/Common.csproj": {
-              "projectPath": "/home/adam/Projects/Basra/Common/Common.csproj"
+            "/home/adam/Projects/Basra/Server/Common/Common.csproj": {
+              "projectPath": "/home/adam/Projects/Basra/Server/Common/Common.csproj"
             }
           }
         }
@@ -6382,7 +6382,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.300/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
       }
     }
   }

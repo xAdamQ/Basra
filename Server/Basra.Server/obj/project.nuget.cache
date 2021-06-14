@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xY7xvK8OhBw+uW5iP8S6wifiSQRO0V36+rqJz+a1o/DLGrgJnqsod6k7p9Vesng3wdvqO7L188IYBMuXxAVsag==",
+  "dgSpecHash": "y1fUmgAx2nYcHqhEFkwE1QBnjWo0z8FY+/KgqFzIrxMjcRupa7B8JX9wyDpU852tOcZ5+m8rDi5AKSaT3fD8nA==",
   "success": true,
-  "projectFilePath": "/home/adam/Projects/Basra/Basra.Server/Basra.Server.csproj",
+  "projectFilePath": "/home/adam/Projects/Basra/Server/Basra.Server/Basra.Server.csproj",
   "expectedPackageFiles": [
     "/home/adam/.nuget/packages/automapper/10.1.1/automapper.10.1.1.nupkg.sha512",
     "/home/adam/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/8.1.1/automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
