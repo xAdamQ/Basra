@@ -127,15 +127,4 @@ namespace Basra.Server.Tests.Integration
         }
     }
 
-    public class DisplayUser
-    {
-        public string Name { get; set; }
-        public int PlayedRooms { get; set; }
-        public int Wins { get; set; }
-
-        public override string ToString()
-        {
-            return $"Name: {Name} PlayedRooms: {PlayedRooms} Wins: {Wins}";
-        }
-    }
 }

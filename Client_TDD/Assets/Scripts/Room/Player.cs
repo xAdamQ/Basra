@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.XR;
 using Zenject;
@@ -10,22 +11,38 @@ public interface IPlayer : IPlayerBase
 {
     void Throw(Card card); //tested
     void Distribute(List<int> cardIds); //tested
-    void ServerThrow(ThrowResult throwResult); //trivial to test
+    void ForceThrow(ThrowResult throwResult); //trivial to test
     bool IsPlayable(); //trivial to test
     void MyThrowResult(ThrowResult result);
 }
 
 public class Player : PlayerBase, IPlayer
 {
-    [Inject] private readonly TurnTimer _turnTimer;
+    [Inject] private readonly IController _controller;
+    [Inject] private readonly ITurnTimer _turnTimer;
 
+    private bool IsNormalThrowCalled;
 
     public void Throw(Card card)
     {
         //no await for return style because of server inability to do following actions
+        IsNormalThrowCalled = true;
+        _turnTimer.Elapsed -= MissTurn;
+
         _controller.ThrowCard(HandCards.IndexOf(card));
-        //blocking here is custom
-        // ThrowBase(card, response);
+    }
+
+    public void ForceThrow(ThrowResult throwResult)
+    {
+        var card = HandCards.First(c => c.Front.Index == throwResult.ThrownCard);
+
+        OrganizeHand(); //return the processing card if any
+
+        var throwSeq = DOTween.Sequence();
+
+        var targetPoz = PlaceCard(card, throwSeq);
+
+        ThrowBase(throwResult, throwSeq, targetPoz);
     }
 
     public void MyThrowResult(ThrowResult result)
@@ -33,19 +50,9 @@ public class Player : PlayerBase, IPlayer
         ThrowBase(result);
     }
 
-    private void Start()
-    {
-        _turnTimer.uniTaskTimer.Elapsed += MissTurn;
-    }
-
-    private void MissTurn()
-    {
-        _controller.NotifyTurnMiss(); //async forgotten
-    }
-
     public bool IsPlayable()
     {
-        return _roomController.CurrentTurn == Turn && _turnTimer.uniTaskTimer.Active;
+        return _coreGameplay.PlayerInTurn == this && _turnTimer.IsPlaying;
     }
 
     public void Distribute(List<int> cardIds)
@@ -60,8 +67,24 @@ public class Player : PlayerBase, IPlayer
         OrganizeHand();
     }
 
-    public void ServerThrow(ThrowResult throwResult)
+    public override void StartTurn()
     {
-        ThrowBase(throwResult);
+        base.StartTurn();
+        IsNormalThrowCalled = false;
+        _turnTimer.Elapsed += MissTurn;
     }
+
+    public override void EndTurn()
+    {
+        base.EndTurn();
+
+        if (!IsNormalThrowCalled)
+            _turnTimer.Elapsed -= MissTurn;
+    }
+
+    private void MissTurn()
+    {
+        _controller.NotifyTurnMiss().Forget(e => throw e);
+    }
+
 }

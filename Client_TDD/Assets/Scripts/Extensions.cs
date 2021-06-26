@@ -12,6 +12,8 @@ public static class Extensions
     }
     public static T GetRandom<T>(this List<T> list)
     {
+        if (list.Count == 0) throw new System.Exception("you are trying to get a random element from an empty list");
+
         var randIndex = Random.Range(0, list.Count);
         return list[randIndex];
     }

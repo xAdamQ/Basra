@@ -5,24 +5,14 @@ using Zenject;
 
 /// <summary>
 /// only single instance possible at a time
-/// 
 /// </summary>
 public class PersonalFullUserView : FullUserView
 {
     [SerializeField] private Text money;
-    //todo  [SerializeField] private Text[] flipWin;
 
-    private IRepository _repository;
-
-    [Inject]
-    public void Construct(IRepository repository)
+    public void Show(PersonalFullUserInfo personalFullInfo)
     {
-        _repository = repository;
-    }
-
-    public void Show()
-    {
-        base.Show(_repository.PersonalFullInfo);
-        money.text = _repository.PersonalFullInfo.Money.ToString();
+        base.Show(personalFullInfo);
+        money.text = personalFullInfo.Money.ToString();
     }
 }

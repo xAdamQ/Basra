@@ -123,43 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &1454170323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d44e6804bc58be84ea71a619b468f150, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1524748794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3e1b3cbf3fac6a459b1a602167ad311, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1663305444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68f09f0f82599b5448579854e622a4c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &1821516427
+--- !u!1 &239959502
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -167,9 +131,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1821516430}
-  - component: {fileID: 1821516429}
-  - component: {fileID: 1821516428}
+  - component: {fileID: 239959505}
+  - component: {fileID: 239959504}
+  - component: {fileID: 239959503}
   m_Layer: 0
   m_Name: Code-based tests runner
   m_TagString: Untagged
@@ -177,25 +141,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1821516428
+--- !u!114 &239959503
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1821516427}
+  m_GameObject: {fileID: 239959502}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3cf5cb9e1ef590c48b1f919f2a7bd895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1821516429
+--- !u!114 &239959504
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1821516427}
+  m_GameObject: {fileID: 239959502}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 102e512f651ee834f951a2516c1ea3b8, type: 3}
@@ -209,7 +173,7 @@ MonoBehaviour:
   testStartedEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1821516428}
+      - m_Target: {fileID: 239959503}
         m_TargetAssemblyTypeName: UnityEngine.TestTools.TestRunner.Callbacks.PlayModeRunnerCallback,
           UnityEngine.TestRunner
         m_MethodName: TestStarted
@@ -222,7 +186,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1454170323}
+      - m_Target: {fileID: 1465787074}
         m_TargetAssemblyTypeName: UnityEditor.TestTools.TestRunner.TestRunnerCallback,
           UnityEditor.TestRunner
         m_MethodName: TestStarted
@@ -235,7 +199,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1524748794}
+      - m_Target: {fileID: 1282478053}
         m_TargetAssemblyTypeName: UnityEditor.TestTools.TestRunner.Api.CallbacksDelegatorListener,
           UnityEditor.TestRunner
         m_MethodName: TestStarted
@@ -248,7 +212,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1663305444}
+      - m_Target: {fileID: 1378047658}
         m_TargetAssemblyTypeName: UnityEngine.TestRunner.Utils.TestRunCallbackListener,
           UnityEngine.TestRunner
         m_MethodName: TestStarted
@@ -264,7 +228,7 @@ MonoBehaviour:
   testFinishedEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1821516428}
+      - m_Target: {fileID: 239959503}
         m_TargetAssemblyTypeName: UnityEngine.TestTools.TestRunner.Callbacks.PlayModeRunnerCallback,
           UnityEngine.TestRunner
         m_MethodName: TestFinished
@@ -277,7 +241,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1454170323}
+      - m_Target: {fileID: 1465787074}
         m_TargetAssemblyTypeName: UnityEditor.TestTools.TestRunner.TestRunnerCallback,
           UnityEditor.TestRunner
         m_MethodName: TestFinished
@@ -290,7 +254,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1524748794}
+      - m_Target: {fileID: 1282478053}
         m_TargetAssemblyTypeName: UnityEditor.TestTools.TestRunner.Api.CallbacksDelegatorListener,
           UnityEditor.TestRunner
         m_MethodName: TestFinished
@@ -303,7 +267,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1663305444}
+      - m_Target: {fileID: 1378047658}
         m_TargetAssemblyTypeName: UnityEngine.TestRunner.Utils.TestRunCallbackListener,
           UnityEngine.TestRunner
         m_MethodName: TestFinished
@@ -319,7 +283,7 @@ MonoBehaviour:
   runStartedEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1821516428}
+      - m_Target: {fileID: 239959503}
         m_TargetAssemblyTypeName: UnityEngine.TestTools.TestRunner.Callbacks.PlayModeRunnerCallback,
           UnityEngine.TestRunner
         m_MethodName: RunStarted
@@ -332,7 +296,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1454170323}
+      - m_Target: {fileID: 1465787074}
         m_TargetAssemblyTypeName: UnityEditor.TestTools.TestRunner.TestRunnerCallback,
           UnityEditor.TestRunner
         m_MethodName: RunStarted
@@ -345,7 +309,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1524748794}
+      - m_Target: {fileID: 1282478053}
         m_TargetAssemblyTypeName: UnityEditor.TestTools.TestRunner.Api.CallbacksDelegatorListener,
           UnityEditor.TestRunner
         m_MethodName: RunStarted
@@ -358,7 +322,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1663305444}
+      - m_Target: {fileID: 1378047658}
         m_TargetAssemblyTypeName: UnityEngine.TestRunner.Utils.TestRunCallbackListener,
           UnityEngine.TestRunner
         m_MethodName: RunStarted
@@ -374,7 +338,7 @@ MonoBehaviour:
   runFinishedEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1821516428}
+      - m_Target: {fileID: 239959503}
         m_TargetAssemblyTypeName: UnityEngine.TestTools.TestRunner.Callbacks.PlayModeRunnerCallback,
           UnityEngine.TestRunner
         m_MethodName: RunFinished
@@ -387,7 +351,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1454170323}
+      - m_Target: {fileID: 1465787074}
         m_TargetAssemblyTypeName: UnityEditor.TestTools.TestRunner.TestRunnerCallback,
           UnityEditor.TestRunner
         m_MethodName: RunFinished
@@ -400,7 +364,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1524748794}
+      - m_Target: {fileID: 1282478053}
         m_TargetAssemblyTypeName: UnityEditor.TestTools.TestRunner.Api.CallbacksDelegatorListener,
           UnityEditor.TestRunner
         m_MethodName: RunFinished
@@ -413,7 +377,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1663305444}
+      - m_Target: {fileID: 1378047658}
         m_TargetAssemblyTypeName: UnityEngine.TestRunner.Utils.TestRunCallbackListener,
           UnityEngine.TestRunner
         m_MethodName: RunFinished
@@ -432,18 +396,18 @@ MonoBehaviour:
       groupNames: []
       categoryNames: []
       testNames:
-      - LobbyTests.LobbyViewsTest.TestScene
+      - PlayModeTests.RoomTests.Player_Throw
       synchronousOnly: 0
     sceneBased: 0
-    originalScene: Assets/Scenes/Lobby.unity
-    bootstrapScene: Assets/InitTestScene637539625301715040.unity
---- !u!4 &1821516430
+    originalScene: Assets/Scenes/Startup.unity
+    bootstrapScene: Assets/InitTestScene637598726850310953.unity
+--- !u!4 &239959505
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1821516427}
+  m_GameObject: {fileID: 239959502}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -451,3 +415,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1282478053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e1b3cbf3fac6a459b1a602167ad311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1378047658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68f09f0f82599b5448579854e622a4c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1465787074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d44e6804bc58be84ea71a619b468f150, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

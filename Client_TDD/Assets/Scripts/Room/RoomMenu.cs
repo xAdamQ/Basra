@@ -10,7 +10,7 @@ public class RoomMenu : MonoBehaviour
 
     public async void Surrender()
     {
-        await _blockingOperationManager.Start(_controller.Surrender);
+        await _blockingOperationManager.Start(_controller.Surrender());
 
         _roomController.DestroyModule();
         _lobbyFactory.Create();

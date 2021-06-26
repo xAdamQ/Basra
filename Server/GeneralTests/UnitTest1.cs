@@ -85,5 +85,34 @@ namespace GeneralTests
             }
         }
 
+
+        public static int ConvertTurnToPlayerIndex(int turn, int myTurn, int roomCapacity)
+        {
+            if (turn == myTurn) return 0;
+
+            var newTurn = myTurn;
+            for (var playerIndex = 1; playerIndex < roomCapacity; playerIndex++)
+            {
+                newTurn = ++newTurn % roomCapacity;
+                if (newTurn == turn) return playerIndex;
+            }
+
+            throw new System.Exception("couldn't convert");
+        }
+
+        [Theory]
+        [InlineData(2, 1, 3, 1)]
+        [InlineData(1, 1, 3, 0)]
+        [InlineData(0, 1, 3, 2)]
+
+        [InlineData(0, 2, 3, 1)]
+        [InlineData(1, 2, 3, 2)]
+        [InlineData(2, 2, 3, 0)]
+        public void Test7(int turn, int myTurn, int capacity, int playerIndex)
+        {
+            var result = ConvertTurnToPlayerIndex(turn, myTurn, capacity);
+            Assert.Equal(playerIndex, result);
+        }
+
     }
 }

@@ -62,10 +62,10 @@ public class CardbackShopItem : MonoBehaviour
         switch (State)
         {
             case ShopItemState.Locked:
-                _blockingOperationManager.Forget(TryUnlock);
+                _blockingOperationManager.Forget(TryUnlock());
                 break;
             case ShopItemState.Unlocked:
-                _blockingOperationManager.Forget(TrySet);
+                _blockingOperationManager.Forget(TrySet());
                 break;
         }
     }

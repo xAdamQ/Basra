@@ -26,7 +26,7 @@ public class CardbackShop : MonoBehaviour
 
     public async void ShowPanel()
     {
-        await _blockingOperationManager.Start(LoadCardbacks);
+        await _blockingOperationManager.Start(LoadCardbacks());
         shopPanel.SetActive(true);
     }
     public void HidePanel()

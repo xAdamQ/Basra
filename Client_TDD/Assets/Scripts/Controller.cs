@@ -28,6 +28,13 @@ public interface IController
 
     void TstStartClient(string id);
     void UpdatePersonalInfo(PersonalFullUserInfo obj);
+
+    void AssignRpc(Action action, string moduleName);
+    void AssignRpc<T1>(Action<T1> action, string moduleName);
+    void AssignRpc<T1, T2>(Action<T1, T2> action, string moduleName);
+    void AssignRpc<T1, T2, T3>(Action<T1, T2, T3> action, string moduleName);
+
+    void RemoveModuleRpcs(string moduleName);
 }
 
 public class Controller : IController, IInitializable
@@ -102,6 +109,52 @@ public class Controller : IController, IInitializable
         hubConnection.On<PersonalFullUserInfo>(nameof(UpdatePersonalInfo), UpdatePersonalInfo);
     }
 
+    private Dictionary<string, List<string>> RpcsNames = new Dictionary<string, List<string>>();
+
+    private void SaveRpcName(string actionName, string moduleName)
+    {
+        if (RpcsNames.ContainsKey(moduleName))
+            RpcsNames[moduleName].Add(actionName);
+        else
+            RpcsNames.Add(moduleName, new List<string> { actionName });
+    }
+
+    public void AssignRpc(Action action, string moduleName)
+    {
+        var actionName = action.Method.Name;
+
+        hubConnection.On(actionName, action);
+
+        SaveRpcName(actionName, moduleName);
+    }
+    public void AssignRpc<T1>(Action<T1> action, string moduleName)
+    {
+        var actionName = action.Method.Name;
+
+        hubConnection.On<T1>(actionName, action);
+
+        SaveRpcName(actionName, moduleName);
+    }
+    public void AssignRpc<T1, T2>(Action<T1, T2> action, string moduleName)
+    {
+        var actionName = action.Method.Name;
+
+        hubConnection.On<T1, T2>(actionName, action);
+
+        SaveRpcName(actionName, moduleName);
+    }
+    public void AssignRpc<T1, T2, T3>(Action<T1, T2, T3> action, string moduleName)
+    {
+        var actionName = action.Method.Name;
+
+        hubConnection.On<T1, T2, T3>(actionName, action);
+
+        SaveRpcName(actionName, moduleName);
+    }
+    public void RemoveModuleRpcs(string moduleName)
+    {
+        RpcsNames[moduleName].ForEach(_ => hubConnection.Remove(_));
+    }
 
     private List<string> lobbyRpcNames;
     public void AddLobbyRpcs(ILobbyController lobbyController)
@@ -117,38 +170,19 @@ public class Controller : IController, IInitializable
         lobbyRpcNames.ForEach(_ => hubConnection.Remove(_));
     }
 
-    private List<string> roomRpcNames;
-    public void AddRoomRpcs(IRoomController roomController)
-    {
-        roomRpcNames = new List<string>();
+    // private List<string> roomRpcNames;
+    // public void AddRoomRpcs(IRoomController roomController)
+    // {
+    //     roomRpcNames = new List<string>();
 
-        hubConnection.On<ThrowResult>(nameof(roomController.MyThrowResult),
-            roomController.MyThrowResult);
-        lobbyRpcNames.Add(nameof(roomController.MyThrowResult));
-
-        hubConnection.On<List<int>, List<int>>(nameof(roomController.StartRoomRpc),
-            roomController.StartRoomRpc);
-        lobbyRpcNames.Add(nameof(roomController.StartRoomRpc));
-
-        hubConnection.On<List<int>>("Distribute",
-            roomController.PlayersDistribute);
-        lobbyRpcNames.Add("Distribute");
-        //* this is an exc on naming convention
-
-        hubConnection.On<ThrowResult>(nameof(roomController.ForcePlay),
-            roomController.ForcePlay);
-        lobbyRpcNames.Add(nameof(roomController.ForcePlay));
-
-        hubConnection.On<ThrowResult>(nameof(roomController.CurrentOppoThrow),
-            roomController.CurrentOppoThrow);
-        lobbyRpcNames.Add(nameof(roomController.CurrentOppoThrow));
-
-
-    }
-    public void RemoveRoomRpcs()
-    {
-        roomRpcNames.ForEach(_ => hubConnection.Remove(_));
-    }
+    //     hubConnection.On<List<int>, List<int>>(nameof(roomController.StartRoomRpc),
+    //         roomController.StartRoomRpc);
+    //     lobbyRpcNames.Add(nameof(roomController.StartRoomRpc));
+    // }
+    // public void RemoveRoomRpcs()
+    // {
+    //     roomRpcNames.ForEach(_ => hubConnection.Remove(_));
+    // }
 
     private HubConnection hubConnection;
     private readonly string address = "http://localhost:5000/connect";

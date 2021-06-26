@@ -1,9 +1,5 @@
-using System;
-using System.ComponentModel;
 using Cysharp.Threading.Tasks;
-using MiscUtil.Collections.Extensions;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
 
@@ -15,6 +11,7 @@ public class MinUserView : MonoBehaviour
     [SerializeField] private Text level;
     [SerializeField] private Text title;
 
+    protected BlockingOperationManager _blockingOperationManager;
     protected IController _controller;
     protected FullUserView _fullUserView;
 
@@ -32,23 +29,18 @@ public class MinUserView : MonoBehaviour
         DisplayName = minUserInfo.Name;
         Title = Repository.Titles[minUserInfo.SelectedTitleId];
 
-        //upgrade current types by inheritance 
-        //
-
         if (minUserInfo.IsPictureLoaded)
             SetPicture(minUserInfo.Picture);
         else
             minUserInfo.PictureLoaded += pic => SetPicture(pic);
     }
 
-
     /// <summary>
     /// personal view overrides this 
     /// </summary>
     public virtual void ShowFullInfo()
     {
-        //todo this forget thing maybe wrong
-        _controller.GetPublicFullUserInfo(id).ContinueWith(info => _fullUserView.Show(info)).Forget();
+        _blockingOperationManager.Forget(_controller.GetPublicFullUserInfo(id), info => _fullUserView.Show(info));
     }
 
     private void SetPicture(Texture2D texture2D)

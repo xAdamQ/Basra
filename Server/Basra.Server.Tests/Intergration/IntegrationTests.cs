@@ -85,7 +85,7 @@ namespace Basra.Server.Tests.Integration
             await c2.Connection.InvokeAsync("Ready");
 
             await c.Connection.InvokeAsync("Throw", 0);
-            await c2.Connection.InvokeAsync("InformTurnTimeout");
+            await c2.Connection.InvokeAsync("MissTurn");
             await c.Connection.InvokeAsync("Throw", 0);
         }
 

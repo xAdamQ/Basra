@@ -54,6 +54,10 @@ namespace Basra.Server
                 public class FinishedRoom : Room
                 {
                 }
+
+                internal class Active : Room
+                {
+                }
             }
         }
     }

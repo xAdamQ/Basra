@@ -19,3 +19,12 @@
 /home/adam/Projects/Basra/Client_TDD/Assets/Plugins/Common.deps.json
 /home/adam/Projects/Basra/Client_TDD/Assets/Plugins/Common.dll
 /home/adam/Projects/Basra/Client_TDD/Assets/Plugins/Common.pdb
+C:\Projects\Basra\Server\Common\bin\Debug\netstandard2.0\Common.deps.json
+C:\Projects\Basra\Server\Common\bin\Debug\netstandard2.0\Common.dll
+C:\Projects\Basra\Server\Common\bin\Debug\netstandard2.0\Common.pdb
+C:\Projects\Basra\Server\Common\obj\Debug\netstandard2.0\Common.csprojAssemblyReference.cache
+C:\Projects\Basra\Server\Common\obj\Debug\netstandard2.0\Common.AssemblyInfoInputs.cache
+C:\Projects\Basra\Server\Common\obj\Debug\netstandard2.0\Common.AssemblyInfo.cs
+C:\Projects\Basra\Server\Common\obj\Debug\netstandard2.0\Common.csproj.CoreCompileInputs.cache
+C:\Projects\Basra\Server\Common\obj\Debug\netstandard2.0\Common.dll
+C:\Projects\Basra\Server\Common\obj\Debug\netstandard2.0\Common.pdb

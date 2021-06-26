@@ -8,6 +8,7 @@ public class PersonalActiveUserView : MinUserView
 {
     private IRepository _repository;
     private PersonalFullUserView _personalFullUserView;
+
     [Inject]
     public void Construct(IRepository repository, PersonalFullUserView personalFullUserView)
     {
@@ -30,7 +31,7 @@ public class PersonalActiveUserView : MinUserView
 
     public void ShowFullView()
     {
-        _personalFullUserView.Show();
+        _personalFullUserView.Show(_repository.PersonalFullInfo);
     }
 
     protected virtual void OnInfoChanged(object sender, PropertyChangedEventArgs e)

@@ -31,8 +31,8 @@ public class Toast : MonoBehaviour, IToast
     {
         messageText.text = message ?? "";
 
-        var milliSeconds = (int) (seconds * 1000);
-        UniTask.Delay(milliSeconds).ContinueWith(Hide);
+        var milliSeconds = (int)(seconds * 1000);
+        UniTask.Delay(milliSeconds).ContinueWith(Hide).Forget();
 
         gameObject.SetActive(true);
     }

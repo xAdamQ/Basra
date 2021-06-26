@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
+using DG.Tweening;
 
 public interface IOppo : IPlayerBase
 {
@@ -19,12 +20,17 @@ public class Oppo : PlayerBase, IOppo
     {
         var randCard = HandCards.GetRandom();
         randCard.AddFront(throwResult.ThrownCard);
-        ThrowBase(throwResult);
+
+        var throwSeq = DOTween.Sequence();
+
+        var targetPoz = PlaceCard(randCard, throwSeq);
+
+        ThrowBase(throwResult, throwSeq, targetPoz);
     }
 
     public void Distribute()
     {
-        for (var i = 0; i < HandSize; i++)
+        for (var i = 0; i < HandCardCapacity; i++)
         {
             var card = _cardFactory.CreateOppoCard(transform);
             HandCards.Add(card);

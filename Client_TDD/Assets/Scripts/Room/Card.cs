@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using Zenject;
@@ -61,6 +62,29 @@ public class Card : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (Player != null && Player is IPlayer player && player.IsPlayable()) player.Throw(this);
+        if (Player != null && Player is IPlayer player && player.IsPlayable())
+            StartCoroutine(Drag(transform.position));
+    }
+
+    private IEnumerator Drag(Vector3 initialPoz)
+    {
+        while (Input.GetMouseButton(0) && (Player as IPlayer).IsPlayable())
+        {
+            transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
+            yield return null;
+        }
+
+        if ((Player as IPlayer).IsPlayable() &&
+            transform.position.x < Ground.Bounds.x &&
+            transform.position.y < Ground.Bounds.y &&
+            transform.position.x > -Ground.Bounds.x &&
+            transform.position.y > -Ground.Bounds.y)
+        {
+            (Player as IPlayer).Throw(this);
+        }
+        else
+        {
+            transform.position = initialPoz;
+        }
     }
 }

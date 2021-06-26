@@ -3,24 +3,14 @@ using Basra.Models.Client;
 
 public class ThrowResult
 {
-    public int ThrownCard;
-    public List<int> EatenCardsIds;
-    public bool Basra;
-    public bool BigBasra;
-
-    public FinalizeResult FinalizeResult;
-    public DistributeResult DistributeResult;
+    public int ThrownCard { set; get; }
+    public List<int> EatenCardsIds { set; get; }
+    public bool Basra { set; get; }
+    public bool BigBasra { set; get; }
 }
 
 public class FinalizeResult
 {
-    public RoomXpReport RoomXpReport;
-    public PersonalFullUserInfo PersonalFullUserInfo;
+    public RoomXpReport RoomXpReport { set; get; }
+    public PersonalFullUserInfo PersonalFullUserInfo { set; get; }
 }
-
-public class DistributeResult
-{
-    public List<int> MyHand;
-}
-
-//currentoppothrow, forceplay

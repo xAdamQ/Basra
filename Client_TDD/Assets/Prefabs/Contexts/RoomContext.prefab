@@ -67,7 +67,6 @@ MonoBehaviour:
   - {fileID: 6513530795172220441, guid: e484b8f8bf6d1147c97ae1d756659e56, type: 3}
   - {fileID: 3801320763732651490, guid: 1c4e8c2bf0e1fb8cf9ef12a5e22d133e, type: 3}
   - {fileID: 8335044926221963486, guid: 237ca89691d0e5ebea1b97773cc2fab5, type: 3}
-  frontPrefab: {fileID: 6318510277521361182, guid: 8d7fc7449ba5f5d4c8bf3fbe2ef81ffb, type: 3}
   frontSprites:
   - {fileID: 6601591887075733081, guid: 39883e13245f1054aac7b33760e03982, type: 3}
   - {fileID: -3112814339835767726, guid: 39883e13245f1054aac7b33760e03982, type: 3}
@@ -121,9 +120,10 @@ MonoBehaviour:
   - {fileID: 2818311151559306393, guid: 39883e13245f1054aac7b33760e03982, type: 3}
   - {fileID: -2329477468683614351, guid: 39883e13245f1054aac7b33760e03982, type: 3}
   - {fileID: -2942531076457057836, guid: 39883e13245f1054aac7b33760e03982, type: 3}
+  frontPrefab: {fileID: 6318510277521361182, guid: 8d7fc7449ba5f5d4c8bf3fbe2ef81ffb, type: 3}
   cardPrefab: {fileID: 8249647828415074049, guid: 91cc747f46429b00e945c1e73e073c70, type: 3}
   playerPrefab: {fileID: 6095275712694222183, guid: 0aec6ccccb153d3fbaa3fd23f5565cfa, type: 3}
-  oppoPrefab: {fileID: 6095275712694222183, guid: 0aec6ccccb153d3fbaa3fd23f5565cfa, type: 3}
+  oppoPrefab: {fileID: 6095275712694222183, guid: 269c58c535065087b8740a42fa1ba278, type: 3}
   groundPrefab: {fileID: 3841681440189108531, guid: 68aff56aa30865e4ab0dadcfd4a17353, type: 3}
   fullUserViewPrefab: {fileID: 6124222723417715920, guid: b3bd7468065470b358fedac840e188af, type: 3}
   personalFullUserViewPrefab: {fileID: 5773006616115483438, guid: 03239c0710ee07e46acd46217dec41fd, type: 3}
@@ -131,3 +131,9 @@ MonoBehaviour:
   turnTimerPrefab: {fileID: 7198160784560237362, guid: 3167fc88b7e754205844c245b9b71e78, type: 3}
   CameraPrefab: {fileID: 4817333019724019237, guid: 26c193700bec480e39931d410bae34e3, type: 3}
   EventSystemPrefab: {fileID: 7647310846122247347, guid: 84ec9ea54801264d7b30ac63de8eb2d4, type: 3}
+  references:
+    RoomResultPanelRef:
+      m_AssetGUID: de67c529bd241f24d95f21f7dd3a1059
+      m_SubObjectName: 
+      m_SubObjectType: 
+    Canvas: {fileID: 0}

@@ -172,20 +172,20 @@ namespace Basra.Server
 
         #region room
 
-        [RpcDomain(typeof(UserDomain.App.Room))]
+        [RpcDomain(typeof(UserDomain.App.Room.Active))]
         public async Task Throw(int indexInHand)
         {
             await _roomManager.UserPlayRpc(RoomUser, indexInHand);
         }
 
         //custom validation?
-        [RpcDomain(typeof(UserDomain.App.Room))]
-        public async Task InformTurnTimeout()
+        [RpcDomain(typeof(UserDomain.App.Room.Active))]
+        public async Task MissTurn()
         {
             await _roomManager.MissTurnRpc(RoomUser);
         }
 
-        [RpcDomain(typeof(UserDomain.App.Room))]
+        [RpcDomain(typeof(UserDomain.App.Room.Active))]
         public async Task Surrender(int indexInHand)
         {
             await _roomManager.UserPlayRpc(RoomUser, indexInHand);
@@ -195,7 +195,7 @@ namespace Basra.Server
         /// get what makes up the room for reconnected users
         /// except for the turn remaining time
         /// </summary>
-        [RpcDomain(typeof(UserDomain.App.Room))]
+        [RpcDomain(typeof(UserDomain.App.Room.Active))]
         public async Task<ActiveRoomState> GetFullRoomState()
         {
             return await _roomManager.GetFullRoomState(RoomUser);
@@ -219,7 +219,7 @@ namespace Basra.Server
         [RpcDomain(typeof(UserDomain.App))]
         public MinUserInfo TestReturnObject()
         {
-            return new MinUserInfo {Name = "some data to test"};
+            return new MinUserInfo { Name = "some data to test" };
         }
 
         public class MethodDomains

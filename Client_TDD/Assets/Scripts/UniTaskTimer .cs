@@ -1,47 +1,66 @@
-﻿using Cysharp.Threading.Tasks;
-using System;
+﻿//why I dumped it:
+//i can't stop the unitask straight forward as i do with coroutines
 
-public class UniTaskTimer
-{
-    //in milliseconds
-    private readonly int _timeStep;
-    private readonly int _interval;
+// using Cysharp.Threading.Tasks;
+// using System;
+// using System.Threading;
 
-    public event Action Elapsed;
-    public event Action<float> Ticked;
+// public class UniTaskTimer
+// {
+//     //in milliseconds
+//     private readonly int _timeStep;
+//     private readonly int _interval;
 
-    public bool Active { get; private set; }
+//     public event Action Elapsed;
+//     public event Action<float> Ticked;
 
-    public UniTaskTimer(int interval, int timeStep, Action elapsed = null, Action<float> ticked = null)
-    {
-        _interval = interval;
-        _timeStep = timeStep;
-        Elapsed += elapsed;
-        Ticked += ticked;
-    }
+//     public bool IsPlaying { get; private set; }
+//     public bool IsCancelled { get; private set; }
 
-    public async UniTask Play()
-    {
-        Active = true;
+//     public UniTaskTimer(int interval, int timeStep, Action elapsed = null, Action<float> ticked = null)
+//     {
+//         _interval = interval;
+//         _timeStep = timeStep;
+//         Elapsed += elapsed;
+//         Ticked += ticked;
+//     }
 
-        var ticksCount = _interval / _timeStep;
-        for (var i = 0; i < ticksCount; i++)
-        {
-            var progress = (float) i / ticksCount;
-            Ticked?.Invoke(progress);
 
-            await UniTask.Delay(_timeStep);
+//     public void Play()
+//     {
+//         if (IsPlaying)
+//         {
+//             IsCancelled = true;
+//             //await the timestep
+//         }
 
-            if (!Active) break;
-        }
+//         Play(LastPlayCTS.Token).Forget();
+//     }
 
-        if (Active) Elapsed?.Invoke(); //did it finish normally or terminated
+//     private async UniTask Play(CancellationToken ct)
+//     {
+//         IsPlaying = true;
 
-        Active = false;
-    }
+//         var ticksCount = _interval / _timeStep;
+//         for (var i = 0; i < ticksCount; i++)
+//         {
+//             var progress = (float)i / ticksCount;
+//             Ticked?.Invoke(progress);
 
-    public void Stop()
-    {
-        Active = false;
-    }
-}
+//             await UniTask.Delay(_timeStep);
+
+//             if (ct.IsCancellationRequested)
+//                 break;
+//         }
+
+//         if (IsPlaying) Elapsed?.Invoke(); //did it finish normally or terminated
+
+//         IsPlaying = false;
+//         //when cancelled by another timer is not as stopping
+//     }
+
+//     public void Stop()
+//     {
+//         IsPlaying = false;
+//     }
+// }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Basra.Models.Client;
 using UnityEngine;
@@ -38,5 +39,18 @@ public class RoomUserView : MinUserView
 
             return view;
         }
+
+        public List<MinUserView> Create(List<MinUserInfo> minUserInfo)
+        {
+            var views = new List<MinUserView>();
+
+            for (int i = 0; i < minUserInfo.Count; i++)
+            {
+                views.Add(Create(i, minUserInfo[i]));
+            }
+
+            return views;
+        }
+
     }
 }

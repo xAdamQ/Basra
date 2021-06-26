@@ -1,4 +1,3 @@
-using BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.Crmf;
 using UnityEngine;
 using Zenject;
 
@@ -7,7 +6,7 @@ public static class ZenjectExtensions
     public static FromBinder AddInstantSceneModule<T>(this DiContainer container, GameObject prefab,
         Transform parent = null, bool hasAbstraction = false)
     {
-        var binder = hasAbstraction ? (FromBinder) container.BindInterfacesTo<T>() : (FromBinder) container.Bind<T>();
+        var binder = hasAbstraction ? (FromBinder)container.BindInterfacesTo<T>() : (FromBinder)container.Bind<T>();
 
         if (parent == null)
             binder.FromComponentInNewPrefab(prefab).AsSingle().NonLazy();

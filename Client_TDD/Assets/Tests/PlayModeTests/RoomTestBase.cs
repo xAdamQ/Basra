@@ -7,9 +7,18 @@ namespace PlayModeTests
 {
     public abstract class RoomTestBase : ZenjectUnitTestFixture
     {
-        protected void InstallerRoomServices(RoomInstaller.Settings settings)
+        protected void InstallProjectModule(ProjectInstaller.Settings settings)
         {
-            var installerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/RoomInstaller.Prefab");
+            var installerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Contexts/ProjectInstaller.Prefab");
+            var installer = Object.Instantiate(installerPrefab).GetComponent<ProjectInstaller>();
+            Container.BindInstance(settings).WhenInjectedInto<ProjectInstaller>();
+            Container.Inject(installer);
+            installer.InstallBindings();
+        }
+
+        protected void InstallRoomServices(RoomInstaller.ModuleSwitches settings)
+        {
+            var installerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Contexts/RoomContext.Prefab");
             var installer = Object.Instantiate(installerPrefab).GetComponent<RoomInstaller>();
             Container.BindInstance(settings).WhenInjectedInto<RoomInstaller>();
             Container.Inject(installer);
@@ -18,17 +27,17 @@ namespace PlayModeTests
 
         private void LoadCamera()
         {
-            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Camera.Prefab");
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/AppUnits/Camera.Prefab");
             Object.Instantiate(prefab);
         }
         private void LoadCanvas()
         {
-            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Canvas.Prefab");
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/AppUnits/Canvas.Prefab");
             Object.Instantiate(prefab);
         }
         private void LoadEventSystem()
         {
-            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/EventSystem.Prefab");
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/AppUnits/EventSystem.Prefab");
             Object.Instantiate(prefab);
         }
 

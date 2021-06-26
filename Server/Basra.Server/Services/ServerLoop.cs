@@ -28,15 +28,17 @@ namespace Basra.Server.Services
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILogger<IServerLoop> _logger;
+        private readonly ISessionRepo _sessionRepo;
 
-        public ServerLoop(IServiceScopeFactory serviceScopeFactory, ILogger<IServerLoop> logger)
+        public ServerLoop(IServiceScopeFactory serviceScopeFactory, ILogger<IServerLoop> logger, ISessionRepo sessionRepo)
         {
+            _sessionRepo = sessionRepo;
             _serviceScopeFactory = serviceScopeFactory;
             _logger = logger;
         }
 
         private Dictionary<RoomUser, CancellationTokenSource> TurnCancellations { get; } = new();
-        private const int TurnTime = 7000;
+        private const int TurnTime = 700000000;//todo change
         public void SetupTurnTimeout(RoomUser roomUser)
         {
             var cSource = new CancellationTokenSource();
@@ -85,10 +87,12 @@ namespace Basra.Server.Services
         private async Task OnPendingRoomTimeout(Room room)
         {
             PendingRoomCancellations.Remove(room);
+            _sessionRepo.DeleteRoom(room);
+
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var roomRequester = scope.ServiceProvider.GetService<IMatchMaker>();
-                await roomRequester.FillPendingRoomWithBots(room); //not awaited
+                await roomRequester.FillPendingRoomWithBots(room);
             }
         }
         public void CancelPendingRoomTimeout(Room room)
@@ -98,7 +102,7 @@ namespace Basra.Server.Services
         }
 
         private Dictionary<Room, CancellationTokenSource> ForceStartCancellations { get; } = new();
-        private const int ReadyTimeout = 99999999;
+        private const int ReadyTimeout = 99999999;//todo change
         public void SetForceStartRoomTimeout(Room room)
         {
             var cSource = new CancellationTokenSource();

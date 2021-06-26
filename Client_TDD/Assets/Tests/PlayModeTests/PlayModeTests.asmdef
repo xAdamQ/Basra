@@ -10,7 +10,8 @@
         "UniTask",
         "Unity.Addressables",
         "UniTask.Addressables",
-        "Unity.ResourceManager"
+        "Unity.ResourceManager",
+        "Unity.VisualStudio.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -19,7 +20,10 @@
     "precompiledReferences": [
         "nunit.framework.dll",
         "Zenject-usage.dll",
-        "Moq.dll"
+        "Moq.dll",
+        "Common.dll",
+        "DOTween.dll",
+        "DOTweenEditor.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [

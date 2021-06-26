@@ -14,7 +14,7 @@ public class RoomRequester : MonoBehaviour
     {
         LastChoice = new Tuple<int, int>(betChoice, 0); //even if the result is an error!
 
-        await _blockingOperationManager.Start(() => _controller.RequestRandomRoom(betChoice, 0));
+        await _blockingOperationManager.Start(_controller.RequestRandomRoom(betChoice, 0));
 
         _blockingPanel.Show("room is pending");
         //this is shown even if the room is started, it's removed before game start directly

@@ -53,6 +53,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: de67c529bd241f24d95f21f7dd3a1059
+    m_Address: Assets/Prefabs/RoomUnits/UI/finlaize result.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b2c7024f110de7f4f9f1208d9a0e5d05, type: 2}
   m_SchemaSet:

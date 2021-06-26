@@ -9,6 +9,8 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.AddressableAssets;
 using Object = UnityEngine.Object;
+using Basra.Models.Client;
+using DG.Tweening;
 
 namespace PlayModeTests
 {
@@ -19,6 +21,8 @@ namespace PlayModeTests
         public void Install()
         {
             ProjectContext.Instance.Container.Inject(this);
+            Container.BindInstance(new RoomSettings(0, 0, null, 0)).AsSingle();
+            // .WhenInjectedInto<RoomInstaller>();
         }
 
         [Inject] private ZenjectSceneLoader _zenjectSceneLoader;
@@ -162,7 +166,7 @@ namespace PlayModeTests
 
             _zenjectSceneLoader.LoadScene("Room", extraBindings: container =>
             {
-                container.BindInstance(new RoomInstaller.Settings(true)
+                container.BindInstance(new RoomInstaller.ModuleSwitches(true)
                 {
                     EnablePlayerBaseFactory = true,
                     EnableRoomUserViewFactory = true,
@@ -191,15 +195,13 @@ namespace PlayModeTests
             yield return new WaitForSeconds(float.MaxValue);
         }
 
-
         private void InstallMockRoomController()
         {
             var roomController = new Mock<IRoomController>();
-            roomController.Setup(_ => _.CurrentTurn).Returns(0);
             Container.Bind<IRoomController>().FromInstance(roomController.Object);
         }
 
-        PersonalFullUserInfo personalInfo = new PersonalFullUserInfo
+        static PersonalFullUserInfo personalInfo = new PersonalFullUserInfo
         {
             BasraCount = 3,
             BigBasraCount = 3,
@@ -216,7 +218,7 @@ namespace PlayModeTests
             MoneyAimTimeLeft = TimeSpan.FromMinutes(2),
         };
 
-        MinUserInfo[] topFriends = new[]
+        static MinUserInfo[] topFriends = new[]
         {
             new MinUserInfo
             {
@@ -236,7 +238,7 @@ namespace PlayModeTests
             }
         };
 
-        MinUserInfo[] yesterdayChampions = new[]
+        static MinUserInfo[] yesterdayChampions = new[]
         {
             new MinUserInfo
             {
@@ -254,6 +256,62 @@ namespace PlayModeTests
                 Picture = Texture2D.normalTexture,
                 SelectedTitleId = 1,
             }
+        };
+
+        static FullUserInfo[] fullUserInfos = new[]
+        {
+            new FullUserInfo{
+                BasraCount = 3,
+                BigBasraCount = 3,
+                Level = 23,
+                PlayedRoomsCount = 56,
+                WonRoomsCount = 22,
+                EatenCardsCount = 298,
+                WinStreak = 3,
+                Id = "tstId",
+                Name = "7oda el gamed",
+                SelectedTitleId = 1,
+                Picture = Texture2D.redTexture,
+            },
+            new FullUserInfo{
+                BasraCount = 3,
+                BigBasraCount = 3,
+                Level = 23,
+                PlayedRoomsCount = 56,
+                WonRoomsCount = 22,
+                EatenCardsCount = 298,
+                WinStreak = 3,
+                Id = "tstId",
+                Name = "7oda el gamed",
+                SelectedTitleId = 1,
+                Picture = Texture2D.redTexture,
+            },
+            new FullUserInfo{
+                BasraCount = 3,
+                BigBasraCount = 3,
+                Level = 23,
+                PlayedRoomsCount = 56,
+                WonRoomsCount = 22,
+                EatenCardsCount = 298,
+                WinStreak = 3,
+                Id = "tstId",
+                Name = "7oda el gamed",
+                SelectedTitleId = 1,
+                Picture = Texture2D.redTexture,
+            },
+        };
+
+        static RoomOppoInfo[] roomOppoInfos = new[]
+        {
+            new RoomOppoInfo{
+                FullUserInfo = fullUserInfos[0],
+            },
+            new RoomOppoInfo{
+                FullUserInfo = fullUserInfos[1],
+            },
+            new RoomOppoInfo{
+                FullUserInfo = fullUserInfos[2],
+            },
         };
 
         private void InstallMockController()
@@ -309,7 +367,7 @@ namespace PlayModeTests
         private void InstallMockGround()
         {
             var ground = new Mock<IGround>();
-            ground.Setup(_ => _.Throw(It.IsAny<Card>(), It.IsAny<List<int>>()))
+            ground.Setup(_ => _.Throw(It.IsAny<Card>(), It.IsAny<List<int>>(), It.IsAny<Sequence>(), It.IsAny<Vector2?>()))
                 .Callback<Card, int[]>((c, arr) => Object.Destroy(c));
             Container.Bind<IGround>().FromMock();
         }
@@ -371,17 +429,21 @@ namespace PlayModeTests
         [UnityTest]
         public IEnumerator Player_Throw()
         {
-            InstallerRoomServices(new RoomInstaller.Settings(false)
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
             {
                 EnableCardFactory = true,
                 EnableFrontFactory = true,
                 EnablePlayerBaseFactory = true,
                 EnableTurnTimer = true,
+                // EnableGround = true,
+                // EnableCoreGameplay = true,
             });
+
+            Container.Bind<IGround>().FromMock();
+            Container.Bind<ICoreGameplay>().FromMock();
 
             InstallMockRoomController();
             InstallMockController();
-            InstallGround();
 
             var fac = Container.Resolve<PlayerBase.Factory>();
             var player = (IPlayer)fac.Create(PlayerType.Me, 0);
@@ -394,7 +456,7 @@ namespace PlayModeTests
         [UnityTest]
         public IEnumerator Oppo_Throw()
         {
-            InstallerRoomServices(new RoomInstaller.Settings(false)
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
             {
                 EnableCardFactory = true,
                 EnableFrontFactory = true,
@@ -426,51 +488,54 @@ namespace PlayModeTests
         [UnityTest]
         public IEnumerator Ground_Throw()
         {
-            LoadCore();
-
-            InstallCardFactory();
-            InstallFrontFactory();
-            InstallGround();
-            InstallMockRoomController();
-            InstallMockController();
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
+            {
+                EnableGround = true,
+                EnableCardFactory = true,
+                EnableFrontFactory = true,
+            });
 
             var ground = Container.Resolve<IGround>();
-            ground.InitialDistribute(new List<int>() { 1, 2, 3, 4 });
+            ground.Distribute(new List<int>() { 1, 2, 3, 4 });
 
             var cFac = Container.Resolve<Card.Factory>();
 
             yield return new WaitForSeconds(2);
-            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>());
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>(), null, null);
             yield return new WaitForSeconds(2);
-            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>());
-
-            yield return new WaitForSeconds(999999);
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>(), null, null);
+            yield return new WaitForSeconds(2);
         }
 
-        [Test]
-        public void Ground_Throw_ShouldEatRight()
+        [UnityTest]
+        public IEnumerator Ground_Throw_ShouldEatRight()
         {
-            LoadCore();
-
-            InstallCardFactory();
-            InstallFrontFactory();
-            InstallGround();
-            InstallMockRoomController();
-            InstallMockController();
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
+            {
+                EnableGround = true,
+                EnableCardFactory = true,
+                EnableFrontFactory = true,
+            });
 
             var ground = Container.Resolve<IGround>();
-            ground.InitialDistribute(new List<int>() { 1, 2, 3, 4 });
+            ground.Distribute(new List<int>() { 1, 2, 3, 4 });
 
             var cFac = Container.Resolve<Card.Factory>();
 
-            ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 1 });
-            ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 2, 3 });
-            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>());
-            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>());
+            yield return new WaitForSeconds(2);
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 1 }, null, null);
+            yield return new WaitForSeconds(2);
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 2, 3 }, null, null);
+            yield return new WaitForSeconds(2);
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>(), null, null);
+            yield return new WaitForSeconds(2);
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>(), null, null);
+            yield return new WaitForSeconds(2);
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 11, 11 }, null, null);
 
-            Assert.Throws(typeof(Exception), () => { ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 2 }); });
 
-            // yield return new WaitForSeconds(999999);
+            Assert.Throws(typeof(Exception), () => { ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 2 }, null, null); });
+            yield return new WaitForSeconds(2);
         }
 
         [UnityTest]
@@ -524,21 +589,59 @@ namespace PlayModeTests
         [UnityTest]
         public IEnumerator TurnTimer_ShouldUpdateAndFireOnComplete()
         {
-            InstallerRoomServices(new RoomInstaller.Settings(false)
+            InstallProjectModule(new ProjectInstaller.Settings(false)
+            {
+            });
+
+            // Container.BindInstance(new RoomSettings(0, 0, null, 0)).AsSingle().WhenInjectedInto<RoomInstaller>();
+
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
             {
                 EnableTurnTimer = true,
             });
-            var tt = Container.Resolve<TurnTimer>();
+
+            //room controller factory requires the "facade" room controller
+
+            var tt = Container.Resolve<ITurnTimer>();
 
             yield return null;
 
-            tt.uniTaskTimer.Elapsed += () => Debug.Log("timer is done");
+            tt.Elapsed += () => Debug.Log("timer is done");
 
-            tt.uniTaskTimer.Play().Forget();
+            tt.Play();
 
-            Assert.True(tt.uniTaskTimer.Active);
+            Assert.True(tt.IsPlaying);
 
-            yield return new WaitUntil(() => !tt.uniTaskTimer.Active);
+            yield return new WaitUntil(() => !tt.IsPlaying);
+        }
+
+        [UnityTest]
+        public IEnumerator TurnTimer_ShouldOverrideTimers()
+        {
+            // Container.BindInstance(new RoomSettings(0, 0, null, 0)).AsSingle().WhenInjectedInto<RoomInstaller>();
+
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
+            {
+                EnableTurnTimer = true,
+            });
+
+            var tt = Container.Resolve<ITurnTimer>();
+            tt.Elapsed += () => Debug.Log("timer is done");
+
+            yield return null;
+
+            tt.Play();
+            yield return new WaitForSeconds(2);
+            tt.Play();
+            Assert.True(tt.IsPlaying);
+
+            tt.Stop();
+            Assert.False(tt.IsPlaying);
+
+            tt.Play();
+            Assert.True(tt.IsPlaying);
+            yield return new WaitForSeconds(10);
+            Assert.False(tt.IsPlaying);
         }
 
         [UnityTest]
@@ -546,7 +649,7 @@ namespace PlayModeTests
         {
             Container.Bind<IRepository>().FromMock();
             Container.Bind<IController>().FromMock();
-            InstallerRoomServices(new RoomInstaller.Settings(false)
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
             { EnableRoomUserViewFactory = true, EnableFullUserView = true, EnablePersonalUserView = true });
 
             var viewFac = Container.Resolve<RoomUserView.Factory>();
@@ -564,7 +667,7 @@ namespace PlayModeTests
         {
             Container.Bind<IRepository>().FromMock();
             Container.Bind<IController>().FromMock();
-            InstallerRoomServices(new RoomInstaller.Settings(false)
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
             { EnableRoomUserViewFactory = true, EnableFullUserView = true, EnablePersonalUserView = true });
 
             var viewFac = Container.Resolve<RoomUserView.Factory>();
@@ -576,5 +679,234 @@ namespace PlayModeTests
 
             yield return new WaitForSeconds(float.MaxValue);
         }
+
+
+        [UnityTest]
+        public IEnumerator InteractiveGPCore()
+        {
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
+            {
+                EnableCardFactory = true,
+                EnableFrontFactory = true,
+                EnablePlayerBaseFactory = true,
+                EnableGround = true,
+            });
+
+            Container.Bind<IRoomController>().FromMock();
+            Container.Bind<IController>().FromMock();
+
+            var tt = new Mock<ITurnTimer>();
+            tt.Setup(_ => _.IsPlaying).Returns(true);
+            Container.BindInstance(tt.Object);
+
+            var core = new Mock<ICoreGameplay>();
+            Container.BindInstance(core.Object);
+
+            var fac = Container.Resolve<PlayerBase.Factory>();
+            var g = Container.Resolve<IGround>();
+
+            var player = (IPlayer)fac.Create(PlayerType.Me, 0);
+            core.Setup(_ => _.PlayerInTurn).Returns((PlayerBase)player);
+
+            g.Distribute(new List<int>() { 1, 1, 3, 3, 2, 6, 7 });
+            player.Distribute(new List<int>() { 1, 2, 3, 4 });
+
+            yield return new WaitForSeconds(999999);
+        }
+
+
+        [UnityTest]
+        public IEnumerator GPCore_NextTurn()
+        {
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
+            {
+                EnableCardFactory = true,
+                EnableFrontFactory = true,
+                EnablePlayerBaseFactory = true,
+                EnableCoreGameplay = true,
+                EnableTurnTimer = true,
+            });
+
+            Container.Bind<IRoomController>().FromMock();
+            Container.Bind<IController>().FromMock();
+            Container.Bind<IRepository>().FromMock();
+            Container.Bind<IGround>().FromMock();
+
+            var fac = Container.Resolve<PlayerBase.Factory>();
+
+            var core = Container.Resolve<ICoreGameplay>();
+
+            core.CreatePlayers();
+            core.InitalTurn();
+
+            yield return new WaitForSeconds(2);
+
+            core.NextTurn();
+            yield return new WaitForSeconds(2);
+
+            core.NextTurn();
+            yield return new WaitForSeconds(10);
+
+            core.NextTurn();
+
+            yield return new WaitForSeconds(float.MaxValue);
+        }
+
+        [UnityTest]
+        public IEnumerator RoomResultPanel_Interactive()
+        {
+            InstallMockController();
+
+            InstallProjectModule(new ProjectInstaller.Settings(false) { EnableReferenceInstantiator = true });
+
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
+            {
+
+            });
+
+            yield return null;
+
+
+            var refe = Container.Resolve<RoomInstaller.Refernces>();
+            var ins = Container.Resolve<ReferenceInstantiator>();
+
+            RoomResultPanel.Instantiate(ins, refe, new RoomXpReport { Basra = 100, BigBasra = 4000, Competition = 9019, GreatEat = 127783 }, personalInfo);
+
+            yield return new WaitForSeconds(float.MaxValue);
+
+        }
+
+        [UnityTest]
+        public IEnumerator OppoThrow()
+        {
+            InstallProjectModule(new ProjectInstaller.Settings(false) { });
+
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
+            {
+                EnablePlayerBaseFactory = true,
+                EnableCardFactory = true,
+                EnableGround = true,
+                EnableFrontFactory = true,
+            });
+
+            Container.Bind<ICoreGameplay>().FromMock();
+
+            yield return null;
+
+            var g = Container.Resolve<IGround>();
+            g.Distribute(new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 });
+
+            var fac = Container.Resolve<PlayerBase.Factory>();
+            var oppo1 = (IOppo)fac.Create(PlayerType.Oppo, 1);
+            oppo1.Distribute();
+
+            for (int i = 0; i < 8; i += 2)
+            {
+                yield return new WaitForSeconds(2);
+                oppo1.Throw(new ThrowResult { ThrownCard = 12, EatenCardsIds = new List<int> { i, i + 1 } });
+            }
+
+            yield return new WaitForSeconds(3);
+        }
+
+        [UnityTest]
+        public IEnumerator AnimSequence()
+        {
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
+            {
+                EnableCardFactory = true,
+                EnableFrontFactory = true,
+            });
+
+            yield return null;
+
+            var fac = Container.Resolve<Card.Factory>();
+
+            var card = fac.CreateOppoCard(null);
+            var card2 = fac.CreateOppoCard(null);
+            card2.transform.position = Vector3.right;
+            var card3 = fac.CreateOppoCard(null);
+            card3.transform.position = Vector3.left;
+            var card4 = fac.CreateOppoCard(null);
+            card4.transform.position = Vector3.up;
+
+            var seq = DOTween.Sequence();
+
+            seq
+                .Append(card.transform.DOScale(Vector3.zero, 1f).From())
+                .Append(card.transform.DOScale(Vector3.one * .5f, 1f))
+                ;
+
+            var duration = seq.Duration();
+
+
+            seq.Insert(duration, card2.transform.DOScale(Vector3.one * .5f, 1f));
+            seq.Insert(duration, card3.transform.DOScale(Vector3.one * .5f, 1f));
+            seq.Append(card4.transform.DOScale(Vector3.one * .5f, 1f));
+
+
+
+            yield return new WaitForSeconds(6);
+        }
+
+        [UnityTest]
+        public IEnumerator Player_Distribute()
+        {
+            InstallProjectModule(new ProjectInstaller.Settings(false) { });
+
+            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
+            {
+                EnablePlayerBaseFactory = true,
+                EnableCardFactory = true,
+                EnableGround = true,
+                EnableFrontFactory = true,
+                EnableRoomUserViewFactory = true,
+                EnableFullUserView = true,
+            });
+
+            Container.Bind<ICoreGameplay>().FromMock();
+            Container.Bind<IController>().FromMock();
+
+            var repo = new Mock<IRepository>();
+
+            yield return null;
+
+            var fac = Container.Resolve<PlayerBase.Factory>();
+            var fac2 = Container.Resolve<RoomUserView.Factory>();
+
+            var playersInfo = new List<MinUserInfo>() { personalInfo };
+            playersInfo.AddRange(fullUserInfos);
+
+            fac2.Create(playersInfo);
+
+            var oppo1 = (IOppo)fac.Create(PlayerType.Oppo, 1);
+            oppo1.Distribute();
+
+            var oppo2 = (IOppo)fac.Create(PlayerType.Oppo, 2);
+            oppo2.Distribute();
+
+            var oppo3 = (IOppo)fac.Create(PlayerType.Oppo, 3);
+            oppo3.Distribute();
+
+
+            yield return new WaitForSeconds(2);
+            oppo1.Throw(new ThrowResult { });
+            yield return new WaitForSeconds(2);
+            oppo1.Throw(new ThrowResult { });
+            yield return new WaitForSeconds(2);
+            oppo2.Throw(new ThrowResult { });
+            yield return new WaitForSeconds(2);
+            oppo3.Throw(new ThrowResult { });
+            yield return new WaitForSeconds(2);
+            oppo3.Throw(new ThrowResult { });
+            yield return new WaitForSeconds(2);
+            oppo3.Throw(new ThrowResult { });
+            yield return new WaitForSeconds(2);
+
+
+
+
+        }
+
     }
 }

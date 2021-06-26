@@ -67,7 +67,7 @@ namespace Basra.Server.Services
 
         public async Task StartRoom(Room room)
         {
-            room.SetUsersDomains(typeof(UserDomain.App.Room));
+            room.SetUsersDomains(typeof(UserDomain.App.Room.Active));
             GenerateRoomDeck(room);
 
             InitialTurn(room);
@@ -156,7 +156,7 @@ namespace Basra.Server.Services
 
             var card = roomActor.Hand.Cut(cardIndexInHand);
 
-            if (eaten.Count != 0)
+            if (eaten != null && eaten.Count != 0)
             {
                 roomActor.Room.GroundCards.RemoveAll(c => eaten.Contains(c));
 
@@ -194,14 +194,14 @@ namespace Basra.Server.Services
             var throwResult = PlayBase(roomUser, cardIndexInHand);
 
             await Task.WhenAll(
-                _masterHub.Clients.User(roomUser.Id).SendAsync("MyThrowResult", throwResult),
-                _masterHub.Clients.Users(roomUser.Room.RoomUsers.Where(ru => ru != roomUser)
+             _masterHub.Clients.User(roomUser.Id).SendAsync("MyThrowResult", throwResult),
+             _masterHub.Clients.Users(roomUser.Room.RoomUsers.Where(ru => ru != roomUser)
                         .Select(ru => ru.Id))
                     .SendAsync("CurrentOppoThrow", throwResult)
             );
 
             await NextTurn(roomUser.Room);
-            _logger.LogInformation($"user has played card {cardIndexInHand} userId {roomUser.Id}");
+            _logger.LogInformation($"user has played card {cardIndexInHand} with value {throwResult.ThrownCard} userId {roomUser.Id}");
         } //todo good candidate for unit testing
 
         public async Task MissTurnRpc(RoomUser roomUser) //the difference is that rpc contains validation
@@ -295,7 +295,7 @@ namespace Basra.Server.Services
 
             var groups = ground.Permutations();
             var bestGroupLength = -1;
-            var bestGroup = new List<int>();
+            List<int> bestGroup = null;
             foreach (var group in groups)
             {
                 if (group.Select(c => cardValueFromId(c)).Sum() == cardValue && group.Count > bestGroupLength)

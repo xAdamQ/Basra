@@ -11,6 +11,8 @@ using System.Linq;
 
 public interface IPlayerBase
 {
+    void EndTurn();
+    void StartTurn();
 }
 
 public abstract class PlayerBase : MonoBehaviour, IPlayerBase
@@ -21,10 +23,10 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
     private static readonly Vector2[] UserPositions =
     {
-        new Vector2(0, -6 + BottomPadding),
-        new Vector2(0, 6 - UpperPadding),
-        new Vector2(3.5f, 0),
-        new Vector2(-3.5f, 0),
+        new Vector2(-.3f, -5),
+        new Vector2(0, 6),
+        new Vector2(3.5f, -2.8f),
+        new Vector2(-3.5f, 3.7f),
     };
 
     private static readonly Vector3[] UserRotations =
@@ -37,27 +39,42 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
     #endregion
 
-    #region services
 
     [Inject] protected readonly Card.Factory _cardFactory;
-    [Inject] protected readonly IRoomController _roomController;
-    [Inject] protected readonly IController _controller;
     [Inject] protected readonly IGround _ground;
+    [Inject] protected readonly ICoreGameplay _coreGameplay;
 
-    #endregion
 
-    protected const int HandSize = 4;
+
+
+    protected static readonly int HandCardCapacity = 4;
+    protected static readonly Vector2 HandXBounds = new Vector2(.45f, 2.2f);
+    protected static readonly float HandSize = HandXBounds.y - HandXBounds.x;
 
     protected List<Card> HandCards { get; } = new List<Card>();
-    protected int Turn { get; private set; }
 
-    protected void ThrowBase(ThrowResult result)
+    protected Vector3 PlaceCard(Card card, Sequence animSeq)
     {
-        var card = HandCards.First(c => c.Front.Index == result.ThrownCard);
+        var targetPoz = new Vector3(
+            UnityEngine.Random.Range(-Ground.Bounds.x, Ground.Bounds.x),
+            UnityEngine.Random.Range(-Ground.Bounds.y, Ground.Bounds.y));
 
-        _ground.Throw(card, result.EatenCardsIds);
+        animSeq.
+            Append(card.transform.DOMove(targetPoz, .5f))
+            .Join(card.transform.DORotate(new Vector3(0, 180), .3f));
 
-        eatenCount += result.EatenCardsIds.Count;
+        return targetPoz;
+    }
+
+    protected void ThrowBase(ThrowResult result, Sequence animSeq = null, Vector2? meetPoint = null)
+    {
+        animSeq ??= DOTween.Sequence();
+
+        var card = HandCards.First(c => c.Front != null && c.Front.Index == result.ThrownCard);
+
+        _ground.Throw(card, result.EatenCardsIds, animSeq, meetPoint);
+
+        if (result.EatenCardsIds != null) eatenCount += result.EatenCardsIds.Count;
         eatenText.text = eatenCount.ToString();
 
         if (result.Basra) AddBasra();
@@ -66,7 +83,7 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         HandCards.Remove(card);
         OrganizeHand();
 
-        _roomController.NextTurn();
+        _coreGameplay.NextTurn();
     }
 
     #region player ui
@@ -97,9 +114,11 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
     protected void OrganizeHand()
     {
-        var pointer = new Vector3(-(HandSize / 2) * Card.Bounds.x, 0, 0);
-        pointer.x -= pointer.x / 2f;
-        var spacing = new Vector3(Card.Bounds.x, 0, .05f);
+        // var pointer = new Vector3(-(HandCardCapacity / 2) * Card.Bounds.x, 0, 0);
+        // pointer.x -= pointer.x / 2f;
+        var pointer = new Vector3(HandXBounds.x, 0, 0);
+
+        var spacing = new Vector3(HandSize / HandCards.Count, 0, .05f);
 
         if (this is IPlayer)
             HandCards.ForEach(card => card.transform.eulerAngles = Vector3.up * 180);
@@ -111,27 +130,31 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         }
     }
 
+    [SerializeField] GameObject TurnIndicator;
+    public virtual void StartTurn()
+    {
+        TurnIndicator.SetActive(true);
+    }
+    public virtual void EndTurn()
+    {
+        TurnIndicator.SetActive(false);
+    }
 
     public class Factory
     {
         private readonly IInstantiator _instantiator;
-        private readonly GameObject _playerPrefab;
-        private readonly GameObject _oppoPrefab;
+        private readonly GameObject[] _playerPrefabs;
 
         [Inject]
-        public Factory(IInstantiator instantiator, GameObject playerPrefab, GameObject oppoPrefab)
+        public Factory(IInstantiator instantiator, GameObject[] playerPrefabs)
         {
             _instantiator = instantiator;
-            _playerPrefab = playerPrefab;
-            _oppoPrefab = oppoPrefab;
         }
 
         public PlayerBase Create(PlayerType playerType, int turn)
         {
-            var player = _instantiator.InstantiatePrefab(playerType == PlayerType.Me ? _playerPrefab : _oppoPrefab)
-                .GetComponent<PlayerBase>();
+            var player = _instantiator.InstantiatePrefab(_playerPrefabs[turn]).GetComponent<PlayerBase>();
 
-            player.Turn = turn;
             player.transform.position = UserPositions[turn];
             player.transform.eulerAngles = UserRotations[turn];
 

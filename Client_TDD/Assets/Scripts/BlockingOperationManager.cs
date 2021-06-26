@@ -16,17 +16,16 @@ public class BlockingOperationManager
     /// <summary>
     /// invoke, block, and forget
     /// </summary>
-    public void Forget(Func<UniTask> operation, Action onComplete = null)
+    public void Forget(UniTask operation, Action onComplete = null)
     {
         Start(operation).Forget(e => throw e);
     }
-    public async UniTask Start(Func<UniTask> operation)
+    public async UniTask Start(UniTask operation)
     {
-
         _blockingPanel.Show();
         try
         {
-            await operation();
+            await operation;
             _blockingPanel.Hide();
         }
         catch (BadUserInputException) //todo test if you can get bad user input exc here
@@ -36,16 +35,16 @@ public class BlockingOperationManager
         }
     }
 
-    public void Forget<T>(Func<UniTask<T>> operation, Action<T> onComplete)
+    public void Forget<T>(UniTask<T> operation, Action<T> onComplete)
     {
         Start(operation).ContinueWith(onComplete).Forget(e => throw e); //the error exception happens normally inside start
     }
-    public async UniTask<T> Start<T>(Func<UniTask<T>> operation)
+    public async UniTask<T> Start<T>(UniTask<T> operation)
     {
         _blockingPanel.Show();
         try
         {
-            var result = await operation();
+            var result = await operation;
             _blockingPanel.Hide();
             return result;
         }

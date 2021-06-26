@@ -15,4 +15,11 @@ public class GeneralTests
         Debug.Log(TimeSpan.MaxValue + TimeSpan.MinValue);
         Debug.Log(TimeSpan.FromSeconds(7) - TimeSpan.FromSeconds(10));
     }
+
+    [Test]
+    public void ConvertTurnToPlayerIndex()
+    {
+        // RoomController.ConvertTurnToPlayerIndex()
+
+    }
 }
