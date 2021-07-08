@@ -47,7 +47,7 @@ public class ProjectInstaller : MonoInstaller
 
 
         if (_settings.EnableReferenceInstantiator)
-            Container.Bind<ReferenceInstantiator>().AsSingle();
+            Container.Bind<ReferenceInstantiator<ProjectInstaller>>().AsSingle();
 
         if (_settings.EnableController)
             Container.BindInterfacesTo<Controller>().AsSingle();
@@ -57,11 +57,11 @@ public class ProjectInstaller : MonoInstaller
 
         if (_settings.EnableLobbyFactory)
             Container.BindFactory<LobbyController, LobbyController.Factory>()
-            .FromSubContainerResolve()
-            .ByNewContextPrefab(lobbyContextPrefab);
+                .FromSubContainerResolve()
+                .ByNewContextPrefab(lobbyContextPrefab);
 
         if (_settings.EnableRoomFactory)
-            Container.BindFactory<RoomSettings, RoomController, RoomController.Factory>()
+            Container.BindFactory<RoomSettings, ActiveRoomState, RoomController, RoomController.Factory>()
                 .FromSubContainerResolve()
                 .ByNewContextPrefab<RoomInstaller>(roomContextPrefab);
 

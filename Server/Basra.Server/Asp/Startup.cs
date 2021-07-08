@@ -8,6 +8,7 @@ using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging.AzureAppServices;
 
 namespace Basra.Server
 {
@@ -45,12 +46,14 @@ namespace Basra.Server
             //     );
             // });
 
+            // services.Configure<AzureFileLoggerOptions>(_configuration.GetSection("AzureLogging"));
+
             services.AddDbContext<MasterContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("Main")));
-            // services.AddHostedService<ServerLoop>();
 
             services.AddScoped<IMasterRepo, MasterRepo>();
             services.AddScoped<IRoomManager, RoomManager>();
+            services.AddScoped<IFinalizeManager, FinalizeManager>();
             services.AddScoped<ILobbyManager, LobbyManager>();
             services.AddScoped<IRequestCache, RequestCache>();
             services.AddScoped<IMatchMaker, MatchMaker>();
@@ -126,7 +129,7 @@ namespace Basra.Server
 
             // app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
-            app.UseEndpoints(endpoint => endpoint.MapHub<MasterHub>("connect"));
+            app.UseEndpoints(endpoint => endpoint.MapHub<MasterHub>("/connect"));
 
 
             // //tododone check if this is needed

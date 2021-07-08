@@ -15,8 +15,9 @@ public enum CardOwner
 public class Card : MonoBehaviour
 {
     [Inject] private readonly Front.Factory _frontFactory;
+    [Inject] private readonly IGround _ground;
 
-    public PlayerBase Player;
+    public IPlayerBase Player;
     public static Vector2 Bounds = new Vector2(.75f, 1f);
     public Front Front { get; set; }
 
@@ -62,25 +63,26 @@ public class Card : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (Player != null && Player is IPlayer player && player.IsPlayable())
+        if (Player != null && Player is IPlayer player && player.IsPlayable)
             StartCoroutine(Drag(transform.position));
     }
 
     private IEnumerator Drag(Vector3 initialPoz)
     {
-        while (Input.GetMouseButton(0) && (Player as IPlayer).IsPlayable())
+        var player = (Player as IPlayer);
+        while (Input.GetMouseButton(0) && player.IsPlayable)
         {
             transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
             yield return null;
         }
 
-        if ((Player as IPlayer).IsPlayable() &&
-            transform.position.x < Ground.Bounds.x &&
-            transform.position.y < Ground.Bounds.y &&
-            transform.position.x > -Ground.Bounds.x &&
-            transform.position.y > -Ground.Bounds.y)
+        if (player.IsPlayable &&
+            transform.position.x < _ground.TopRightBound.x &&
+            transform.position.y < _ground.TopRightBound.y &&
+            transform.position.x > _ground.LeftBottomBound.x &&
+            transform.position.y > _ground.LeftBottomBound.y)
         {
-            (Player as IPlayer).Throw(this);
+            player.Throw(this);
         }
         else
         {

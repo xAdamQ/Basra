@@ -77,6 +77,7 @@ public class LobbyInstaller : MonoInstaller
                 .WithArguments(cardbackSheetRef, cardbackShopItemPrefab);
 
         if (_settings.EnableRoomChoicesView)
-            Container.AddInstantSceneModule<RoomRequester>(roomChoiceViewPrefab, standardCanvas);
+            Container.InstantiatePrefab(roomChoiceViewPrefab, standardCanvas);
+        // Container.AddInstantSceneModule<RoomRequester>(roomChoiceViewPrefab, standardCanvas);
     }
 }

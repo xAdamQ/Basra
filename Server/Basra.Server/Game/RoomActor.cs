@@ -4,7 +4,7 @@ namespace Basra.Server
 {
     public abstract class RoomActor
     {
-        public static int HandSize => 4;
+        public const int HandSize = 4;
         public const int HandTime = 11;
 
         public string Id { get; set; }

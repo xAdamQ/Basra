@@ -7,24 +7,18 @@ using Zenject;
 public class MinUserView : MonoBehaviour
 {
     [SerializeField] private Text displayName;
-    [SerializeField] private Image profilePicture;
     [SerializeField] private Text level;
     [SerializeField] private Text title;
+    [SerializeField] private Image picture;
 
-    protected BlockingOperationManager _blockingOperationManager;
-    protected IController _controller;
-    protected FullUserView _fullUserView;
+    [Inject] protected BlockingOperationManager _blockingOperationManager;
+    [Inject] protected IController _controller;
+    [Inject] protected FullUserView _fullUserView;
 
-    [Inject]
-    public void Construct(IController controller, FullUserView fullUserView)
-    {
-        _controller = controller;
-        _fullUserView = fullUserView;
-    }
 
     public void Init(MinUserInfo minUserInfo)
     {
-        id = minUserInfo.Id;
+        Id = minUserInfo.Id;
         Level = minUserInfo.Level;
         DisplayName = minUserInfo.Name;
         Title = Repository.Titles[minUserInfo.SelectedTitleId];
@@ -35,34 +29,45 @@ public class MinUserView : MonoBehaviour
             minUserInfo.PictureLoaded += pic => SetPicture(pic);
     }
 
+    private void SetPicture(Texture2D texture2D)
+    {
+        if (texture2D != null)
+            picture.sprite =
+                Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), new Vector2(.5f, .5f));
+    }
     /// <summary>
     /// personal view overrides this 
     /// </summary>
     public virtual void ShowFullInfo()
     {
-        _blockingOperationManager.Forget(_controller.GetPublicFullUserInfo(id), info => _fullUserView.Show(info));
+        _blockingOperationManager.Forget(_controller.GetPublicFullUserInfo(Id), info => _fullUserView.Show(info));
     }
 
-    private void SetPicture(Texture2D texture2D)
-    {
-        if (texture2D != null)
-            profilePicture.sprite =
-                Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), new Vector2(.5f, .5f));
-    }
+    protected string Id;
 
-    protected string id;
     public int Level
     {
-        set => level.text = value.ToString();
+        set
+        {
+            if (level)
+                level.text = value.ToString();
+        }
     }
     public string DisplayName
     {
-        set => displayName.text = value;
+        set
+        {
+            if (displayName)
+                displayName.text = value;
+        }
     }
-
     public string Title
     {
-        set => title.text = value;
+        set
+        {
+            if (title)
+                title.text = value;
+        }
     }
 
     public class BasicFactory : PlaceholderFactory<MinUserView>

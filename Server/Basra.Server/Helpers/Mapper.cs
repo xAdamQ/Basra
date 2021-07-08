@@ -11,6 +11,7 @@ namespace Basra.Server.Helpers
         {
             return new()
             {
+                Id = user.Id,
                 Money = user.Money,
                 PlayedRoomsCount = user.PlayedRoomsCount,
                 Name = user.Name,

@@ -56,9 +56,8 @@ namespace GeneralTests
         [Fact]
         public void Test5()
         {
-            var arr = new List<int>() { 0, 5, 6 };
+            var arr = new List<int>() {0, 5, 6};
             _testOutputHelper.WriteLine(arr.IndexOf(6).ToString());
-
         }
 
         [Fact]
@@ -104,7 +103,6 @@ namespace GeneralTests
         [InlineData(2, 1, 3, 1)]
         [InlineData(1, 1, 3, 0)]
         [InlineData(0, 1, 3, 2)]
-
         [InlineData(0, 2, 3, 1)]
         [InlineData(1, 2, 3, 2)]
         [InlineData(2, 2, 3, 0)]
@@ -114,5 +112,27 @@ namespace GeneralTests
             Assert.Equal(playerIndex, result);
         }
 
+
+        [Fact]
+        public void Test8()
+        {
+            var x = new x() {prop1 = 1};
+            var zx = (z) x;
+            zx.prop2 = 11;
+            zx.prop1 = 13;
+
+            _testOutputHelper.WriteLine(zx.prop2.ToString());
+            _testOutputHelper.WriteLine(zx.prop1.ToString());
+        }
+    }
+
+    class x
+    {
+        public int prop1 { get; set; }
+    }
+
+    class z : x
+    {
+        public int prop2 { get; set; }
     }
 }

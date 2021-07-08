@@ -180,6 +180,15 @@
           "lib/netcoreapp3.0/Microsoft.Extensions.Primitives.dll": {}
         }
       },
+      "Newtonsoft.Json/12.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        }
+      },
       "ReadLine/2.0.1": {
         "type": "package",
         "compile": {
@@ -537,6 +546,37 @@
         "microsoft.extensions.primitives.nuspec"
       ]
     },
+    "Newtonsoft.Json/12.0.3": {
+      "sha512": "6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
+      "type": "package",
+      "path": "newtonsoft.json/12.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.12.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
     "ReadLine/2.0.1": {
       "sha512": "m3eptlV2hlZ3gWxdhvgsUpSjwyA3NCeLdbhgDt0V8rXP1E6ZbjOOExcAufHvAZepSKJvV+zZO1eYWGveShA4gw==",
       "type": "package",
@@ -707,38 +747,37 @@
     "net5.0": [
       "Common >= 1.0.0",
       "Microsoft.AspNetCore.SignalR.Client >= 6.0.0-preview.2.21154.6",
+      "Newtonsoft.Json >= 12.0.3",
       "ReadLine >= 2.0.1"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\xadam\\.nuget\\packages\\": {}
+    "/home/adam/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projects\\Basra\\Server\\TesterClient\\TesterClient.csproj",
+      "projectUniqueName": "/home/adam/Projects/Basra/Server/TesterClient/TesterClient.csproj",
       "projectName": "TesterClient",
-      "projectPath": "C:\\Projects\\Basra\\Server\\TesterClient\\TesterClient.csproj",
-      "packagesPath": "C:\\Users\\xadam\\.nuget\\packages\\",
-      "outputPath": "C:\\Projects\\Basra\\Server\\TesterClient\\obj\\",
+      "projectPath": "/home/adam/Projects/Basra/Server/TesterClient/TesterClient.csproj",
+      "packagesPath": "/home/adam/.nuget/packages/",
+      "outputPath": "/home/adam/Projects/Basra/Server/TesterClient/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\xadam\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/home/adam/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Projects\\Basra\\Server\\Common\\Common.csproj": {
-              "projectPath": "C:\\Projects\\Basra\\Server\\Common\\Common.csproj"
+            "/home/adam/Projects/Basra/Server/Common/Common.csproj": {
+              "projectPath": "/home/adam/Projects/Basra/Server/Common/Common.csproj"
             }
           }
         }
@@ -756,6 +795,10 @@
           "Microsoft.AspNetCore.SignalR.Client": {
             "target": "Package",
             "version": "[6.0.0-preview.2.21154.6, )"
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[12.0.3, )"
           },
           "ReadLine": {
             "target": "Package",
@@ -777,7 +820,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
       }
     }
   }

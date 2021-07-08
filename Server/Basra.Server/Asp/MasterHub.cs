@@ -45,32 +45,36 @@ namespace Basra.Server
         {
             _logger.LogInformation($"connection established: {Context.UserIdentifier}");
 
+            ActiveRoomState activeRoomState = null;
+
             if (_sessionRepo.IsUserActive(Context.UserIdentifier))
             {
                 if (ActiveUser.Disconnected == false)
                     throw new BadUserInputException("user is connected already and trying to connect again");
+                //todo i think the auth handler should be responsible for this part, should be terminated faster
+
+                activeRoomState = await _roomManager.GetFullRoomState(RoomUser);
 
                 ActiveUser.Disconnected = false;
             }
+            else
+            {
+                CreateActiveUser();
+            }
 
-            CreateActiveUser();
-            await InitClientGame();
+            await InitClientGame(activeRoomState);
 
             await base.OnConnectedAsync();
         }
         private void CreateActiveUser()
         {
-            var userDomain = _sessionRepo.DoesRoomUserExist(Context.UserIdentifier)
-                ? typeof(UserDomain.App) //todo see if this domain always works with instant auto play
-                : typeof(UserDomain.App.Lobby.Idle);
-
-            _sessionRepo.AddActiveUser(new ActiveUser(Context.UserIdentifier, Context.ConnectionId, userDomain));
+            _sessionRepo.AddActiveUser(new ActiveUser(Context.UserIdentifier, Context.ConnectionId, typeof(UserDomain.App.Lobby.Idle)));
         }
-        private async Task InitClientGame()
+        private async Task InitClientGame(ActiveRoomState activeRoomState)
         {
-            //PersonalFullUserInfo myFullUserInfo, MinUserInfo[] yesterdayChampions, MinUserInfo[] topFriends
             var user = await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier);
             var clientPersonalInfo = Mapper.ConvertUserDataToClient(user);
+
             var yesterdayChampions = new MinUserInfo[]
             {
                 new MinUserInfo {Id = "tstId1", Name = "champ1", Level = 1, SelectedTitleId = 0},
@@ -83,14 +87,19 @@ namespace Basra.Server
                 new MinUserInfo {Id = "tstId6", Name = "friend3", Level = 3, SelectedTitleId = 4},
             };
 
-            await Clients.Caller.SendAsync("InitGame", clientPersonalInfo, yesterdayChampions, topFriends);
+            await Clients.Caller.SendAsync("InitGame", clientPersonalInfo, yesterdayChampions, topFriends, activeRoomState);
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             _logger.LogInformation($"{Context.UserIdentifier} Disconnected");
 
-            if (RoomUser != null) //todo test get non existing user
+            if (RoomUser != null)
+                _matchMaker.RemovePendingDisconnectedUser(RoomUser);
+
+            //RoomUser.Room is null when he was the last player in pending room and disconnected
+
+            if (RoomUser != null && RoomUser.Room != null) //todo test get non existing user
                 ActiveUser.Disconnected = true;
             else
                 _sessionRepo.RemoveActiveUser(Context.UserIdentifier);
@@ -185,12 +194,6 @@ namespace Basra.Server
             await _roomManager.MissTurnRpc(RoomUser);
         }
 
-        [RpcDomain(typeof(UserDomain.App.Room.Active))]
-        public async Task Surrender(int indexInHand)
-        {
-            await _roomManager.UserPlayRpc(RoomUser, indexInHand);
-        }
-
         /// <summary>
         /// get what makes up the room for reconnected users
         /// except for the turn remaining time
@@ -200,6 +203,12 @@ namespace Basra.Server
         {
             return await _roomManager.GetFullRoomState(RoomUser);
         }
+
+        // [RpcDomain(typeof(UserDomain.App.Room.Active))]
+        // public async Task Surrender()
+        // {
+        //     await _roomManager.Surrender(RoomUser);
+        // }
 
         #endregion
 
@@ -217,9 +226,16 @@ namespace Basra.Server
         }
 
         [RpcDomain(typeof(UserDomain.App))]
-        public MinUserInfo TestReturnObject()
+        public async Task<MinUserInfo> TestReturnObject()
         {
-            return new MinUserInfo { Name = "some data to test" };
+            await Task.Delay(5000);
+            return new MinUserInfo {Name = "some data to test"};
+        }
+
+        [RpcDomain(typeof(UserDomain.App))]
+        public async Task TestWaitAlot()
+        {
+            await Task.Delay(5000);
         }
 
         public class MethodDomains

@@ -10,6 +10,7 @@
         "dependencies": {
           "Common": "1.0.0",
           "Microsoft.AspNetCore.SignalR.Client": "6.0.0-preview.2.21154.6",
+          "Newtonsoft.Json": "12.0.3",
           "ReadLine": "2.0.1"
         },
         "runtime": {
@@ -177,6 +178,14 @@
           "lib/netcoreapp3.0/Microsoft.Extensions.Primitives.dll": {
             "assemblyVersion": "6.0.0.0",
             "fileVersion": "6.0.21.15406"
+          }
+        }
+      },
+      "Newtonsoft.Json/12.0.3": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.3.23909"
           }
         }
       },
@@ -353,6 +362,13 @@
       "sha512": "sha512-oZeJXKvE+lgHGph7uPcKHj3VEfbKnEoLUrpWb4JRu2DPwX/dDowjicnadjF795/C+sWnbK+ypir2h+sG5zRIfw==",
       "path": "microsoft.extensions.primitives/6.0.0-preview.2.21154.6",
       "hashPath": "microsoft.extensions.primitives.6.0.0-preview.2.21154.6.nupkg.sha512"
+    },
+    "Newtonsoft.Json/12.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
+      "path": "newtonsoft.json/12.0.3",
+      "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
     },
     "ReadLine/2.0.1": {
       "type": "package",

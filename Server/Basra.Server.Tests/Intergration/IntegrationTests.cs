@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -198,6 +199,47 @@ namespace Basra.Server.Tests.Integration
                 await c.Connection.InvokeAsync("Throw", 0);
                 await c2.Connection.InvokeAsync("Throw", 0);
             }
+
+            await Task.Delay(2);
+        }
+
+        [Fact(Timeout = 99999999)]
+        public async Task Reconnect_ShouldGetRoomStates()
+        {
+            var c = await MakeClient();
+            var c2 = await MakeClient();
+
+            await Task.Delay(50);
+
+            await c.Connection.InvokeAsync("RequestRandomRoom", 0, 0);
+            await c2.Connection.InvokeAsync("RequestRandomRoom", 0, 0);
+
+            await c.Connection.InvokeAsync("Ready");
+            await c2.Connection.InvokeAsync("Ready");
+
+            for (int i = 0; i < 2; i++)
+            {
+                await c.Connection.InvokeAsync("Throw", 0);
+                await c2.Connection.InvokeAsync("Throw", 0);
+            }
+
+            await c2.Connection.StopAsync();
+            await Task.Delay(200);
+
+            await c2.Connect(_factory.Server);
+            await Task.Delay(200);
+
+            await c2.Connection.StopAsync();
+            await Task.Delay(200);
+
+            await c2.Connect(_factory.Server);
+            await Task.Delay(200);
+
+            await c.Connection.StopAsync();
+            await Task.Delay(200);
+
+            await c.Connect(_factory.Server);
+            await Task.Delay(200);
         }
     }
 }

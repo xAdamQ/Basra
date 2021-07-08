@@ -80,9 +80,17 @@ namespace Basra.Server.Extensions
         public static async Task<object> InvokeAsync(this MethodInfo mi, object obj, params object[] parameters)
         {
             dynamic awaitable = mi.Invoke(obj, parameters);
+
             await awaitable;
 
             return awaitable.GetAwaiter().GetResult();
+        }
+
+        public static async Task InvokeActionAsync(this MethodInfo mi, object obj, params object[] parameters)
+        {
+            dynamic awaitable = mi.Invoke(obj, parameters);
+
+            await awaitable;
         }
     }
 }

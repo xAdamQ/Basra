@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Basra.Server
 {
@@ -11,7 +12,7 @@ namespace Basra.Server
         //todo ready timeout, timeouts overall as defensive strategy
         //todo action that happened after it's time e.g. play card
 
-        public const int DeckSize = 52;
+        public const int DeckSize = 20; //2343 --> make it 52
         public const int ShapeSize = 13;
 
         //each bet has specific xp gain, when you lose for example you take only .25 only of it 
@@ -23,11 +24,12 @@ namespace Basra.Server
         public const float GreatEatXpPercent = .3f;
         public const int GreatEatThreshold = 38;
 
+        public RoomActor LastEater { get; set; }
 
         private const int MaxLevel = 999;
         public static int GetLevelFromXp(int xp)
         {
-            var level = (int)(MathF.Pow(xp, .55f) / 10);
+            var level = (int) (MathF.Pow(xp, .55f) / 10);
             return level < MaxLevel ? level : MaxLevel;
         }
 
@@ -39,11 +41,13 @@ namespace Basra.Server
         public List<RoomActor> RoomActors { get; } = new();
         public List<RoomBot> RoomBots { set; get; } //left null on purpose
 
+        public List<string> RoomActorIds => RoomActors.Select(ra => ra.Id).ToList();
+
         public int Id { get; set; }
 
         public int BetChoice { get; }
         public int Bet => Bets[BetChoice];
-        public static int[] Bets => new[] { 55, 110, 220 };
+        public static int[] Bets => new[] {55, 110, 220};
 
         /// <summary>
         /// used in money aim code
@@ -52,7 +56,7 @@ namespace Basra.Server
 
         public int CapacityChoice { get; }
         public int Capacity => Capacities[CapacityChoice];
-        public static int[] Capacities => new[] { 2, 3, 4 };
+        public static int[] Capacities => new[] {2, 3, 4};
 
         public List<int> Deck { get; set; }
         public int CurrentTurn { get; set; }
@@ -63,7 +67,7 @@ namespace Basra.Server
             CapacityChoice = capacityChoice;
         }
 
-        public bool IsFull => RoomUsers.Count == Capacity;
+        public bool IsFull => RoomActors.Count == Capacity;
 
         public void SetUsersDomains(Type domain)
         {

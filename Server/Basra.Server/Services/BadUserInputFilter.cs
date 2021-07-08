@@ -43,6 +43,9 @@ namespace Basra.Server.Services
             var activeUser = _sessionRepo.GetActiveUser(invocationContext.Context.UserIdentifier);
             var domain = _methodDomains.GetDomain(invocationContext.HubMethodName);
 
+            if (activeUser.Disconnected)
+                throw new Exception("there's something wrong with ur sys, a user is disconnected and calling!");
+
             if (domain == null)
             {
                 throw new BadUserInputException(
@@ -83,7 +86,6 @@ namespace Basra.Server.Services
                 //my issue is the place
                 //so create a trigger system
             }
-
         }
 
         // Optional method

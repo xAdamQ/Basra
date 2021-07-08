@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Basra.Models.Client;
 using BestHTTP;
 using BestHTTP.SignalRCore;
 using BestHTTP.SignalRCore.Encoders;
@@ -8,11 +7,12 @@ using BestHTTP.SignalRCore.Messages;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
+using Newtonsoft.Json;
 
 public interface IController
 {
     void InitGame(PersonalFullUserInfo myFullUserInfo, MinUserInfo[] yesterdayChampions,
-        MinUserInfo[] topFriends);
+        MinUserInfo[] topFriends, ActiveRoomState activeRoomState);
 
     //they are unitasks because they are rpcs
     UniTask<FullUserInfo> GetPublicFullUserInfo(string userId);
@@ -22,9 +22,7 @@ public interface IController
     UniTask SelectCardback(int cardbackIndex);
     UniTask BuyCardback(int index);
     UniTask RequestRandomRoom(int betChoice, int capacityChoice);
-    void AddLobbyRpcs(ILobbyController lobbyController);
     UniTask Surrender();
-    void RemoveLobbyRpcs();
 
     void TstStartClient(string id);
     void UpdatePersonalInfo(PersonalFullUserInfo obj);
@@ -33,8 +31,10 @@ public interface IController
     void AssignRpc<T1>(Action<T1> action, string moduleName);
     void AssignRpc<T1, T2>(Action<T1, T2> action, string moduleName);
     void AssignRpc<T1, T2, T3>(Action<T1, T2, T3> action, string moduleName);
+    void AssignRpc<T1, T2, T3, T4>(Action<T1, T2, T3, T4> action, string moduleName);
 
     void RemoveModuleRpcs(string moduleName);
+    UniTask<MinUserInfo> TestWaitWithReturn();
 }
 
 public class Controller : IController, IInitializable
@@ -70,7 +70,7 @@ public class Controller : IController, IInitializable
     }
 
     public void InitGame(PersonalFullUserInfo myFullUserInfo, MinUserInfo[] yesterdayChampions,
-        MinUserInfo[] topFriends)
+        MinUserInfo[] topFriends, ActiveRoomState activeRoomState)
     {
         _repository.PersonalFullInfo = myFullUserInfo;
         _repository.YesterdayChampions = yesterdayChampions;
@@ -89,23 +89,27 @@ public class Controller : IController, IInitializable
 
         //#end
 
-        LoadAppropriateModules();
+        LoadAppropriateModules(activeRoomState);
     }
 
-    private void LoadAppropriateModules()
+    public void UpdatePersonalInfo(PersonalFullUserInfo personalFullUserInfo)
     {
-        // _roomFactory.Create(new RoomSettings(0, 0,
-        // new List<RoomOppoInfo> { new RoomOppoInfo { TurnId = 1, FullUserInfo = new FullUserInfo { Id = "0" } } }, 0));
+        _repository.PersonalFullInfo = personalFullUserInfo;
+    }
 
-        _lobbyFactory.Create();
-        Debug.Log("the lobby modules are loaded");
-        //depending on in room or in lobby
-        //lobby modules is loaded by it's context
+    #region rpc works
+
+    private void LoadAppropriateModules(ActiveRoomState activeRoomState)
+    {
+        if (activeRoomState == null)
+            _lobbyFactory.Create();
+        else
+            _roomFactory.Create(new RoomSettings(activeRoomState), activeRoomState);
     }
 
     private void AssignGeneralRpcs()
     {
-        hubConnection.On<PersonalFullUserInfo, MinUserInfo[], MinUserInfo[]>(nameof(InitGame), InitGame);
+        hubConnection.On<PersonalFullUserInfo, MinUserInfo[], MinUserInfo[], ActiveRoomState>(nameof(InitGame), InitGame);
         hubConnection.On<PersonalFullUserInfo>(nameof(UpdatePersonalInfo), UpdatePersonalInfo);
     }
 
@@ -116,7 +120,7 @@ public class Controller : IController, IInitializable
         if (RpcsNames.ContainsKey(moduleName))
             RpcsNames[moduleName].Add(actionName);
         else
-            RpcsNames.Add(moduleName, new List<string> { actionName });
+            RpcsNames.Add(moduleName, new List<string> {actionName});
     }
 
     public void AssignRpc(Action action, string moduleName)
@@ -131,7 +135,7 @@ public class Controller : IController, IInitializable
     {
         var actionName = action.Method.Name;
 
-        hubConnection.On<T1>(actionName, action);
+        hubConnection.On(actionName, action);
 
         SaveRpcName(actionName, moduleName);
     }
@@ -139,7 +143,7 @@ public class Controller : IController, IInitializable
     {
         var actionName = action.Method.Name;
 
-        hubConnection.On<T1, T2>(actionName, action);
+        hubConnection.On(actionName, action);
 
         SaveRpcName(actionName, moduleName);
     }
@@ -147,45 +151,31 @@ public class Controller : IController, IInitializable
     {
         var actionName = action.Method.Name;
 
-        hubConnection.On<T1, T2, T3>(actionName, action);
+        hubConnection.On(actionName, action);
 
         SaveRpcName(actionName, moduleName);
     }
+    public void AssignRpc<T1, T2, T3, T4>(Action<T1, T2, T3, T4> action, string moduleName)
+    {
+        var actionName = action.Method.Name;
+
+        hubConnection.On(actionName, action);
+
+        SaveRpcName(actionName, moduleName);
+    }
+
     public void RemoveModuleRpcs(string moduleName)
     {
         RpcsNames[moduleName].ForEach(_ => hubConnection.Remove(_));
     }
 
-    private List<string> lobbyRpcNames;
-    public void AddLobbyRpcs(ILobbyController lobbyController)
-    {
-        lobbyRpcNames = new List<string>();
+    #endregion
 
-        hubConnection.On<List<RoomOppoInfo>, int>(nameof(lobbyController.PrepareRequestedRoomRpc),
-            lobbyController.PrepareRequestedRoomRpc);
-        lobbyRpcNames.Add(nameof(lobbyController.PrepareRequestedRoomRpc));
-    }
-    public void RemoveLobbyRpcs()
-    {
-        lobbyRpcNames.ForEach(_ => hubConnection.Remove(_));
-    }
-
-    // private List<string> roomRpcNames;
-    // public void AddRoomRpcs(IRoomController roomController)
-    // {
-    //     roomRpcNames = new List<string>();
-
-    //     hubConnection.On<List<int>, List<int>>(nameof(roomController.StartRoomRpc),
-    //         roomController.StartRoomRpc);
-    //     lobbyRpcNames.Add(nameof(roomController.StartRoomRpc));
-    // }
-    // public void RemoveRoomRpcs()
-    // {
-    //     roomRpcNames.ForEach(_ => hubConnection.Remove(_));
-    // }
+    #region hub
 
     private HubConnection hubConnection;
-    private readonly string address = "http://localhost:5000/connect";
+    // private readonly string address = "http://localhost:5000/connect";
+    private readonly string address = "https://tstappname.azurewebsites.net/connect";
     private readonly IProtocol protocol = new JsonProtocol(new LitJsonEncoder());
     private readonly MyReconnectPolicy myReconnectPolicy = new MyReconnectPolicy();
 
@@ -214,7 +204,8 @@ public class Controller : IController, IInitializable
 
     private bool OnMessage(HubConnection arg1, Message msg)
     {
-        Debug.Log($"msg is {JsonUtility.ToJson(msg)}");
+        Debug.Log($"msg is {JsonConvert.SerializeObject(msg, Formatting.Indented)}");
+
         return true;
     }
     private void OnConnected(HubConnection obj)
@@ -230,14 +221,10 @@ public class Controller : IController, IInitializable
         Debug.Log($"OnError: {arg2}");
     }
 
+    #endregion
 
-    public void UpdatePersonalInfo(PersonalFullUserInfo personalFullUserInfo)
-    {
-        _repository.PersonalFullInfo = personalFullUserInfo;
-    }
+    #region out rpcs
 
-
-    //call the server
     public async UniTask<FullUserInfo> GetPublicFullUserInfo(string userId)
     {
         return await hubConnection.InvokeAsync<FullUserInfo>("GetPublicInfo");
@@ -267,8 +254,15 @@ public class Controller : IController, IInitializable
         await hubConnection.SendAsync("Surrender");
     }
 
+    #endregion
+
     public async UniTask<object> SendAsync(string method, params object[] args)
     {
         return await hubConnection.SendAsync(method, args);
+    }
+
+    public async UniTask<MinUserInfo> TestWaitWithReturn()
+    {
+        return await hubConnection.InvokeAsync<MinUserInfo>("TestReturnObject");
     }
 }

@@ -12,25 +12,38 @@ using Zenject;
 /// </summary>
 public class RoomResultPanel : MonoBehaviour
 {
-    [SerializeField]
-    private Text
+    [SerializeField] private Text
         competetionScoreText,
         basraScoreText,
         bigBasraScoreText,
-        greatEatScoreText;
+        greatEatScoreText,
+        eatenCards,
+        basras,
+        superBasras,
+        winRatioChange,
+        earnedMoney,
+        winStreak;
 
-    [SerializeField] private PersonalFullUserView statesView;
 
-    [Inject] private IRoomController _roomController;
-    [Inject] private LobbyController.Factory _lobbyFactory;
+    [Inject] private readonly IRoomController _roomController;
+    [Inject] private readonly LobbyController.Factory _lobbyFactory;
 
-    public static void Instantiate(ReferenceInstantiator _referenceInstantiator, RoomInstaller.Refernces refs,/*first 2 are services*/ RoomXpReport roomXpReport, PersonalFullUserInfo personalFullUserInfo)
+    public static void Instantiate(ReferenceInstantiator<RoomInstaller> referenceInstantiator,
+        RoomInstaller.References refs, /*first 2 are services*/RoomXpReport roomXpReport, PersonalFullUserInfo oldInfo,
+        PersonalFullUserInfo personalFullUserInfo, int betChoice)
     {
-        _referenceInstantiator.Instantiate(refs.RoomResultPanelRef, go => go.GetComponent<RoomResultPanel>().Construct(roomXpReport, personalFullUserInfo), refs.Canvas);
+        referenceInstantiator.Instantiate(refs.RoomResultPanelRef,
+            go => go.GetComponent<RoomResultPanel>()
+                .Construct(roomXpReport, oldInfo, personalFullUserInfo, betChoice),
+            refs.Canvas);
     }
 
-    public void Construct(RoomXpReport roomXpReport, PersonalFullUserInfo personalFullUserInfo)
+    private void Construct(RoomXpReport roomXpReport, PersonalFullUserInfo oldInfo, PersonalFullUserInfo personalFullUserInfo,
+        int betChoice)
     {
+        Debug.Log(_roomController);
+        Debug.Log(_lobbyFactory);
+
         if (roomXpReport.Competition == 0) competetionScoreText.transform.parent.gameObject.SetActive(false);
         if (roomXpReport.Basra == 0) basraScoreText.transform.parent.gameObject.SetActive(false);
         if (roomXpReport.BigBasra == 0) bigBasraScoreText.transform.parent.gameObject.SetActive(false);
@@ -41,12 +54,25 @@ public class RoomResultPanel : MonoBehaviour
         bigBasraScoreText.text = roomXpReport.BigBasra.ToString();
         greatEatScoreText.text = roomXpReport.GreatEat.ToString();
 
-        statesView.Show(personalFullUserInfo);
+        eatenCards.text = (personalFullUserInfo.EatenCardsCount - oldInfo.EatenCardsCount).ToString();
+        basras.text = (personalFullUserInfo.BasraCount - oldInfo.BasraCount).ToString();
+        superBasras.text = (personalFullUserInfo.BigBasraCount - oldInfo.BigBasraCount).ToString();
+        winRatioChange.text = (personalFullUserInfo.WinRatio - oldInfo.WinRatio).ToString("p2");
+
+        winStreak.text = personalFullUserInfo.WinStreak.ToString();
+
+        //know win or loose by this
+        var moneyChange = (personalFullUserInfo.Money - oldInfo.Money);
+
+        var bet = RoomSettings.Bets[betChoice];
+
+        if (moneyChange < 0) earnedMoney.color = Color.red;
+        else earnedMoney.text = ((bet - (bet * .1f)) * 2).ToString("f0");
     }
 
     public void ToLobby()
     {
-        _roomController.DestroyModule();
+        _roomController.DestroyModuleGroup();
         _lobbyFactory.Create();
     }
 
@@ -54,5 +80,4 @@ public class RoomResultPanel : MonoBehaviour
     {
         throw new System.NotImplementedException();
     }
-
 }

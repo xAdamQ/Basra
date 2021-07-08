@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Basra.Server.Exceptions;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace TesterClient
@@ -13,8 +14,6 @@ namespace TesterClient
 
         static async Task Main(string[] args)
         {
-            // using StreamWriter file = new("history.txt", append: true);
-            // await file.WriteLineAsync("Fourth line");
             ReadLine.HistoryEnabled = true;
 
             while (true)
@@ -25,43 +24,35 @@ namespace TesterClient
 
                 var input = ReadLine.Read();
 
-                foreach (var cmd in input.Split(';'))
+                try
                 {
-                    if (cmd == "nu")
+                    foreach (var cmd in input.Split(';'))
                     {
-                        await MakeClient();
-                        break;
-                    }
-                    else
-                    {
-                        var words = cmd.Split(' ');
-                        var res0 = int.TryParse(words[0], out int clientIndex);
-                        var res1 = int.TryParse(words[1], out int commandIndex);
-                        if (!res0 || !res1)
+                        if (cmd == "nu")
                         {
-                            Console.WriteLine("invilde input");
-                            continue;
+                            await MakeClient();
+                            break;
                         }
+                        else
+                        {
+                            var words = cmd.Split(' ');
+                            var res0 = int.TryParse(words[0], out int clientIndex);
+                            var res1 = int.TryParse(words[1], out int commandIndex);
+                            if (!res0 || !res1)
+                            {
+                                Console.WriteLine("invilde input");
+                                continue;
+                            }
 
-                        Clients[int.Parse(words[0])].RpcCall(Client.Rpcs[int.Parse(words[1])], ProcessArgs(words, 2));
+                            Clients[int.Parse(words[0])].RpcCall(Client.Rpcs[int.Parse(words[1])], ProcessArgs(words, 2));
+                        }
                     }
-
-                    // else if (cmd.StartsWith("call "))
-                    // {
-                    //     var words = cmd.Split(' ');
-                    //     if (!int.TryParse(words[1], out int clientIndex))
-                    //     {
-                    //         System.Console.WriteLine("you must specify the user");
-                    //         break;
-                    //     }
-                    //     var rpc = words[2];
-
-                    //     Clients[clientIndex].RpcCall(rpc, ProcessArgs(words, 3));
-                    // }
                 }
-
+                catch (BadUserInputException e)
+                {
+                    Console.WriteLine(e);
+                }
             }
-
         }
 
         static object[] ProcessArgs(string[] cmdWords, int startIndex)
@@ -99,7 +90,5 @@ namespace TesterClient
             Console.WriteLine("a new client is made with index: " + (Clients.Count - 1));
             await c.Connect();
         }
-
-
     }
 }

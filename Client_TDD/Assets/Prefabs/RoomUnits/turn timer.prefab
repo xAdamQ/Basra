@@ -54,7 +54,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7198160784560237362}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -89,7 +89,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e7c7944e7104f68b4f41a1b0788f539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerImage: {fileID: 7198160784827029158}
 --- !u!1001 &8446785417113401240
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -104,6 +103,10 @@ PrefabInstance:
     - target: {fileID: 1647195471581372734, guid: 96e1007d298f8604e994bad4a08b3b33, type: 3}
       propertyPath: m_Type
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647195471581372734, guid: 96e1007d298f8604e994bad4a08b3b33, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1647195471581372734, guid: 96e1007d298f8604e994bad4a08b3b33, type: 3}
       propertyPath: m_FillAmount
@@ -212,14 +215,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1647195471581372735, guid: 96e1007d298f8604e994bad4a08b3b33, type: 3}
   m_PrefabInstance: {fileID: 8446785417113401240}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7198160784827029158 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1647195471581372734, guid: 96e1007d298f8604e994bad4a08b3b33, type: 3}
-  m_PrefabInstance: {fileID: 8446785417113401240}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

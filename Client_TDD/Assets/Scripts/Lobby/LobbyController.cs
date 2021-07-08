@@ -4,46 +4,48 @@ using Zenject;
 
 public interface ILobbyController
 {
-    void PrepareRequestedRoomRpc(List<RoomOppoInfo> roomOppoInfo, int myTurn);
+    void PrepareRequestedRoomRpc(int betChoice, int capacityChoice, List<FullUserInfo> userInfos, int myTurn);
 }
 
-public class LobbyController : ILobbyController, IInitializable
+public class LobbyController : ILobbyController, IInitializable, System.IDisposable
 {
-    private readonly IController _controller;
-    private readonly RoomController.Factory _roomFactory;
-    private readonly RoomRequester _roomRequester;
-
-    [Inject]
-    public LobbyController(IController controller, RoomController.Factory roomFactory,
-        RoomRequester roomRequester)
-    {
-        _controller = controller;
-        _roomFactory = roomFactory;
-        _roomRequester = roomRequester;
-    }
+    [Inject] private readonly IController _controller;
+    [Inject] private readonly IRepository _repository;
+    [Inject] private readonly RoomController.Factory _roomFactory;
 
     public void Initialize()
     {
-        _controller.AddLobbyRpcs(this);
+        AssignRpcs();
+    }
+
+    public void Dispose()
+    {
+        _controller.RemoveModuleRpcs(nameof(LobbyController));
+    }
+
+    private void AssignRpcs()
+    {
+        _controller.AssignRpc<int, int, List<FullUserInfo>, int>(PrepareRequestedRoomRpc,
+            nameof(LobbyController));
     }
 
     public class Factory : PlaceholderFactory<LobbyController>
     {
     }
 
-    public void PrepareRequestedRoomRpc(List<RoomOppoInfo> roomOppoInfo, int myTurn)
+    public void PrepareRequestedRoomRpc(int betChoice, int capacityChoice, List<FullUserInfo> userInfos, int myTurn)
     {
         DestroyLobby();
 
-        var roomChoice = _roomRequester.LastChoice;
+        var roomsSettings = new RoomSettings(betChoice, capacityChoice, userInfos, myTurn);
 
-        _roomFactory.Create(new RoomSettings(roomChoice.Item1, roomChoice.Item2, roomOppoInfo, myTurn));
+        _repository.PersonalFullInfo.Money -= roomsSettings.BetMoneyToPay();
+
+        _roomFactory.Create(roomsSettings, null);
     }
 
     private void DestroyLobby()
     {
-        _controller.RemoveLobbyRpcs();
-
         //todo find better way to locate it
         Object.Destroy(Object.FindObjectOfType<LobbyInstaller>().gameObject);
     }

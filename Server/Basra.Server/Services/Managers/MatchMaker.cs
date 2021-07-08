@@ -18,6 +18,7 @@ namespace Basra.Server.Services
         /// </summary>
         Task FillPendingRoomWithBots(Room room);
         Task MakeRoomUserReadyRpc(ActiveUser activeUser, RoomUser roomUser);
+        void RemovePendingDisconnectedUser(RoomUser roomUser);
     }
 
     public class MatchMaker : IMatchMaker
@@ -25,11 +26,12 @@ namespace Basra.Server.Services
         private readonly IHubContext<MasterHub> _masterHub;
         private readonly IRoomManager _roomManager;
         private readonly IServerLoop _serverLoop;
-        private readonly ILogger<IMatchMaker> _logger;
+        private readonly ILogger<MatchMaker> _logger;
         private readonly IMasterRepo _masterRepo;
         private readonly ISessionRepo _sessionRepo;
+
         public MatchMaker(IHubContext<MasterHub> masterHub, IMasterRepo masterRepo, ISessionRepo sessionRepo,
-            IRoomManager roomManager, IServerLoop serverLoop, ILogger<IMatchMaker> logger)
+            IRoomManager roomManager, IServerLoop serverLoop, ILogger<MatchMaker> logger)
         {
             _masterHub = masterHub;
             _masterRepo = masterRepo;
@@ -42,6 +44,11 @@ namespace Basra.Server.Services
         public async Task RequestRandomRoom(int betChoice, int capacityChoice, ActiveUser activeUser)
         {
             if (!betChoice.IsInRange(Room.Bets.Length) || !capacityChoice.IsInRange(Room.Capacities.Length))
+                throw new BadUserInputException();
+
+            var dUser = await _masterRepo.GetUserByIdAsyc(activeUser.Id);
+
+            if (dUser.Money < Room.MinBet)
                 throw new BadUserInputException();
 
             var room = TakeOrCreateAppropriateRoom(betChoice, capacityChoice);
@@ -65,10 +72,9 @@ namespace Basra.Server.Services
         }
         private void RemoveDisconnectedUsers(Room room)
         {
-            var disconnectedUsers = room.RoomUsers.Where(ru => ru.ActiveUser.Disconnected);
-            room.RoomUsers.RemoveAll(ru => disconnectedUsers.Contains(ru));
-            room.RoomActors.RemoveAll(ra => disconnectedUsers.Contains(ra));
-            foreach (var ru in disconnectedUsers) _sessionRepo.DeleteRoomUser(ru);
+            var disconnectedUsers = room.RoomUsers.Where(ru => ru.ActiveUser.Disconnected).ToList();
+
+            disconnectedUsers.ForEach(_ => RemovePendingDisconnectedUser(_));
         }
         /// <summary>
         /// called by timeout
@@ -80,7 +86,7 @@ namespace Basra.Server.Services
             for (int i = 0; i < botsCount; i++)
             {
                 var botId = StaticRandom.GetRandom(RoomBot.IdRange).ToString();
-                room.RoomBots.Add(new RoomBot { Id = botId, Room = room });
+                room.RoomBots.Add(new RoomBot {Id = botId, Room = room});
             }
 
             room.RoomActors.AddRange(room.RoomBots);
@@ -105,47 +111,40 @@ namespace Basra.Server.Services
 
             users.ForEach(u => u.Money -= room.Bet);
 
-            // room.RoomUsers.Shuffle(); //take care of this if you changed to db way, skipped, the normal is random enough
+            for (int i = 0; i < room.RoomActors.Count; i++) room.RoomActors[i].TurnId = i;
+
             var fullUsersInfo = users.Select(Mapper.UserToFullUserInfoFunc).ToList();
 
-            var roomOpposInfo = new List<RoomOppoInfo>();
-            for (int i = 0; i < room.Capacity; i++)
-            {
-                room.RoomActors[i].TurnId = i;
-                roomOpposInfo.Add(new RoomOppoInfo
-                { FullUserInfo = fullUsersInfo[i], TurnId = i /*possible issue in this*/});
-            }
-            //get oppos info list
+            var turnSortedUsersInfo = room.RoomActors.Join(fullUsersInfo, actor => actor.Id, info => info.Id,
+                (_, info) => info).ToList();
 
             await _masterRepo.SaveChangesAsync();
 
-            await SendPrepareRoom(room.RoomUsers, roomOpposInfo);
+            await SendPrepareRoom(room.BetChoice, room.CapacityChoice, turnSortedUsersInfo);
         }
-        /// <summary>
-        /// send start with required data + adds them room users to a group
-        /// </summary>
-        private async Task SendPrepareRoom(List<RoomUser> roomUsers, List<RoomOppoInfo> roomOpposInfo)
+
+        private async Task SendPrepareRoom(int betChoice, int capacityChoice, List<FullUserInfo> turnSortedUsersInfo)
         {
             var tasks = new List<Task>();
 
-            for (int i = 0; i < roomUsers.Count; i++)
+            for (int i = 0; i < turnSortedUsersInfo.Count; i++)
             {
-                var otherUsers = roomOpposInfo.Where(_ => _.FullUserInfo.Id != roomUsers[i].Id).ToList();
-
-                var task = _masterHub.Clients.User(roomUsers[i].Id)
+                var task = _masterHub.Clients.User(turnSortedUsersInfo[i].Id)
                     //todo -farther investigation- I use user rather than client because conn id changes in the same room when he disconnect
-                    .SendAsync("PrepareRequestedRoomRpc", otherUsers, i);
+                    .SendAsync("PrepareRequestedRoomRpc", betChoice, capacityChoice, turnSortedUsersInfo, i);
 
                 tasks.Add(task);
             }
 
             await Task.WhenAll(tasks);
         }
+
         private Room TakeOrCreateAppropriateRoom(int betChoice, int capacityChoice)
         {
             return _sessionRepo.GetPendingRoom(betChoice, capacityChoice) ??
                    _sessionRepo.MakeRoom(betChoice, capacityChoice);
         }
+
         private RoomUser CreateRoomUser(ActiveUser activeUser, Room room)
         {
             var roomUser = new RoomUser
@@ -169,7 +168,7 @@ namespace Basra.Server.Services
             }
         }
 
-        public void RemovePendingUser(RoomUser roomUser)
+        public void RemovePendingDisconnectedUser(RoomUser roomUser)
         {
             _logger.LogInformation($"removing pending room user {roomUser.Id}");
 
@@ -183,6 +182,8 @@ namespace Basra.Server.Services
             }
 
             _sessionRepo.DeleteRoomUser(roomUser);
+
+            roomUser.Room = null;
         }
 
         //grouping is canceled, I don't send to many players at once

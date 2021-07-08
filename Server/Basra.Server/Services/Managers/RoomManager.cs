@@ -41,6 +41,7 @@ namespace Basra.Server.Services
         /// </summary>
         Task BotPlay(RoomBot roomBot);
         Task<ActiveRoomState> GetFullRoomState(RoomUser roomUser);
+        Task Surrender(RoomUser roomUser);
     }
 
     /// <summary>
@@ -50,20 +51,19 @@ namespace Basra.Server.Services
     {
         private readonly IHubContext<MasterHub> _masterHub;
         private readonly IMasterRepo _masterRepo;
-        private readonly ISessionRepo _sessionRepo;
         private readonly IServerLoop _serverLoop;
         private readonly ILogger<RoomManager> _logger;
+        private readonly IFinalizeManager _finalizeManager;
 
-        public RoomManager(IHubContext<MasterHub> masterHub, IMasterRepo masterRepo, ISessionRepo sessionRepo,
-            IServerLoop serverLoop, ILogger<RoomManager> logger)
+        public RoomManager(IHubContext<MasterHub> masterHub, IMasterRepo masterRepo,
+            IServerLoop serverLoop, ILogger<RoomManager> logger, IFinalizeManager finalizeManager)
         {
             _masterHub = masterHub;
             _masterRepo = masterRepo;
-            _sessionRepo = sessionRepo;
             _serverLoop = serverLoop;
             _logger = logger;
+            _finalizeManager = finalizeManager;
         }
-
 
         public async Task StartRoom(Room room)
         {
@@ -112,10 +112,10 @@ namespace Basra.Server.Services
             foreach (var roomActor in room.RoomActors)
                 roomActor.Hand = roomActor.Room.Deck.CutRange(RoomActor.HandSize);
 
-            // return room.RoomUsers.Select(roomUser => new DistributeResult {MyHand = roomUser.Hand}).ToList();
+            var callName = room.Deck.Count > 0 ? "Distribute" : "LastDistribute";
 
             foreach (var roomUser in room.RoomUsers)
-                await _masterHub.Clients.User(roomUser.Id).SendAsync("Distribute", roomUser.Hand);
+                await _masterHub.Clients.User(roomUser.Id).SendAsync(callName, roomUser.Hand);
         } //trivial to test
 
         private async Task NextTurn(Room room)
@@ -123,11 +123,11 @@ namespace Basra.Server.Services
             room.CurrentTurn = ++room.CurrentTurn % room.Capacity;
             var actorInTurn = room.RoomActors[room.CurrentTurn];
 
-            if (actorInTurn.Hand.Count == 0 && actorInTurn.TurnId == 0)
+            if (actorInTurn.Hand.Count == 0)
             {
                 if (actorInTurn.Room.Deck.Count == 0)
                 {
-                    await FinalizeGame(actorInTurn.Room);
+                    await _finalizeManager.FinalizeRoom(actorInTurn.Room);
                     return;
                 }
                 else
@@ -158,6 +158,8 @@ namespace Basra.Server.Services
 
             if (eaten != null && eaten.Count != 0)
             {
+                roomActor.Room.LastEater = roomActor;
+
                 roomActor.Room.GroundCards.RemoveAll(c => eaten.Contains(c));
 
                 roomActor.EatenCardsCount += eaten.Count;
@@ -194,14 +196,18 @@ namespace Basra.Server.Services
             var throwResult = PlayBase(roomUser, cardIndexInHand);
 
             await Task.WhenAll(
-             _masterHub.Clients.User(roomUser.Id).SendAsync("MyThrowResult", throwResult),
-             _masterHub.Clients.Users(roomUser.Room.RoomUsers.Where(ru => ru != roomUser)
+                _masterHub.Clients.User(roomUser.Id).SendAsync("MyThrowResult", throwResult),
+                _masterHub.Clients.Users(roomUser.Room.RoomUsers.Where(ru => ru != roomUser)
                         .Select(ru => ru.Id))
                     .SendAsync("CurrentOppoThrow", throwResult)
             );
 
-            await NextTurn(roomUser.Room);
+            //todo possible issue: one of the clients takes the the message, the other is experiencing network issue
+            //then next turn won't be called while we are waiting for that user, and the fast user can make action and lead to exc 
+
             _logger.LogInformation($"user has played card {cardIndexInHand} with value {throwResult.ThrownCard} userId {roomUser.Id}");
+
+            await NextTurn(roomUser.Room);
         } //todo good candidate for unit testing
 
         public async Task MissTurnRpc(RoomUser roomUser) //the difference is that rpc contains validation
@@ -267,7 +273,7 @@ namespace Basra.Server.Services
         } //no test, you can test the "concurrent random"
 
         private const int KOMI_ID = 19, BOY_VALUE = 11;
-        private static readonly int[] BOY_IDS = { 10, 23, 36, 49 };
+        private static readonly int[] BOY_IDS = {10, 23, 36, 49};
         private static List<int> Eat(int cardId, List<int> ground, out bool basra, out bool bigBasra)
         {
             basra = false;
@@ -295,7 +301,7 @@ namespace Basra.Server.Services
 
             var groups = ground.Permutations();
             var bestGroupLength = -1;
-            List<int> bestGroup = null;
+            List<int> bestGroup = new List<int>();
             foreach (var group in groups)
             {
                 if (group.Select(c => cardValueFromId(c)).Sum() == cardValue && group.Count > bestGroupLength)
@@ -326,219 +332,67 @@ namespace Basra.Server.Services
                 _masterHub.Clients.User(u.Id).SendAsync("UserSurrender", roomUser.TurnId)));
             //blocks the client and waits for finalize result
 
-            await FinalizeGame(roomUser.Room, roomUser);
+            // room.RoomActors.First(_ => _ == roomUser);
+
+            // if(room)
+            await _finalizeManager.FinalizeRoom(roomUser.Room, roomUser);
         }
 
-        private async Task FinalizeGame(Room room, RoomUser resignedUser = null)
-        {
-            room.SetUsersDomains(typeof(UserDomain.App.Room.FinishedRoom));
 
-            var roomDataUsers = await _masterRepo.GetUsersByIds(room.RoomActors.Select(_ => _.Id).ToList());
-            //todo test if the result is the same order as roomUsers
-
-            var scores = CalcScores(room.RoomActors, resignedUser);
-            var xpReports = UpdateUserStates(room, roomDataUsers, scores);
-            await Task.WhenAll(roomDataUsers.Select(u => LevelWorks(u)));
-
-            await _masterRepo.SaveChangesAsync();
-
-            await SendFinalizeResult(room, roomDataUsers, xpReports);
-
-            RemoveDisconnectedUsers(room.RoomUsers);
-
-            room.RoomUsers.ForEach(ru => _sessionRepo.DeleteRoomUser(ru));
-            _sessionRepo.DeleteRoom(room);
-
-            // return GetFinalizeResult(roomDataUsers, xpReports);
-        } //todo better split before test 
-
-        /// <summary>
-        /// score for resigned user is -1
-        /// </summary> 
-        private List<int> CalcScores(List<RoomActor> roomActors, RoomUser resignedUser = null)
-        {
-            var lastedUsers = resignedUser == null ? roomActors : roomActors.Where(_ => _ != resignedUser);
-
-            var biggestEatenCount = lastedUsers.Max(u => u.EatenCardsCount);
-            var biggestEaters = lastedUsers.Where(u => u.EatenCardsCount == biggestEatenCount).ToArray();
-
-            var scores = new List<int>();
-
-            foreach (var roomActor in roomActors)
-            {
-                if (roomActor == resignedUser)
-                {
-                    scores.Add(-1);
-                    continue;
-                }
-
-                scores.Add(roomActor.BasraCount * 10 +
-                           roomActor.BigBasraCount * 30 +
-                           (biggestEaters.Contains(roomActor) ? 30 : 0));
-            }
-
-            return scores;
-        }
-
-        /// <returns> the added xp and for what </returns>
-        private RoomXpReport[] UpdateUserStates(Room room, List<User> dataUsers, List<int> scores)
-        {
-            var xpReports = new RoomXpReport[room.Capacity];
-            for (int i = 0; i < xpReports.Length; i++) xpReports[i] = new RoomXpReport();
-
-            var betWithoutTicket = (int)(room.Bet / 1.1f);
-            var totalBet = betWithoutTicket * room.Capacity;
-            var maxScore = scores.Max();
-            var betXp = CalcBetXp(room.BetChoice);
-
-            var winnerIndices = scores.Select((score, i) => score == maxScore ? i : -1)
-                .Where(scoreIndex => scoreIndex != -1)
-                .ToList();
-            var loserIndices = Enumerable.Range(0, room.Capacity)
-                .Where(i => !winnerIndices.Contains(i))
-                .ToList();
-            var resignedUserIndex = scores.IndexOf(-1); //if no resign it retrun -1
-
-            //drawers
-            if (winnerIndices.Count > 1)
-            {
-                var moneyPart = totalBet / winnerIndices.Count;
-                foreach (var userIndex in winnerIndices)
-                {
-                    var dUser = dataUsers[userIndex];
-                    dUser.Draws++;
-                    dUser.Money += moneyPart;
-                    dUser.TotalEarnedMoney += moneyPart;
-
-                    dUser.XP += xpReports[userIndex].Competition = (int)Room.DrawXpPercent * betXp;
-                }
-            }
-            //winner
-            else
-            {
-                var dUser = dataUsers[winnerIndices[0]];
-                dUser.WonRoomsCount++;
-                dUser.Money += totalBet;
-                dUser.TotalEarnedMoney += totalBet;
-                dUser.WinStreak++;
-
-                dUser.XP += xpReports[0].Competition = (int)Room.WinXpPercent * betXp;
-            }
-
-
-            //losers
-            foreach (var loserIndex in loserIndices)
-            {
-                var dUser = dataUsers[loserIndex];
-                if (loserIndex != resignedUserIndex)
-                    dUser.XP += xpReports[loserIndex].Competition = (int)Room.LoseXpPercent * betXp;
-
-                dUser.WinStreak = 0;
-            }
-
-            for (int i = 0; i < room.Capacity; i++)
-            {
-                var dUser = dataUsers[i];
-                var roomActor = room.RoomActors[i];
-
-                dUser.PlayedRoomsCount++;
-
-                dUser.EatenCardsCount += roomActor.EatenCardsCount;
-                dUser.BasraCount += roomActor.BasraCount;
-                dUser.BigBasraCount += roomActor.BigBasraCount;
-
-                if (i != resignedUserIndex)
-                {
-                    dUser.XP += xpReports[i].Basra = roomActor.BasraCount * (int)Room.BasraXpPercent * betXp;
-                    dUser.XP += xpReports[i].BigBasra = roomActor.BigBasraCount * (int)Room.BigBasraXpPercent * betXp;
-
-                    if (roomActor.EatenCardsCount > Room.GreatEatThreshold)
-                        dataUsers[i].XP += xpReports[i].GreatEat = (int)Room.GreatEatXpPercent * betXp;
-                }
-            }
-
-            return xpReports;
-        }
-
-        private int CalcBetXp(int betChoice) => (int)(100 * MathF.Pow(betChoice, 1.4f)) + 100;
-
-        private void RemoveDisconnectedUsers(List<RoomUser> roomUsers)
-        {
-            foreach (var roomUser in roomUsers.Where(ru => ru.ActiveUser.Disconnected))
-                //where filtered with new collection, I don't know the performance but I will see how
-                //linq works under the hood, because I think the created collection doesn't affect performance
-                _sessionRepo.RemoveActiveUser(roomUser.ActiveUser.Id);
-        }
-
-        /// <summary>
-        /// check current level againest xp to level up and send to client
-        /// functions that takes data user as param dosn't save changes
-        /// </summary>
-        private async Task LevelWorks(User roomDataUser) //separate this to be called on every XP change 
-        {
-            var calcedLevel = Room.GetLevelFromXp(roomDataUser.XP);
-            if (calcedLevel > roomDataUser.Level)
-            {
-                var increasedLevels = calcedLevel - roomDataUser.Level;
-                var totalMoneyReward = 0;
-                for (int j = 0; j < increasedLevels; j++)
-                {
-                    totalMoneyReward += 100;
-                    //todo give level up rewards (money equation), add to test
-                    //todo test this function logic
-                }
-
-                roomDataUser.Level = calcedLevel;
-                roomDataUser.Money = totalMoneyReward;
-
-                await _masterHub.Clients.User(roomDataUser.Id)
-                    .SendAsync("LevelUp", calcedLevel, totalMoneyReward);
-            }
-        }
-
-        private async Task SendFinalizeResult(Room room, List<User> roomDataUsers, RoomXpReport[] roomXpReports)
-        {
-            var updateProfileTasks = new List<Task>();
-            for (int i = 0; i < room.RoomUsers.Count; i++)
-            {
-                var finalizeResult = new FinalizeResult
-                {
-                    RoomXpReport = roomXpReports[i],
-                    PersonalFullUserInfo = Mapper.ConvertUserDataToClient(roomDataUsers[i]),
-                };
-
-                updateProfileTasks.Add(_masterHub.Clients.User(room.RoomUsers[i].Id)
-                    .SendAsync("FinalizeResult", finalizeResult));
-            }
-            await Task.WhenAll(updateProfileTasks);
-        }
+        // public async Task<ActiveRoomState> GetFullRoomState(RoomUser roomUser)
+        // {
+        //     var room = roomUser.Room;
+        //
+        //     var opposInfo = await _masterRepo.GetFullUserInfoListAsync(
+        //         room.RoomActors.Where(ra => ra != roomUser).Select(ra => ra.Id));
+        //     //get users info from db
+        //
+        //
+        //     var oppoRoomData = opposInfo.Join(room.RoomActors, info => info.Id, actor => actor.Id,
+        //         (_, actor) => new {actor.TurnId, actor.Hand.Count}).ToList();
+        //
+        //     var roomState = new ActiveRoomState
+        //     {
+        //         BetChoice = room.BetChoice,
+        //         CapacityChoice = room.CapacityChoice,
+        //         CurrentTurn = room.CurrentTurn,
+        //         Ground = room.GroundCards,
+        //
+        //         OpposInfo = opposInfo,
+        //
+        //         OpposTurnIds = oppoRoomData.Select(_ => _.TurnId).ToList(),
+        //         OppoHandCounts = oppoRoomData.Select(_ => _.Count).ToList(),
+        //
+        //         MyHand = roomUser.Hand,
+        //         MyTurnId = roomUser.TurnId,
+        //     };
+        //
+        //     return roomState;
+        // }
 
         public async Task<ActiveRoomState> GetFullRoomState(RoomUser roomUser)
         {
             var room = roomUser.Room;
-            var usersInfo = await _masterRepo.GetFullUserInfoListAsync(room.RoomActors.Select(ra => ra.Id));
+
+            var userData = await _masterRepo.GetFullUserInfoListAsync(room.RoomActorIds);
+
+            var turnSortedInfo = room.RoomActors.Join(userData, actor => actor.Id, info => info.Id,
+                (_, info) => info).ToList();
 
             var roomState = new ActiveRoomState
             {
+                BetChoice = room.BetChoice,
+                CapacityChoice = room.CapacityChoice,
                 CurrentTurn = room.CurrentTurn,
-                FullUsersInfo = usersInfo,
                 Ground = room.GroundCards,
+
+                UserInfos = turnSortedInfo,
+
+                HandCounts = room.RoomActors.Select(_ => _.Hand.Count).ToList(),
+
                 MyHand = roomUser.Hand,
-                TurnId = roomUser.TurnId,
-
-                OppoHandCounts = new List<int>(),
-                BasrasCounts = new List<int>(),
-                BigBasrasCounts = new List<int>(),
-                EatenCardsCounts = new List<int>(),
+                MyTurnId = roomUser.TurnId,
             };
-
-            room.RoomActors.ForEach(ra =>
-            {
-                roomState.OppoHandCounts.Add(ra.Hand.Count);
-                roomState.BasrasCounts.Add(ra.BasraCount);
-                roomState.BigBasrasCounts.Add(ra.BigBasraCount);
-                roomState.EatenCardsCounts.Add(ra.EatenCardsCount);
-            });
 
             return roomState;
         }

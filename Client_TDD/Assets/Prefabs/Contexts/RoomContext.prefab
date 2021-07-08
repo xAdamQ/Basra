@@ -63,10 +63,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomUserViewPrefabs:
+  - {fileID: 1019544746795935123, guid: eea5418db741a29d4983abab5dbbbee8, type: 3}
   - {fileID: 440758228559811135, guid: 075222e41633a6ff09ccf8e619053bee, type: 3}
-  - {fileID: 6513530795172220441, guid: e484b8f8bf6d1147c97ae1d756659e56, type: 3}
-  - {fileID: 3801320763732651490, guid: 1c4e8c2bf0e1fb8cf9ef12a5e22d133e, type: 3}
-  - {fileID: 8335044926221963486, guid: 237ca89691d0e5ebea1b97773cc2fab5, type: 3}
+  - {fileID: 1061400989139159685, guid: e1f2a16fdc7e58d1b8a0ec2f5bad3c73, type: 3}
+  - {fileID: 5041135724046005075, guid: f6d1aedb40898702ab59d420847fc64d, type: 3}
+  playerPrefabs:
+  - {fileID: 6095275712694222183, guid: 0aec6ccccb153d3fbaa3fd23f5565cfa, type: 3}
+  - {fileID: 5399218110473192717, guid: 21f289f0af72e66f6aae55d4e6afe741, type: 3}
+  - {fileID: 8146256458109020066, guid: b750050b3b1a0ace0a1a9f0205ff61f9, type: 3}
+  - {fileID: 4911519491017269277, guid: af3a47f10f07a2bc5b9ae50840851838, type: 3}
   frontSprites:
   - {fileID: 6601591887075733081, guid: 39883e13245f1054aac7b33760e03982, type: 3}
   - {fileID: -3112814339835767726, guid: 39883e13245f1054aac7b33760e03982, type: 3}
@@ -122,15 +127,11 @@ MonoBehaviour:
   - {fileID: -2942531076457057836, guid: 39883e13245f1054aac7b33760e03982, type: 3}
   frontPrefab: {fileID: 6318510277521361182, guid: 8d7fc7449ba5f5d4c8bf3fbe2ef81ffb, type: 3}
   cardPrefab: {fileID: 8249647828415074049, guid: 91cc747f46429b00e945c1e73e073c70, type: 3}
-  playerPrefab: {fileID: 6095275712694222183, guid: 0aec6ccccb153d3fbaa3fd23f5565cfa, type: 3}
-  oppoPrefab: {fileID: 6095275712694222183, guid: 269c58c535065087b8740a42fa1ba278, type: 3}
   groundPrefab: {fileID: 3841681440189108531, guid: 68aff56aa30865e4ab0dadcfd4a17353, type: 3}
   fullUserViewPrefab: {fileID: 6124222723417715920, guid: b3bd7468065470b358fedac840e188af, type: 3}
   personalFullUserViewPrefab: {fileID: 5773006616115483438, guid: 03239c0710ee07e46acd46217dec41fd, type: 3}
   standardCanvasPrefab: {fileID: 6078164675834289504, guid: fb2de139dc7dbe33084ada8c92f496a8, type: 3}
-  turnTimerPrefab: {fileID: 7198160784560237362, guid: 3167fc88b7e754205844c245b9b71e78, type: 3}
-  CameraPrefab: {fileID: 4817333019724019237, guid: 26c193700bec480e39931d410bae34e3, type: 3}
-  EventSystemPrefab: {fileID: 7647310846122247347, guid: 84ec9ea54801264d7b30ac63de8eb2d4, type: 3}
+  menuPrefab: {fileID: 6847686574724075888, guid: e3659f792059f964290b68c14516e3d5, type: 3}
   references:
     RoomResultPanelRef:
       m_AssetGUID: de67c529bd241f24d95f21f7dd3a1059

@@ -12,6 +12,7 @@ public interface IOppo : IPlayerBase
     void Throw(ThrowResult throwResult);
     //tested
     void Distribute();
+    void Distribute(int cardsCount);
 }
 
 public class Oppo : PlayerBase, IOppo
@@ -30,7 +31,11 @@ public class Oppo : PlayerBase, IOppo
 
     public void Distribute()
     {
-        for (var i = 0; i < HandCardCapacity; i++)
+        Distribute(HandCardCapacity);
+    }
+    public void Distribute(int cardsCount)
+    {
+        for (var i = 0; i < cardsCount; i++)
         {
             var card = _cardFactory.CreateOppoCard(transform);
             HandCards.Add(card);

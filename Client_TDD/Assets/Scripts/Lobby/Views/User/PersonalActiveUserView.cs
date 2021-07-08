@@ -76,4 +76,13 @@ public class PersonalActiveUserView : MinUserView
 
     [SerializeField] private Text money;
     [SerializeField] private Text moneyAimTimeLeft;
+
+    [Inject] private readonly IController _controller;
+    [Inject] private readonly BlockingOperationManager _blockingOperationManager;
+
+    public void testwaitalot()
+    {
+        _blockingOperationManager.Forget(_controller.SendAsync("TestWaitAlot"));
+        // _blockingOperationManager.Forget<MinUserInfo>(_controller.TestWaitWithReturn(), info => Debug.Log("info is" + info.Name));
+    }
 }

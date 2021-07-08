@@ -9,7 +9,8 @@ namespace PlayModeTests
     {
         protected void InstallProjectModule(ProjectInstaller.Settings settings)
         {
-            var installerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Contexts/ProjectInstaller.Prefab");
+            var installerPrefab =
+                AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Contexts/ProjectInstaller.Prefab");
             var installer = Object.Instantiate(installerPrefab).GetComponent<ProjectInstaller>();
             Container.BindInstance(settings).WhenInjectedInto<ProjectInstaller>();
             Container.Inject(installer);
@@ -18,7 +19,8 @@ namespace PlayModeTests
 
         protected void InstallRoomServices(RoomInstaller.ModuleSwitches settings)
         {
-            var installerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Contexts/RoomContext.Prefab");
+            var installerPrefab =
+                AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Contexts/RoomContext.Prefab");
             var installer = Object.Instantiate(installerPrefab).GetComponent<RoomInstaller>();
             Container.BindInstance(settings).WhenInjectedInto<RoomInstaller>();
             Container.Inject(installer);
@@ -90,7 +92,7 @@ namespace PlayModeTests
 
             var canvas = Object.FindObjectOfType<Canvas>().transform;
 
-            Container.Bind<RoomUserView.Factory>().AsSingle()
+            Container.Bind<RoomUserView.IManager>().AsSingle()
                 .WithArguments(roomUserViewPrefabs, canvas);
         }
     }

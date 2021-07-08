@@ -1,69 +1,68 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 using DG.Tweening;
-using UnityEngine.XR;
 using System.Linq;
 
 public interface IPlayerBase
 {
     void EndTurn();
     void StartTurn();
+    void EatLast();
+    List<Card> HandCards { get; }
 }
 
 public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 {
-    #region user places
-
-    private const float UpperPadding = 1.5f, BottomPadding = 1f;
-
-    private static readonly Vector2[] UserPositions =
-    {
-        new Vector2(-.3f, -5),
-        new Vector2(0, 6),
-        new Vector2(3.5f, -2.8f),
-        new Vector2(-3.5f, 3.7f),
-    };
-
-    private static readonly Vector3[] UserRotations =
-    {
-        new Vector3(),
-        new Vector3(0, 0, 180),
-        new Vector3(0, 0, 90),
-        new Vector3(0, 0, -90),
-    };
-
-    #endregion
-
+    [SerializeField] private Transform startCard, endCard;
 
     [Inject] protected readonly Card.Factory _cardFactory;
     [Inject] protected readonly IGround _ground;
     [Inject] protected readonly ICoreGameplay _coreGameplay;
-
-
-
+    [Inject] protected readonly RoomUserView.IManager _ruvManager;
 
     protected static readonly int HandCardCapacity = 4;
-    protected static readonly Vector2 HandXBounds = new Vector2(.45f, 2.2f);
-    protected static readonly float HandSize = HandXBounds.y - HandXBounds.x;
 
-    protected List<Card> HandCards { get; } = new List<Card>();
+    private void Awake()
+    {
+        turnTimer = GetComponent<TurnTimer>();
+    }
+
+    protected virtual void Start()
+    {
+        HandCenter = ((endCard.position - startCard.position) / 2) + startCard.position;
+
+        turnTimer.Ticked += _ruvManager.RoomUserViews[Turn].SetTurnFill;
+    }
+
+    private int Turn { get; set; }
+
+    public List<Card> HandCards { get; } = new List<Card>();
+
+    protected TurnTimer turnTimer;
+
+    public Vector2 HandCenter { private set; get; }
 
     protected Vector3 PlaceCard(Card card, Sequence animSeq)
     {
         var targetPoz = new Vector3(
-            UnityEngine.Random.Range(-Ground.Bounds.x, Ground.Bounds.x),
-            UnityEngine.Random.Range(-Ground.Bounds.y, Ground.Bounds.y));
+            UnityEngine.Random.Range(_ground.LeftBottomBound.x, _ground.TopRightBound.x),
+            UnityEngine.Random.Range(_ground.LeftBottomBound.y, _ground.TopRightBound.y));
 
-        animSeq.
-            Append(card.transform.DOMove(targetPoz, .5f))
+        animSeq.Append(card.transform.DOMove(targetPoz, .5f))
             .Join(card.transform.DORotate(new Vector3(0, 180), .3f));
 
         return targetPoz;
+    }
+
+    public void EatLast()
+    {
+        UpdateEatStatus(_ground.Cards.Count, false, false);
+
+        var sequence = DOTween.Sequence();
+
+        _ground.EatLast(HandCenter, sequence);
     }
 
     protected void ThrowBase(ThrowResult result, Sequence animSeq = null, Vector2? meetPoint = null)
@@ -74,16 +73,21 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
         _ground.Throw(card, result.EatenCardsIds, animSeq, meetPoint);
 
-        if (result.EatenCardsIds != null) eatenCount += result.EatenCardsIds.Count;
-        eatenText.text = eatenCount.ToString();
-
-        if (result.Basra) AddBasra();
-        if (result.BigBasra) AddBigBasra();
+        var eatenCount = result.EatenCardsIds != null ? result.EatenCardsIds.Count : 0;
+        UpdateEatStatus(eatenCount, result.Basra, result.BigBasra);
 
         HandCards.Remove(card);
         OrganizeHand();
 
         _coreGameplay.NextTurn();
+    }
+
+    private void UpdateEatStatus(int eatenCount, bool basra, bool bbasra)
+    {
+        eatenCount += eatenCount;
+        eatenText.text = eatenCount.ToString();
+        if (basra) AddBasra();
+        if (bbasra) AddBigBasra();
     }
 
     #region player ui
@@ -114,11 +118,10 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
     protected void OrganizeHand()
     {
-        // var pointer = new Vector3(-(HandCardCapacity / 2) * Card.Bounds.x, 0, 0);
-        // pointer.x -= pointer.x / 2f;
-        var pointer = new Vector3(HandXBounds.x, 0, 0);
+        var pointer = startCard.localPosition;
 
-        var spacing = new Vector3(HandSize / HandCards.Count, 0, .05f);
+        var handSize = endCard.localPosition.x - startCard.localPosition.x;
+        var spacing = new Vector3(handSize / (HandCards.Count - 1), 0, .05f);
 
         if (this is IPlayer)
             HandCards.ForEach(card => card.transform.eulerAngles = Vector3.up * 180);
@@ -130,14 +133,14 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         }
     }
 
-    [SerializeField] GameObject TurnIndicator;
     public virtual void StartTurn()
     {
-        TurnIndicator.SetActive(true);
+        turnTimer.Play();
     }
     public virtual void EndTurn()
     {
-        TurnIndicator.SetActive(false);
+        turnTimer.Stop();
+        _ruvManager.RoomUserViews[Turn].SetTurnFill(0);
     }
 
     public class Factory
@@ -149,14 +152,14 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         public Factory(IInstantiator instantiator, GameObject[] playerPrefabs)
         {
             _instantiator = instantiator;
+            _playerPrefabs = playerPrefabs;
         }
 
-        public PlayerBase Create(PlayerType playerType, int turn)
+        public PlayerBase Create(int placeIndex, int turn)
         {
-            var player = _instantiator.InstantiatePrefab(_playerPrefabs[turn]).GetComponent<PlayerBase>();
+            var player = _instantiator.InstantiatePrefab(_playerPrefabs[placeIndex]).GetComponent<PlayerBase>();
 
-            player.transform.position = UserPositions[turn];
-            player.transform.eulerAngles = UserRotations[turn];
+            player.Turn = turn;
 
             return player;
         }

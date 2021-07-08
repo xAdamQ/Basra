@@ -5,23 +5,24 @@ using Zenject;
 
 public interface ICoreGameplay
 {
-    PlayerBase PlayerInTurn { get; }
+    IPlayerBase PlayerInTurn { get; }
     int CurrentTurn { get; }
 
     void CreatePlayers();
-    void InitalTurn();
-    void NextTurn();
+    void InitialTurn();
+    void NextTurn(bool endPrevTurn = true);
     void Distribute(List<int> handCardIds);
-    void BeginGame(List<int> handCardIds, List<int> groundCardIds);
+    void BeginGame(List<int> myHand, List<int> groundCards);
+    void LastDistribute(List<int> handCardIds);
+    void EatLast(int lastEaterTurnId);
+    void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts, int currentTurn);
 }
 
 public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
 {
     [Inject] private readonly IGround _ground;
     [Inject] private readonly PlayerBase.Factory _playerFactory;
-    [Inject] private readonly ITurnTimer _turnTimer;
     [Inject] private readonly IController _controller;
-    [Inject] private readonly IBlockingPanel _blockingPanel;
     [Inject] private readonly RoomSettings _roomSettings;
 
     public void Initialize()
@@ -34,99 +35,143 @@ public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
         _controller.RemoveModuleRpcs(nameof(CoreGameplay));
     }
 
-    //used to identify finalize game
-    private const int TotalPossibleTurns = 52;
-    private int TurnsCount;
+    //
+    // public static int ConvertTurnToPlayerIndex(int turn, int myTurn, int roomCapacity)
+    // {
+    //     if (turn == myTurn) return 0;
+    //
+    //     var newTurn = myTurn;
+    //     for (var playerIndex = 1; playerIndex < roomCapacity; playerIndex++)
+    //     {
+    //         newTurn = ++newTurn % roomCapacity;
+    //         if (newTurn == turn) return playerIndex;
+    //     }
+    //
+    //     throw new System.Exception("couldn't convert");
+    // }
 
-    public static int ConvertTurnToPlayerIndex(int turn, int myTurn, int roomCapacity)
-    {
-        if (turn == myTurn) return 0;
+    private List<IPlayerBase> Players { get; } = new List<IPlayerBase>();
+    public IPlayerBase PlayerInTurn => Players[CurrentTurn];
 
-        var newTurn = myTurn;
-        for (var playerIndex = 1; playerIndex < roomCapacity; playerIndex++)
-        {
-            newTurn = ++newTurn % roomCapacity;
-            if (newTurn == turn) return playerIndex;
-        }
-
-        throw new System.Exception("couldn't convert");
-    }
-
-    private List<PlayerBase> Players { get; } = new List<PlayerBase>();
-    public PlayerBase PlayerInTurn => Players[ConvertTurnToPlayerIndex(CurrentTurn, _roomSettings.MyTurn, _roomSettings.Capacity)];
     //this is server turn
     public int CurrentTurn { get; private set; }
 
+    public void EatLast(int lastEaterTurnId)
+    {
+        Players[lastEaterTurnId].EatLast();
+    }
+
     public void CreatePlayers()
     {
-        Players.Add(_playerFactory.Create(PlayerType.Me, 0));
+        Debug.Log("my turn is:" + _roomSettings.MyTurn);
 
-        for (var i = 1; i < _roomSettings.Capacity; i++)
-            Players.Add(_playerFactory.Create(PlayerType.Oppo, i));
+        var oppoPlaceCounter = 1;
+        //oppo place starts at 1 to 3
+
+        for (int i = 0; i < _roomSettings.Capacity; i++)
+        {
+            if (_roomSettings.MyTurn == i)
+            {
+                MyPlayer = _playerFactory.Create(0, i) as IPlayer;
+                Players.Add(MyPlayer);
+            }
+            else
+            {
+                var oppo = _playerFactory.Create(oppoPlaceCounter++, i) as IOppo;
+                Players.Add(oppo);
+                Oppos.Add(oppo);
+            }
+        }
     }
 
-    public void InitalTurn()
+    private List<IOppo> Oppos { get; } = new List<IOppo>();
+    private IPlayer MyPlayer { get; set; }
+
+    public void InitialTurn()
     {
         CurrentTurn = -1;
-        NextTurn();
+        NextTurn(false);
     }
-    public void NextTurn()
+
+    public void NextTurn(bool endPrevTurn = true)
     {
-        TurnsCount++;
+        if (endPrevTurn) PlayerInTurn.EndTurn();
 
-        if (TurnsCount >= TotalPossibleTurns)
-        {
-            _blockingPanel.Show();// wait for finalize
-            return;
-        }
+        CurrentTurn = ++CurrentTurn % _roomSettings.Capacity;
 
-        if (CurrentTurn != -1)
-            PlayerInTurn.EndTurn();
-
-        CurrentTurn = ++CurrentTurn % Players.Count;
-
-        _turnTimer.Play();
+        if (PlayerInTurn.HandCards.Count == 0 && isLastDistribute) return;
 
         PlayerInTurn.StartTurn();
     }
 
+    public void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts, int currentTurn)
+    {
+        _ground.Distribute(ground);
+
+        MyPlayer.Distribute(myHand);
+
+        for (int i = 0; i < handCounts.Count; i++)
+        {
+            if (i == _roomSettings.MyTurn) continue;
+
+            ((IOppo) Players[i]).Distribute(handCounts[i]);
+        }
+
+        CurrentTurn = currentTurn - 1;
+        NextTurn(false);
+    }
+
+    #region rpcs
+
     private void AssignRpcs()
     {
         _controller.AssignRpc<List<int>>(Distribute, nameof(CoreGameplay));
+        _controller.AssignRpc<List<int>>(LastDistribute, nameof(CoreGameplay));
         _controller.AssignRpc<ThrowResult>(MyThrowResult, nameof(CoreGameplay));
         _controller.AssignRpc<ThrowResult>(ForcePlay, nameof(CoreGameplay));
         _controller.AssignRpc<ThrowResult>(CurrentOppoThrow, nameof(CoreGameplay));
     }
 
-    //Rpcs
+    private bool isLastDistribute;
+
     public void Distribute(List<int> handCardIds)
     {
-        (Players[0] as IPlayer).Distribute(handCardIds);
+        MyPlayer.Distribute(handCardIds);
 
-        for (var i = 1; i < _roomSettings.Capacity; i++)
-            (Players[i] as IOppo).Distribute();
+        foreach (var oppo in Oppos)
+        {
+            oppo.Distribute();
+        }
+    }
+    public void LastDistribute(List<int> handCardIds)
+    {
+        isLastDistribute = true;
+        Distribute(handCardIds);
     }
     public void MyThrowResult(ThrowResult throwResult)
     {
-        (Players[0] as IPlayer).MyThrowResult(throwResult);
+        MyPlayer.MyThrowResult(throwResult);
     }
     public void ForcePlay(ThrowResult throwResult)
     {
-        ((IPlayer)PlayerInTurn).ForceThrow(throwResult);
+        MyPlayer.ForceThrow(throwResult);
     }
     public void CurrentOppoThrow(ThrowResult throwResult)
     {
-        Debug.Log($"CurrentOppoThrow on user: {CurrentTurn} and card value: {throwResult.ThrownCard}");
-        ((IOppo)PlayerInTurn).Throw(throwResult);
+        ((IOppo) PlayerInTurn).Throw(throwResult);
     }
 
-    public void BeginGame(List<int> handCardIds, List<int> groundCardIds)
+    #endregion
+
+
+    public void BeginGame(List<int> myHand, List<int> groundCards)
     {
-        _ground.Distribute(groundCardIds);
-        Distribute(handCardIds);
+        _ground.Distribute(groundCards);
 
-        Debug.Log($"hand cards are {string.Join(", ", handCardIds)}");
+        Distribute(myHand);
 
-        InitalTurn();
+        Debug.Log($"hand cards are {string.Join(", ", myHand)}");
+
+        InitialTurn();
     }
 }

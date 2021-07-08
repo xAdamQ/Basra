@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "sJ91YQOwWXqYuxxChO0CE6A1ptFlwUT76qLAHLdE1xD196npwvBooHi6k9eOM2tlKOxZzHOaIlsOlGJsRJXZ4g==",
+  "dgSpecHash": "szFaGhY6oyh05aqvAX1kB4EFPNgQdeLTz2D3gHizOO4ePhJKtSn8Wxfo+PBtmAeK/gAED4Pk1K78M6kkisUnAA==",
   "success": true,
-  "projectFilePath": "C:\\Projects\\Basra\\Server\\Common\\Common.csproj",
+  "projectFilePath": "/home/adam/Projects/Basra/Server/Common/Common.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\xadam\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\xadam\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+    "/home/adam/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "/home/adam/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512"
   ],
   "logs": []
 }

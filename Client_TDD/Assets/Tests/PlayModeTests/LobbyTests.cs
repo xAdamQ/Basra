@@ -22,9 +22,15 @@ namespace PlayModeTests
 
             installer.InstallBindings();
         }
-        private void LoadProjectModules()
+
+        protected void InstallProjectModule(ProjectInstaller.Settings settings)
         {
-            Container.Bind<BlockingOperationManager>().AsSingle();
+            var installerPrefab =
+                AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Contexts/ProjectInstaller.Prefab");
+            var installer = Object.Instantiate(installerPrefab).GetComponent<ProjectInstaller>();
+            Container.BindInstance(settings).WhenInjectedInto<ProjectInstaller>();
+            Container.Inject(installer);
+            installer.InstallBindings();
         }
 
         // A UnityTest behaves like a coroutine in PlayMode
@@ -32,7 +38,7 @@ namespace PlayModeTests
         [UnityTest]
         public IEnumerator CardbackShop_InteractiveTest()
         {
-            LoadProjectModules(); //if the lobby is self contained, it should have this like camera
+            InstallProjectModule(new ProjectInstaller.Settings(false) {EnableBlockingOperationManager = true, EnableBlockingPanel = true});
 
             Container.BindInterfacesTo<ConsoleToast>().AsSingle();
 
@@ -59,6 +65,19 @@ namespace PlayModeTests
             });
 
             Container.Resolve<CardbackShop>();
+
+            yield return new WaitUntil(() => false); //global flag using hte editor?
+        }
+
+        [UnityTest]
+        public IEnumerator RoomRequester_ChoiceButton()
+        {
+            InstallProjectModule(new ProjectInstaller.Settings(false) {EnableBlockingOperationManager = true});
+
+            Container.Bind<IController>().FromMock();
+            Container.Bind<IBlockingPanel>().FromMock();
+
+            InstallLobbyModules(new LobbyInstaller.Settings(false) {EnableRoomChoicesView = true});
 
             yield return new WaitUntil(() => false); //global flag using hte editor?
         }

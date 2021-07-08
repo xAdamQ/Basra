@@ -17,31 +17,24 @@ public interface ITurnTimer
     void Stop();
 }
 
-//you can extract more generic form of this class for monobehaviour timer (move it outside room then)  //timer is a progress bar
+//you can extract more generic form of this class for monobehaviour timer (move it outside room then)  /
 //I merged both together and used coroutine
 public class TurnTimer : MonoBehaviour, ITurnTimer
 {
     private const int HandTime = 8; //the total interval
     private const float HandTimeStep = .1f;
 
-    [SerializeField] private Image timerImage;
-
     public event Action Elapsed;
     public event Action<float> Ticked;
 
     public bool IsPlaying { get; private set; }
 
-    private void Start()
-    {
-        Ticked += UpdateRemainingView;
-    }
-
-    private Coroutine ActiveTimerCoroutine;
+    private Coroutine activeTimerCoroutine;
 
     public void Play()
     {
         if (IsPlaying) Stop();
-        ActiveTimerCoroutine = StartCoroutine(PlayEnumerator());
+        activeTimerCoroutine = StartCoroutine(PlayEnumerator());
     }
 
     private IEnumerator PlayEnumerator()
@@ -51,7 +44,7 @@ public class TurnTimer : MonoBehaviour, ITurnTimer
         var ticksCount = HandTime / HandTimeStep;
         for (var i = 0; i < ticksCount; i++)
         {
-            var progress = (float)i / ticksCount;
+            var progress = (float) i / ticksCount;
             Ticked?.Invoke(progress);
 
             yield return new WaitForSeconds(HandTimeStep);
@@ -67,12 +60,9 @@ public class TurnTimer : MonoBehaviour, ITurnTimer
 
     public void Stop()
     {
-        StopCoroutine(ActiveTimerCoroutine);
-        IsPlaying = false;
-    }
+        if (activeTimerCoroutine != null)
+            StopCoroutine(activeTimerCoroutine);
 
-    private void UpdateRemainingView(float progress)
-    {
-        timerImage.fillAmount = progress;
+        IsPlaying = false;
     }
 }

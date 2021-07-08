@@ -1,21 +1,8 @@
 using BestHTTP.SignalRCore.Encoders;
 using BestHTTP.SignalRCore;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using BestHTTP.SignalRCore.Messages;
-using BestHTTP.SignalRCore.Authentication;
-using System.Threading.Tasks;
-using UnityEngine.SceneManagement;
-using BestHTTP.Futures;
-using System.Reflection;
-using System.Linq;
-using BestHTTP;
-using BestHTTP.Logger;
-using Cysharp.Threading.Tasks;
-using Random = UnityEngine.Random;
 
 public class TestGetImage : MonoBehaviour
 {
