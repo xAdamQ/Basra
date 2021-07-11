@@ -1,11 +1,14 @@
+Basra.Server.Services.FinalizeManagerTests.FinalizeGame_RightWinner
+Basra.Server.Services.FinalizeManagerTests.FinalizeGame_RightWinner
+Basra.Server.Services.FinalizeManagerTests.CalcScore
+Basra.Server.Services.FinalizeManagerTests.CalcScore
+Basra.Server.Services.FinalizeManagerTests.SendResult
 Basra.Server.Tests.EfQueryTests.TestQuery0012
 Basra.Server.Tests.EfQueryTests.TestQuery0013
 Basra.Server.Tests.LobbyManagerTests.BuyCardback_ShouldFailNoMoney
 Basra.Server.Tests.LobbyManagerTests.BuyCardback_ShouldFailAlreadyBought
 Basra.Server.Tests.LobbyManagerTests.BuyCardback_ShouldSucceedAndTakeMoney
 Basra.Server.Tests.LobbyManagerTests.DomainTest
-Basra.Server.Tests.RoomManagerTests.FinalizeGame
-Basra.Server.Tests.RoomManagerTests.CalcScore
 Basra.Server.Tests.RoomManagerTests.SetUserState
 Basra.Server.Tests.RoomManagerTests.SetUserState
 Basra.Server.Tests.RoomManagerTests.LevelWorks
@@ -22,3 +25,4 @@ Basra.Server.Tests.Integration.IntegrationTests.TestBotRoomPlay
 Basra.Server.Tests.Integration.IntegrationTests.ThrowExc
 Basra.Server.Tests.Integration.IntegrationTests.TestBotRoomDistribute
 Basra.Server.Tests.Integration.IntegrationTests.TestFinalizeGame
+Basra.Server.Tests.Integration.IntegrationTests.Reconnect_ShouldGetRoomStates

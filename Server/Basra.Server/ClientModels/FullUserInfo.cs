@@ -18,9 +18,4 @@ namespace Basra.Models.Client
         public List<int> OwnedCardBackIds { get; set; }
         public List<int> OwnedBackgroundsIds { get; set; }
     }
-
-    public class RoomOppoInfo : FullUserInfo
-    {
-        public int Turn { get; set; }
-    }
 }

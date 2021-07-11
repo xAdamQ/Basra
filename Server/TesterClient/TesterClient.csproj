@@ -15,4 +15,28 @@
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\Basra.Server\ClientModels\ActiveRoomState.cs">
+      <Link>ClientModels\ActiveRoomState.cs</Link>
+    </Compile>
+    <Compile Include="..\Basra.Server\ClientModels\FinalizeResult.cs">
+      <Link>ClientModels\FinalizeResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Basra.Server\ClientModels\FullUserInfo.cs">
+      <Link>ClientModels\FullUserInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Basra.Server\ClientModels\MinUserInfo.cs">
+      <Link>ClientModels\MinUserInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Basra.Server\ClientModels\PersonalFullUserInfo.cs">
+      <Link>ClientModels\PersonalFullUserInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Basra.Server\ClientModels\RoomXpReport.cs">
+      <Link>ClientModels\RoomXpReport.cs</Link>
+    </Compile>
+    <Compile Include="..\Basra.Server\ClientModels\ThrowResult.cs">
+      <Link>ClientModels\ThrowResult.cs</Link>
+    </Compile>
+  </ItemGroup>
+
 </Project>

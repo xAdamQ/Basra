@@ -11,6 +11,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ButtonText Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 4257310308128610220, guid: 21bc9fbbfb8565142a454bb328133b24, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4257310308128610220, guid: 21bc9fbbfb8565142a454bb328133b24, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c1284ce6032cda423b0e1c86f54650a9, type: 3}
     - target: {fileID: 4257310308128610221, guid: 21bc9fbbfb8565142a454bb328133b24, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
