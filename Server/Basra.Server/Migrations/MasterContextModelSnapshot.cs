@@ -195,6 +195,54 @@ namespace Basra.Server.Migrations
                             WinStreak = 0,
                             WonRoomsCount = 2,
                             XP = 12
+                        },
+                        new
+                        {
+                            Id = "999",
+                            BasraCount = 0,
+                            BigBasraCount = 0,
+                            Draws = 2,
+                            EatenCardsCount = 0,
+                            IsMoneyAidClaimable = false,
+                            Level = 7,
+                            Money = 1000,
+                            Name = "botA",
+                            OwnedBackgroundIds = "[0,3]",
+                            OwnedCardBackIds = "[8]",
+                            OwnedTitleIds = "[1]",
+                            PictureUrl = "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
+                            PlayedRoomsCount = 9,
+                            RequestedMoneyAidToday = 0,
+                            SelectedCardback = 1,
+                            SelectedTitleId = 0,
+                            TotalEarnedMoney = 0,
+                            WinStreak = 0,
+                            WonRoomsCount = 2,
+                            XP = 34
+                        },
+                        new
+                        {
+                            Id = "9999",
+                            BasraCount = 0,
+                            BigBasraCount = 0,
+                            Draws = 2,
+                            EatenCardsCount = 0,
+                            IsMoneyAidClaimable = false,
+                            Level = 8,
+                            Money = 1100,
+                            Name = "botB",
+                            OwnedBackgroundIds = "[3]",
+                            OwnedCardBackIds = "[0,8]",
+                            OwnedTitleIds = "[0,1]",
+                            PictureUrl = "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
+                            PlayedRoomsCount = 11,
+                            RequestedMoneyAidToday = 0,
+                            SelectedCardback = 2,
+                            SelectedTitleId = 0,
+                            TotalEarnedMoney = 0,
+                            WinStreak = 0,
+                            WonRoomsCount = 3,
+                            XP = 44
                         });
                 });
 

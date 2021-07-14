@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Basra.Models.Client;
+using System.Collections.Generic;
 
 public class ThrowResult
 {
@@ -14,4 +14,5 @@ public class FinalizeResult
     public RoomXpReport RoomXpReport { set; get; }
     public PersonalFullUserInfo PersonalFullUserInfo { set; get; }
     public int LastEaterTurnId { get; set; }
+    public List<UserRoomStatus> UserRoomStatus { set; get; }
 }

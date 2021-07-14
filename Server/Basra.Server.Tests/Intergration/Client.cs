@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Basra.Models.Client;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit.Abstractions;
 
 namespace Basra.Server.Tests.Integration
@@ -54,7 +52,7 @@ namespace Basra.Server.Tests.Integration
                                                 $"with active room state {JsonConvert.SerializeObject(a, Formatting.Indented)}\n");
                 });
 
-            Connection.On<List<FullUserInfo>, int>("PrepareRequestedRoomRpc", (oppos, turn) =>
+            Connection.On<int, int, List<FullUserInfo>, int>("PrepareRequestedRoomRpc", (betChoice, capacityChoice, oppos, turn) =>
                 _testOutputHelper.WriteLine($"PrepareRequestedRoomRpc called on {Id} with\n" +
                                             $"oppo info are {JsonConvert.SerializeObject(oppos, Formatting.Indented)}\n" +
                                             $"and turn {turn}\n"));

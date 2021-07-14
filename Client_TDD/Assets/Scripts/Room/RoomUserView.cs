@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Basra.Models.Client;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -35,15 +34,8 @@ public class RoomUserView : MinUserView
     public class Manager : IManager
     {
         [Inject] private readonly IInstantiator _instantiator;
-
-        private readonly GameObject[] _roomUserViewsPrefabs;
-        private readonly Transform _parent;
-
-        public Manager(GameObject[] roomUserViewsPrefabs, Transform parent)
-        {
-            _roomUserViewsPrefabs = roomUserViewsPrefabs;
-            _parent = parent;
-        }
+        [Inject] private readonly GameObject[] _roomUserViewsPrefabs;
+        [Inject] private readonly Transform _parent;
 
         //tested
         private RoomUserView Create(int turn, MinUserInfo minUserInfo)

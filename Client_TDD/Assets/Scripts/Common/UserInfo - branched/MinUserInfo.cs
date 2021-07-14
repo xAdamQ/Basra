@@ -1,13 +1,16 @@
-using System;
-using System.Collections;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using System;
 using UnityEngine;
 using UnityEngine.Networking;
-using Zenject;
 
 public class MinUserInfo
 {
+    public MinUserInfo()
+    {
+        DownloadPicture().Forget();
+    }
+
+
     //transferred model
     public string Id { get; set; }
     public virtual int Level { get; set; }
@@ -31,8 +34,10 @@ public class MinUserInfo
     public event Action<Texture2D> PictureLoaded;
     public bool IsPictureLoaded;
 
-    public async UniTask DownloadPicture()
+    private async UniTaskVoid DownloadPicture()
     {
+        await UniTask.DelayFrame(1);
+
         if (string.IsNullOrEmpty(PictureUrl)) return;
 
         Picture = await GetRemoteTexture(PictureUrl);

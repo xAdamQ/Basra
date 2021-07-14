@@ -1,12 +1,12 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Basra.Models.Client;
 using Basra.Server.Exceptions;
 using Basra.Server.Extensions;
 using Basra.Server.Helpers;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Basra.Server.Services
 {
@@ -67,7 +67,7 @@ namespace Basra.Server.Services
             {
                 activeUser.Domain = typeof(UserDomain.App.Lobby.Pending);
                 _serverLoop.SetupPendingRoomTimeoutIfNotExist(room);
-                _sessionRepo.KeepRoom(room);
+                _sessionRepo.KeepPendingRoom(room);
             }
         }
         private void RemoveDisconnectedUsers(Room room)
@@ -83,10 +83,12 @@ namespace Basra.Server.Services
         {
             room.RoomBots = new();
             var botsCount = room.Capacity - room.RoomUsers.Count;
+
             for (int i = 0; i < botsCount; i++)
             {
-                var botId = StaticRandom.GetRandom(RoomBot.IdRange).ToString();
-                room.RoomBots.Add(new RoomBot {Id = botId, Room = room});
+
+                var botId = StaticRandom.GetRandom(2) == 0 ? "999" : "9999"; //todo change this
+                room.RoomBots.Add(new RoomBot { Id = botId, Room = room });
             }
 
             room.RoomActors.AddRange(room.RoomBots);
@@ -106,7 +108,7 @@ namespace Basra.Server.Services
             room.SetUsersDomains(typeof(UserDomain.App.Lobby.GettingReady));
             _serverLoop.SetForceStartRoomTimeout(room);
 
-            var userIds = room.RoomUsers.Select(ru => ru.Id).ToList();
+            var userIds = room.RoomActors.Select(ru => ru.Id).ToList();
             var users = await _masterRepo.GetUsersByIds(userIds);
 
             users.ForEach(u => u.Money -= room.Bet);
@@ -117,6 +119,8 @@ namespace Basra.Server.Services
 
             var turnSortedUsersInfo = room.RoomActors.Join(fullUsersInfo, actor => actor.Id, info => info.Id,
                 (_, info) => info).ToList();
+
+
 
             await _masterRepo.SaveChangesAsync();
 
@@ -141,7 +145,7 @@ namespace Basra.Server.Services
 
         private Room TakeOrCreateAppropriateRoom(int betChoice, int capacityChoice)
         {
-            return _sessionRepo.GetPendingRoom(betChoice, capacityChoice) ??
+            return _sessionRepo.TakePendingRoom(betChoice, capacityChoice) ??
                    _sessionRepo.MakeRoom(betChoice, capacityChoice);
         }
 

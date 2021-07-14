@@ -1,11 +1,8 @@
-using System;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Basra.Server.Services
 {
@@ -20,7 +17,7 @@ namespace Basra.Server.Services
         void CancelForceStart(Room room);
         void SetupPendingRoomTimeoutIfNotExist(Room room);
         void CancelPendingRoomTimeout(Room room);
-        void BotPlay(RoomBot roomBot, int time);
+        void BotPlay(RoomBot roomBot);
         void CancelTurnTimeoutIfExist(RoomUser roomUser);
     }
 
@@ -71,7 +68,7 @@ namespace Basra.Server.Services
         }
 
         private Dictionary<Room, CancellationTokenSource> PendingRoomCancellations { get; } = new();
-        private const int PendingRoomTimeout = 99999999; //todo change
+        private const int PendingRoomTimeout = 2000; //todo change
         public void SetupPendingRoomTimeoutIfNotExist(Room room)
         {
             if (PendingRoomCancellations.ContainsKey(room)) return;
@@ -87,7 +84,6 @@ namespace Basra.Server.Services
         private async Task OnPendingRoomTimeout(Room room)
         {
             PendingRoomCancellations.Remove(room);
-            _sessionRepo.DeleteRoom(room);
 
             using (var scope = _serviceScopeFactory.CreateScope())
             {
@@ -131,11 +127,14 @@ namespace Basra.Server.Services
             ForceStartCancellations.Remove(room);
         }
 
-        public void BotPlay(RoomBot roomBot, int time)
+
+        private const int BotPlayMin = 50, BotPlayMax = 150;//todo change
+
+        public void BotPlay(RoomBot roomBot)
         {
             Task.Run(async () =>
             {
-                await Task.Delay(time);
+                await Task.Delay(StaticRandom.GetRandom(BotPlayMin, BotPlayMax));
 
                 using var scope = _serviceScopeFactory.CreateScope();
                 var roomManager = scope.ServiceProvider.GetService<IRoomManager>();

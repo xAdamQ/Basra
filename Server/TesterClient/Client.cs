@@ -1,11 +1,10 @@
+using Basra.Models.Client;
+using Microsoft.AspNetCore.SignalR.Client;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Basra.Models.Client;
-using Microsoft.AspNetCore.SignalR.Client;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace TesterClient
 {
@@ -23,13 +22,13 @@ namespace TesterClient
         public async Task Connect()
         {
             Connection = new HubConnectionBuilder()
-                // .ConfigureLogging(lb => lb
-                //     .AddConsole()
-                //     .AddDebug()
-                //     .AddFilter(l => l =+= LogLevel.Information)
-                // )
-                .WithUrl("http://localhost:5000/connect?access_token=" + Id + 4)
-                // .WithUrl("https://tstappname.azurewebsites.net/connect?access_token=" + Id + 4)
+                 // .ConfigureLogging(lb => lb
+                 //     .AddConsole()
+                 //     .AddDebug()
+                 //     .AddFilter(l => l =+= LogLevel.Information)
+                 // )
+                 .WithUrl("http://localhost:5000/connect?access_token=" + Id + 4)
+                //.WithUrl("https://tstappname.azurewebsites.net/connect?access_token=" + Id + 4)
                 .Build();
 
             SetupRpcs();
@@ -49,10 +48,10 @@ namespace TesterClient
                                       $"with active room state {JsonConvert.SerializeObject(a, Formatting.Indented)}\n");
                 });
 
-            Connection.On<List<FullUserInfo>, int>("PrepareRequestedRoomRpc", (oppos, turn) =>
+            Connection.On<int, int, List<FullUserInfo>, int>("PrepareRequestedRoomRpc", (betChoice, capacityChoice, oppos, turn) =>
                 Console.WriteLine($"PrepareRequestedRoomRpc called on {Id} with\n" +
-                                  $"oppo info are {JsonConvert.SerializeObject(oppos, Formatting.Indented)}\n" +
-                                  $"and turn {turn}\n"));
+                                            $"oppo info are {JsonConvert.SerializeObject(oppos, Formatting.Indented)}\n" +
+                                            $"and turn {turn}\n"));
 
 
             Connection.On<ThrowResult>("MyThrowResult", res =>

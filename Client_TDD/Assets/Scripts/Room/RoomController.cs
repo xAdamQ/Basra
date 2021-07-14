@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
-using System.Linq;
 
 public interface IRoomController
 {
@@ -18,15 +16,13 @@ public class RoomController : IRoomController, IInitializable, System.IDisposabl
     [Inject] private readonly IRepository _repository;
     [Inject] private readonly RoomUserView.IManager _ruvManager;
     [Inject] private readonly IController _controller;
-    [Inject] private readonly RoomSettings _roomSettings;
     [Inject] private readonly IBlockingPanel _blockingPanel;
-    [Inject] private readonly ReferenceInstantiator<RoomInstaller> _referenceInstantiator;
-
-    [Inject] private readonly RoomInstaller.References _roomRefs;
-
     [Inject] private readonly ICoreGameplay _coreGameplay;
+    [Inject] private readonly FinalizeController.Factory _finalizeFactory;
 
+    //args
     [InjectOptional] private readonly ActiveRoomState _activeRoomState;
+    [Inject] private readonly RoomSettings _roomSettings;
 
     //todo this should init first
     public void Initialize()
@@ -66,12 +62,16 @@ public class RoomController : IRoomController, IInitializable, System.IDisposabl
 
     public void FinalizeRoom(FinalizeResult finalizeResult)
     {
-        _coreGameplay.EatLast(finalizeResult.LastEaterTurnId);
+        UniTask.Create(async () =>
+        {
+            await _coreGameplay.EatLast(finalizeResult.LastEaterTurnId);
 
-        RoomResultPanel.Instantiate(_referenceInstantiator, _roomRefs, finalizeResult.RoomXpReport,
-            _repository.PersonalFullInfo, finalizeResult.PersonalFullUserInfo, _roomSettings.BetChoice);
+            DestroyModuleGroup();
 
-        _repository.PersonalFullInfo = finalizeResult.PersonalFullUserInfo;
+            _finalizeFactory.Create(finalizeResult, _roomSettings);
+
+            _repository.PersonalFullInfo = finalizeResult.PersonalFullUserInfo;
+        });
     }
 
     public void StartRoomRpc(List<int> handCardIds, List<int> groundCardIds)
@@ -85,8 +85,8 @@ public class RoomController : IRoomController, IInitializable, System.IDisposabl
         Object.Destroy(Object.FindObjectOfType<RoomInstaller>().gameObject);
     }
 
-    
-    
+
+
     public class Factory : PlaceholderFactory<RoomSettings, ActiveRoomState, RoomController>
     {
     }

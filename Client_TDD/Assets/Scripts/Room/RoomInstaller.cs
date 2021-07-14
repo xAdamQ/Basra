@@ -1,25 +1,23 @@
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.EventSystems;
-using UnityEngine.Scripting;
 using Zenject;
 
 public class RoomInstaller : MonoInstaller
 {
-    [SerializeField] private GameObject[]
+    [SerializeField]
+    private GameObject[]
         roomUserViewPrefabs,
         playerPrefabs;
 
     [SerializeField] private Sprite[] frontSprites;
 
-    [SerializeField] private GameObject
+    [SerializeField]
+    private GameObject
         frontPrefab,
         cardPrefab,
         groundPrefab,
-        fullUserViewPrefab,
-        personalFullUserViewPrefab,
-        standardCanvasPrefab,
         menuPrefab;
+
+    [Inject] private readonly Canvas _standardCanvasPrefab;
 
     [Inject] private readonly RoomSettings _roomSettings;
     [InjectOptional] private readonly ActiveRoomState _activeRoomState;
@@ -33,8 +31,6 @@ public class RoomInstaller : MonoInstaller
         public bool EnablePlayerBaseFactory;
         public bool EnableCardFactory;
         public bool EnableGround;
-        public bool EnableFullUserView;
-        public bool EnablePersonalUserView;
         public bool EnableReferenceInstantiator;
 
         public ModuleSwitches(bool defaultServiceState)
@@ -46,10 +42,8 @@ public class RoomInstaller : MonoInstaller
                             EnablePlayerBaseFactory =
                                 EnableCardFactory =
                                     EnableGround =
-                                        EnableFullUserView =
-                                            EnablePersonalUserView =
-                                                EnableReferenceInstantiator =
-                                                    defaultServiceState;
+                                        EnableReferenceInstantiator =
+                                            defaultServiceState;
         }
     }
 
@@ -64,25 +58,15 @@ public class RoomInstaller : MonoInstaller
     [System.Serializable]
     public class References
     {
-        public AssetReference RoomResultPanelRef;
-
         //this class contains scenes assigning and dyanamic assigning like this
         [HideInInspector] public Transform Canvas;
     }
 
     [SerializeField] private References references;
 
-    // public override void Start()
-    // {
-    //     base.Start();
-    //
-    // if (!FindObjectOfType<Camera>()) Instantiate(CameraPrefab);
-    // if (!FindObjectOfType<EventSystem>()) Instantiate(EventSystemPrefab);
-    // }
-
     public override void InstallBindings()
     {
-        references.Canvas = Container.InstantiatePrefab(standardCanvasPrefab).transform;
+        references.Canvas = Container.InstantiatePrefab(_standardCanvasPrefab.gameObject).transform;
 
         Container.BindInstance(references);
 
@@ -118,14 +102,5 @@ public class RoomInstaller : MonoInstaller
         if (_moduleSwitches.EnableRoomUserViewFactory)
             Container.BindInterfacesTo<RoomUserView.Manager>().AsSingle()
                 .WithArguments(roomUserViewPrefabs, references.Canvas);
-
-        if (_moduleSwitches.EnableFullUserView)
-            Container.Bind<FullUserView>().FromComponentInNewPrefab(fullUserViewPrefab).AsSingle();
-
-        if (_moduleSwitches.EnablePersonalUserView)
-            Container.Bind<PersonalFullUserView>().FromComponentInNewPrefab(personalFullUserViewPrefab).AsSingle();
-
-        // if (_moduleSwitches.EnableTurnTimer)
-        // Container.AddInstantSceneModule<TurnTimer>(turnTimerPrefab, references.Canvas, hasAbstraction: true);
     }
 }

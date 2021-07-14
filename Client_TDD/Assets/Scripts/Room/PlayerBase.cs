@@ -1,15 +1,15 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Zenject;
-using DG.Tweening;
-using System.Linq;
 
 public interface IPlayerBase
 {
     void EndTurn();
     void StartTurn();
-    void EatLast();
+    UniTask EatLast();
     List<Card> HandCards { get; }
 }
 
@@ -47,8 +47,8 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
     protected Vector3 PlaceCard(Card card, Sequence animSeq)
     {
         var targetPoz = new Vector3(
-            UnityEngine.Random.Range(_ground.LeftBottomBound.x, _ground.TopRightBound.x),
-            UnityEngine.Random.Range(_ground.LeftBottomBound.y, _ground.TopRightBound.y));
+            Random.Range(_ground.LeftBottomBound.x, _ground.TopRightBound.x),
+            Random.Range(_ground.LeftBottomBound.y, _ground.TopRightBound.y));
 
         animSeq.Append(card.transform.DOMove(targetPoz, .5f))
             .Join(card.transform.DORotate(new Vector3(0, 180), .3f));
@@ -56,13 +56,13 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         return targetPoz;
     }
 
-    public void EatLast()
+    public async UniTask EatLast()
     {
         UpdateEatStatus(_ground.Cards.Count, false, false);
 
         var sequence = DOTween.Sequence();
 
-        _ground.EatLast(HandCenter, sequence);
+        await _ground.EatLast(HandCenter, sequence);
     }
 
     protected void ThrowBase(ThrowResult result, Sequence animSeq = null, Vector2? meetPoint = null)

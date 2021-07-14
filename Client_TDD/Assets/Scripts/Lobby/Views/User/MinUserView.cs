@@ -1,20 +1,21 @@
-using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-[RequireComponent(typeof(Image))]
 public class MinUserView : MonoBehaviour
 {
-    [SerializeField] private Text displayName;
-    [SerializeField] private Text level;
-    [SerializeField] private Text title;
+    [SerializeField]
+    private TMP_Text
+        displayName,
+        level,
+        title;
+
     [SerializeField] private Image picture;
 
     [Inject] protected BlockingOperationManager _blockingOperationManager;
     [Inject] protected IController _controller;
     [Inject] protected FullUserView _fullUserView;
-
 
     public void Init(MinUserInfo minUserInfo)
     {
@@ -31,12 +32,16 @@ public class MinUserView : MonoBehaviour
 
     private void SetPicture(Texture2D texture2D)
     {
+        if (picture == null)
+            Debug.Log(name);
+
         if (texture2D != null)
             picture.sprite =
                 Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), new Vector2(.5f, .5f));
     }
+
     /// <summary>
-    /// personal view overrides this 
+    /// personal and room view overrides this 
     /// </summary>
     public virtual void ShowFullInfo()
     {

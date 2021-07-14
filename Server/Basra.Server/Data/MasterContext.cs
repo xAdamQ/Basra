@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.Json;
-using Basra.Server.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Basra.Server
 {
@@ -50,7 +49,7 @@ namespace Basra.Server
 
             //I will use the value converter to create the comma separated id I want!
 
-            modelBuilder.Entity<UserRelation>().HasKey(_ => new {_.UserId, _.OtherUserId});
+            modelBuilder.Entity<UserRelation>().HasKey(_ => new { _.UserId, _.OtherUserId });
 
             modelBuilder.Entity<UserRelation>()
                 .HasOne(u => u.User)
@@ -204,6 +203,51 @@ namespace Basra.Server
                         LastMoneyAimRequestTime = null,
                         SelectedCardback = 2
                     },
+
+
+                    new()
+                    {
+                        Id = "999",
+                        Fbid = null,
+                        PlayedRoomsCount = 9,
+                        WonRoomsCount = 2,
+                        Name = "botA",
+                        PictureUrl = "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
+                        OwnedBackgroundIds = new List<int> {0, 3},
+                        OwnedTitleIds = new List<int> {1},
+                        OwnedCardBackIds = new List<int> {8},
+                        Draws = 2,
+                        Level = 7,
+                        Money = 1000,
+                        XP = 34,
+                        IsMoneyAidClaimable = false,
+                        RequestedMoneyAidToday = 0,
+                        LastMoneyAimRequestTime = null,
+                        SelectedCardback = 1
+                    },
+
+                     new()
+                    {
+                        Id = "9999",
+                        Fbid = null,
+                        PlayedRoomsCount = 11,
+                        WonRoomsCount = 3,
+                        Name = "botB",
+                        PictureUrl = "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
+                        OwnedBackgroundIds = new List<int> { 3},
+                        OwnedTitleIds = new List<int> {0,1},
+                        OwnedCardBackIds = new List<int> {0,8},
+                        Draws = 2,
+                        Level = 8,
+                        Money = 1100,
+                        XP = 44,
+                        IsMoneyAidClaimable = false,
+                        RequestedMoneyAidToday = 0,
+                        LastMoneyAimRequestTime = null,
+                        SelectedCardback = 2
+                    },
+
+
                 }
             );
 

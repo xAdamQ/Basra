@@ -10,9 +10,6 @@ public class LobbyInstaller : MonoInstaller
     [SerializeField] private GameObject roomChoiceViewPrefab;
     [SerializeField] private GameObject personalActiveUserViewPrefab;
 
-    [SerializeField] private GameObject fullUserViewPrefab;
-    [SerializeField] private GameObject personalFullUserViewPrefab;
-
     [SerializeField] private GameObject CameraPrefab, EventSystemPrefab;
     [SerializeField] private GameObject standardCanvasPrefab;
 
@@ -28,7 +25,6 @@ public class LobbyInstaller : MonoInstaller
         public bool EnableMinUserViewFactory;
         public bool EnableFirendsView;
         public bool EnablePersonalActiveUserView;
-        public bool EnableFullUserView;
         public bool EnablePersonalFullUserView;
         public bool EnableCardbackShop;
         public bool EnableRoomChoicesView;
@@ -39,7 +35,6 @@ public class LobbyInstaller : MonoInstaller
             EnableMinUserViewFactory = defaultServiceState;
             EnableFirendsView = defaultServiceState;
             EnablePersonalActiveUserView = defaultServiceState;
-            EnableFullUserView = defaultServiceState;
             EnablePersonalFullUserView = defaultServiceState;
             EnableCardbackShop = defaultServiceState;
             EnableRoomChoicesView = defaultServiceState;
@@ -66,11 +61,6 @@ public class LobbyInstaller : MonoInstaller
 
         if (_settings.EnablePersonalActiveUserView)
             Container.AddInstantSceneModule<PersonalActiveUserView>(personalActiveUserViewPrefab, standardCanvas);
-
-        if (_settings.EnableFullUserView)
-            Container.AddInstantSceneModule<FullUserView>(fullUserViewPrefab, standardCanvas);
-        if (_settings.EnablePersonalFullUserView)
-            Container.AddInstantSceneModule<PersonalFullUserView>(personalFullUserViewPrefab, standardCanvas);
 
         if (_settings.EnableCardbackShop)
             Container.AddInstantSceneModule<CardbackShop>(cardbackShopPrefab, standardCanvas)

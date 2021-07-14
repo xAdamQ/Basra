@@ -1,20 +1,12 @@
 using System;
 using System.ComponentModel;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 public class PersonalActiveUserView : MinUserView
 {
-    private IRepository _repository;
-    private PersonalFullUserView _personalFullUserView;
-
-    [Inject]
-    public void Construct(IRepository repository, PersonalFullUserView personalFullUserView)
-    {
-        _repository = repository;
-        _personalFullUserView = personalFullUserView;
-    }
+    [Inject] private IRepository _repository;
 
     private void Start()
     {
@@ -29,9 +21,9 @@ public class PersonalActiveUserView : MinUserView
         MoneyAimTimeLeft = personalFullUserInfo.MoneyAimTimeLeft;
     }
 
-    public void ShowFullView()
+    public override void ShowFullInfo()
     {
-        _personalFullUserView.Show(_repository.PersonalFullInfo);
+        _fullUserView.Show(_repository.PersonalFullInfo);
     }
 
     protected virtual void OnInfoChanged(object sender, PropertyChangedEventArgs e)
@@ -74,11 +66,10 @@ public class PersonalActiveUserView : MinUserView
         }
     }
 
-    [SerializeField] private Text money;
-    [SerializeField] private Text moneyAimTimeLeft;
-
-    [Inject] private readonly IController _controller;
-    [Inject] private readonly BlockingOperationManager _blockingOperationManager;
+    [SerializeField]
+    private TMP_Text
+        money,
+        moneyAimTimeLeft;
 
     public void testwaitalot()
     {

@@ -56,7 +56,7 @@ namespace GeneralTests
         [Fact]
         public void Test5()
         {
-            var arr = new List<int>() {0, 5, 6};
+            var arr = new List<int>() { 0, 5, 6 };
             _testOutputHelper.WriteLine(arr.IndexOf(6).ToString());
         }
 
@@ -116,13 +116,39 @@ namespace GeneralTests
         [Fact]
         public void Test8()
         {
-            var x = new x() {prop1 = 1};
-            var zx = (z) x;
+            var x = new x() { prop1 = 1 };
+            var zx = (z)x;
             zx.prop2 = 11;
             zx.prop1 = 13;
 
             _testOutputHelper.WriteLine(zx.prop2.ToString());
             _testOutputHelper.WriteLine(zx.prop1.ToString());
+        }
+
+
+        [Fact]
+        public void Test9()
+        {
+            var bag = new ConcurrentBag<string>();
+
+            bag.Add(null);
+            bag.Add("1");
+            bag.Add("2");
+            bag.Add(null);
+            bag.Add("4");
+            bag.Add(null);
+
+            for (int i = 0; i < 8; i++)
+            {
+                if (bag.IsEmpty)
+                {
+                    _testOutputHelper.WriteLine("it was empty");
+                    continue;
+                }
+
+                bag.TryTake(out string res);
+                _testOutputHelper.WriteLine(res ?? "it was null");
+            }
         }
     }
 

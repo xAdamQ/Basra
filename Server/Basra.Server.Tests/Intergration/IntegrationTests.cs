@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -121,7 +120,7 @@ namespace Basra.Server.Tests.Integration
 
             await c.Connection.InvokeAsync("RequestRandomRoom", 0, 0);
 
-            await Task.Delay(1200);
+            await Task.Delay(2500);
 
             await c.Connection.InvokeAsync("Ready");
         }
@@ -134,14 +133,14 @@ namespace Basra.Server.Tests.Integration
 
             await c.Connection.InvokeAsync("RequestRandomRoom", 0, 0);
 
-            await Task.Delay(1200);
+            await Task.Delay(2500);
 
             await c.Connection.InvokeAsync("Ready");
             await Task.Delay(100);
 
             await c.Connection.InvokeAsync("Throw", 0);
 
-            await Task.Delay(3400);
+            await Task.Delay(100);
 
             // await c.Connection.InvokeAsync("Throw", 0);
             // await Task.Delay(400);
@@ -167,7 +166,7 @@ namespace Basra.Server.Tests.Integration
 
             await c.Connection.InvokeAsync("RequestRandomRoom", 0, 0);
 
-            await Task.Delay(1200);
+            await Task.Delay(2500);
 
             await c.Connection.InvokeAsync("Ready");
             await Task.Delay(100);
@@ -194,13 +193,13 @@ namespace Basra.Server.Tests.Integration
             await c.Connection.InvokeAsync("Ready");
             await c2.Connection.InvokeAsync("Ready");
 
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < 8; i++)
             {
                 await c.Connection.InvokeAsync("Throw", 0);
                 await c2.Connection.InvokeAsync("Throw", 0);
             }
 
-            await Task.Delay(2);
+            await Task.Delay(100);
         }
 
         [Fact(Timeout = 99999999)]

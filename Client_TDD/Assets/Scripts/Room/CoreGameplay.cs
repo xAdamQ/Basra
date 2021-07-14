@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -14,7 +14,7 @@ public interface ICoreGameplay
     void Distribute(List<int> handCardIds);
     void BeginGame(List<int> myHand, List<int> groundCards);
     void LastDistribute(List<int> handCardIds);
-    void EatLast(int lastEaterTurnId);
+    UniTask EatLast(int lastEaterTurnId);
     void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts, int currentTurn);
 }
 
@@ -35,36 +35,19 @@ public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
         _controller.RemoveModuleRpcs(nameof(CoreGameplay));
     }
 
-    //
-    // public static int ConvertTurnToPlayerIndex(int turn, int myTurn, int roomCapacity)
-    // {
-    //     if (turn == myTurn) return 0;
-    //
-    //     var newTurn = myTurn;
-    //     for (var playerIndex = 1; playerIndex < roomCapacity; playerIndex++)
-    //     {
-    //         newTurn = ++newTurn % roomCapacity;
-    //         if (newTurn == turn) return playerIndex;
-    //     }
-    //
-    //     throw new System.Exception("couldn't convert");
-    // }
-
     private List<IPlayerBase> Players { get; } = new List<IPlayerBase>();
     public IPlayerBase PlayerInTurn => Players[CurrentTurn];
 
     //this is server turn
     public int CurrentTurn { get; private set; }
 
-    public void EatLast(int lastEaterTurnId)
+    public async UniTask EatLast(int lastEaterTurnId)
     {
-        Players[lastEaterTurnId].EatLast();
+        await Players[lastEaterTurnId].EatLast();
     }
 
     public void CreatePlayers()
     {
-        Debug.Log("my turn is:" + _roomSettings.MyTurn);
-
         var oppoPlaceCounter = 1;
         //oppo place starts at 1 to 3
 
@@ -114,7 +97,7 @@ public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
         {
             if (i == _roomSettings.MyTurn) continue;
 
-            ((IOppo) Players[i]).Distribute(handCounts[i]);
+            ((IOppo)Players[i]).Distribute(handCounts[i]);
         }
 
         CurrentTurn = currentTurn - 1;
@@ -158,7 +141,7 @@ public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
     }
     public void CurrentOppoThrow(ThrowResult throwResult)
     {
-        ((IOppo) PlayerInTurn).Throw(throwResult);
+        ((IOppo)PlayerInTurn).Throw(throwResult);
     }
 
     #endregion

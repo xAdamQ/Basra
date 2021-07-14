@@ -8,7 +8,6 @@
     ".NETCoreApp,Version=v5.0": {
       "TesterClient/1.0.0": {
         "dependencies": {
-          "Common": "1.0.0",
           "Microsoft.AspNetCore.SignalR.Client": "6.0.0-preview.2.21154.6",
           "Newtonsoft.Json": "12.0.3",
           "ReadLine": "2.0.1"
@@ -251,11 +250,6 @@
             "fileVersion": "6.0.21.15406"
           }
         }
-      },
-      "Common/1.0.0": {
-        "runtime": {
-          "Common.dll": {}
-        }
       }
     }
   },
@@ -418,11 +412,6 @@
       "sha512": "sha512-e3MV81k/NE0hiTtE6HLR/sB7rKKvok4YC43rh5KIwDlRQV36zfzxHUV/wFza6SxCgSEZIkG51YDHcHjvxib0Fw==",
       "path": "system.threading.channels/6.0.0-preview.2.21154.6",
       "hashPath": "system.threading.channels.6.0.0-preview.2.21154.6.nupkg.sha512"
-    },
-    "Common/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     }
   }
 }

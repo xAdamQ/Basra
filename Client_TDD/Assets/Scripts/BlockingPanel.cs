@@ -1,5 +1,5 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public interface IBlockingPanel
 {
@@ -9,7 +9,7 @@ public interface IBlockingPanel
 
 public class BlockingPanel : MonoBehaviour, IBlockingPanel
 {
-    [SerializeField] private Text messageText;
+    [SerializeField] private TMP_Text messageText;
     [SerializeField] private GameObject dismissButton;
 
     public void Show(string message = null)

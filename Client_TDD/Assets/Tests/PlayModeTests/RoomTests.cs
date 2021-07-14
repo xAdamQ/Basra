@@ -1,17 +1,17 @@
+using Cysharp.Threading.Tasks;
+// using Basra.Models.Client;
+using DG.Tweening;
+using Moq;
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Basra.Models.Client;
-using Cysharp.Threading.Tasks;
-using Moq;
-using Zenject;
-using NUnit.Framework;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.TestTools;
 using UnityEngine.AddressableAssets;
+using UnityEngine.TestTools;
+using Zenject;
 using Object = UnityEngine.Object;
-// using Basra.Models.Client;
-using DG.Tweening;
 
 namespace PlayModeTests
 {
@@ -388,7 +388,7 @@ namespace PlayModeTests
             InstallMockController();
 
             var fac = Container.Resolve<PlayerBase.Factory>();
-            var oppo = (IOppo) fac.Create(1, 0);
+            var oppo = (IOppo)fac.Create(1, 0);
 
             oppo.Distribute();
 
@@ -417,7 +417,7 @@ namespace PlayModeTests
             });
 
             var ground = Container.Resolve<IGround>();
-            ground.Distribute(new List<int>() {1, 2, 3, 4});
+            ground.Distribute(new List<int>() { 1, 2, 3, 4 });
 
             var cFac = Container.Resolve<Card.Factory>();
 
@@ -439,24 +439,24 @@ namespace PlayModeTests
             });
 
             var ground = Container.Resolve<IGround>();
-            ground.Distribute(new List<int>() {1, 2, 3, 4});
+            ground.Distribute(new List<int>() { 1, 2, 3, 4 });
 
             var cFac = Container.Resolve<Card.Factory>();
 
             yield return new WaitForSeconds(2);
-            ground.Throw(cFac.CreateGroundCard(11, null), new List<int> {1}, null, null);
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 1 }, null, null);
             yield return new WaitForSeconds(2);
-            ground.Throw(cFac.CreateGroundCard(11, null), new List<int> {2, 3}, null, null);
-            yield return new WaitForSeconds(2);
-            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>(), null, null);
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 2, 3 }, null, null);
             yield return new WaitForSeconds(2);
             ground.Throw(cFac.CreateGroundCard(11, null), new List<int>(), null, null);
             yield return new WaitForSeconds(2);
-            ground.Throw(cFac.CreateGroundCard(11, null), new List<int> {11, 11}, null, null);
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int>(), null, null);
+            yield return new WaitForSeconds(2);
+            ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 11, 11 }, null, null);
 
 
             Assert.Throws(typeof(Exception),
-                () => { ground.Throw(cFac.CreateGroundCard(11, null), new List<int> {2}, null, null); });
+                () => { ground.Throw(cFac.CreateGroundCard(11, null), new List<int> { 2 }, null, null); });
             yield return new WaitForSeconds(2);
         }
 
@@ -525,12 +525,23 @@ namespace PlayModeTests
         {
             Container.Bind<IRepository>().FromMock();
             Container.Bind<IController>().FromMock();
+
+            InstallProjectModule(new ProjectInstaller.Settings(false)
+            {
+                EnableToast = true,
+                EnableBlockingPanel = true,
+                EnableBlockingOperationManager = true,
+                EnableFullUserView = true,
+            });
+
             InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
-                {EnableRoomUserViewFactory = true, EnableFullUserView = true, EnablePersonalUserView = true});
+            {
+                EnableRoomUserViewFactory = true,
+            });
 
             var viewFac = Container.Resolve<RoomUserView.IManager>();
 
-            var infos = new List<FullUserInfo> {personalInfo};
+            var infos = new List<FullUserInfo> { personalInfo };
             infos.AddRange(fullUserInfos);
             viewFac.Init(infos, 0);
 
@@ -542,12 +553,23 @@ namespace PlayModeTests
         {
             Container.Bind<IRepository>().FromMock();
             Container.Bind<IController>().FromMock();
+
+            InstallProjectModule(new ProjectInstaller.Settings(false)
+            {
+                EnableToast = true,
+                EnableBlockingPanel = true,
+                EnableBlockingOperationManager = true,
+                EnableFullUserView = true,
+            });
+
             InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
-                {EnableRoomUserViewFactory = true, EnableFullUserView = true, EnablePersonalUserView = true});
+            {
+                EnableRoomUserViewFactory = true,
+            });
 
             var viewFac = Container.Resolve<RoomUserView.IManager>();
 
-            var infos = new List<FullUserInfo> {personalInfo};
+            var infos = new List<FullUserInfo> { personalInfo };
             infos.AddRange(fullUserInfos);
             viewFac.Init(infos, 0);
 
@@ -555,44 +577,47 @@ namespace PlayModeTests
         }
 
 
-        [UnityTest]
-        public IEnumerator RoomResultPanel_Interactive()
-        {
-            InstallProjectModule(new ProjectInstaller.Settings(false)
-            {
-                EnableToast = true, EnableBlockingPanel = true, EnableRoomFactory = true,
-                EnableLobbyFactory = true, EnableBlockingOperationManager = true,
-            });
+        //[UnityTest]
+        //public IEnumerator RoomResultPanel_Interactive()
+        //{
+        //    InstallProjectModule(new ProjectInstaller.Settings(false)
+        //    {
+        //        EnableToast = true,
+        //        EnableBlockingPanel = true,
+        //        EnableRoomFactory = true,
+        //        EnableLobbyFactory = true,
+        //        EnableBlockingOperationManager = true,
+        //        EnableFullUserView = true,
 
-            InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
-            {
-                EnableGround = true,
-                EnableCardFactory = true,
-                EnableFrontFactory = true,
-                EnableReferenceInstantiator = true,
-                EnableRoomController = true,
-                EnablePersonalUserView = true,
-                EnableFullUserView = true,
-                EnableRoomUserViewFactory = true,
-                EnablePlayerBaseFactory = true
-            });
+        //    });
 
-            Container.Bind<IController>().FromMock();
-            Container.Bind<ICoreGameplay>().FromMock();
-            Container.Bind<IRepository>().FromMock();
+        //    InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
+        //    {
+        //        EnableGround = true,
+        //        EnableCardFactory = true,
+        //        EnableFrontFactory = true,
+        //        EnableReferenceInstantiator = true,
+        //        EnableRoomController = true,
+        //        EnableRoomUserViewFactory = true,
+        //        EnablePlayerBaseFactory = true
+        //    });
 
-            yield return null;
+        //    Container.Bind<IController>().FromMock();
+        //    Container.Bind<ICoreGameplay>().FromMock();
+        //    Container.Bind<IRepository>().FromMock();
 
-            var refe = Container.Resolve<RoomInstaller.References>();
-            var ins = Container.Resolve<ReferenceInstantiator<RoomInstaller>>();
+        //    yield return null;
 
-            RoomResultPanel.Instantiate(ins, refe,
-                new RoomXpReport {Basra = 100, BigBasra = 4000, Competition = 9019, GreatEat = 127783}, new PersonalFullUserInfo()
-                    {PlayedRoomsCount = 10, WonRoomsCount = 9},
-                personalInfo, 0);
+        //    var refe = Container.Resolve<FinalizeInstaller.References>();
+        //    var ins = Container.Resolve<ReferenceInstantiator<RoomInstaller>>();
 
-            yield return new WaitForSeconds(float.MaxValue);
-        }
+        //    RoomResultPanel.Instantiate(ins, refe,
+        //        new RoomXpReport { Basra = 100, BigBasra = 4000, Competition = 9019, GreatEat = 127783 }, new PersonalFullUserInfo()
+        //        { PlayedRoomsCount = 10, WonRoomsCount = 9 },
+        //        personalInfo, 0);
+
+        //    yield return new WaitForSeconds(float.MaxValue);
+        //}
 
 
         [UnityTest]
@@ -660,11 +685,11 @@ namespace PlayModeTests
             var fac = Container.Resolve<PlayerBase.Factory>();
             var g = Container.Resolve<IGround>();
 
-            var player = (IPlayer) fac.Create(0, 0);
-            core.Setup(_ => _.PlayerInTurn).Returns((PlayerBase) player);
+            var player = (IPlayer)fac.Create(0, 0);
+            core.Setup(_ => _.PlayerInTurn).Returns((PlayerBase)player);
 
-            g.Distribute(new List<int>() {1, 1, 3, 3, 2, 6, 7});
-            player.Distribute(new List<int>() {1, 2, 3, 4});
+            g.Distribute(new List<int>() { 1, 1, 3, 3, 2, 6, 7 });
+            player.Distribute(new List<int>() { 1, 2, 3, 4 });
 
             yield return new WaitForSeconds(999999);
         }
@@ -709,7 +734,13 @@ namespace PlayModeTests
         [UnityTest]
         public IEnumerator Player_Distribute()
         {
-            InstallProjectModule(new ProjectInstaller.Settings(false) { });
+            InstallProjectModule(new ProjectInstaller.Settings(false)
+            {
+                EnableToast = true,
+                EnableBlockingPanel = true,
+                EnableBlockingOperationManager = true,
+                EnableFullUserView = true,
+            });
 
             InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
             {
@@ -718,7 +749,6 @@ namespace PlayModeTests
                 EnableGround = true,
                 EnableFrontFactory = true,
                 EnableRoomUserViewFactory = true,
-                EnableFullUserView = true,
             });
 
             Container.Bind<ICoreGameplay>().FromMock();
@@ -731,17 +761,17 @@ namespace PlayModeTests
             var fac2 = Container.Resolve<RoomUserView.IManager>();
 
 
-            var infos = new List<FullUserInfo> {personalInfo};
+            var infos = new List<FullUserInfo> { personalInfo };
             infos.AddRange(fullUserInfos);
             fac2.Init(infos, 0);
 
-            var oppo1 = (IOppo) fac.Create(1, 1);
+            var oppo1 = (IOppo)fac.Create(1, 1);
             oppo1.Distribute();
 
-            var oppo2 = (IOppo) fac.Create(2, 2);
+            var oppo2 = (IOppo)fac.Create(2, 2);
             oppo2.Distribute();
 
-            var oppo3 = (IOppo) fac.Create(3, 3);
+            var oppo3 = (IOppo)fac.Create(3, 3);
             oppo3.Distribute();
 
 
@@ -763,7 +793,14 @@ namespace PlayModeTests
         [UnityTest]
         public IEnumerator Player_Turn()
         {
-            InstallProjectModule(new ProjectInstaller.Settings(false) { });
+            InstallProjectModule(new ProjectInstaller.Settings(false)
+            {
+                EnableToast = true,
+                EnableBlockingPanel = true,
+                EnableBlockingOperationManager = true,
+                EnableFullUserView = true,
+
+            });
 
             InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
             {
@@ -772,7 +809,6 @@ namespace PlayModeTests
                 EnableGround = true,
                 EnableFrontFactory = true,
                 EnableRoomUserViewFactory = true,
-                EnableFullUserView = true,
             });
 
             Container.Bind<ICoreGameplay>().FromMock();
@@ -785,21 +821,21 @@ namespace PlayModeTests
             var fac2 = Container.Resolve<RoomUserView.IManager>();
 
 
-            var infos = new List<FullUserInfo> {personalInfo};
+            var infos = new List<FullUserInfo> { personalInfo };
             infos.AddRange(fullUserInfos);
             fac2.Init(infos, 0);
 
-            var player = (IPlayer) fac.Create(0, 0);
-            var oppo1 = (IOppo) fac.Create(1, 1);
-            var oppo2 = (IOppo) fac.Create(2, 2);
-            var oppo3 = (IOppo) fac.Create(3, 3);
+            var player = (IPlayer)fac.Create(0, 0);
+            var oppo1 = (IOppo)fac.Create(1, 1);
+            var oppo2 = (IOppo)fac.Create(2, 2);
+            var oppo3 = (IOppo)fac.Create(3, 3);
 
             yield return null;
 
             oppo1.Distribute();
             oppo2.Distribute();
             oppo3.Distribute();
-            player.Distribute(new List<int> {0, 1, 2, 3});
+            player.Distribute(new List<int> { 0, 1, 2, 3 });
 
             yield return null;
 
@@ -827,7 +863,13 @@ namespace PlayModeTests
         [UnityTest]
         public IEnumerator LastEat()
         {
-            InstallProjectModule(new ProjectInstaller.Settings(false) { });
+            InstallProjectModule(new ProjectInstaller.Settings(false)
+            {
+                EnableBlockingOperationManager = true,
+                EnableBlockingPanel = true,
+                EnableToast = true,
+                EnableFullUserView = true,
+            });
 
             InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
             {
@@ -836,7 +878,6 @@ namespace PlayModeTests
                 EnableGround = true,
                 EnableFrontFactory = true,
                 EnableRoomUserViewFactory = true,
-                EnableFullUserView = true,
             });
 
             Container.Bind<ICoreGameplay>().FromMock();
@@ -847,28 +888,28 @@ namespace PlayModeTests
 
             var fac2 = Container.Resolve<RoomUserView.IManager>();
 
-            var infos = new List<FullUserInfo> {personalInfo};
+            var infos = new List<FullUserInfo> { personalInfo };
             infos.AddRange(fullUserInfos);
             fac2.Init(infos, 0);
 
             var fac = Container.Resolve<PlayerBase.Factory>();
             var g = Container.Resolve<IGround>();
 
-            var player = (IPlayer) fac.Create(0, 0);
-            var oppo1 = (IOppo) fac.Create(1, 1);
-            var oppo2 = (IOppo) fac.Create(2, 2);
+            var player = (IPlayer)fac.Create(0, 0);
+            var oppo1 = (IOppo)fac.Create(1, 1);
+            var oppo2 = (IOppo)fac.Create(2, 2);
 
-            g.Distribute(new List<int> {0, 1, 2, 3});
+            g.Distribute(new List<int> { 0, 1, 2, 3 });
             yield return new WaitForSeconds(2);
             player.EatLast();
             yield return new WaitForSeconds(2);
 
-            g.Distribute(new List<int> {0, 1, 2, 3});
+            g.Distribute(new List<int> { 0, 1, 2, 3 });
             yield return new WaitForSeconds(2);
             oppo1.EatLast();
             yield return new WaitForSeconds(2);
 
-            g.Distribute(new List<int> {0, 1, 2, 3});
+            g.Distribute(new List<int> { 0, 1, 2, 3 });
             yield return new WaitForSeconds(2);
             oppo2.EatLast();
             yield return new WaitForSeconds(2);
@@ -877,7 +918,13 @@ namespace PlayModeTests
         [UnityTest]
         public IEnumerator ResumeRoom()
         {
-            InstallProjectModule(new ProjectInstaller.Settings(false) { });
+            InstallProjectModule(new ProjectInstaller.Settings(false)
+            {
+                EnableToast = true,
+                EnableBlockingPanel = true,
+                EnableBlockingOperationManager = true,
+                EnableFullUserView = true,
+            });
 
             InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
             {
@@ -886,7 +933,6 @@ namespace PlayModeTests
                 EnableGround = true,
                 EnableFrontFactory = true,
                 EnableRoomUserViewFactory = true,
-                EnableFullUserView = true,
             });
 
             Container.Bind<IController>().FromMock();
@@ -896,31 +942,69 @@ namespace PlayModeTests
 
             var fac2 = Container.Resolve<RoomUserView.IManager>();
 
-            var infos = new List<FullUserInfo> {personalInfo};
+            var infos = new List<FullUserInfo> { personalInfo };
             infos.AddRange(fullUserInfos);
             fac2.Init(infos, 0);
 
             var fac = Container.Resolve<PlayerBase.Factory>();
             var g = Container.Resolve<IGround>();
 
-            var player = (IPlayer) fac.Create(0, 0);
-            var oppo1 = (IOppo) fac.Create(1, 1);
-            var oppo2 = (IOppo) fac.Create(2, 2);
+            var player = (IPlayer)fac.Create(0, 0);
+            var oppo1 = (IOppo)fac.Create(1, 1);
+            var oppo2 = (IOppo)fac.Create(2, 2);
 
-            g.Distribute(new List<int> {0, 1, 2, 3});
+            g.Distribute(new List<int> { 0, 1, 2, 3 });
             yield return new WaitForSeconds(2);
             player.EatLast();
             yield return new WaitForSeconds(2);
 
-            g.Distribute(new List<int> {0, 1, 2, 3});
+            g.Distribute(new List<int> { 0, 1, 2, 3 });
             yield return new WaitForSeconds(2);
             oppo1.EatLast();
             yield return new WaitForSeconds(2);
 
-            g.Distribute(new List<int> {0, 1, 2, 3});
+            g.Distribute(new List<int> { 0, 1, 2, 3 });
             yield return new WaitForSeconds(2);
             oppo2.EatLast();
             yield return new WaitForSeconds(2);
         }
+
+        [UnityTest]
+        public IEnumerator CreateRoom()
+        {
+            InstallProjectModule(new ProjectInstaller.Settings(false)
+            {
+                EnableToast = true,
+                EnableBlockingPanel = true,
+                EnableBlockingOperationManager = true,
+                EnableFullUserView = true,
+                EnableRoomFactory = true,
+                EnableGlobalBackground = true,
+                EnableReferenceInstantiator = true,
+                EnableFinalizeFactory = true,
+                EnableLobbyFactory = true,
+            });
+
+            //InstallRoomServices(new RoomInstaller.ModuleSwitches(false)
+            //{
+            //    EnablePlayerBaseFactory = true,
+            //    EnableCardFactory = true,
+            //    EnableGround = true,
+            //    EnableFrontFactory = true,
+            //    EnableRoomUserViewFactory = true,
+            //});
+
+            Container.Bind<IController>().FromMock();
+            Container.Bind<IRepository>().FromMock();
+
+            yield return null;
+
+            var fac2 = Container.Resolve<RoomController.Factory>();
+
+            fac2.Create(new RoomSettings(0, 0, fullUserInfos.ToList(), 0), null);
+
+        }
+
+
     }
 }

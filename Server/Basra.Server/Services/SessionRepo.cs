@@ -1,17 +1,20 @@
-using System.Collections.Concurrent;
 using Basra.Server.Extensions;
 using Microsoft.Extensions.Logging;
+using System.Collections.Concurrent;
 
 namespace Basra.Server.Services
 {
     public interface ISessionRepo
     {
         Room MakeRoom(int betChoice, int capacityChoice);
-        Room GetPendingRoom(int betChoice, int capacityChoice);
+
         /// <summary>
         /// if the room is still pending 
         /// </summary>
-        void KeepRoom(Room room);
+        void KeepPendingRoom(Room room);
+        Room TakePendingRoom(int betChoice, int capacityChoice);
+        //important: we don't remove pending rooms, TakePendingRoom excludes them
+
         void DeleteRoom(Room room);
 
         void AddRoomUser(RoomUser roomUser);
@@ -87,18 +90,31 @@ namespace Basra.Server.Services
             var room = new Room(betChoice, capacityChoice);
 
             Rooms.Append(ref LastRoomId, room);
-            // PendingRooms[(betChoice, capacityChoice)].Add(room);
 
             return room;
         }
 
-        public Room GetPendingRoom(int betChoice, int capacityChoice)
+        /// <summary>
+        /// takes possible rooms, excludes active amd null rooms
+        /// </summary>
+        public Room TakePendingRoom(int betChoice, int capacityChoice)
         {
-            PendingRooms[(betChoice, capacityChoice)].TryTake(out Room room);
+            var bag = PendingRooms[(betChoice, capacityChoice)];
+            Room room = null;
+
+            while (true)
+            {
+                if (bag.IsEmpty) break;
+
+                bag.TryTake(out room)
+                    ;
+                if (room != null && !room.IsFull) break;
+            }
+
             return room;
         }
 
-        public void KeepRoom(Room room)
+        public void KeepPendingRoom(Room room)
         {
             PendingRooms[(room.BetChoice, room.CapacityChoice)].Add(room);
         }
@@ -160,5 +176,6 @@ namespace Basra.Server.Services
 
             if (!result) _logger.LogWarning($"adding active user was id {activeUser.Id} faild");
         }
+
     }
 }

@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
 using BestHTTP;
 using BestHTTP.SignalRCore;
 using BestHTTP.SignalRCore.Encoders;
 using BestHTTP.SignalRCore.Messages;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
-using Newtonsoft.Json;
 
 public interface IController
 {
@@ -39,18 +39,9 @@ public interface IController
 
 public class Controller : IController, IInitializable
 {
-    private readonly IRepository _repository;
-    private readonly LobbyController.Factory _lobbyFactory;
-    private readonly RoomController.Factory _roomFactory;
-
-    [Inject]
-    public Controller(IRepository repository,
-        LobbyController.Factory lobbyFactory, RoomController.Factory roomFactory)
-    {
-        _repository = repository;
-        _lobbyFactory = lobbyFactory;
-        _roomFactory = roomFactory;
-    }
+    [Inject] private readonly IRepository _repository;
+    [Inject] private readonly LobbyController.Factory _lobbyFactory;
+    [Inject] private readonly RoomController.Factory _roomFactory;
 
     public void Initialize()
     {
@@ -75,19 +66,6 @@ public class Controller : IController, IInitializable
         _repository.PersonalFullInfo = myFullUserInfo;
         _repository.YesterdayChampions = yesterdayChampions;
         _repository.TopFriends = topFriends;
-
-        //these actions mutate the data, and need to be inited #start
-
-        myFullUserInfo.DownloadPicture().Forget(e => throw e);
-        foreach (var user in yesterdayChampions)
-            user.DownloadPicture().Forget(e => throw e);
-        foreach (var user in topFriends)
-            user.DownloadPicture().Forget(e => throw e);
-
-        if (_repository.PersonalFullInfo.MoneyAimTimeLeft != null)
-            _repository.PersonalFullInfo.DecreaseMoneyAimTimeLeft().Forget(e => throw e);
-
-        //#end
 
         LoadAppropriateModules(activeRoomState);
     }
@@ -120,7 +98,7 @@ public class Controller : IController, IInitializable
         if (RpcsNames.ContainsKey(moduleName))
             RpcsNames[moduleName].Add(actionName);
         else
-            RpcsNames.Add(moduleName, new List<string> {actionName});
+            RpcsNames.Add(moduleName, new List<string> { actionName });
     }
 
     public void AssignRpc(Action action, string moduleName)
@@ -174,8 +152,8 @@ public class Controller : IController, IInitializable
     #region hub
 
     private HubConnection hubConnection;
-    // private readonly string address = "http://localhost:5000/connect";
-    private readonly string address = "https://tstappname.azurewebsites.net/connect";
+    private readonly string address = "http://localhost:5000/connect";
+    //private readonly string address = "https://tstappname.azurewebsites.net/connect";
     private readonly IProtocol protocol = new JsonProtocol(new LitJsonEncoder());
     private readonly MyReconnectPolicy myReconnectPolicy = new MyReconnectPolicy();
 

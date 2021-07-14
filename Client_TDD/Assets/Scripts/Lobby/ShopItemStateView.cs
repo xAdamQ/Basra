@@ -1,4 +1,4 @@
-using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,5 +12,5 @@ public enum ShopItemState
 public class ShopItemStateView : MonoBehaviour
 {
     public Image Background;
-    public Text Desc;
+    public TMP_Text Desc;
 }

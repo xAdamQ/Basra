@@ -1,9 +1,9 @@
+using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 using UnityEngine;
 
 /// <summary>
@@ -12,16 +12,30 @@ using UnityEngine;
 /// </summary>
 public class PersonalFullUserInfo : FullUserInfo, INotifyPropertyChanged
 {
-    public int Money
+    public PersonalFullUserInfo()
     {
-        get => _money;
+
+        //todo test this
+        if (MoneyAimTimeLeft != null)
+            UniTask.Create(async () =>
+            {
+                await UniTask.DelayFrame(1);
+                DecreaseMoneyAimTimeLeft().Forget();
+            });
+
+    }
+
+    public override int Money
+    {
+        get => money;
         set
         {
-            _money = value;
+            money = value;
             NotifyPropertyChanged();
         }
     }
-    private int _money;
+    private int money;
+
     /// <summary>
     /// I use this rather than timestamp when the request is done
     /// because datetime.now is not universal for all clients
@@ -30,14 +44,15 @@ public class PersonalFullUserInfo : FullUserInfo, INotifyPropertyChanged
     /// </summary>
     public TimeSpan? MoneyAimTimeLeft
     {
-        get => _moneyAimTimeLeft;
+        get => moneyAimTimeLeft;
         set
         {
-            _moneyAimTimeLeft = value;
+            moneyAimTimeLeft = value;
             NotifyPropertyChanged();
         }
     }
-    private TimeSpan? _moneyAimTimeLeft;
+    private TimeSpan? moneyAimTimeLeft;
+
     // public override string Title
     // {
     //     get => _title;
@@ -51,26 +66,26 @@ public class PersonalFullUserInfo : FullUserInfo, INotifyPropertyChanged
 
     public override int Level
     {
-        get => _level;
+        get => level;
         set
         {
-            _level = value;
+            level = value;
             NotifyPropertyChanged();
         }
     }
-    private int _level;
+    private int level;
+
     public int FlipWinCount { get; set; }
-    public object ActiveRoomData { get; set; }
-    public List<string> Titles { get; set; }
-    public int SelectedCardback { get; set; }
-    public int SelectedBackground { get; set; }
+
+    public List<int> Titles { get; set; }
+
     public event PropertyChangedEventHandler PropertyChanged;
     [NotifyPropertyChangedInvocator]
     protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-    public async UniTask DecreaseMoneyAimTimeLeft()
+    public async UniTaskVoid DecreaseMoneyAimTimeLeft()
     {
         var updateRate = 1;
         while (MoneyAimTimeLeft > TimeSpan.Zero)

@@ -8,24 +8,26 @@
     "net5.0": []
   },
   "packageFolders": {
-    "/home/adam/.nuget/packages/": {}
+    "C:\\Users\\xadam\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/adam/Projects/Basra/Server/TestClientBase/TestClientBase.csproj",
+      "projectUniqueName": "C:\\Users\\xadam\\Projects\\Basra\\Server\\TestClientBase\\TestClientBase.csproj",
       "projectName": "TestClientBase",
-      "projectPath": "/home/adam/Projects/Basra/Server/TestClientBase/TestClientBase.csproj",
-      "packagesPath": "/home/adam/.nuget/packages/",
-      "outputPath": "/home/adam/Projects/Basra/Server/TestClientBase/obj/",
+      "projectPath": "C:\\Users\\xadam\\Projects\\Basra\\Server\\TestClientBase\\TestClientBase.csproj",
+      "packagesPath": "C:\\Users\\xadam\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\xadam\\Projects\\Basra\\Server\\TestClientBase\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/adam/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\xadam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -53,12 +55,26 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[5.0.0, 5.0.0]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[5.0.0, 5.0.0]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[5.0.0, 5.0.0]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-preview.5.21302.13\\RuntimeIdentifierGraph.json"
       }
     }
   }

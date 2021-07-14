@@ -21,14 +21,14 @@ MonoBehaviour:
     m_Address: Ground
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+    m_MainAsset: {fileID: 3841681440189108531, guid: 68aff56aa30865e4ab0dadcfd4a17353, type: 3}
+    m_TargetAsset: {fileID: 3841681440189108531, guid: 68aff56aa30865e4ab0dadcfd4a17353, type: 3}
   - m_GUID: 0aec6ccccb153d3fbaa3fd23f5565cfa
     m_Address: Player
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+    m_MainAsset: {fileID: 6095275712694222183, guid: 0aec6ccccb153d3fbaa3fd23f5565cfa, type: 3}
+    m_TargetAsset: {fileID: 6095275712694222183, guid: 0aec6ccccb153d3fbaa3fd23f5565cfa, type: 3}
   - m_GUID: 91cc747f46429b00e945c1e73e073c70
     m_Address: Card
     m_ReadOnly: 0
@@ -55,6 +55,30 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: de67c529bd241f24d95f21f7dd3a1059
     m_Address: Assets/Prefabs/RoomUnits/UI/finlaize result.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: fb2de139dc7dbe33084ada8c92f496a8
+    m_Address: canvas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 84ec9ea54801264d7b30ac63de8eb2d4
+    m_Address: eventSystem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 26c193700bec480e39931d410bae34e3
+    m_Address: camera
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4046388fe8fbd574c97dbb0e19c38143
+    m_Address: finalMuv
     m_ReadOnly: 0
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}

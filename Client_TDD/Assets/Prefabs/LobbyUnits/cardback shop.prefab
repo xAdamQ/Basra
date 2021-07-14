@@ -325,6 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridView: {fileID: 3192317244493829205}
   shopPanel: {fileID: 3192317243511595019}
+  OpenGate: {fileID: 0}
 --- !u!1001 &7566622643879220832
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -402,7 +403,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6293033527109255914, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -350
+      value: -569
       objectReference: {fileID: 0}
     - target: {fileID: 6293033527109255914, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -455,6 +456,18 @@ PrefabInstance:
     - target: {fileID: 8289997319192993308, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_Text
       value: cardback shop
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551219879460511053, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
+      propertyPath: m_text
+      value: "\uFEE3\uFE98\uFEA0\uFEAE \u0627\uFEDF\uFEEE\u0631\u0642"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551219879460511053, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
+      propertyPath: originalText
+      value: "\u0645\u062A\u062C\u0631 \u0627\u0644\u0648\u0631\u0642"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551219879460511053, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4284966759
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}

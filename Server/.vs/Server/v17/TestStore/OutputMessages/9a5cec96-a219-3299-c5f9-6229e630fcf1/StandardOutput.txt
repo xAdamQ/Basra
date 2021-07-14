@@ -1,0 +1,814 @@
+a new client is made with index: 0
+
+----------------------------
+info [Basra.Server.MasterHub] connection established: 0
+------------------------
+
+a new client is made with index: 1
+init game called on 0 with
+personal info is {
+  "MoneyAimTimeLeft": null,
+  "FlipWinCount": 0,
+  "Titles": null,
+  "Money": 21925,
+  "PlayedRoomsCount": 16,
+  "WonRoomsCount": 9,
+  "DrawRoomsCount": 3,
+  "EatenCardsCount": 0,
+  "WinStreak": 0,
+  "BasraCount": 0,
+  "BigBasraCount": 0,
+  "TotalEarnedMoney": 0,
+  "OwnedCardBackIds": [
+    0,
+    2
+  ],
+  "OwnedBackgroundsIds": null,
+  "SelectedCardback": 2,
+  "SelectedBackground": 0,
+  "Id": "0",
+  "Level": 0,
+  "SelectedTitleId": 0,
+  "Name": "hany",
+  "PictureUrl": "https://pbs.twimg.com/profile_images/592734306725933057/s4-h_LQC.jpg"
+}
+yesterday champs are [
+  {
+    "Id": "tstId1",
+    "Level": 1,
+    "SelectedTitleId": 0,
+    "Name": "champ1",
+    "PictureUrl": null
+  },
+  {
+    "Id": "tstId2",
+    "Level": 2,
+    "SelectedTitleId": 1,
+    "Name": "champ2",
+    "PictureUrl": null
+  },
+  {
+    "Id": "tstId3",
+    "Level": 3,
+    "SelectedTitleId": 2,
+    "Name": "champ3",
+    "PictureUrl": null
+  }
+]
+topFriends are [
+  {
+    "Id": "tstId5",
+    "Level": 2,
+    "SelectedTitleId": 3,
+    "Name": "friend2",
+    "PictureUrl": null
+  },
+  {
+    "Id": "tstId6",
+    "Level": 3,
+    "SelectedTitleId": 4,
+    "Name": "friend3",
+    "PictureUrl": null
+  }
+]
+with active room state null
+
+
+----------------------------
+info [Basra.Server.MasterHub] connection established: 1
+------------------------
+
+init game called on 1 with
+personal info is {
+  "MoneyAimTimeLeft": null,
+  "FlipWinCount": 0,
+  "Titles": null,
+  "Money": 89030,
+  "PlayedRoomsCount": 20,
+  "WonRoomsCount": 19,
+  "DrawRoomsCount": 1,
+  "EatenCardsCount": 0,
+  "WinStreak": 0,
+  "BasraCount": 0,
+  "BigBasraCount": 0,
+  "TotalEarnedMoney": 0,
+  "OwnedCardBackIds": [
+    0,
+    1,
+    2
+  ],
+  "OwnedBackgroundsIds": null,
+  "SelectedCardback": 1,
+  "SelectedBackground": 0,
+  "Id": "1",
+  "Level": 0,
+  "SelectedTitleId": 0,
+  "Name": "samy",
+  "PictureUrl": "https://d3g9pb5nvr3u7.cloudfront.net/authors/57ea8955d8de1e1602f67ca0/1902081322/256.jpg"
+}
+yesterday champs are [
+  {
+    "Id": "tstId1",
+    "Level": 1,
+    "SelectedTitleId": 0,
+    "Name": "champ1",
+    "PictureUrl": null
+  },
+  {
+    "Id": "tstId2",
+    "Level": 2,
+    "SelectedTitleId": 1,
+    "Name": "champ2",
+    "PictureUrl": null
+  },
+  {
+    "Id": "tstId3",
+    "Level": 3,
+    "SelectedTitleId": 2,
+    "Name": "champ3",
+    "PictureUrl": null
+  }
+]
+topFriends are [
+  {
+    "Id": "tstId5",
+    "Level": 2,
+    "SelectedTitleId": 3,
+    "Name": "friend2",
+    "PictureUrl": null
+  },
+  {
+    "Id": "tstId6",
+    "Level": 3,
+    "SelectedTitleId": 4,
+    "Name": "friend3",
+    "PictureUrl": null
+  }
+]
+with active room state null
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'RequestRandomRoom' with args 0, 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'RequestRandomRoom' with args 0, 0
+------------------------
+
+
+----------------------------
+warn [Microsoft.EntityFrameworkCore.Query] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results.
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Ready' with args 
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Ready' with args 
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 1 userId 0
+------------------------
+
+MyThrowResult is called on 0 with
+with res {
+  "ThrownCard": 1,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+CurrentOppoThrow is called on client 1
+with card 1 with value 2
+and full res {
+  "ThrownCard": 1,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 9 userId 1
+------------------------
+
+MyThrowResult is called on 1 with
+with res {
+  "ThrownCard": 9,
+  "EatenCardsIds": [
+    5,
+    3
+  ],
+  "Basra": false,
+  "BigBasra": false
+}
+with values [
+  6,
+  4
+]
+
+CurrentOppoThrow is called on client 0
+with card 9 with value 10
+and full res {
+  "ThrownCard": 9,
+  "EatenCardsIds": [
+    5,
+    3
+  ],
+  "Basra": false,
+  "BigBasra": false
+}
+with values [
+  6,
+  4
+]
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 6 userId 0
+------------------------
+
+CurrentOppoThrow is called on client 1
+with card 6 with value 7
+and full res {
+  "ThrownCard": 6,
+  "EatenCardsIds": [
+    17,
+    1
+  ],
+  "Basra": false,
+  "BigBasra": false
+}
+with values [
+  5,
+  2
+]
+
+MyThrowResult is called on 0 with
+with res {
+  "ThrownCard": 6,
+  "EatenCardsIds": [
+    17,
+    1
+  ],
+  "Basra": false,
+  "BigBasra": false
+}
+with values [
+  5,
+  2
+]
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 11 userId 1
+------------------------
+
+MyThrowResult is called on 1 with
+with res {
+  "ThrownCard": 11,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+CurrentOppoThrow is called on client 0
+with card 11 with value 12
+and full res {
+  "ThrownCard": 11,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 16 userId 0
+------------------------
+
+MyThrowResult is called on 0 with
+with res {
+  "ThrownCard": 16,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+CurrentOppoThrow is called on client 1
+with card 16 with value 4
+and full res {
+  "ThrownCard": 16,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 2 userId 1
+------------------------
+
+MyThrowResult is called on 1 with
+with res {
+  "ThrownCard": 2,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+CurrentOppoThrow is called on client 0
+with card 2 with value 3
+and full res {
+  "ThrownCard": 2,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 4 userId 0
+------------------------
+
+CurrentOppoThrow is called on client 1
+with card 4 with value 5
+and full res {
+  "ThrownCard": 4,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+MyThrowResult is called on 0 with
+with res {
+  "ThrownCard": 4,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 8 userId 1
+------------------------
+
+MyThrowResult is called on 1 with
+with res {
+  "ThrownCard": 8,
+  "EatenCardsIds": [
+    18,
+    2
+  ],
+  "Basra": false,
+  "BigBasra": false
+}
+with values [
+  6,
+  3
+]
+
+CurrentOppoThrow is called on client 0
+with card 8 with value 9
+and full res {
+  "ThrownCard": 8,
+  "EatenCardsIds": [
+    18,
+    2
+  ],
+  "Basra": false,
+  "BigBasra": false
+}
+with values [
+  6,
+  3
+]
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 12 userId 0
+------------------------
+
+CurrentOppoThrow is called on client 1
+with card 12 with value 13
+and full res {
+  "ThrownCard": 12,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+MyThrowResult is called on 0 with
+with res {
+  "ThrownCard": 12,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 14 userId 1
+------------------------
+
+CurrentOppoThrow is called on client 0
+with card 14 with value 2
+and full res {
+  "ThrownCard": 14,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+MyThrowResult is called on 1 with
+with res {
+  "ThrownCard": 14,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 7 userId 0
+------------------------
+
+CurrentOppoThrow is called on client 1
+with card 7 with value 8
+and full res {
+  "ThrownCard": 7,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+MyThrowResult is called on 0 with
+with res {
+  "ThrownCard": 7,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 0 userId 1
+------------------------
+
+MyThrowResult is called on 1 with
+with res {
+  "ThrownCard": 0,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+CurrentOppoThrow is called on client 0
+with card 0 with value 1
+and full res {
+  "ThrownCard": 0,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 19 userId 0
+------------------------
+
+CurrentOppoThrow is called on client 1
+with card 19 with value 7
+and full res {
+  "ThrownCard": 19,
+  "EatenCardsIds": [
+    11,
+    16,
+    4,
+    12,
+    14,
+    7,
+    0
+  ],
+  "Basra": false,
+  "BigBasra": false
+}
+with values [
+  12,
+  4,
+  5,
+  13,
+  2,
+  8,
+  1
+]
+
+MyThrowResult is called on 0 with
+with res {
+  "ThrownCard": 19,
+  "EatenCardsIds": [
+    11,
+    16,
+    4,
+    12,
+    14,
+    7,
+    0
+  ],
+  "Basra": false,
+  "BigBasra": false
+}
+with values [
+  12,
+  4,
+  5,
+  13,
+  2,
+  8,
+  1
+]
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 10 userId 1
+------------------------
+
+CurrentOppoThrow is called on client 0
+with card 10 with value 11
+and full res {
+  "ThrownCard": 10,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+MyThrowResult is called on 1 with
+with res {
+  "ThrownCard": 10,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 15 userId 0
+------------------------
+
+MyThrowResult is called on 0 with
+with res {
+  "ThrownCard": 15,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+CurrentOppoThrow is called on client 1
+with card 15 with value 3
+and full res {
+  "ThrownCard": 15,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+
+----------------------------
+info [Basra.Server.Services.BadUserInputFilter] Calling hub method 'Throw' with args 0
+------------------------
+
+
+----------------------------
+info [Basra.Server.Services.RoomManager] user has played card 0 with value 13 userId 1
+------------------------
+
+MyThrowResult is called on 1 with
+with res {
+  "ThrownCard": 13,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+CurrentOppoThrow is called on client 0
+with card 13 with value 1
+and full res {
+  "ThrownCard": 13,
+  "EatenCardsIds": [],
+  "Basra": false,
+  "BigBasra": false
+}
+with values []
+
+
+----------------------------
+info [Basra.Server.Services.FinalizeManager] finalize called
+------------------------
+
+UpdatePersonalInfo is called on 0 with
+res {
+  "RoomXpReport": {
+    "Competition": 100,
+    "Basra": 0,
+    "BigBasra": 0,
+    "GreatEat": 0
+  },
+  "PersonalFullUserInfo": {
+    "MoneyAimTimeLeft": null,
+    "FlipWinCount": 0,
+    "Titles": null,
+    "Money": 21970,
+    "PlayedRoomsCount": 17,
+    "WonRoomsCount": 10,
+    "DrawRoomsCount": 3,
+    "EatenCardsCount": 0,
+    "WinStreak": 0,
+    "BasraCount": 0,
+    "BigBasraCount": 0,
+    "TotalEarnedMoney": 0,
+    "OwnedCardBackIds": [
+      0,
+      2
+    ],
+    "OwnedBackgroundsIds": null,
+    "SelectedCardback": 2,
+    "SelectedBackground": 0,
+    "Id": "0",
+    "Level": 0,
+    "SelectedTitleId": 0,
+    "Name": "hany",
+    "PictureUrl": "https://pbs.twimg.com/profile_images/592734306725933057/s4-h_LQC.jpg"
+  },
+  "LastEaterTurnId": 0,
+  "UserRoomStatus": [
+    {
+      "EatenCards": 14,
+      "Basras": 0,
+      "BigBasras": 0,
+      "WinMoney": 100
+    },
+    {
+      "EatenCards": 6,
+      "Basras": 0,
+      "BigBasras": 0,
+      "WinMoney": 0
+    }
+  ]
+}
+
+UpdatePersonalInfo is called on 1 with
+res {
+  "RoomXpReport": {
+    "Competition": 0,
+    "Basra": 0,
+    "BigBasra": 0,
+    "GreatEat": 0
+  },
+  "PersonalFullUserInfo": {
+    "MoneyAimTimeLeft": null,
+    "FlipWinCount": 0,
+    "Titles": null,
+    "Money": 88975,
+    "PlayedRoomsCount": 21,
+    "WonRoomsCount": 19,
+    "DrawRoomsCount": 1,
+    "EatenCardsCount": 0,
+    "WinStreak": 0,
+    "BasraCount": 0,
+    "BigBasraCount": 0,
+    "TotalEarnedMoney": 0,
+    "OwnedCardBackIds": [
+      0,
+      1,
+      2
+    ],
+    "OwnedBackgroundsIds": null,
+    "SelectedCardback": 1,
+    "SelectedBackground": 0,
+    "Id": "1",
+    "Level": 0,
+    "SelectedTitleId": 0,
+    "Name": "samy",
+    "PictureUrl": "https://d3g9pb5nvr3u7.cloudfront.net/authors/57ea8955d8de1e1602f67ca0/1902081322/256.jpg"
+  },
+  "LastEaterTurnId": 0,
+  "UserRoomStatus": [
+    {
+      "EatenCards": 14,
+      "Basras": 0,
+      "BigBasras": 0,
+      "WinMoney": 100
+    },
+    {
+      "EatenCards": 6,
+      "Basras": 0,
+      "BigBasras": 0,
+      "WinMoney": 0
+    }
+  ]
+}
+

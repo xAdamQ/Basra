@@ -10,6 +10,7 @@ public class Front : MonoBehaviour
         private readonly IInstantiator _instantiator;
         private readonly GameObject _prefab;
         private readonly Sprite[] _frontSprites;
+
         public Factory(IInstantiator instantiator, GameObject prefab, Sprite[] frontSprites)
         {
             _instantiator = instantiator;

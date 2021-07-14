@@ -1,7 +1,8 @@
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -13,7 +14,7 @@ public interface IGround
     List<Card> Cards { get; }
     Vector3 LeftBottomBound { get; }
     Vector3 TopRightBound { get; }
-    void EatLast(Vector2 meetPoint, Sequence sequence);
+    UniTask EatLast(Vector2 meetPoint, Sequence sequence);
 }
 
 public class Ground : MonoBehaviour, IGround
@@ -58,7 +59,7 @@ public class Ground : MonoBehaviour, IGround
 
         for (int i = 0; i < Cards.Count; i++)
         {
-            var index = new Vector2(i % GridSize.x, i / (int) GridSize.x);
+            var index = new Vector2(i % GridSize.x, i / (int)GridSize.x);
 
             var poz = new Vector3(leftBottomBound.position.x + index.x * unitDistance.x,
                 leftBottomBound.position.y + index.y * unitDistance.y, z);
@@ -120,8 +121,10 @@ public class Ground : MonoBehaviour, IGround
             .AppendCallback(() => Destroy(thrownCard.gameObject));
     }
 
-    public void EatLast(Vector2 meetPoint, Sequence animSeq)
+    public async UniTask EatLast(Vector2 meetPoint, Sequence animSeq)
     {
+        if (Cards.Count == 0) return;
+
         var animTime = animSeq.Duration();
 
         Cards.ForEach(c => animSeq.Insert(animTime, c.transform.DOMove(meetPoint, EatAnimTime)));
@@ -130,6 +133,8 @@ public class Ground : MonoBehaviour, IGround
 
         Cards.ForEach(c => animSeq.Insert(animTime, c.transform.DOScale(Vector3.zero, .3f)));
         animSeq.InsertCallback(animTime, () => Cards.ForEach(c => Destroy(c.gameObject)));
+
+        await UniTask.Delay((int)(animSeq.Duration() * 1000));
 
         Cards.Clear();
     }

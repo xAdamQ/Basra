@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Basra.Models.Client;
+﻿using Basra.Models.Client;
 using Basra.Server.Exceptions;
 using Basra.Server.Extensions;
-using Basra.Server.Helpers;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace Basra.Server.Services
@@ -90,7 +88,7 @@ namespace Basra.Server.Services
             }
             else
             {
-                _serverLoop.BotPlay(roomActor as RoomBot, StaticRandom.GetRandom(300, 2000));
+                _serverLoop.BotPlay(roomActor as RoomBot);
             }
         }
 
@@ -144,7 +142,7 @@ namespace Basra.Server.Services
             else
             {
                 // _serverLoop.BotPlay(actorInTurn as RoomBot, StaticRandom.GetRandom(300, 2000));
-                _serverLoop.BotPlay(actorInTurn as RoomBot, StaticRandom.GetRandom(99999999, 999999999));
+                _serverLoop.BotPlay(actorInTurn as RoomBot);
                 //this is correct because sever loop is singleton not scoped
             }
         }
@@ -162,7 +160,7 @@ namespace Basra.Server.Services
 
                 roomActor.Room.GroundCards.RemoveAll(c => eaten.Contains(c));
 
-                roomActor.EatenCardsCount += eaten.Count;
+                roomActor.EatenCardsCount += eaten.Count + 1; //1 is my card
                 if (basra) roomActor.BasraCount++;
                 if (bigBasra) roomActor.BigBasraCount++;
             }
@@ -273,7 +271,7 @@ namespace Basra.Server.Services
         } //no test, you can test the "concurrent random"
 
         private const int KOMI_ID = 19, BOY_VALUE = 11;
-        private static readonly int[] BOY_IDS = {10, 23, 36, 49};
+        private static readonly int[] BOY_IDS = { 10, 23, 36, 49 };
         private static List<int> Eat(int cardId, List<int> ground, out bool basra, out bool bigBasra)
         {
             basra = false;

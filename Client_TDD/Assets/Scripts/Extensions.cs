@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,5 +19,10 @@ public static class Extensions
     public static void AddMultiple<T>(this List<T> list, params T[] args)
     {
         list.AddRange(args);
+    }
+
+    public static void ForEach<T>(this T[] array, System.Action<T> action)
+    {
+        foreach (var item in array) action(item);
     }
 }

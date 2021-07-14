@@ -65,9 +65,7 @@ MonoBehaviour:
   publicMinUserViewPrefab: {fileID: 2889049479930672646, guid: 39ba3d0dd99d1c27da0ab437169fa420, type: 3}
   friendsViewPrefab: {fileID: 8402177020890393125, guid: e9653981e976b5265a5fcf36d92e3413, type: 3}
   roomChoiceViewPrefab: {fileID: 1401099237687507212, guid: 9cb2e360cbffd51fdab5ac815b786318, type: 3}
-  personalActiveUserViewPrefab: {fileID: 7399417070958649469, guid: 23673c198cdaf530380968d5ffcd4235, type: 3}
-  fullUserViewPrefab: {fileID: 6124222723417715920, guid: b3bd7468065470b358fedac840e188af, type: 3}
-  personalFullUserViewPrefab: {fileID: 5773006616115483438, guid: 03239c0710ee07e46acd46217dec41fd, type: 3}
+  personalActiveUserViewPrefab: {fileID: 8007321716978194528, guid: 976c5317dbbf86543982f2deebb994e1, type: 3}
   CameraPrefab: {fileID: 4817333019724019237, guid: 26c193700bec480e39931d410bae34e3, type: 3}
   EventSystemPrefab: {fileID: 7647310846122247347, guid: 84ec9ea54801264d7b30ac63de8eb2d4, type: 3}
   standardCanvasPrefab: {fileID: 6078164675834289504, guid: fb2de139dc7dbe33084ada8c92f496a8, type: 3}
