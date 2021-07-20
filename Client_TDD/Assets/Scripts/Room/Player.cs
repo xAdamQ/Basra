@@ -34,7 +34,7 @@ public class Player : PlayerBase, IPlayer
     {
         foreach (var cardId in cardIds)
         {
-            var card = _cardFactory.CreateMyPlayerCard(cardId, transform);
+            var card = _cardFactory.CreateMyPlayerCard(cardId, BackSprite, transform);
             card.Player = this;
             HandCards.Add(card);
         }

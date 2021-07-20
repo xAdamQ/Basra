@@ -4,8 +4,7 @@ using Zenject;
 
 public class ProjectInstaller : MonoInstaller
 {
-    [SerializeField]
-    private GameObject
+    [SerializeField] private GameObject
         lobbyContextPrefab,
         roomContextPrefab,
         finalizeContextPrefab,
@@ -92,12 +91,6 @@ public class ProjectInstaller : MonoInstaller
                 .FromSubContainerResolve()
                 .ByNewContextPrefab<RoomInstaller>(roomContextPrefab);
 
-        if (_moduleSwitches.EnableFinalizeFactory)
-            Container.BindFactory<FinalizeResult, RoomSettings, FinalizeController, FinalizeController.Factory>()
-                .FromSubContainerResolve()
-                .ByNewContextPrefab<FinalizeInstaller>(finalizeContextPrefab);
-
-
         if (_moduleSwitches.EnableBlockingPanel)
             Container.AddInstantSceneModule<BlockingPanel>(blockingPanelPrefab, references.Canvas, hasAbstraction: true);
 
@@ -107,8 +100,10 @@ public class ProjectInstaller : MonoInstaller
         if (_moduleSwitches.EnableFullUserView)
             Container.AddInstantSceneModule<FullUserView>(fullUserViewPrefab, references.Canvas);
 
-        if (_moduleSwitches.EnableGlobalBackground)
-            Container.AddInstantSceneModule<GlobalBackground>(globalBackgroundPrefab, references.Canvas);
+        Background.Create().Forget();
+
+        // if (_moduleSwitches.EnableGlobalBackground)
+        // Container.AddInstantSceneModule<Background>(globalBackgroundPrefab, references.Canvas);
 
 
         Container.AddInstantSceneModule<Toast>(toastsPrefab, references.Canvas, hasAbstraction: true);

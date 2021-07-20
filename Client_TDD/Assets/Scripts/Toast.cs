@@ -1,6 +1,10 @@
+using System;
 using System.Collections;
+using System.Threading;
 using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 public interface IToast
@@ -25,14 +29,28 @@ public class ConsoleToast : IToast
 
 public class Toast : MonoBehaviour, IToast
 {
-    [SerializeField] private Text messageText;
+    public static IToast I;
+
+    public static async UniTask Create(Transform parent)
+    {
+        I = (await Addressables.InstantiateAsync("toast", parent)).GetComponent<Toast>();
+    }
+
+    [SerializeField] private TMP_Text messageText;
+
+    private CancellationTokenSource currentMessageTS;
 
     public void Show(string message, float seconds = -1)
     {
+        currentMessageTS?.Cancel();
+
         messageText.text = message ?? "";
 
-        var milliSeconds = (int)(seconds * 1000);
-        UniTask.Delay(milliSeconds).ContinueWith(Hide).Forget();
+        var milliSeconds = (int) (seconds * 1000);
+
+        currentMessageTS = new CancellationTokenSource();
+
+        UniTask.Delay(milliSeconds, cancellationToken: currentMessageTS.Token).ContinueWith(Hide).Forget();
 
         gameObject.SetActive(true);
     }

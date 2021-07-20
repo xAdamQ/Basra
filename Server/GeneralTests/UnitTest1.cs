@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -56,7 +57,7 @@ namespace GeneralTests
         [Fact]
         public void Test5()
         {
-            var arr = new List<int>() { 0, 5, 6 };
+            var arr = new List<int>() {0, 5, 6};
             _testOutputHelper.WriteLine(arr.IndexOf(6).ToString());
         }
 
@@ -116,8 +117,8 @@ namespace GeneralTests
         [Fact]
         public void Test8()
         {
-            var x = new x() { prop1 = 1 };
-            var zx = (z)x;
+            var x = new x() {prop1 = 1};
+            var zx = (z) x;
             zx.prop2 = 11;
             zx.prop1 = 13;
 
@@ -150,6 +151,20 @@ namespace GeneralTests
                 _testOutputHelper.WriteLine(res ?? "it was null");
             }
         }
+
+        [Fact]
+        public void Test10()
+        {
+            var obj = new r();
+            obj.tstDic = new Dictionary<TstEnum, string>()
+            {
+                {TstEnum.val1, "hello"},
+                {TstEnum.val2, "there"},
+                {TstEnum.val3, "you"},
+            };
+
+            _testOutputHelper.WriteLine(JsonConvert.SerializeObject(obj));
+        }
     }
 
     class x
@@ -160,5 +175,17 @@ namespace GeneralTests
     class z : x
     {
         public int prop2 { get; set; }
+    }
+
+    public enum TstEnum
+    {
+        val1,
+        val2,
+        val3,
+    }
+
+    public class r
+    {
+        public Dictionary<TstEnum, string> tstDic { get; set; }
     }
 }

@@ -1,5 +1,8 @@
+using System;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public interface IBlockingPanel
 {
@@ -11,6 +14,19 @@ public class BlockingPanel : MonoBehaviour, IBlockingPanel
 {
     [SerializeField] private TMP_Text messageText;
     [SerializeField] private GameObject dismissButton;
+
+    public static IBlockingPanel I;
+
+    public static async UniTask Create()
+    {
+        I = (await Addressables.InstantiateAsync("blockingPanel")).GetComponent<BlockingPanel>();
+    }
+
+    private void Awake()
+    {
+        Debug.Log("hello");
+        I = this;
+    }
 
     public void Show(string message = null)
     {

@@ -19,8 +19,10 @@ public interface IController
     UniTask<object> SendAsync(string method, params object[] args);
     void ThrowCard(int cardId);
     UniTask NotifyTurnMiss();
-    UniTask SelectCardback(int cardbackIndex);
-    UniTask BuyCardback(int index);
+
+    UniTask SelectItem(ItemType itemType, int index);
+    UniTask BuyItem(ItemType itemType, int index);
+
     UniTask RequestRandomRoom(int betChoice, int capacityChoice);
     UniTask Surrender();
 
@@ -42,6 +44,13 @@ public class Controller : IController, IInitializable
     [Inject] private readonly IRepository _repository;
     [Inject] private readonly LobbyController.Factory _lobbyFactory;
     [Inject] private readonly RoomController.Factory _roomFactory;
+
+    public static IController I { get; set; }
+
+    public Controller()
+    {
+        I = this;
+    }
 
     public void Initialize()
     {
@@ -98,7 +107,7 @@ public class Controller : IController, IInitializable
         if (RpcsNames.ContainsKey(moduleName))
             RpcsNames[moduleName].Add(actionName);
         else
-            RpcsNames.Add(moduleName, new List<string> { actionName });
+            RpcsNames.Add(moduleName, new List<string> {actionName});
     }
 
     public void AssignRpc(Action action, string moduleName)
@@ -215,14 +224,15 @@ public class Controller : IController, IInitializable
     {
         hubConnection.Send("Throw", cardId).OnError(e => throw e);
     }
-    public async UniTask SelectCardback(int cardbackIndex)
+    public async UniTask SelectItem(ItemType itemType, int index)
     {
-        await hubConnection.SendAsync("SelectCardback", cardbackIndex);
+        await hubConnection.SendAsync("SelectCardback", itemType, index);
     }
-    public async UniTask BuyCardback(int index)
+    public async UniTask BuyItem(ItemType itemType, int index)
     {
-        await hubConnection.SendAsync("BuyCardback", index);
+        await hubConnection.SendAsync("BuyCardback", itemType, index);
     }
+
     public async UniTask RequestRandomRoom(int betChoice, int capacityChoice)
     {
         await hubConnection.SendAsync("RequestRandomRoom", betChoice, capacityChoice);

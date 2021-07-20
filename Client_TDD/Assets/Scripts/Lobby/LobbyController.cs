@@ -31,6 +31,12 @@ public class LobbyController : ILobbyController, IInitializable, System.IDisposa
 
     public class Factory : PlaceholderFactory<LobbyController>
     {
+        public static Factory I;
+
+        public Factory()
+        {
+            I = this;
+        }
     }
 
     public void PrepareRequestedRoomRpc(int betChoice, int capacityChoice, List<FullUserInfo> userInfos, int myTurn)

@@ -1,33 +1,69 @@
-﻿using Zenject;
+﻿using System;
+using Cysharp.Threading.Tasks;
+using Moq;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
 
-public class FinalizeController : IInitializable
+// public interface IFinalizeController
+// {
+// }
+
+public class FinalizeController
+    // : IFinalizeController, IModule
 {
-    //args
-    [Inject] readonly FinalizeResult _finalizeResult;
-    [Inject] readonly RoomSettings _roomSettings;
+    // public Container Container => Container.Room;
+
+    // //args
+    // [Inject] readonly FinalizeResult _finalizeResult;
+    // [Inject] readonly RoomSettings _roomSettings;
 
     //proj
-    [Inject] private readonly ReferenceInstantiator<FinalizeInstaller> _referenceInstantiator;
+    // [Inject] private readonly ReferenceInstantiator<FinalizeInstaller> _referenceInstantiator;
 
     //fin
-    [Inject] private readonly FinalizeInstaller.References _finalizeRefs;
+    // [Inject] private readonly FinalizeInstaller.References _finalizeRefs;
 
 
-    public void Initialize()
+    // public static IFinalizeController I;
+
+    // public FinalizeController(RoomSettings roomSettings, FinalizeResult finalizeResult)
+    // {
+    // }
+
+    public static async UniTask Construct(Transform moduleCanvas, RoomSettings roomSettings, FinalizeResult finalizeResult)
     {
-        for (int i = 0; i < _roomSettings.UserInfos.Count; i++)
-        {
-            if (i == _roomSettings.MyTurn) continue;
+        // if (I != null)
+        // throw new Exception($"singleton {nameof(IFinalizeController)} already exists");
 
-            FinalMuv.Consrtuct(_roomSettings.UserInfos[i], _finalizeResult.UserRoomStatus[i], _finalizeRefs.Canvas).Forget();
+        var finalMuvParent = (await Addressables.InstantiateAsync("finalMuvParent", moduleCanvas)).transform;
+
+        for (int i = 0; i < roomSettings.UserInfos.Count; i++)
+        {
+            if (i == roomSettings.MyTurn) continue;
+
+            FinalMuv.Instantiate(roomSettings.UserInfos[i], finalizeResult.UserRoomStatus[i], finalMuvParent).Forget();
         }
 
-        RoomResultPanel.Instantiate(_referenceInstantiator, _finalizeRefs,
-            _finalizeResult.RoomXpReport, _finalizeResult.PersonalFullUserInfo,
-            _finalizeResult.UserRoomStatus[_roomSettings.MyTurn]);
+        RoomResultPanel.Instantiate(moduleCanvas, finalizeResult.RoomXpReport, finalizeResult.PersonalFullUserInfo,
+            finalizeResult.UserRoomStatus[roomSettings.MyTurn]).Forget();
     }
 
-    public class Factory : PlaceholderFactory<FinalizeResult, RoomSettings, FinalizeController>
-    {
-    }
+
+    // public void Initialize()
+    // {
+    //     for (int i = 0; i < _roomSettings.UserInfos.Count; i++)
+    //     {
+    //         if (i == _roomSettings.MyTurn) continue;
+    //
+    //         FinalMuv.Consrtuct(_roomSettings.UserInfos[i], _finalizeResult.UserRoomStatus[i], _finalizeRefs.Canvas).Forget();
+    //     }
+    //
+    //     RoomResultPanel.Instantiate(_referenceInstantiator, _finalizeRefs,
+    //         _finalizeResult.RoomXpReport, _finalizeResult.PersonalFullUserInfo,
+    //         _finalizeResult.UserRoomStatus[_roomSettings.MyTurn]);
+    // }
+    //
+    // public class Factory : PlaceholderFactory<FinalizeResult, RoomSettings, FinalizeController>
+    // {
+    // }
 }

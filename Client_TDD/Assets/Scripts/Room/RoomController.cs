@@ -8,6 +8,7 @@ public interface IRoomController
     void StartRoomRpc(List<int> handCardIds, List<int> groundCardIds); //trivial to test
     void DestroyModuleGroup();
     void FinalizeRoom(FinalizeResult finalizeResult);
+    event System.Action Destroyed;
 }
 
 
@@ -18,25 +19,41 @@ public class RoomController : IRoomController, IInitializable, System.IDisposabl
     [Inject] private readonly IController _controller;
     [Inject] private readonly IBlockingPanel _blockingPanel;
     [Inject] private readonly ICoreGameplay _coreGameplay;
-    [Inject] private readonly FinalizeController.Factory _finalizeFactory;
+    [Inject] private readonly RoomInstaller.References _references;
+
+
+    // [Inject] private readonly FinalizeController.Factory _finalizeFactory;
 
     //args
     [InjectOptional] private readonly ActiveRoomState _activeRoomState;
     [Inject] private readonly RoomSettings _roomSettings;
 
+    public event System.Action Destroyed;
+
+    public static IRoomController I;
+
+    [Inject]
+    public RoomController()
+    {
+        I = this;
+    }
+
     //todo this should init first
     public void Initialize()
     {
-        _ruvManager.Init(_roomSettings.UserInfos, _roomSettings.MyTurn);
+        UniTask.Create(async () =>
+        {
+            _ruvManager.Init(_roomSettings.UserInfos, _roomSettings.MyTurn);
 
-        _coreGameplay.CreatePlayers();
+            await _coreGameplay.CreatePlayers();
 
-        AssignRpcs();
+            AssignRpcs();
 
-        if (_activeRoomState == null)
-            _controller.SendAsync("Ready").Forget(e => throw e);
-        else
-            LateStart().Forget(e => throw e);
+            if (_activeRoomState == null)
+                _controller.SendAsync("Ready").Forget(e => throw e);
+            else
+                LateStart().Forget(e => throw e);
+        });
     }
 
     private async UniTask LateStart()
@@ -66,11 +83,15 @@ public class RoomController : IRoomController, IInitializable, System.IDisposabl
         {
             await _coreGameplay.EatLast(finalizeResult.LastEaterTurnId);
 
-            DestroyModuleGroup();
+            // FinalizeController.I.
 
-            _finalizeFactory.Create(finalizeResult, _roomSettings);
+            // DestroyModuleGroup();
+
+            // _finalizeFactory.Create(finalizeResult, _roomSettings);
 
             _repository.PersonalFullInfo = finalizeResult.PersonalFullUserInfo;
+
+            FinalizeController.Construct(_references.Canvas, _roomSettings, finalizeResult).Forget();
         });
     }
 
@@ -83,8 +104,11 @@ public class RoomController : IRoomController, IInitializable, System.IDisposabl
     public void DestroyModuleGroup()
     {
         Object.Destroy(Object.FindObjectOfType<RoomInstaller>().gameObject);
-    }
 
+        Destroyed?.Invoke();
+        // FinalizeController.I = null;
+        //no need for IModule
+    }
 
 
     public class Factory : PlaceholderFactory<RoomSettings, ActiveRoomState, RoomController>

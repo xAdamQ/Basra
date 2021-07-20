@@ -36,28 +36,29 @@ public class Card : MonoBehaviour
             _prefab = prefab;
         }
 
-        private Card Create(Transform parent, CardOwner cardOwner, int frontId)
+        private Card Create(Transform parent, Sprite backSprite, CardOwner cardOwner, int frontId)
         {
             var card = _instantiator.InstantiatePrefab(_prefab, parent).GetComponent<Card>();
 
-            //init
+            //init  
             if (frontId != -1)
                 card.AddFront(frontId);
+            card.GetComponent<SpriteRenderer>().sprite = backSprite;
 
             return card;
         }
 
         public Card CreateGroundCard(int frontId, Transform parent)
         {
-            return Create(null, CardOwner.Ground, frontId);
+            return Create(parent, null, CardOwner.Ground, frontId);
         }
-        public Card CreateMyPlayerCard(int frontId, Transform parent)
+        public Card CreateMyPlayerCard(int frontId, Sprite backSprite, Transform parent)
         {
-            return Create(parent, CardOwner.Me, frontId);
+            return Create(parent, backSprite, CardOwner.Me, frontId);
         }
-        public Card CreateOppoCard(Transform parent)
+        public Card CreateOppoCard(Sprite backSprite, Transform parent)
         {
-            return Create(parent, CardOwner.Oppo, -1);
+            return Create(parent, backSprite, CardOwner.Oppo, -1);
         }
     }
 

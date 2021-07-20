@@ -2,7 +2,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.TestTools;
 
 namespace PlayModeTests
@@ -30,7 +32,6 @@ namespace PlayModeTests
         //    installer.InstallBindings();
         //}
 
-
         static PersonalFullUserInfo personalInfo = new PersonalFullUserInfo
         {
             BasraCount = 3,
@@ -48,51 +49,66 @@ namespace PlayModeTests
             MoneyAimTimeLeft = TimeSpan.FromMinutes(2),
         };
 
-        //static List<FullUserInfo> fullUserInfos = new List<FullUserInfo>()
-        //{
-        //    new FullUserInfo
-        //    {
-        //        BasraCount = 3,
-        //        BigBasraCount = 3,
-        //        Level = 23,
-        //        PlayedRoomsCount = 56,
-        //        WonRoomsCount = 22,
-        //        EatenCardsCount = 298,
-        //        WinStreak = 3,
-        //        Id = "tstId",
-        //        Name = "7oda el gamed",
-        //        SelectedTitleId = 1,
-        //        Picture = Texture2D.redTexture,
-        //    },
-        //    new FullUserInfo
-        //    {
-        //        BasraCount = 3,
-        //        BigBasraCount = 3,
-        //        Level = 23,
-        //        PlayedRoomsCount = 56,
-        //        WonRoomsCount = 22,
-        //        EatenCardsCount = 298,
-        //        WinStreak = 3,
-        //        Id = "tstId",
-        //        Name = "7oda el gamed",
-        //        SelectedTitleId = 1,
-        //        Picture = Texture2D.redTexture,
-        //    },
-        //    new FullUserInfo
-        //    {
-        //        BasraCount = 3,
-        //        BigBasraCount = 3,
-        //        Level = 23,
-        //        PlayedRoomsCount = 56,
-        //        WonRoomsCount = 22,
-        //        EatenCardsCount = 298,
-        //        WinStreak = 3,
-        //        Id = "tstId",
-        //        Name = "7oda el gamed",
-        //        SelectedTitleId = 1,
-        //        Picture = Texture2D.redTexture,
-        //    },
-        //};
+
+        static List<FullUserInfo> fullUserInfos = new List<FullUserInfo>()
+        {
+            new FullUserInfo
+            {
+                BasraCount = 3,
+                BigBasraCount = 3,
+                Level = 23,
+                PlayedRoomsCount = 56,
+                WonRoomsCount = 22,
+                EatenCardsCount = 298,
+                WinStreak = 3,
+                Id = "tstId",
+                Name = "7oda el gamed",
+                SelectedTitleId = 1,
+                Picture = Texture2D.redTexture,
+            },
+            new FullUserInfo
+            {
+                BasraCount = 3,
+                BigBasraCount = 3,
+                Level = 23,
+                PlayedRoomsCount = 56,
+                WonRoomsCount = 22,
+                EatenCardsCount = 298,
+                WinStreak = 3,
+                Id = "tstId",
+                Name = "7oda el gamed",
+                SelectedTitleId = 1,
+                Picture = Texture2D.redTexture,
+            },
+            new FullUserInfo
+            {
+                BasraCount = 3,
+                BigBasraCount = 3,
+                Level = 23,
+                PlayedRoomsCount = 56,
+                WonRoomsCount = 22,
+                EatenCardsCount = 298,
+                WinStreak = 3,
+                Id = "tstId",
+                Name = "7oda el gamed",
+                SelectedTitleId = 1,
+                Picture = Texture2D.redTexture,
+            },
+            new FullUserInfo
+            {
+                BasraCount = 3,
+                BigBasraCount = 3,
+                Level = 23,
+                PlayedRoomsCount = 56,
+                WonRoomsCount = 22,
+                EatenCardsCount = 298,
+                WinStreak = 3,
+                Id = "tstId",
+                Name = "7oda el gamed",
+                SelectedTitleId = 1,
+                Picture = Texture2D.redTexture,
+            },
+        };
 
         //[UnityTest]
         //public IEnumerator GeneralTest()
@@ -164,8 +180,21 @@ namespace PlayModeTests
         {
             await LoadEss();
 
-            var UserRoomStatus = new List<UserRoomStatus>()
-               {
+            var finalizeResult = (new FinalizeResult()
+            {
+                LastEaterTurnId = 1,
+                PersonalFullUserInfo = personalInfo,
+
+                RoomXpReport = new Basra.Models.Client.RoomXpReport()
+                {
+                    Basra = 0,
+                    BigBasra = 30,
+                    Competition = 108,
+                    GreatEat = 250,
+                },
+
+                UserRoomStatus = new List<UserRoomStatus>()
+                {
                     new UserRoomStatus()
                     {
                         Basras = 0,
@@ -179,14 +208,85 @@ namespace PlayModeTests
                         BigBasras = 0,
                         WinMoney = 0,
                         EatenCards = 10,
-                    }
-               };
+                    },
+                    new UserRoomStatus()
+                    {
+                        Basras = 1,
+                        BigBasras = 0,
+                        WinMoney = 0,
+                        EatenCards = 10,
+                    },
+                    new UserRoomStatus()
+                    {
+                        Basras = 1,
+                        BigBasras = 0,
+                        WinMoney = 0,
+                        EatenCards = 10,
+                    },
+                }
+            });
 
-            FinalMuv.Consrtuct(personalInfo, UserRoomStatus[0], canvas).Forget();
+            FinalizeController.Construct(canvas, new RoomSettings(0, 0, fullUserInfos.GetRange(0, 4), 0), finalizeResult);
 
             await UniTask.Delay(9999999);
         });
+        [UnityTest]
+        public IEnumerator LoadSingleSpriteFromSprietSheet() => UniTask.ToCoroutine(async () =>
+        {
+            await LoadEss();
+
+            var s = await Addressables.LoadAssetAsync<Sprite>("FrontSprites[0_0]");
+            Debug.Log(s);
+
+            new GameObject().AddComponent<SpriteRenderer>().sprite = s;
 
 
+            //
+            // try
+            // {
+            //     await Addressables.LoadAssetAsync<Sprite>("FrontSprites[0_0]");
+            // }
+            // catch (Exception)
+            // {
+            //     Debug.Log("method 1 failed");
+            // }
+            // try
+            // {
+            //     await Addressables.LoadAssetAsync<Sprite>("FrontSprites/[0_0]");
+            // }
+            // catch (Exception)
+            // {
+            //     Debug.Log("method 2 failed");
+            // }
+            // try
+            // {
+            //     await Addressables.LoadAssetAsync<Sprite>("FrontSprites/0_0");
+            // }
+            // catch (Exception)
+            // {
+            //     Debug.Log("method 3 failed");
+            // }
+            // try
+            // {
+            //     await Addressables.LoadAssetAsync<Sprite>("FrontSprites/0");
+            // }
+            // catch (Exception)
+            // {
+            //     Debug.Log("method 4 failed");
+            // }
+            // try
+            // {
+            //     await Addressables.LoadAssetAsync<Sprite>("FrontSprites[0]");
+            // }
+            // catch (Exception)
+            // {
+            //     Debug.Log("method 5 failed");
+            // }
+
+
+            s = null;
+
+            await UniTask.Delay(9999999);
+        });
     }
 }

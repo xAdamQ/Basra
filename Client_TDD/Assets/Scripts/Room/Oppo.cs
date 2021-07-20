@@ -37,7 +37,7 @@ public class Oppo : PlayerBase, IOppo
     {
         for (var i = 0; i < cardsCount; i++)
         {
-            var card = _cardFactory.CreateOppoCard(transform);
+            var card = _cardFactory.CreateOppoCard(BackSprite, transform);
             HandCards.Add(card);
             card.Player = this;
         }

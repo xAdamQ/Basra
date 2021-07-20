@@ -1,12 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "VrPW7BsOiVDoBxF74+MESSFt20PTMWU3nfIb9WkC+1ZAOMPl3JKhEhX3GSWtBy1t1pWqV5gUHqeXbq7bbx8BAA==",
+  "dgSpecHash": "JN9yZxKPiS+ywlRn9GOg5Ztw5oSygSS6rZeoyI1uubGYHYUzDL/Dz6Epx54DbXxnpvLkKQcR4NtbY63sMxM5bQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\xadam\\Projects\\Basra\\Server\\TestClientBase\\TestClientBase.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\xadam\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\5.0.0\\microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
-    "C:\\Users\\xadam\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\5.0.0\\microsoft.windowsdesktop.app.ref.5.0.0.nupkg.sha512",
-    "C:\\Users\\xadam\\.nuget\\packages\\microsoft.netcore.app.ref\\5.0.0\\microsoft.netcore.app.ref.5.0.0.nupkg.sha512"
-  ],
+  "projectFilePath": "/home/adam/Projects/Basra/Server/TestClientBase/TestClientBase.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

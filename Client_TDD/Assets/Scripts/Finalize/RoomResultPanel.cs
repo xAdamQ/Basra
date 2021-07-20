@@ -1,7 +1,8 @@
 using Basra.Models.Client;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using Zenject;
+using UnityEngine.AddressableAssets;
 
 
 /// <summary>
@@ -11,8 +12,7 @@ using Zenject;
 /// </summary>
 public class RoomResultPanel : MonoBehaviour
 {
-    [SerializeField]
-    private TMP_Text
+    [SerializeField] private TMP_Text
         competetionScoreText,
         basraScoreText,
         bigBasraScoreText,
@@ -25,17 +25,11 @@ public class RoomResultPanel : MonoBehaviour
         winStreak;
 
 
-    [Inject] private readonly IRoomController _roomController;
-    [Inject] private readonly LobbyController.Factory _lobbyFactory;
-
-    public static void Instantiate(ReferenceInstantiator<FinalizeInstaller> referenceInstantiator,
-        FinalizeInstaller.References refs, /*first 2 are services*/RoomXpReport roomXpReport,
-        PersonalFullUserInfo personalFullUserInfo, UserRoomStatus userRoomStatus)
+    public static async UniTaskVoid Instantiate(Transform parent, RoomXpReport roomXpReport, PersonalFullUserInfo personalFullUserInfo,
+        UserRoomStatus userRoomStatus)
     {
-        referenceInstantiator.Instantiate(refs.RoomResultPanelRef,
-            go => go.GetComponent<RoomResultPanel>()
-                .Construct(roomXpReport, personalFullUserInfo, userRoomStatus),
-            refs.Canvas);
+        var obj = await Addressables.InstantiateAsync("myRoomResultView", parent);
+        obj.GetComponent<RoomResultPanel>().Construct(roomXpReport, personalFullUserInfo, userRoomStatus);
     }
 
     private void Construct(RoomXpReport roomXpReport, PersonalFullUserInfo personalFullUserInfo, UserRoomStatus userRoomStatus)
@@ -72,14 +66,12 @@ public class RoomResultPanel : MonoBehaviour
         //else earnedMoney.text = ((bet - (bet * .1f)) * 2).ToString("f0");
     }
 
+    /// <summary>
+    /// uses roomController, lobbyFac
+    /// </summary>
     public void ToLobby()
     {
-        _roomController.DestroyModuleGroup();
-        _lobbyFactory.Create();
-    }
-
-    public void RequestRematch()
-    {
-        throw new System.NotImplementedException();
+        RoomController.I.DestroyModuleGroup();
+        LobbyController.Factory.I.Create();
     }
 }

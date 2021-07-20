@@ -16,12 +16,23 @@ public class FullUserInfo : MinUserInfo
     public int BigBasraCount { get; set; }
 
 
+    //client helpers only?
+    // public List<int> OwnedCardBackIds => OwnedItemIds[(int) ItemType.Cardback];
+    // public List<int> OwnedBackgroundsIds => OwnedItemIds[(int) ItemType.Background];
+    // public int SelectedCardback => SelectedItem[(int) ItemType.Cardback];
+    // public int SelectedBackground => SelectedItem[(int) ItemType.Background];
+
     public List<int> OwnedCardBackIds { get; set; }
     public List<int> OwnedBackgroundsIds { get; set; }
-
     public int SelectedCardback { get; set; }
     public int SelectedBackground { get; set; }
 
+    #region helpers
 
-    public float WinRatio => (float)WonRoomsCount / PlayedRoomsCount;
+    public List<int>[] OwnedItemIds => new[] {OwnedCardBackIds, OwnedBackgroundsIds};
+    public int[] SelectedItem => new[] {SelectedCardback, SelectedBackground};
+
+    public float WinRatio => (float) WonRoomsCount / PlayedRoomsCount;
+
+    #endregion
 }

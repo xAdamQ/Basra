@@ -8,7 +8,7 @@ public interface ICoreGameplay
     IPlayerBase PlayerInTurn { get; }
     int CurrentTurn { get; }
 
-    void CreatePlayers();
+    UniTask CreatePlayers();
     void InitialTurn();
     void NextTurn(bool endPrevTurn = true);
     void Distribute(List<int> handCardIds);
@@ -46,23 +46,25 @@ public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
         await Players[lastEaterTurnId].EatLast();
     }
 
-    public void CreatePlayers()
+    public async UniTask CreatePlayers()
     {
         var oppoPlaceCounter = 1;
         //oppo place starts at 1 to 3
 
         for (int i = 0; i < _roomSettings.Capacity; i++)
         {
+            PlayerBase player = null;
             if (_roomSettings.MyTurn == i)
             {
-                MyPlayer = _playerFactory.Create(0, i) as IPlayer;
-                Players.Add(MyPlayer);
+                player = await _playerFactory.Create(_roomSettings.UserInfos[i].SelectedCardback, 0, i);
+                Players.Add(player);
+                MyPlayer = player as IPlayer;
             }
             else
             {
-                var oppo = _playerFactory.Create(oppoPlaceCounter++, i) as IOppo;
-                Players.Add(oppo);
-                Oppos.Add(oppo);
+                player = await _playerFactory.Create(_roomSettings.UserInfos[i].SelectedCardback, oppoPlaceCounter++, i);
+                Players.Add(player);
+                Oppos.Add(player as IOppo);
             }
         }
     }
@@ -97,7 +99,7 @@ public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
         {
             if (i == _roomSettings.MyTurn) continue;
 
-            ((IOppo)Players[i]).Distribute(handCounts[i]);
+            ((IOppo) Players[i]).Distribute(handCounts[i]);
         }
 
         CurrentTurn = currentTurn - 1;
@@ -141,11 +143,10 @@ public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
     }
     public void CurrentOppoThrow(ThrowResult throwResult)
     {
-        ((IOppo)PlayerInTurn).Throw(throwResult);
+        ((IOppo) PlayerInTurn).Throw(throwResult);
     }
 
     #endregion
-
 
     public void BeginGame(List<int> myHand, List<int> groundCards)
     {

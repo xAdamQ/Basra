@@ -3,6 +3,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Zenject;
 
 public interface IPlayerBase
@@ -11,6 +12,7 @@ public interface IPlayerBase
     void StartTurn();
     UniTask EatLast();
     List<Card> HandCards { get; }
+    UniTask Init(int selectedBackIndex);
 }
 
 public abstract class PlayerBase : MonoBehaviour, IPlayerBase
@@ -21,6 +23,8 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
     [Inject] protected readonly IGround _ground;
     [Inject] protected readonly ICoreGameplay _coreGameplay;
     [Inject] protected readonly RoomUserView.IManager _ruvManager;
+
+    protected Sprite BackSprite;
 
     protected static readonly int HandCardCapacity = 4;
 
@@ -34,6 +38,15 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         HandCenter = ((endCard.position - startCard.position) / 2) + startCard.position;
 
         turnTimer.Ticked += _ruvManager.RoomUserViews[Turn].SetTurnFill;
+    }
+
+    public async UniTask Init(int selectedBackIndex)
+    {
+        //todo this will be different with the full back sprite set
+        //i suggest array of sprite addresses
+        var backSprite = await Addressables.LoadAssetAsync<Sprite>($"cardbackSprites[0_{selectedBackIndex}]");
+
+        BackSprite = backSprite;
     }
 
     private int Turn { get; set; }
@@ -73,8 +86,8 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
         _ground.Throw(card, result.EatenCardsIds, animSeq, meetPoint);
 
-        var eatenCount = result.EatenCardsIds != null ? result.EatenCardsIds.Count : 0;
-        UpdateEatStatus(eatenCount, result.Basra, result.BigBasra);
+        var count = result.EatenCardsIds?.Count ?? 0;
+        UpdateEatStatus(count, result.Basra, result.BigBasra);
 
         HandCards.Remove(card);
         OrganizeHand();
@@ -155,9 +168,11 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
             _playerPrefabs = playerPrefabs;
         }
 
-        public PlayerBase Create(int placeIndex, int turn)
+        public async UniTask<PlayerBase> Create(int selectedCardback, int placeIndex, int turn)
         {
             var player = _instantiator.InstantiatePrefab(_playerPrefabs[placeIndex]).GetComponent<PlayerBase>();
+
+            await player.Init(selectedCardback);
 
             player.Turn = turn;
 

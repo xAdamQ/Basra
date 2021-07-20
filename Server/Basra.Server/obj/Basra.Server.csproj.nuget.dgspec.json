@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\xadam\\Projects\\Basra\\Server\\Basra.Server\\Basra.Server.csproj": {}
+    "/home/adam/Projects/Basra/Server/Basra.Server/Basra.Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\xadam\\Projects\\Basra\\Server\\Basra.Server\\Basra.Server.csproj": {
+    "/home/adam/Projects/Basra/Server/Basra.Server/Basra.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\xadam\\Projects\\Basra\\Server\\Basra.Server\\Basra.Server.csproj",
+        "projectUniqueName": "/home/adam/Projects/Basra/Server/Basra.Server/Basra.Server.csproj",
         "projectName": "Basra.Server",
-        "projectPath": "C:\\Users\\xadam\\Projects\\Basra\\Server\\Basra.Server\\Basra.Server.csproj",
-        "packagesPath": "C:\\Users\\xadam\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\xadam\\Projects\\Basra\\Server\\Basra.Server\\obj\\",
+        "projectPath": "/home/adam/Projects/Basra/Server/Basra.Server/Basra.Server.csproj",
+        "packagesPath": "/home/adam/.nuget/packages/",
+        "outputPath": "/home/adam/Projects/Basra/Server/Basra.Server/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\xadam\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/adam/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -109,12 +107,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[5.0.5, 5.0.5]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -123,7 +115,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-preview.5.21302.13\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.302/RuntimeIdentifierGraph.json"
         }
       }
     }

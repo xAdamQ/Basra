@@ -1,10 +1,10 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class FullUserView : MinUserView
 {
-    [SerializeField]
-    private TMP_Text
+    [SerializeField] private TMP_Text
         moneyText,
         playedRoomsText,
         wonRoomsText,
@@ -13,6 +13,13 @@ public class FullUserView : MinUserView
         basrasText,
         bigBasrasText,
         winRatioText;
+
+    public static FullUserView I;
+
+    private void Awake()
+    {
+        I = this;
+    }
 
     [SerializeField] private GameObject addFriendButton;
 

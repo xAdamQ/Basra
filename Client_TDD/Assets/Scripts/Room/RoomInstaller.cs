@@ -1,17 +1,16 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
 public class RoomInstaller : MonoInstaller
 {
-    [SerializeField]
-    private GameObject[]
+    [SerializeField] private GameObject[]
         roomUserViewPrefabs,
         playerPrefabs;
 
     [SerializeField] private Sprite[] frontSprites;
 
-    [SerializeField]
-    private GameObject
+    [SerializeField] private GameObject
         frontPrefab,
         cardPrefab,
         groundPrefab,
@@ -102,5 +101,7 @@ public class RoomInstaller : MonoInstaller
         if (_moduleSwitches.EnableRoomUserViewFactory)
             Container.BindInterfacesTo<RoomUserView.Manager>().AsSingle()
                 .WithArguments(roomUserViewPrefabs, references.Canvas);
+
+        Background.I.SetForRoom(_roomSettings.UserInfos).Forget();
     }
 }

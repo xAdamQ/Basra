@@ -1,16 +1,18 @@
 using System;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 using Zenject;
 
 public class BlockingOperationManager
 {
-    private readonly IBlockingPanel _blockingPanel;
+    // private readonly IBlockingPanel _blockingPanel;
+
+    public static BlockingOperationManager I { get; private set; }
 
     [Inject]
-    public BlockingOperationManager(IBlockingPanel blockingPanel)
+    public BlockingOperationManager()
     {
-        _blockingPanel = blockingPanel;
+        // _blockingPanel = blockingPanel;
+        I = this;
     }
 
     /// <summary>
@@ -20,17 +22,21 @@ public class BlockingOperationManager
     {
         Start(operation).Forget(e => throw e);
     }
+
+    /// <summary>
+    /// uses BlockingPanel 
+    /// </summary>
     public async UniTask Start(UniTask operation)
     {
-        _blockingPanel.Show();
+        BlockingPanel.I.Show();
         try
         {
             await operation;
-            _blockingPanel.Hide();
+            BlockingPanel.I.Hide();
         }
         catch (BadUserInputException) //todo test if you can get bad user input exc here
         {
-            _blockingPanel.Hide("operation is not allowed");
+            BlockingPanel.I.Hide("operation is not allowed");
             throw;
         }
     }
@@ -39,18 +45,22 @@ public class BlockingOperationManager
     {
         Start(operation).ContinueWith(onComplete).Forget(e => throw e); //the error exception happens normally inside start
     }
+
+    /// <summary>
+    /// uses BlockingPanel 
+    /// </summary>
     public async UniTask<T> Start<T>(UniTask<T> operation)
     {
-        _blockingPanel.Show();
+        BlockingPanel.I.Show();
         try
         {
             var result = await operation;
-            _blockingPanel.Hide();
+            BlockingPanel.I.Hide();
             return result;
         }
         catch (BadUserInputException) //todo test if you can get bad user input exc here
         {
-            _blockingPanel.Hide("operation is not allowed");
+            BlockingPanel.I.Hide("operation is not allowed");
             throw;
         }
     }

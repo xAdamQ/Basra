@@ -38,9 +38,9 @@ public class RoomUserView : MinUserView
         [Inject] private readonly Transform _parent;
 
         //tested
-        private RoomUserView Create(int turn, MinUserInfo minUserInfo)
+        private RoomUserView Create(int place, MinUserInfo minUserInfo)
         {
-            var view = _instantiator.InstantiatePrefab(_roomUserViewsPrefabs[turn], _parent)
+            var view = _instantiator.InstantiatePrefab(_roomUserViewsPrefabs[place], _parent)
                 .GetComponent<RoomUserView>();
 
             view.Init(minUserInfo);

@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
@@ -63,8 +64,16 @@ public class LobbyInstaller : MonoInstaller
             Container.AddInstantSceneModule<PersonalActiveUserView>(personalActiveUserViewPrefab, standardCanvas);
 
         if (_settings.EnableCardbackShop)
-            Container.AddInstantSceneModule<CardbackShop>(cardbackShopPrefab, standardCanvas)
-                .WithArguments(cardbackSheetRef, cardbackShopItemPrefab);
+        {
+            var res = Shop.Create(standardCanvas, ItemType.Cardback);
+            var res2 = Shop.Create(standardCanvas, ItemType.Background);
+            // while (res.Status != UniTaskStatus.Succeeded && res2.Status != UniTaskStatus.Succeeded)
+            // {
+            // }
+        }
+
+        // Container.AddInstantSceneModule<Shop>(cardbackShopPrefab, standardCanvas)
+        // .WithArguments(cardbackSheetRef, cardbackShopItemPrefab);
 
         if (_settings.EnableRoomChoicesView)
             Container.InstantiatePrefab(roomChoiceViewPrefab, standardCanvas);

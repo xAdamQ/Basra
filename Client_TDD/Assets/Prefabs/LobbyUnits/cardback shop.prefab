@@ -323,9 +323,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff0f1c76d314462a96c6d51525648908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridView: {fileID: 3192317244493829205}
+  shopItemPrefab: {fileID: 7384095494490767505, guid: 05c99b833f1c4ec1791667a4b7014fa6, type: 3}
+  layoutGroup: {fileID: 3192317244493829205}
   shopPanel: {fileID: 3192317243511595019}
-  OpenGate: {fileID: 0}
 --- !u!1001 &7566622643879220832
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -570,6 +570,14 @@ PrefabInstance:
     - target: {fileID: 5190481888007519830, guid: 272ef82641adbae459502d7a686d2391, type: 3}
       propertyPath: m_Name
       value: close button
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190481888007519830, guid: 272ef82641adbae459502d7a686d2391, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7633911761161249270, guid: 272ef82641adbae459502d7a686d2391, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4284966759
       objectReference: {fileID: 0}
     - target: {fileID: 8294868474476371080, guid: 272ef82641adbae459502d7a686d2391, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
