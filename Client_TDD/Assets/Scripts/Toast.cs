@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public interface IToast
 {
     /// <param name="seconds"> auto hide after seconds, -1 disable auto hide</param>
-    void Show(string message, float seconds = -1);
+    void Show(string message, float seconds = 1);
     void Hide();
 }
 
@@ -31,16 +31,16 @@ public class Toast : MonoBehaviour, IToast
 {
     public static IToast I;
 
-    public static async UniTask Create(Transform parent)
+    public static async UniTask Create()
     {
-        I = (await Addressables.InstantiateAsync("toast", parent)).GetComponent<Toast>();
+        I = (await Addressables.InstantiateAsync("toast", ProjectRefernces.I.Canvas)).GetComponent<Toast>();
     }
 
     [SerializeField] private TMP_Text messageText;
 
     private CancellationTokenSource currentMessageTS;
 
-    public void Show(string message, float seconds = -1)
+    public void Show(string message, float seconds = 1)
     {
         currentMessageTS?.Cancel();
 

@@ -1,34 +1,24 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Zenject;
+using UnityEngine.AddressableAssets;
 
 public class Front : MonoBehaviour
 {
     public int Index;
 
-    public class Factory
+    public static async UniTask<Front> Create(int index, Transform parent)
     {
-        private readonly IInstantiator _instantiator;
-        private readonly GameObject _prefab;
-        private readonly Sprite[] _frontSprites;
+        var front = (await Addressables.InstantiateAsync("front", parent)).GetComponent<Front>();
+        // var sprite = (await Addressables.LoadAssetAsync<Sprite>($"frontSprites[nums_{index}]"));
 
-        public Factory(IInstantiator instantiator, GameObject prefab, Sprite[] frontSprites)
-        {
-            _instantiator = instantiator;
-            _prefab = prefab;
-            _frontSprites = frontSprites;
-        }
+        await Extensions.LoadAndReleaseAsset<Sprite>($"frontSprites[nums_{index}]",
+            sprite => front.GetComponent<SpriteRenderer>().sprite = sprite);
 
-        public Front Create(int index, Transform parent)
-        {
-            var front = _instantiator.InstantiatePrefab(_prefab, parent)
-                .GetComponent<Front>();
+        //init, no init method because this class can access private members
+        front.Index = index;
+        // front.GetComponent<SpriteRenderer>().sprite = sprite;
+        front.transform.localPosition = Vector3.forward * .01f;
 
-            //init, no init method because this class can access private members
-            front.Index = index;
-            front.GetComponent<SpriteRenderer>().sprite = _frontSprites[index];
-            front.transform.localPosition = Vector3.forward * .01f;
-
-            return front;
-        }
+        return front;
     }
 }

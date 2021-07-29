@@ -2,9 +2,9 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using System.Collections.Generic;
 using System.Linq;
+using Basra.Common;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using Zenject;
 
 public interface IPlayerBase
 {
@@ -12,17 +12,29 @@ public interface IPlayerBase
     void StartTurn();
     UniTask EatLast();
     List<Card> HandCards { get; }
-    UniTask Init(int selectedBackIndex);
 }
 
 public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 {
-    [SerializeField] private Transform startCard, endCard;
+    [SerializeField] protected Transform startCard, endCard;
 
-    [Inject] protected readonly Card.Factory _cardFactory;
-    [Inject] protected readonly IGround _ground;
-    [Inject] protected readonly ICoreGameplay _coreGameplay;
-    [Inject] protected readonly RoomUserView.IManager _ruvManager;
+    //todo test this
+    public static int ConvertTurnToPlace(int turn, int myTurn)
+    {
+        if (myTurn == turn) return 0;
+
+        if (turn < myTurn) return turn + 1;
+
+        return turn;
+
+        //
+        // var oppoPlaceCounter = 1;
+        // for (int i = 0; i < capacity; i++)
+        //     if (myTurn != i)
+        //         oppoPlaceCounter++;
+        // return oppoPlaceCounter;
+    }
+
 
     protected Sprite BackSprite;
 
@@ -37,16 +49,20 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
     {
         HandCenter = ((endCard.position - startCard.position) / 2) + startCard.position;
 
-        turnTimer.Ticked += _ruvManager.RoomUserViews[Turn].SetTurnFill;
+        turnTimer.Ticked += RoomUserView.Manager.I.RoomUserViews[Turn].SetTurnFill;
     }
 
-    public async UniTask Init(int selectedBackIndex)
+    private async UniTask Init(int selectedBackIndex, int turn)
     {
         //todo this will be different with the full back sprite set
         //i suggest array of sprite addresses
-        var backSprite = await Addressables.LoadAssetAsync<Sprite>($"cardbackSprites[0_{selectedBackIndex}]");
 
-        BackSprite = backSprite;
+        // var backSprite = await Addressables.LoadAssetAsync<Sprite>($"cardbackSprites[0_{selectedBackIndex}]");
+        // BackSprite = backSprite;
+        Turn = turn;
+
+        await Extensions.LoadAndReleaseAsset<Sprite>(((CardbackType) selectedBackIndex).ToString(),
+            sprite => BackSprite = sprite);
     }
 
     private int Turn { get; set; }
@@ -60,22 +76,24 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
     protected Vector3 PlaceCard(Card card, Sequence animSeq)
     {
         var targetPoz = new Vector3(
-            Random.Range(_ground.LeftBottomBound.x, _ground.TopRightBound.x),
-            Random.Range(_ground.LeftBottomBound.y, _ground.TopRightBound.y));
+            Random.Range(Ground.I.LeftBottomBound.x, Ground.I.TopRightBound.x),
+            Random.Range(Ground.I.LeftBottomBound.y, Ground.I.TopRightBound.y),
+            -1);
 
-        animSeq.Append(card.transform.DOMove(targetPoz, .5f))
-            .Join(card.transform.DORotate(new Vector3(0, 180), .3f));
+        animSeq
+            .Append(card.transform.DOMove(targetPoz, .5f))
+            .Join(card.transform.DORotate(new Vector3(0, 180), .3f).SetDelay(.2f));
 
         return targetPoz;
     }
 
     public async UniTask EatLast()
     {
-        UpdateEatStatus(_ground.Cards.Count, false, false);
+        UpdateEatStatus(Ground.I.Cards.Count, false, false);
 
         var sequence = DOTween.Sequence();
 
-        await _ground.EatLast(HandCenter, sequence);
+        await Ground.I.EatLast(HandCenter, sequence);
     }
 
     protected void ThrowBase(ThrowResult result, Sequence animSeq = null, Vector2? meetPoint = null)
@@ -84,7 +102,7 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
         var card = HandCards.First(c => c.Front != null && c.Front.Index == result.ThrownCard);
 
-        _ground.Throw(card, result.EatenCardsIds, animSeq, meetPoint);
+        Ground.I.Throw(card, result.EatenCardsIds, animSeq, meetPoint);
 
         var count = result.EatenCardsIds?.Count ?? 0;
         UpdateEatStatus(count, result.Basra, result.BigBasra);
@@ -92,7 +110,7 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         HandCards.Remove(card);
         OrganizeHand();
 
-        _coreGameplay.NextTurn();
+        CoreGameplay.I.NextTurn();
     }
 
     private void UpdateEatStatus(int eatenCount, bool basra, bool bbasra)
@@ -153,30 +171,17 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
     public virtual void EndTurn()
     {
         turnTimer.Stop();
-        _ruvManager.RoomUserViews[Turn].SetTurnFill(0);
+        RoomUserView.Manager.I.RoomUserViews[Turn].SetTurnFill(0);
     }
 
-    public class Factory
+
+    public static async UniTask<PlayerBase> Create(int selectedCardback, int placeIndex, int turn)
     {
-        private readonly IInstantiator _instantiator;
-        private readonly GameObject[] _playerPrefabs;
+        var player = (await Addressables.InstantiateAsync($"player{placeIndex}", RoomReferences.I.Root)).GetComponent<PlayerBase>();
 
-        [Inject]
-        public Factory(IInstantiator instantiator, GameObject[] playerPrefabs)
-        {
-            _instantiator = instantiator;
-            _playerPrefabs = playerPrefabs;
-        }
+        await player.Init(selectedCardback, turn);
 
-        public async UniTask<PlayerBase> Create(int selectedCardback, int placeIndex, int turn)
-        {
-            var player = _instantiator.InstantiatePrefab(_playerPrefabs[placeIndex]).GetComponent<PlayerBase>();
 
-            await player.Init(selectedCardback);
-
-            player.Turn = turn;
-
-            return player;
-        }
+        return player;
     }
 }

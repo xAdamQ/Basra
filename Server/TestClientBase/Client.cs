@@ -1,10 +1,12 @@
-using Basra.Models.Client;
+using Basra.Common;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+
+// ReSharper disable TemplateIsNotCompileTimeConstantProblem
 
 namespace TesterClient
 {
@@ -97,6 +99,11 @@ namespace TesterClient
                 _logger.LogInformation($"UpdatePersonalInfo is called on {Id} with\n" +
                                        $"res {JsonConvert.SerializeObject(res, Formatting.Indented)}\n"));
 
+            Connection.On<int, string>("ShowMessage", (sender, msgId) =>
+                _logger.LogInformation($"ShowMessage is called on {Id} with\n" +
+                                       $"sender {sender}\n" +
+                                       $"message id {msgId}\n"));
+
             int ConvertCardIndexToValue(int index)
             {
                 return (index % 13) + 1;
@@ -134,6 +141,7 @@ namespace TesterClient
             "GetFullRoomState",
             "BuieTest",
             "ThrowExc",
+            "ShowMessage"
         };
     }
 }

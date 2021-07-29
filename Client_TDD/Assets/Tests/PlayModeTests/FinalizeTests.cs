@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Basra.Common;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.TestTools;
@@ -36,7 +37,6 @@ namespace PlayModeTests
         {
             BasraCount = 3,
             BigBasraCount = 3,
-            Level = 23,
             Money = 433,
             PlayedRoomsCount = 56,
             WonRoomsCount = 22,
@@ -46,7 +46,7 @@ namespace PlayModeTests
             Name = "7oda el gamed",
             SelectedTitleId = 1,
             Picture = Texture2D.redTexture,
-            MoneyAimTimeLeft = TimeSpan.FromMinutes(2),
+            MoneyAimTimePassed = null,
         };
 
 
@@ -56,7 +56,6 @@ namespace PlayModeTests
             {
                 BasraCount = 3,
                 BigBasraCount = 3,
-                Level = 23,
                 PlayedRoomsCount = 56,
                 WonRoomsCount = 22,
                 EatenCardsCount = 298,
@@ -70,7 +69,18 @@ namespace PlayModeTests
             {
                 BasraCount = 3,
                 BigBasraCount = 3,
-                Level = 23,
+                WonRoomsCount = 22,
+                EatenCardsCount = 298,
+                WinStreak = 3,
+                Id = "tstId",
+                Name = "7oda el gamed",
+                SelectedTitleId = 1,
+                Picture = Texture2D.redTexture,
+            },
+            new FullUserInfo
+            {
+                BasraCount = 3,
+                BigBasraCount = 3,
                 PlayedRoomsCount = 56,
                 WonRoomsCount = 22,
                 EatenCardsCount = 298,
@@ -84,21 +94,6 @@ namespace PlayModeTests
             {
                 BasraCount = 3,
                 BigBasraCount = 3,
-                Level = 23,
-                PlayedRoomsCount = 56,
-                WonRoomsCount = 22,
-                EatenCardsCount = 298,
-                WinStreak = 3,
-                Id = "tstId",
-                Name = "7oda el gamed",
-                SelectedTitleId = 1,
-                Picture = Texture2D.redTexture,
-            },
-            new FullUserInfo
-            {
-                BasraCount = 3,
-                BigBasraCount = 3,
-                Level = 23,
                 PlayedRoomsCount = 56,
                 WonRoomsCount = 22,
                 EatenCardsCount = 298,
@@ -185,7 +180,7 @@ namespace PlayModeTests
                 LastEaterTurnId = 1,
                 PersonalFullUserInfo = personalInfo,
 
-                RoomXpReport = new Basra.Models.Client.RoomXpReport()
+                RoomXpReport = new Basra.Common.RoomXpReport()
                 {
                     Basra = 0,
                     BigBasra = 30,

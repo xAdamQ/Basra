@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public static class Extensions
 {
@@ -24,5 +26,15 @@ public static class Extensions
     public static void ForEach<T>(this T[] array, System.Action<T> action)
     {
         foreach (var item in array) action(item);
+    }
+
+    public static async UniTask LoadAndReleaseAsset<T>(string key, System.Action<T> onComplete)
+    {
+        var handle = Addressables.LoadAssetAsync<T>(key);
+
+        await handle;
+
+        onComplete(handle.Result);
+        Addressables.Release(handle);
     }
 }

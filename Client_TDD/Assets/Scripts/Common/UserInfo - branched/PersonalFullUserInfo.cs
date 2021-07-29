@@ -12,19 +12,6 @@ using UnityEngine;
 /// </summary>
 public class PersonalFullUserInfo : FullUserInfo, INotifyPropertyChanged
 {
-    public PersonalFullUserInfo()
-    {
-
-        //todo test this
-        if (MoneyAimTimeLeft != null)
-            UniTask.Create(async () =>
-            {
-                await UniTask.DelayFrame(1);
-                DecreaseMoneyAimTimeLeft().Forget();
-            });
-
-    }
-
     public override int Money
     {
         get => money;
@@ -37,43 +24,35 @@ public class PersonalFullUserInfo : FullUserInfo, INotifyPropertyChanged
     private int money;
 
     /// <summary>
-    /// I use this rather than timestamp when the request is done
+    /// it's guaranteed to be the valid value when less than ConstData.MoneyAimTime
+    /// but when it's bigger it will just bigger or equal but the value won't be valid
+    /// 
     /// because datetime.now is not universal for all clients
-    /// even if I sent current server time and made MoneyAimTimeLeft = server time - request time
-    /// it would be the same as sending it directly form the server  
+    /// and I don't know if utc now is universal or not!
     /// </summary>
-    public TimeSpan? MoneyAimTimeLeft
+    public double? MoneyAimTimePassed
     {
-        get => moneyAimTimeLeft;
+        get => _moneyAimTimePassed;
         set
         {
-            moneyAimTimeLeft = value;
+            _moneyAimTimePassed = value;
             NotifyPropertyChanged();
         }
     }
-    private TimeSpan? moneyAimTimeLeft;
+    private double? _moneyAimTimePassed;
 
-    // public override string Title
-    // {
-    //     get => _title;
-    //     set
-    //     {
-    //         _title = value;
-    //         NotifyPropertyChanged();
-    //     }
-    // }
-    // private string _title;
+    public int MoneyAidRequested { get; set; }
 
-    public override int Level
+    public override int Xp
     {
-        get => level;
+        get => xp;
         set
         {
-            level = value;
+            xp = value;
             NotifyPropertyChanged();
         }
     }
-    private int level;
+    private int xp;
 
     public int FlipWinCount { get; set; }
 
@@ -87,14 +66,15 @@ public class PersonalFullUserInfo : FullUserInfo, INotifyPropertyChanged
     }
     public async UniTaskVoid DecreaseMoneyAimTimeLeft()
     {
-        var updateRate = 1;
-        while (MoneyAimTimeLeft > TimeSpan.Zero)
+        var updateRateInSeconds = 1;
+        while (MoneyAimTimePassed < ConstData.MoneyAimTime)
         {
             Debug.Log("info is changing");
-            MoneyAimTimeLeft = MoneyAimTimeLeft.Value.Subtract(TimeSpan.FromSeconds(updateRate));
-            await UniTask.Delay(TimeSpan.FromSeconds(updateRate));
-        }
 
-        MoneyAimTimeLeft = null;
+            // MoneyAimTimePassed = MoneyAimTimePassed.Value.Add(TimeSpan.FromSeconds(updateRateInSeconds));
+            MoneyAimTimePassed += updateRateInSeconds;
+
+            await UniTask.Delay(TimeSpan.FromSeconds(updateRateInSeconds));
+        }
     }
 }

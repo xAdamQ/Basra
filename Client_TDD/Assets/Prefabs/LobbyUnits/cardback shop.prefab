@@ -323,6 +323,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff0f1c76d314462a96c6d51525648908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgroundTiles:
+    m_AssetGUID: ec2bedc0bf43d0043b4bcf62b33c94e8
+    m_SubObjectName: 
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   shopItemPrefab: {fileID: 7384095494490767505, guid: 05c99b833f1c4ec1791667a4b7014fa6, type: 3}
   layoutGroup: {fileID: 3192317244493829205}
   shopPanel: {fileID: 3192317243511595019}

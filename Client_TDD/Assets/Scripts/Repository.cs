@@ -15,9 +15,6 @@ public class Repository : IRepository
     public MinUserInfo[] YesterdayChampions { get; set; }
     public MinUserInfo[] TopFriends { get; set; }
 
-    private static int[] cardbackPrices = {50, 65, 100, 450, 600, 700, 1800, 2000, 2600};
-    private static int[] backgroundPrices = {50, 65, 100, 450, 600,};
-    public static int[][] ItemPrices => new[] {cardbackPrices, backgroundPrices};
 
     public static string[] Titles =
     {
@@ -27,6 +24,7 @@ public class Repository : IRepository
         "basra grandmaster",
         "top eater"
     };
+
 
     //since controller module group doesn't die 
     public static IRepository I;

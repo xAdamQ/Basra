@@ -1,31 +1,24 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Zenject;
+using UnityEngine.AddressableAssets;
 
 public class FriendsView : MonoBehaviour
 {
-    private MinUserView.BasicFactory _minUserViewFactory;
-    private IRepository _repository;
+    public static async UniTask Create()
+    {
+        await Addressables.InstantiateAsync("friendsView", LobbyReferences.I.Canvas);
+    }
 
     /// <summary>
     /// this is legal because they are the same unit
     /// </summary>
     [SerializeField] private Transform container;
 
-    [Inject]
-    public void Construct(MinUserView.BasicFactory minUserViewFactory, IRepository repository)
+    private async UniTaskVoid Start()
     {
-        _minUserViewFactory = minUserViewFactory;
-        _repository = repository;
-    }
-
-    private void Start()
-    {
-        for (int i = 0; i < _repository.TopFriends.Length; i++)
+        for (int i = 0; i < Repository.I.TopFriends.Length; i++)
         {
-            var view = _minUserViewFactory.Create();
-            view.transform.SetParent(container);
-            view.transform.localScale = Vector3.one;
-            view.Init(_repository.TopFriends[i]);
+            await MinUserView.Create(Repository.I.TopFriends[i], container);
         }
     }
 }

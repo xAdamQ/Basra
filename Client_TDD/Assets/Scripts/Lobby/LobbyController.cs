@@ -1,58 +1,86 @@
+using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Zenject;
+using UnityEngine.AddressableAssets;
 
 public interface ILobbyController
 {
     void PrepareRequestedRoomRpc(int betChoice, int capacityChoice, List<FullUserInfo> userInfos, int myTurn);
+    event System.Action Destroyed;
 }
 
-public class LobbyController : ILobbyController, IInitializable, System.IDisposable
+public class LobbyReferences
 {
-    [Inject] private readonly IController _controller;
-    [Inject] private readonly IRepository _repository;
-    [Inject] private readonly RoomController.Factory _roomFactory;
+    public static LobbyReferences I;
 
-    public void Initialize()
+    public LobbyReferences()
     {
+        I = this;
+    }
+
+    public Transform Canvas;
+}
+
+public class LobbyController : ILobbyController
+{
+    public LobbyController()
+    {
+        Initialize().Forget();
+    }
+
+    public async UniTaskVoid Initialize()
+    {
+        await UniTask.DelayFrame(1);
+
+        var containerRoot = new GameObject("Lobby").transform;
+
+        new LobbyReferences();
+
+        LobbyReferences.I.Canvas = (await Addressables.InstantiateAsync("canvas", containerRoot))
+            .GetComponent<Transform>();
+
+        await FriendsView.Create();
+
+        await PersonalActiveUserView.Create();
+
+        await RoomRequester.Create();
+
+        await Shop.Create(LobbyReferences.I.Canvas, ItemType.Cardback);
+
+        await Shop.Create(LobbyReferences.I.Canvas, ItemType.Background);
+
         AssignRpcs();
     }
 
-    public void Dispose()
-    {
-        _controller.RemoveModuleRpcs(nameof(LobbyController));
-    }
 
     private void AssignRpcs()
     {
-        _controller.AssignRpc<int, int, List<FullUserInfo>, int>(PrepareRequestedRoomRpc,
+        Controller.I.AssignRpc<int, int, List<FullUserInfo>, int>(PrepareRequestedRoomRpc,
             nameof(LobbyController));
-    }
-
-    public class Factory : PlaceholderFactory<LobbyController>
-    {
-        public static Factory I;
-
-        public Factory()
-        {
-            I = this;
-        }
     }
 
     public void PrepareRequestedRoomRpc(int betChoice, int capacityChoice, List<FullUserInfo> userInfos, int myTurn)
     {
         DestroyLobby();
 
-        var roomsSettings = new RoomSettings(betChoice, capacityChoice, userInfos, myTurn);
+        new RoomSettings(betChoice, capacityChoice, userInfos, myTurn);
 
-        _repository.PersonalFullInfo.Money -= roomsSettings.BetMoneyToPay();
-
-        _roomFactory.Create(roomsSettings, null);
+        RoomController.Create(null).Forget();
     }
+
+    public event Action Destroyed;
 
     private void DestroyLobby()
     {
+        LobbyReferences.I = null;
+
+        Controller.I.RemoveModuleRpcs(GetType().ToString());
+        UnityEngine.Object.Destroy(GameObject.Find("Lobby"));
+
         //todo find better way to locate it
-        Object.Destroy(Object.FindObjectOfType<LobbyInstaller>().gameObject);
+        // Object.Destroy(Object.FindObjectOfType<LobbyInstaller>().gameObject);
+
+        Destroyed?.Invoke();
     }
 }

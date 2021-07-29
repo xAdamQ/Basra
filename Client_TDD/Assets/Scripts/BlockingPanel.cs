@@ -19,12 +19,11 @@ public class BlockingPanel : MonoBehaviour, IBlockingPanel
 
     public static async UniTask Create()
     {
-        I = (await Addressables.InstantiateAsync("blockingPanel")).GetComponent<BlockingPanel>();
+        I = (await Addressables.InstantiateAsync("blockingPanel", ProjectRefernces.I.Canvas)).GetComponent<BlockingPanel>();
     }
 
     private void Awake()
     {
-        Debug.Log("hello");
         I = this;
     }
 

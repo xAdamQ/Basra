@@ -11,5 +11,8 @@
     &lt;TestId&gt;xUnit::CE6A74DE-FAC4-42C0-9342-D59C7B71FFF5::net5.0::Basra.Server.Services.FinalizeManagerTests.FinalizeGame_RightWinner&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::CE6A74DE-FAC4-42C0-9342-D59C7B71FFF5::net5.0::Basra.Server.Services.FinalizeManagerTests.SendResult&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::9A3A0FF0-7023-4ABD-8ADD-2825ABA65264::net5.0::GeneralTests.UnitTest1.Test10&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::9A3A0FF0-7023-4ABD-8ADD-2825ABA65264::net5.0::GeneralTests.UnitTest1.Test11&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::CE6A74DE-FAC4-42C0-9342-D59C7B71FFF5::net5.0::Basra.Server.Tests.RoomManagerTests.StartXpOfLevel&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Cardback/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

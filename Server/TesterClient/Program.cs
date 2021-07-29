@@ -83,12 +83,27 @@ namespace TesterClient
             return rpcArgs.ToArray();
         }
 
+        private static readonly ConsoleLogger ConsoleLogger = new();
+
         static async Task MakeClient()
         {
-            var c = new Client(Clients.Count);
+            var c = new Client(Clients.Count, ConsoleLogger);
+
+            var hubConnection = new HubConnectionBuilder()
+                // .ConfigureLogging(lb => lb
+                //     .AddConsole()
+                //     .AddDebug()
+                //     .AddFilter(l => l =+= LogLevel.Information)
+                // )
+                .WithUrl("http://localhost:5000/connect?access_token=" + Clients.Count + 4)
+                //.WithUrl("https://tstappname.azurewebsites.net/connect?access_token=" + Id + 4)
+                .Build();
+
             Clients.Add(c);
+
             Console.WriteLine("a new client is made with index: " + (Clients.Count - 1));
-            await c.Connect();
+
+            await c.Connect(hubConnection);
         }
     }
 }

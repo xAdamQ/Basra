@@ -1,4 +1,4 @@
-using Basra.Models.Client;
+using Basra.Common;
 using Basra.Server.Tests;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -63,7 +63,7 @@ namespace Basra.Server.Services
             room.GroundCards = new List<int>();
 
             var masterRepoMock = new Mock<IMasterRepo>();
-            masterRepoMock.Setup(mr => mr.GetUsersByIds(It.IsAny<List<string>>()))
+            masterRepoMock.Setup(mr => mr.GetUsersByIdsAsync(It.IsAny<List<string>>()))
                 .Returns(() => Task.FromResult(roomDataUsers));
 
             var finMan = new FinalizeManager(MasterHubTests.GetMockWithSendFuns().Object, masterRepoMock.Object, new Mock<ISessionRepo>()

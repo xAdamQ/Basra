@@ -1,4 +1,5 @@
 ﻿using System;
+using Basra.Common;
 using Cysharp.Threading.Tasks;
 using Moq;
 using UnityEngine;
@@ -41,7 +42,7 @@ public class FinalizeController
         {
             if (i == roomSettings.MyTurn) continue;
 
-            FinalMuv.Instantiate(roomSettings.UserInfos[i], finalizeResult.UserRoomStatus[i], finalMuvParent).Forget();
+            FinalMuv.Create(roomSettings.UserInfos[i], finalizeResult.UserRoomStatus[i], finalMuvParent).Forget();
         }
 
         RoomResultPanel.Instantiate(moduleCanvas, finalizeResult.RoomXpReport, finalizeResult.PersonalFullUserInfo,

@@ -11,35 +11,45 @@ public class Background : MonoBehaviour
     /// <summary>
     /// because of the parent, it's destroyed with module group
     /// </summary>
-    public static async UniTaskVoid Create()
+    public static async UniTask Create()
     {
         I = (await Addressables.InstantiateAsync("background")).GetComponent<Background>();
 
         I.GetComponent<Canvas>().worldCamera = Camera.main;
         I.transform.SetSiblingIndex(0);
 
-        I.SetForLobby().Forget();
+        I.SetForLobby();
     }
 
     /// <summary>
     /// uses RoomController
     /// </summary>
-    public async UniTaskVoid SetForRoom(List<FullUserInfo> userInfos)
+    public void SetForRoom(List<FullUserInfo> userInfos)
     {
-        var maxLevel = userInfos.Max(u => u.Level);
-        var bgIndex = userInfos.First(u => u.Level == maxLevel).SelectedBackground;
+        var maxLevel = userInfos.Max(u => u.Xp);
+        var bgId = userInfos.First(u => u.Xp == maxLevel).SelectedBackground;
 
-        var sprite = await Addressables.LoadAssetAsync<Sprite>($"bg{bgIndex}");
+
+        // var sprietHandle =
+        // Addressables.LoadAssetAsync<Sprite>($"bg{bgIndex}");
+        // var sprite = await sprietHandle;
         //todo bgs with be collected into one sheet anyway
 
-        GetComponent<Image>().sprite = sprite;
+        // GetComponent<Image>().sprite = sprite;
 
-        RoomController.I.Destroyed += UniTask.Action(() => I.SetForLobby());
+        // Addressables.Release(sprietHandle);
+
+        Extensions.LoadAndReleaseAsset<Sprite>(((BackgroundType) bgId).ToString(), sprite => GetComponent<Image>().sprite = sprite)
+            .Forget(e => throw e);
+
+        RoomController.I.Destroyed += I.SetForLobby;
     }
 
-    public async UniTaskVoid SetForLobby()
+
+    public void SetForLobby()
     {
-        var sprite = await Addressables.LoadAssetAsync<Sprite>($"bg{0}");
-        GetComponent<Image>().sprite = sprite;
+        Extensions.LoadAndReleaseAsset<Sprite>(BackgroundType.brownLeaf.ToString(), 
+                sprite => GetComponent<Image>().sprite = sprite)
+            .Forget(e => throw e);
     }
 }

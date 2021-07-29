@@ -18,49 +18,49 @@ MonoBehaviour:
   m_GUID: 2185dde03fbabb30aa03984985b7cd44
   m_SerializeEntries:
   - m_GUID: a46217f87508e2742a9168fa48ed5bc7
-    m_Address: bg0
+    m_Address: blueTrans
     m_ReadOnly: 0
     m_SerializedLabels:
     - background
     m_MainAsset: {fileID: 2800000, guid: a46217f87508e2742a9168fa48ed5bc7, type: 3}
     m_TargetAsset: {fileID: 2800000, guid: a46217f87508e2742a9168fa48ed5bc7, type: 3}
   - m_GUID: 6377fc70b88fa5c48acc251e77483c96
-    m_Address: bg1
+    m_Address: arabesqueBlack
     m_ReadOnly: 0
     m_SerializedLabels:
     - background
     m_MainAsset: {fileID: 2800000, guid: 6377fc70b88fa5c48acc251e77483c96, type: 3}
     m_TargetAsset: {fileID: 2800000, guid: 6377fc70b88fa5c48acc251e77483c96, type: 3}
   - m_GUID: ec2bedc0bf43d0043b4bcf62b33c94e8
-    m_Address: bg2
+    m_Address: brownLeaf
     m_ReadOnly: 0
     m_SerializedLabels:
     - background
     m_MainAsset: {fileID: 2800000, guid: ec2bedc0bf43d0043b4bcf62b33c94e8, type: 3}
     m_TargetAsset: {fileID: 2800000, guid: ec2bedc0bf43d0043b4bcf62b33c94e8, type: 3}
   - m_GUID: 652217388efa8b34ebec971d151cebfb
-    m_Address: bg3
+    m_Address: blackFlower
     m_ReadOnly: 0
     m_SerializedLabels:
     - background
     m_MainAsset: {fileID: 2800000, guid: 652217388efa8b34ebec971d151cebfb, type: 3}
     m_TargetAsset: {fileID: 2800000, guid: 652217388efa8b34ebec971d151cebfb, type: 3}
   - m_GUID: dc2e000e3b264004aa3690538b0db715
-    m_Address: bg4
+    m_Address: dotsOcean
     m_ReadOnly: 0
     m_SerializedLabels:
     - background
     m_MainAsset: {fileID: 2800000, guid: dc2e000e3b264004aa3690538b0db715, type: 3}
     m_TargetAsset: {fileID: 2800000, guid: dc2e000e3b264004aa3690538b0db715, type: 3}
   - m_GUID: e1a6f24c4eff07946925569f95d6c95e
-    m_Address: bg5
+    m_Address: arabesqueDark
     m_ReadOnly: 0
     m_SerializedLabels:
     - background
     m_MainAsset: {fileID: 2800000, guid: e1a6f24c4eff07946925569f95d6c95e, type: 3}
     m_TargetAsset: {fileID: 2800000, guid: e1a6f24c4eff07946925569f95d6c95e, type: 3}
   - m_GUID: 17b67b190c8bf8646b219dd9ee6f8d46
-    m_Address: bg6
+    m_Address: berry
     m_ReadOnly: 0
     m_SerializedLabels:
     - background

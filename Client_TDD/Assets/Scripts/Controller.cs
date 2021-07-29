@@ -6,8 +6,9 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Basra.Common;
 using UnityEngine;
-using Zenject;
+using UnityEngine.AddressableAssets;
 
 public interface IController
 {
@@ -20,40 +21,49 @@ public interface IController
     void ThrowCard(int cardId);
     UniTask NotifyTurnMiss();
 
-    UniTask SelectItem(ItemType itemType, int index);
-    UniTask BuyItem(ItemType itemType, int index);
+    UniTask SelectItem(ItemType itemType, int id);
+    UniTask BuyItem(ItemType itemType, int id);
 
     UniTask RequestRandomRoom(int betChoice, int capacityChoice);
     UniTask Surrender();
 
     void TstStartClient(string id);
-    void UpdatePersonalInfo(PersonalFullUserInfo obj);
 
-    void AssignRpc(Action action, string moduleName);
-    void AssignRpc<T1>(Action<T1> action, string moduleName);
-    void AssignRpc<T1, T2>(Action<T1, T2> action, string moduleName);
-    void AssignRpc<T1, T2, T3>(Action<T1, T2, T3> action, string moduleName);
-    void AssignRpc<T1, T2, T3, T4>(Action<T1, T2, T3, T4> action, string moduleName);
+    void AssignRpc(Action action, string moduleGroupName);
+    void AssignRpc<T1>(Action<T1> action, string moduleGroupName);
+    void AssignRpc<T1, T2>(Action<T1, T2> action, string moduleGroupName);
+    void AssignRpc<T1, T2, T3>(Action<T1, T2, T3> action, string moduleGroupName);
+    void AssignRpc<T1, T2, T3, T4>(Action<T1, T2, T3, T4> action, string moduleGroupName);
 
     void RemoveModuleRpcs(string moduleName);
     UniTask<MinUserInfo> TestWaitWithReturn();
 }
 
-public class Controller : IController, IInitializable
+public class ProjectRefernces
 {
-    [Inject] private readonly IRepository _repository;
-    [Inject] private readonly LobbyController.Factory _lobbyFactory;
-    [Inject] private readonly RoomController.Factory _roomFactory;
+    public static ProjectRefernces I;
 
-    public static IController I { get; set; }
-
-    public Controller()
+    public ProjectRefernces()
     {
         I = this;
     }
 
-    public void Initialize()
+    public Transform Canvas;
+}
+
+public class Controller : MonoBehaviour, IController
+{
+    public static IController I { get; set; }
+
+    private void Awake()
     {
+        I = this;
+    }
+
+    public async UniTaskVoid Start()
+    {
+        await InitModules();
+
         HTTPManager.Logger = new MyBestHttpLogger();
 
 #if UNITY_EDITOR
@@ -61,6 +71,21 @@ public class Controller : IController, IInitializable
         ConnectToServer("0").Forget();
         AssignGeneralRpcs();
 #endif
+    }
+
+    private async UniTask InitModules()
+    {
+        new ProjectRefernces();
+
+        ProjectRefernces.I.Canvas = (await Addressables.InstantiateAsync("canvas"))
+            .GetComponent<Transform>();
+        ProjectRefernces.I.Canvas.GetComponent<Canvas>().sortingOrder = 10;
+
+        new Repository();
+        await BlockingPanel.Create();
+        new BlockingOperationManager();
+        await Background.Create();
+        await Toast.Create();
     }
 
     public void TstStartClient(string id)
@@ -72,32 +97,33 @@ public class Controller : IController, IInitializable
     public void InitGame(PersonalFullUserInfo myFullUserInfo, MinUserInfo[] yesterdayChampions,
         MinUserInfo[] topFriends, ActiveRoomState activeRoomState)
     {
-        _repository.PersonalFullInfo = myFullUserInfo;
-        _repository.YesterdayChampions = yesterdayChampions;
-        _repository.TopFriends = topFriends;
+        Repository.I.PersonalFullInfo = myFullUserInfo;
+        Repository.I.YesterdayChampions = yesterdayChampions;
+        Repository.I.TopFriends = topFriends;
+
+        Repository.I.PersonalFullInfo.DecreaseMoneyAimTimeLeft().Forget();
 
         LoadAppropriateModules(activeRoomState);
     }
 
-    public void UpdatePersonalInfo(PersonalFullUserInfo personalFullUserInfo)
+    private void LoadAppropriateModules(ActiveRoomState activeRoomState)
     {
-        _repository.PersonalFullInfo = personalFullUserInfo;
+        if (activeRoomState == null)
+        {
+            new LobbyController();
+        }
+        else
+        {
+            new RoomSettings(activeRoomState);
+            RoomController.Create(activeRoomState).Forget();
+        }
     }
 
     #region rpc works
 
-    private void LoadAppropriateModules(ActiveRoomState activeRoomState)
-    {
-        if (activeRoomState == null)
-            _lobbyFactory.Create();
-        else
-            _roomFactory.Create(new RoomSettings(activeRoomState), activeRoomState);
-    }
-
     private void AssignGeneralRpcs()
     {
         hubConnection.On<PersonalFullUserInfo, MinUserInfo[], MinUserInfo[], ActiveRoomState>(nameof(InitGame), InitGame);
-        hubConnection.On<PersonalFullUserInfo>(nameof(UpdatePersonalInfo), UpdatePersonalInfo);
     }
 
     private Dictionary<string, List<string>> RpcsNames = new Dictionary<string, List<string>>();
@@ -110,45 +136,45 @@ public class Controller : IController, IInitializable
             RpcsNames.Add(moduleName, new List<string> {actionName});
     }
 
-    public void AssignRpc(Action action, string moduleName)
+    public void AssignRpc(Action action, string moduleGroupName)
     {
         var actionName = action.Method.Name;
 
         hubConnection.On(actionName, action);
 
-        SaveRpcName(actionName, moduleName);
+        SaveRpcName(actionName, moduleGroupName);
     }
-    public void AssignRpc<T1>(Action<T1> action, string moduleName)
+    public void AssignRpc<T1>(Action<T1> action, string moduleGroupName)
     {
         var actionName = action.Method.Name;
 
         hubConnection.On(actionName, action);
 
-        SaveRpcName(actionName, moduleName);
+        SaveRpcName(actionName, moduleGroupName);
     }
-    public void AssignRpc<T1, T2>(Action<T1, T2> action, string moduleName)
+    public void AssignRpc<T1, T2>(Action<T1, T2> action, string moduleGroupName)
     {
         var actionName = action.Method.Name;
 
         hubConnection.On(actionName, action);
 
-        SaveRpcName(actionName, moduleName);
+        SaveRpcName(actionName, moduleGroupName);
     }
-    public void AssignRpc<T1, T2, T3>(Action<T1, T2, T3> action, string moduleName)
+    public void AssignRpc<T1, T2, T3>(Action<T1, T2, T3> action, string moduleGroupName)
     {
         var actionName = action.Method.Name;
 
         hubConnection.On(actionName, action);
 
-        SaveRpcName(actionName, moduleName);
+        SaveRpcName(actionName, moduleGroupName);
     }
-    public void AssignRpc<T1, T2, T3, T4>(Action<T1, T2, T3, T4> action, string moduleName)
+    public void AssignRpc<T1, T2, T3, T4>(Action<T1, T2, T3, T4> action, string moduleGroupName)
     {
         var actionName = action.Method.Name;
 
         hubConnection.On(actionName, action);
 
-        SaveRpcName(actionName, moduleName);
+        SaveRpcName(actionName, moduleGroupName);
     }
 
     public void RemoveModuleRpcs(string moduleName)
@@ -195,6 +221,7 @@ public class Controller : IController, IInitializable
 
         return true;
     }
+
     private void OnConnected(HubConnection obj)
     {
         Debug.Log("connected to server");
@@ -214,7 +241,7 @@ public class Controller : IController, IInitializable
 
     public async UniTask<FullUserInfo> GetPublicFullUserInfo(string userId)
     {
-        return await hubConnection.InvokeAsync<FullUserInfo>("GetPublicInfo");
+        return await hubConnection.InvokeAsync<FullUserInfo>("GetUserData", userId);
     }
     public async UniTask NotifyTurnMiss()
     {
@@ -224,13 +251,13 @@ public class Controller : IController, IInitializable
     {
         hubConnection.Send("Throw", cardId).OnError(e => throw e);
     }
-    public async UniTask SelectItem(ItemType itemType, int index)
+    public async UniTask SelectItem(ItemType itemType, int id)
     {
-        await hubConnection.SendAsync("SelectCardback", itemType, index);
+        await hubConnection.SendAsync(itemType == ItemType.Cardback ? "SelectCardback" : "SelectBackground", id);
     }
-    public async UniTask BuyItem(ItemType itemType, int index)
+    public async UniTask BuyItem(ItemType itemType, int id)
     {
-        await hubConnection.SendAsync("BuyCardback", itemType, index);
+        await hubConnection.SendAsync(itemType == ItemType.Cardback ? "BuyCardback" : "BuyBackground", id);
     }
 
     public async UniTask RequestRandomRoom(int betChoice, int capacityChoice)

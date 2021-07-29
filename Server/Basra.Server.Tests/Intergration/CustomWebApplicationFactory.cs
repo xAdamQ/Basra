@@ -10,6 +10,9 @@ namespace Basra.Server.Tests.Integration
         where TStartup : class
     {
         private readonly ITestOutputHelper _testOutputHelper;
+        private XUnitLoggerProvider xUnitLoggerProvider;
+
+        public ILogger Logger { get; private set; }
 
         public CustomWebApplicationFactory(ITestOutputHelper testOutputHelper)
         {
@@ -18,10 +21,13 @@ namespace Basra.Server.Tests.Integration
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            xUnitLoggerProvider = new XUnitLoggerProvider(_testOutputHelper);
+            Logger = xUnitLoggerProvider.CreateLogger("server log");
+
             // Register the xUnit logger
             builder.ConfigureLogging(loggingBuilder =>
             {
-                loggingBuilder.Services.AddSingleton<ILoggerProvider>(serviceProvider => new XUnitLoggerProvider(_testOutputHelper));
+                loggingBuilder.Services.AddSingleton<ILoggerProvider>(_ => xUnitLoggerProvider);
             });
         }
     }

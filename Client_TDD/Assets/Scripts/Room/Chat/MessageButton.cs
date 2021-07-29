@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class RoomMessage : MonoBehaviour
+public class MessageButton : MonoBehaviour
 {
-    [SerializeField] public string Id;
-
     public void OnClick()
     {
-        Controller.I.SendAsync("SendMessage", Id);
+        Controller.I.SendAsync("ShowMessage", name);
+
+        ChatSystem.I.ShowMessage(RoomSettings.I.MyTurn, name);
+
+        ChatSystem.I.ChatPanel.SetActive(false);
     }
 }

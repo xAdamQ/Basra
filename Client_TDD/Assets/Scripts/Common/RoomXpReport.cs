@@ -1,4 +1,4 @@
-namespace Basra.Models.Client
+namespace Basra.Common
 {
     public class RoomXpReport
     {

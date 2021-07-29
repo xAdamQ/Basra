@@ -1,26 +1,23 @@
+using System;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
-using Zenject;
 
 public class MinUserView : MonoBehaviour
 {
-    [SerializeField]
-    private TMP_Text
+    [SerializeField] private TMP_Text
         displayName,
         level,
         title;
 
     [SerializeField] private Image picture;
 
-    [Inject] protected BlockingOperationManager _blockingOperationManager;
-    [Inject] protected IController _controller;
-    [Inject] protected FullUserView _fullUserView;
-
-    public void Init(MinUserInfo minUserInfo)
+    protected void Init(MinUserInfo minUserInfo)
     {
         Id = minUserInfo.Id;
-        Level = minUserInfo.Level;
+        Level = minUserInfo.CalcLevel();
         DisplayName = minUserInfo.Name;
         Title = Repository.Titles[minUserInfo.SelectedTitleId];
 
@@ -32,12 +29,18 @@ public class MinUserView : MonoBehaviour
 
     private void SetPicture(Texture2D texture2D)
     {
-        if (picture == null)
-            Debug.Log(name);
+        if (destroyed) return;
 
         if (texture2D != null)
             picture.sprite =
                 Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), new Vector2(.5f, .5f));
+    }
+
+    private bool destroyed;
+
+    private void OnDestroy()
+    {
+        destroyed = true;
     }
 
     /// <summary>
@@ -45,7 +48,7 @@ public class MinUserView : MonoBehaviour
     /// </summary>
     public virtual void ShowFullInfo()
     {
-        _blockingOperationManager.Forget(_controller.GetPublicFullUserInfo(Id), info => _fullUserView.Show(info));
+        BlockingOperationManager.I.Forget(Controller.I.GetPublicFullUserInfo(Id), FullUserView.Show);
     }
 
     protected string Id;
@@ -75,30 +78,12 @@ public class MinUserView : MonoBehaviour
         }
     }
 
-    public class BasicFactory : PlaceholderFactory<MinUserView>
+    public static async UniTask<MinUserView> Create(MinUserInfo info, Transform parent)
     {
-    }
+        var muv = (await Addressables.InstantiateAsync("minUserView", parent)).GetComponent<MinUserView>();
 
-    // public class Factory : IFactory<Transform, MinUserInfo, MinUserView>
-    // {
-    //     private readonly BasicFactory _basicFactory;
-    //     private readonly IInstantiator _instantiator;
-    //     private readonly GameObject _prefab;
-    //
-    //     public Factory(BasicFactory basicFactory, IInstantiator instantiator,
-    //         GameObject prefab /*argument set by installer, not a service*/)
-    //     {
-    //         _basicFactory = basicFactory;
-    //         _instantiator = instantiator;
-    //         _prefab = prefab;
-    //     }
-    //
-    //     public MinUserView Create(Transform parent, MinUserInfo info)
-    //     {
-    //         var view = _basicFactory.Create()
-    //         // var view = _instantiator.InstantiatePrefab(_prefab, parent).GetComponent<MinUserView>();
-    //         view.Init(info);
-    //         return view;
-    //     }
-    // }
+        muv.Init(info);
+
+        return muv;
+    }
 }

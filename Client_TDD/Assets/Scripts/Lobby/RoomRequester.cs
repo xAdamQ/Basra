@@ -1,13 +1,26 @@
+using System;
+using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
-using Zenject;
+using UnityEngine.AddressableAssets;
 
 public class RoomRequester : MonoBehaviour
 {
-    [Inject] private IController _controller;
-    [Inject] private IBlockingPanel _blockingPanel;
-    [Inject] private BlockingOperationManager _blockingOperationManager;
+    public static async UniTask Create()
+    {
+        await Addressables.InstantiateAsync("roomRequester", LobbyReferences.I.Canvas);
+    }
 
     [SerializeField] private ChoiceButton capacityChoiceButton;
+    [SerializeField] private TMP_Text betText, ticketText;
+
+    private void Awake()
+    {
+        var bet = RoomSettings.Bets[transform.GetSiblingIndex()];
+
+        betText.text = bet.ToString();
+        ticketText.text = (bet * .1f).ToString();
+    }
 
     public async void RequestRandomRoom(int betChoice)
     {
@@ -17,9 +30,9 @@ public class RoomRequester : MonoBehaviour
             return;
         }
 
-        await _blockingOperationManager.Start(_controller.RequestRandomRoom(betChoice, capacityChoiceButton.CurrentChoice));
+        await BlockingOperationManager.I.Start(Controller.I.RequestRandomRoom(betChoice, capacityChoiceButton.CurrentChoice));
 
-        _blockingPanel.Show("room is pending");
+        BlockingPanel.I.Show("room is pending");
         //this is shown even if the room is started, it's removed before game start directly
     }
 }

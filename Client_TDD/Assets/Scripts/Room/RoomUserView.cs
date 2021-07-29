@@ -1,17 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
-using Zenject;
 
 /// <summary>
 /// it's dependent on player
 /// </summary>
 public class RoomUserView : MinUserView
 {
-    [Inject] private RoomSettings _roomSettings;
-    [Inject] private IRepository _repository;
-
     [SerializeField] private Image turnFillImage;
 
     public void SetTurnFill(float progress)
@@ -21,27 +19,21 @@ public class RoomUserView : MinUserView
 
     public override void ShowFullInfo()
     {
-        var oppoFullInfo = _roomSettings.UserInfos.FirstOrDefault(_ => _.Id == Id);
-        _fullUserView.Show(oppoFullInfo ?? _repository.PersonalFullInfo);
+        var oppoFullInfo = RoomSettings.I.UserInfos.FirstOrDefault(_ => _.Id == Id);
+        FullUserView.Show(oppoFullInfo ?? Repository.I.PersonalFullInfo);
     }
 
-    public interface IManager
+    public class Manager
     {
-        List<RoomUserView> RoomUserViews { get; set; }
-        List<RoomUserView> Init(List<FullUserInfo> fullUserInfos, int myTurn);
-    }
-
-    public class Manager : IManager
-    {
-        [Inject] private readonly IInstantiator _instantiator;
-        [Inject] private readonly GameObject[] _roomUserViewsPrefabs;
-        [Inject] private readonly Transform _parent;
-
-        //tested
-        private RoomUserView Create(int place, MinUserInfo minUserInfo)
+        public static Manager I;
+        public Manager()
         {
-            var view = _instantiator.InstantiatePrefab(_roomUserViewsPrefabs[place], _parent)
-                .GetComponent<RoomUserView>();
+            I = this;
+        }
+
+        private async UniTask<RoomUserView> Create(int place, MinUserInfo minUserInfo)
+        {
+            var view = (await Addressables.InstantiateAsync($"roomUserView{place}", RoomReferences.I.Canvas)).GetComponent<RoomUserView>();
 
             view.Init(minUserInfo);
 
@@ -50,22 +42,18 @@ public class RoomUserView : MinUserView
 
         public List<RoomUserView> RoomUserViews { get; set; }
 
-        public List<RoomUserView> Init(List<FullUserInfo> fullUserInfos, int myTurn)
+        public async void Init()
         {
-            var views = new List<RoomUserView>();
+            RoomUserViews = new List<RoomUserView>();
 
             var oppoPlaceCounter = 1;
 
-            for (int i = 0; i < fullUserInfos.Count; i++)
+            for (int i = 0; i < RoomSettings.I.UserInfos.Count; i++)
             {
-                var placeIndex = i == myTurn ? 0 : oppoPlaceCounter++;
+                var placeIndex = i == RoomSettings.I.MyTurn ? 0 : oppoPlaceCounter++;
 
-                views.Add(Create(placeIndex, fullUserInfos[i]));
+                RoomUserViews.Add(await Create(placeIndex, RoomSettings.I.UserInfos[i]));
             }
-
-            RoomUserViews = views;
-
-            return views;
         }
     }
 }

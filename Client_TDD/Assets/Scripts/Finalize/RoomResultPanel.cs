@@ -1,4 +1,4 @@
-using Basra.Models.Client;
+using Basra.Common;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -22,7 +22,8 @@ public class RoomResultPanel : MonoBehaviour
         superBasras,
         winRatioChange,
         earnedMoney,
-        winStreak;
+        winStreak,
+        competitionStateText;
 
 
     public static async UniTaskVoid Instantiate(Transform parent, RoomXpReport roomXpReport, PersonalFullUserInfo personalFullUserInfo,
@@ -51,6 +52,22 @@ public class RoomResultPanel : MonoBehaviour
 
         winStreak.text = personalFullUserInfo.WinStreak.ToString();
 
+        if (userRoomStatus.WinMoney == 0)
+        {
+            competitionStateText.text = "خسرت";
+            competitionStateText.color = Color.red;
+        }
+        else if (userRoomStatus.WinMoney < RoomSettings.I.Bet) //because the ticket is taken
+        {
+            competitionStateText.text = "تعادل";
+            competitionStateText.color = Color.grey;
+        }
+        else
+        {
+            competitionStateText.text = "كسبت";
+            competitionStateText.color = Color.green;
+        }
+
         //eatenCards.text = (personalFullUserInfo.EatenCardsCount - oldInfo.EatenCardsCount).ToString();
         //basras.text = (personalFullUserInfo.BasraCount - oldInfo.BasraCount).ToString();
         //superBasras.text = (personalFullUserInfo.BigBasraCount - oldInfo.BigBasraCount).ToString();
@@ -72,6 +89,6 @@ public class RoomResultPanel : MonoBehaviour
     public void ToLobby()
     {
         RoomController.I.DestroyModuleGroup();
-        LobbyController.Factory.I.Create();
+        new LobbyController();
     }
 }

@@ -1,9 +1,9 @@
+using Basra.Common;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
-using Zenject;
 
 public class FinalMuv : MonoBehaviour
 {
@@ -31,7 +31,7 @@ public class FinalMuv : MonoBehaviour
             minUserInfo.PictureLoaded += pic => SetPicture(pic);
     }
 
-    public static async UniTaskVoid Instantiate(MinUserInfo minUserInfo, UserRoomStatus oppoRoomResult, Transform parent)
+    public static async UniTaskVoid Create(MinUserInfo minUserInfo, UserRoomStatus oppoRoomResult, Transform parent)
     {
         var asset = await Addressables.InstantiateAsync("finalMuv", parent);
         asset.GetComponent<FinalMuv>().Init(minUserInfo, oppoRoomResult);
@@ -49,7 +49,7 @@ public class FinalMuv : MonoBehaviour
     /// </summary>
     public void ShowFullInfo()
     {
-        BlockingOperationManager.I.Forget(Controller.I.GetPublicFullUserInfo(Id), info => FullUserView.I.Show(info));
+        BlockingOperationManager.I.Forget(Controller.I.GetPublicFullUserInfo(Id), FullUserView.Show);
     }
 
     public void AddFriend()

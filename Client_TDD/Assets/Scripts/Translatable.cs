@@ -3,11 +3,16 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public enum Language { Arabic, English }
+public enum Language
+{
+    Arabic,
+    English
+}
 
 public class Translatable : MonoBehaviour
 {
     #region kvp attempt
+
     //[ShowInInspector] private KeyValuePair<Language, string>[] languages = languagesInit();
     ////[ShowInInspector] private ListDictionary<Language, string> languagesDic = new Dictionary<Language, string> { { Language.English, "" } };
     //[ShowInInspector] private ListDictionary languagesDic = new ListDictionary { { Language.English, "" } };
@@ -23,10 +28,11 @@ public class Translatable : MonoBehaviour
 
     //    return new KeyValuePair<Language, string>[2];
     //}
+
     #endregion
 
-    [LabelText("Arabic is default, start with English, another...")]
-    [SerializeField] private string[] translations = new string[languagesEnumValues.Length - 1];
+    [LabelText("Arabic is default, start with English, another...")] [SerializeField]
+    private string[] translations = new string[languagesEnumValues.Length - 1];
 
     //first lang is english, matches index 1 in enum
 
@@ -34,10 +40,7 @@ public class Translatable : MonoBehaviour
     private static Language currentLanguage = Language.Arabic;
     public static Language CurrentLanguage
     {
-        get
-        {
-            return currentLanguage;
-        }
+        get { return currentLanguage; }
         set
         {
             currentLanguage = value;
@@ -45,12 +48,12 @@ public class Translatable : MonoBehaviour
         }
     }
 
-    private static Language[] languagesEnumValues = (Language[])Enum.GetValues(typeof(Language));
+    private static Language[] languagesEnumValues = (Language[]) Enum.GetValues(typeof(Language));
     public static Language[] LanguagesEnumValues => languagesEnumValues;
 
-    private void Awake()
+    public void Awake()
     {
-        var langindex = (int)CurrentLanguage - 1;
+        var langindex = (int) CurrentLanguage - 1;
 
         if (langindex >= 0)
             GetComponent<TMP_Text>().text = translations[langindex];
@@ -59,10 +62,7 @@ public class Translatable : MonoBehaviour
         //if (translations.Any(t => string.IsNullOrWhiteSpace(t)))
         //Debug.LogWarning($"translation expected at {name}");
 #endif
-
     }
-
-
 
 
     //you can't change language for scene text because arabic is not stored anywhere when it's overriden
@@ -75,7 +75,6 @@ public class Translatable : MonoBehaviour
     //{
 
     //}
-
 }
 
 

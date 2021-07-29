@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Basra.Server.Data;
-using Basra.Models.Client;
+using Basra.Common;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;

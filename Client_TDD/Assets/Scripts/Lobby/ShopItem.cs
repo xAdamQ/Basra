@@ -2,34 +2,22 @@ using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
-
-//blocking flags
-//when you play I wait for the server
-//you can't play again
-//when you buy an item (affect money)
-//you can't buy again
-//BuyFlag, PlayFlag
 
 public class ShopItem : MonoBehaviour
 {
-    private int index;
+    /// <summary>
+    /// identifier for the item
+    /// </summary>
+    private int id;
     public ShopItemState State;
     private int price;
 
     [SerializeField] private ShopItemStateView stateView;
     [SerializeField] private Image cardbackImage;
 
-    // [Inject] private readonly IController _controller;
-    // [Inject] private readonly BlockingOperationManager _blockingOperationManager;
-    // [Inject] private readonly IRepository _repository;
-    // [Inject] private readonly ItemShop _itemShop;
-    // [Inject] private readonly IToast _toast;
-    //injecting is not expensive because they're just references, I hope reflection baking make it fast
-
     public void Init(ShopItemState shopItemState, int price, Sprite sprite, int index)
     {
-        this.index = index;
+        this.id = index;
         cardbackImage.sprite = sprite;
         this.price = price;
 
@@ -82,7 +70,7 @@ public class ShopItem : MonoBehaviour
         //client assertion
         if (State != ShopItemState.Locked)
         {
-            Debug.LogError($"cardback with index {index} is already unlocked or set, what the fuck you're doing");
+            Debug.LogError($"cardback with index {id} is already unlocked or set, what the fuck you're doing");
             return;
         }
         if (Repository.I.PersonalFullInfo.Money < price)
@@ -91,7 +79,7 @@ public class ShopItem : MonoBehaviour
             return;
         }
 
-        await Controller.I.BuyItem(Shop.Active.ItemType, index);
+        await Controller.I.BuyItem(Shop.Active.ItemType, id);
         //stop interaction? it depends on whether interacting will create issues or not.
         //and usually it will
         //await feedback
@@ -102,7 +90,13 @@ public class ShopItem : MonoBehaviour
 
         //if I am here, the server assured
 
+        if (Shop.Active.ItemType == ItemType.Cardback)
+            Repository.I.PersonalFullInfo.OwnedCardBackIds.Add(id);
+        else
+            Repository.I.PersonalFullInfo.OwnedBackgroundsIds.Add(id);
+
         Repository.I.PersonalFullInfo.Money -= price; //propagate visually
+
         SetState(ShopItemState.Unlocked); //change the visuals also
     }
 
@@ -115,13 +109,18 @@ public class ShopItem : MonoBehaviour
         {
             //instant client validation
             case ShopItemState.Locked:
-                Debug.LogError($"cardback with index {index} is issued set while it's locked");
+                Debug.LogError($"cardback with index {id} is issued set while it's locked");
                 return;
             case ShopItemState.Set:
                 return;
         }
 
-        await Controller.I.SelectItem(Shop.Active.ItemType, index);
+        await Controller.I.SelectItem(Shop.Active.ItemType, id);
+
+        if (Shop.Active.ItemType == ItemType.Cardback)
+            Repository.I.PersonalFullInfo.SelectedCardback = id;
+        else
+            Repository.I.PersonalFullInfo.SelectedBackground = id;
 
         Shop.Active.UnselectedCurrentCard();
         SetState(ShopItemState.Set);

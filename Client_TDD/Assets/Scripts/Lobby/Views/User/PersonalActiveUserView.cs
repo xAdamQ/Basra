@@ -1,48 +1,81 @@
-using System;
 using System.ComponentModel;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using Zenject;
+using UnityEngine.AddressableAssets;
 
+/// <summary>
+/// uses Repository.I.PersonalFullInfo, 
+/// </summary>
 public class PersonalActiveUserView : MinUserView
 {
-    [Inject] private IRepository _repository;
+    public static async UniTask Create()
+    {
+        await Addressables.InstantiateAsync("personalActiveUserView", LobbyReferences.I.Canvas);
+    }
+
+    [SerializeField] private TMP_Text money;
+
+    [SerializeField] private MoneyAidButton moneyAidButton;
 
     private void Start()
     {
-        _repository.PersonalFullInfo.PropertyChanged += OnInfoChanged;
-        Init(_repository.PersonalFullInfo);
+        Repository.I.PersonalFullInfo.PropertyChanged += OnInfoChanged;
+
+        Init(Repository.I.PersonalFullInfo);
+        Money = Repository.I.PersonalFullInfo.Money;
+        Xp = Repository.I.PersonalFullInfo.Xp;
+
+        moneyAidButton.UpdateState();
     }
 
-    private void Init(PersonalFullUserInfo personalFullUserInfo)
+    private void OnDestroy()
     {
-        base.Init(personalFullUserInfo);
-        Money = personalFullUserInfo.Money;
-        MoneyAimTimeLeft = personalFullUserInfo.MoneyAimTimeLeft;
+        Repository.I.PersonalFullInfo.PropertyChanged -= OnInfoChanged;
     }
 
     public override void ShowFullInfo()
     {
-        _fullUserView.Show(_repository.PersonalFullInfo);
+        FullUserView.Show(Repository.I.PersonalFullInfo);
     }
 
     protected virtual void OnInfoChanged(object sender, PropertyChangedEventArgs e)
     {
-        var info = _repository.PersonalFullInfo;
+        var info = Repository.I.PersonalFullInfo;
         switch (e.PropertyName)
         {
-            case nameof(info.MoneyAimTimeLeft):
-                MoneyAimTimeLeft = info.MoneyAimTimeLeft;
-                break;
-            case nameof(info.Level):
-                Level = info.Level;
-                break;
             case nameof(info.SelectedTitleId):
                 Title = Repository.Titles[info.SelectedTitleId];
                 break;
             case nameof(info.Money):
                 Money = info.Money;
                 break;
+            case nameof(info.Xp):
+                Xp = info.Xp;
+                break;
+        }
+    }
+
+    [SerializeField] private TMP_Text xpText;
+    [SerializeField] private RectTransform fill, fillBackground;
+
+    private const float Expo = .55f, Divi = 10;
+    public static int GetStartXpOfLevel(int level)
+    {
+        if (level == 0) return 0;
+        return (int) Mathf.Pow(10, Mathf.Log10(Divi * level) / Expo);
+    }
+
+    public int Xp
+    {
+        set
+        {
+            var myLevel = Repository.I.PersonalFullInfo.CalcLevel();
+            var startXpOfNectLevel = GetStartXpOfLevel(myLevel + 1);
+            var finishPercent = (float) value / startXpOfNectLevel;
+
+            xpText.text = $"{value}/{startXpOfNectLevel}";
+            fill.sizeDelta = new Vector2(finishPercent * fillBackground.sizeDelta.x, fill.sizeDelta.y);
         }
     }
 
@@ -51,29 +84,9 @@ public class PersonalActiveUserView : MinUserView
         set => money.text = value.ToString();
     }
 
-    private TimeSpan? MoneyAimTimeLeft
-    {
-        set
-        {
-            if (value == null)
-            {
-                moneyAimTimeLeft.gameObject.SetActive(false);
-            }
-            else
-            {
-                moneyAimTimeLeft.text = $"60$ in {value:mm\\:ss}";
-            }
-        }
-    }
-
-    [SerializeField]
-    private TMP_Text
-        money,
-        moneyAimTimeLeft;
-
     public void testwaitalot()
     {
-        _blockingOperationManager.Forget(_controller.SendAsync("TestWaitAlot"));
+        BlockingOperationManager.I.Forget(Controller.I.SendAsync("TestWaitAlot"));
         // _blockingOperationManager.Forget<MinUserInfo>(_controller.TestWaitWithReturn(), info => Debug.Log("info is" + info.Name));
     }
 }

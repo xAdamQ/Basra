@@ -1,6 +1,5 @@
 using System;
 using Cysharp.Threading.Tasks;
-using Zenject;
 
 public class BlockingOperationManager
 {
@@ -8,7 +7,6 @@ public class BlockingOperationManager
 
     public static BlockingOperationManager I { get; private set; }
 
-    [Inject]
     public BlockingOperationManager()
     {
         // _blockingPanel = blockingPanel;

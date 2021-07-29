@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Basra.Common;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Zenject;
 using DG.Tweening;
 
 public interface IOppo : IPlayerBase
@@ -11,37 +11,59 @@ public interface IOppo : IPlayerBase
     //tested
     void Throw(ThrowResult throwResult);
     //tested
-    void Distribute();
-    void Distribute(int cardsCount);
+    UniTask Distribute();
+    UniTask Distribute(int cardsCount);
 }
 
 public class Oppo : PlayerBase, IOppo
 {
     public void Throw(ThrowResult throwResult)
     {
-        var randCard = HandCards.GetRandom();
-        randCard.AddFront(throwResult.ThrownCard);
+        UniTask.Create(async () =>
+        {
+            var randCard = HandCards.GetRandom();
+            await randCard.AddFront(throwResult.ThrownCard);
 
-        var throwSeq = DOTween.Sequence();
+            var throwSeq = DOTween.Sequence();
 
-        var targetPoz = PlaceCard(randCard, throwSeq);
+            var targetPoz = PlaceCard(randCard, throwSeq);
 
-        ThrowBase(throwResult, throwSeq, targetPoz);
+            ThrowBase(throwResult, throwSeq, targetPoz);
+        });
     }
 
-    public void Distribute()
+    private void DistributeAnim()
     {
-        Distribute(HandCardCapacity);
+        HandCards.ForEach(c => c.transform.position = Vector2.Lerp(startCard.position, endCard.position, .5f));
+        //the start anim position
+
+        var pointer = startCard.localPosition;
+
+        var handSize = endCard.localPosition.x - startCard.localPosition.x;
+        var spacing = new Vector3(handSize / (HandCards.Count - 1), 0, .05f);
+
+        foreach (var card in HandCards)
+        {
+            card.transform.DOScale(Vector3.one, .7f);
+            card.transform.DOLocalMove(pointer, .5f);
+
+            pointer += spacing;
+        }
     }
-    public void Distribute(int cardsCount)
+
+    public async UniTask Distribute()
+    {
+        await Distribute(HandCardCapacity);
+    }
+    public async UniTask Distribute(int cardsCount)
     {
         for (var i = 0; i < cardsCount; i++)
         {
-            var card = _cardFactory.CreateOppoCard(BackSprite, transform);
+            var card = await Card.CreateOppoCard(BackSprite, transform);
             HandCards.Add(card);
             card.Player = this;
         }
 
-        OrganizeHand();
+        DistributeAnim();
     }
 }

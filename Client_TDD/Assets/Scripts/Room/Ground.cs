@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Zenject;
+using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
 
 public interface IGround
@@ -19,20 +19,30 @@ public interface IGround
 
 public class Ground : MonoBehaviour, IGround
 {
-    [Inject] private Card.Factory _cardFactory;
+    public static async UniTask Create()
+    {
+        I = (await Addressables.InstantiateAsync("ground", RoomReferences.I.Root)).GetComponent<Ground>();
+    }
+
+    public static IGround I;
 
     public List<Card> Cards { get; } = new List<Card>();
 
     public void Distribute(List<int> cardIds)
     {
-        foreach (var cardId in cardIds)
+        UniTask.Create(async () =>
         {
-            var card = _cardFactory.CreateGroundCard(cardId, transform);
-            Cards.Add(card);
-        }
+            foreach (var cardId in cardIds)
+            {
+                var card = await Card.CreateGroundCard(cardId, transform);
+                card.transform.eulerAngles = Vector3.up * 180;
+                Cards.Add(card);
+            }
 
-        OrganizeGrid(DOTween.Sequence());
+            DistributeAnim(DOTween.Sequence());
+        });
     }
+
 
     [SerializeField] private Transform leftBottomBound, topRightBound;
 
@@ -77,8 +87,19 @@ public class Ground : MonoBehaviour, IGround
         }
     }
 
-    private const float EatAnimTime = .5f;
 
+    private void DistributeAnim(Sequence sequence)
+    {
+        OrganizeGrid(sequence);
+
+        foreach (var card in Cards)
+        {
+            card.transform.DOScale(Vector3.one, .7f);
+        }
+    }
+
+
+    private const float EatAnimTime = .5f;
 
     public void Throw(Card thrownCard, List<int> eatenCardsIds, Sequence animSeq, Vector2? meetPoint)
     {

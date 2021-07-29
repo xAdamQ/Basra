@@ -2,16 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Basra.Common;
+using Codice.Client.Common;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.XR;
-using Zenject;
 
 public interface IPlayer : IPlayerBase
 {
     void Throw(Card card); //tested
-    void Distribute(List<int> cardIds); //tested
+    UniTask Distribute(List<int> cardIds); //tested
     void ForceThrow(ThrowResult throwResult); //trivial to test
     bool IsPlayable { get; set; } //trivial to test
     void MyThrowResult(ThrowResult result);
@@ -19,8 +20,6 @@ public interface IPlayer : IPlayerBase
 
 public class Player : PlayerBase, IPlayer
 {
-    [Inject] private readonly IController _controller;
-
     public bool IsPlayable { get; set; }
 
     protected override void Start()
@@ -30,16 +29,37 @@ public class Player : PlayerBase, IPlayer
         turnTimer.Elapsed += MissTurn;
     }
 
-    public void Distribute(List<int> cardIds)
+    public async UniTask Distribute(List<int> cardIds)
     {
         foreach (var cardId in cardIds)
         {
-            var card = _cardFactory.CreateMyPlayerCard(cardId, BackSprite, transform);
+            var card = await Card.CreateMyPlayerCard(cardId, BackSprite, transform);
             card.Player = this;
             HandCards.Add(card);
         }
 
-        OrganizeHand();
+        DistributeAnim();
+    }
+
+    private void DistributeAnim()
+    {
+        HandCards.ForEach(c => c.transform.position = Vector2.Lerp(startCard.position, endCard.position, .5f));
+        //the start anim position
+
+        var pointer = startCard.localPosition;
+
+        var handSize = endCard.localPosition.x - startCard.localPosition.x;
+        var spacing = new Vector3(handSize / (HandCards.Count - 1), 0, .05f);
+
+        foreach (var card in HandCards)
+        {
+            card.transform.DOScale(Vector3.one, .7f);
+            card.transform.DOLocalMove(pointer, .5f);
+
+            pointer += spacing;
+        }
+
+        HandCards.ForEach(card => card.transform.DORotate(Vector3.up * 180, .4f).SetDelay(.4f));
     }
 
     public void Throw(Card card)
@@ -47,7 +67,7 @@ public class Player : PlayerBase, IPlayer
         IsPlayable = false;
 
         //no await for return style because of server inability to do following actions
-        _controller.ThrowCard(HandCards.IndexOf(card));
+        Controller.I.ThrowCard(HandCards.IndexOf(card));
 
         turnTimer.Stop();
     }
@@ -68,7 +88,7 @@ public class Player : PlayerBase, IPlayer
     {
         IsPlayable = false;
 
-        _controller.NotifyTurnMiss().Forget(e => throw e);
+        Controller.I.NotifyTurnMiss().Forget(e => throw e);
     }
 
     public void ForceThrow(ThrowResult throwResult)

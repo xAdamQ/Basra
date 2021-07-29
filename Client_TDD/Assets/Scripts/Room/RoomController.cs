@@ -1,7 +1,8 @@
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using Basra.Common;
 using UnityEngine;
-using Zenject;
+using UnityEngine.AddressableAssets;
 
 public interface IRoomController
 {
@@ -12,76 +13,102 @@ public interface IRoomController
 }
 
 
-public class RoomController : IRoomController, IInitializable, System.IDisposable
+public class RoomController : IRoomController
 {
-    [Inject] private readonly IRepository _repository;
-    [Inject] private readonly RoomUserView.IManager _ruvManager;
-    [Inject] private readonly IController _controller;
-    [Inject] private readonly IBlockingPanel _blockingPanel;
-    [Inject] private readonly ICoreGameplay _coreGameplay;
-    [Inject] private readonly RoomInstaller.References _references;
-
-
-    // [Inject] private readonly FinalizeController.Factory _finalizeFactory;
-
-    //args
-    [InjectOptional] private readonly ActiveRoomState _activeRoomState;
-    [Inject] private readonly RoomSettings _roomSettings;
-
     public event System.Action Destroyed;
 
     public static IRoomController I;
 
-    [Inject]
-    public RoomController()
+    private RoomController()
     {
         I = this;
     }
 
-    //todo this should init first
-    public void Initialize()
+    // public RoomController(ActiveRoomState activeRoomState) : this()
+    // {
+    //     new RoomSettings(activeRoomState.BetChoice, activeRoomState.CapacityChoice, activeRoomState.UserInfos,
+    //         activeRoomState.MyTurnId);
+    //
+    //     Initialize(activeRoomState).Forget();
+    // }
+    // public RoomController(int betChoice, int capacityChoice, List<FullUserInfo> userInfos, int myTurn) : this()
+    // {
+    //     new RoomSettings(betChoice, capacityChoice, userInfos, myTurn);
+    //
+    //     Initialize(null).Forget();
+    // }
+
+    public static async UniTaskVoid Create(ActiveRoomState activeRoomState)
     {
-        UniTask.Create(async () =>
+        var roomController = new RoomController();
+        await roomController.Initialize(activeRoomState);
+    }
+
+    //A. this is registering the services
+    //meaning all I is resolved
+
+    //Q. can we pass params to services?
+
+    //B.
+    //the initialization issue, this should be after injection, means after awake
+    private async UniTask Initialize(ActiveRoomState activeRoomState)
+    {
+        var containerRoot = new GameObject("Room").transform;
+
+        new RoomReferences();
+        RoomReferences.I.Canvas = (await Addressables.InstantiateAsync("canvas", containerRoot))
+            .GetComponent<Transform>();
+        RoomReferences.I.Root = containerRoot;
+
+        await ChatSystem.Create();
+
+        await Ground.Create();
+
+        new CoreGameplay();
+
+        new RoomUserView.Manager();
+
+        //dependent on RoomSettings
+        //this will make registering requires order, so no circular dependencies possible
+
+        RoomUserView.Manager.I.Init();
+
+        await CoreGameplay.I.CreatePlayers();
+
+        Background.I.SetForRoom(RoomSettings.I.UserInfos);
+
+        Repository.I.PersonalFullInfo.Money -= RoomSettings.I.BetMoneyToPay();
+
+        AssignRpcs();
+
+        if (activeRoomState == null)
+            Controller.I.SendAsync("Ready").Forget(e => throw e);
+        else
         {
-            _ruvManager.Init(_roomSettings.UserInfos, _roomSettings.MyTurn);
+            //todo why this
+            await UniTask.DelayFrame(1);
 
-            await _coreGameplay.CreatePlayers();
-
-            AssignRpcs();
-
-            if (_activeRoomState == null)
-                _controller.SendAsync("Ready").Forget(e => throw e);
-            else
-                LateStart().Forget(e => throw e);
-        });
-    }
-
-    private async UniTask LateStart()
-    {
-        await UniTask.DelayFrame(2);
-
-        _coreGameplay.ResumeGame(_activeRoomState.MyHand, _activeRoomState.Ground, _activeRoomState.HandCounts,
-            _activeRoomState.CurrentTurn);
-    }
-
-    public void Dispose()
-    {
-        _controller.RemoveModuleRpcs(nameof(RoomController));
+            CoreGameplay.I.ResumeGame(activeRoomState.MyHand, activeRoomState.Ground, activeRoomState.HandCounts,
+                activeRoomState.CurrentTurn);
+        }
     }
 
     private void AssignRpcs()
     {
         var moduleGroupName = nameof(RoomController);
 
-        _controller.AssignRpc<List<int>, List<int>>(StartRoomRpc, moduleGroupName);
-        _controller.AssignRpc<FinalizeResult>(FinalizeRoom, moduleGroupName);
+        Controller.I.AssignRpc<List<int>, List<int>>(StartRoomRpc, moduleGroupName);
+        Controller.I.AssignRpc<FinalizeResult>(FinalizeRoom, moduleGroupName);
     }
 
     public void FinalizeRoom(FinalizeResult finalizeResult)
     {
         UniTask.Create(async () =>
         {
-            await _coreGameplay.EatLast(finalizeResult.LastEaterTurnId);
+            //wait for the last throw operation, this can be done better
+            await UniTask.Delay(1200);
+
+            await CoreGameplay.I.EatLast(finalizeResult.LastEaterTurnId);
 
             // FinalizeController.I.
 
@@ -89,29 +116,39 @@ public class RoomController : IRoomController, IInitializable, System.IDisposabl
 
             // _finalizeFactory.Create(finalizeResult, _roomSettings);
 
-            _repository.PersonalFullInfo = finalizeResult.PersonalFullUserInfo;
+            RoomUserView.Manager.I.RoomUserViews.ForEach(ruv => Object.Destroy(ruv.gameObject));
+            Object.FindObjectsOfType<PlayerBase>().ForEach(obj => Object.Destroy(obj.gameObject));
+            Object.Destroy(Object.FindObjectOfType<ChatSystem>());
 
-            FinalizeController.Construct(_references.Canvas, _roomSettings, finalizeResult).Forget();
+            //immmm this will cause issues on the running funs like decreaseMoneyAimTime and events
+            //change indie values instead of rewrite the whole object
+            Repository.I.PersonalFullInfo = finalizeResult.PersonalFullUserInfo;
+            Repository.I.PersonalFullInfo.DecreaseMoneyAimTimeLeft().Forget();
+            //todo you MUST edit each value on it's own now?
+
+            FinalizeController.Construct(RoomReferences.I.Canvas, RoomSettings.I, finalizeResult).Forget();
         });
     }
 
     public void StartRoomRpc(List<int> handCardIds, List<int> groundCardIds)
     {
-        _coreGameplay.BeginGame(handCardIds, groundCardIds);
-        _blockingPanel.Hide();
+        CoreGameplay.I.BeginGame(handCardIds, groundCardIds);
+        BlockingPanel.I.Hide();
     }
 
     public void DestroyModuleGroup()
     {
-        Object.Destroy(Object.FindObjectOfType<RoomInstaller>().gameObject);
+        //killing non mb
+        RoomReferences.I = null;
+        CoreGameplay.I = null;
+        RoomUserView.Manager.I = null;
+        RoomSettings.I = null;
+
+        //killing mb
+        Object.Destroy(GameObject.Find("Room"));
+
+        Controller.I.RemoveModuleRpcs(GetType().ToString());
 
         Destroyed?.Invoke();
-        // FinalizeController.I = null;
-        //no need for IModule
-    }
-
-
-    public class Factory : PlaceholderFactory<RoomSettings, ActiveRoomState, RoomController>
-    {
     }
 }

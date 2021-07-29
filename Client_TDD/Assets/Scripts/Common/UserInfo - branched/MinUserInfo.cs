@@ -10,9 +10,22 @@ public class MinUserInfo
         DownloadPicture().Forget();
     }
 
+    public int CalcLevel()
+    {
+        return GetLevelFromXp(Xp);
+    }
+
+    private const int MaxLevel = 999;
+    private const float Expo = .55f, Divi = 10;
+    private static int GetLevelFromXp(int xp)
+    {
+        var level = (int) (Mathf.Pow(xp, Expo) / Divi);
+        return level < MaxLevel ? level : MaxLevel;
+    }
+
     //transferred model
     public string Id { get; set; }
-    public virtual int Level { get; set; }
+    public virtual int Xp { get; set; }
     public int SelectedTitleId { get; set; }
     private int selectedTitleId;
     public string Name { get; set; }

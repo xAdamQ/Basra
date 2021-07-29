@@ -1,8 +1,16 @@
 using System.Collections.Generic;
+using Basra.Common;
 
 public class RoomSettings
 {
-    public RoomSettings(int betChoice, int capacityChoice, List<FullUserInfo> userInfos, int myTurn)
+    public static RoomSettings I;
+
+    private RoomSettings()
+    {
+        I = this;
+    }
+
+    public RoomSettings(int betChoice, int capacityChoice, List<FullUserInfo> userInfos, int myTurn) : this()
     {
         BetChoice = betChoice;
         CapacityChoice = capacityChoice;
@@ -10,10 +18,8 @@ public class RoomSettings
         MyTurn = myTurn;
     }
 
-    public RoomSettings(ActiveRoomState activeRoomState)
+    public RoomSettings(ActiveRoomState activeRoomState) : this()
     {
-        // ActiveRoomState = activeRoomState;
-
         BetChoice = activeRoomState.BetChoice;
         CapacityChoice = activeRoomState.CapacityChoice;
         UserInfos = activeRoomState.UserInfos;
@@ -21,16 +27,18 @@ public class RoomSettings
     }
 
     public int MyTurn { get; }
-
     public List<FullUserInfo> UserInfos { get; }
-
     public int BetChoice { get; }
+    public int CapacityChoice { get; }
+
+
     public int Bet => Bets[BetChoice];
     public static int[] Bets => new[] {55, 110, 220};
 
-    public int CapacityChoice { get; }
     public int Capacity => Capacities[CapacityChoice];
     public static readonly int[] Capacities = {2, 3, 4};
+
+    public static int MinBet => Bets[0];
 
 
     public int BetMoneyToPay()

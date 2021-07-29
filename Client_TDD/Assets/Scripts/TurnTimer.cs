@@ -4,7 +4,6 @@ using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine.UI;
-using Zenject;
 
 public interface ITurnTimer
 {

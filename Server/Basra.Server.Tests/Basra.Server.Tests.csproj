@@ -27,6 +27,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Basra.Server\Basra.Server.csproj" />
+      <ProjectReference Include="..\TestClientBase\TestClientBase.csproj" />
     </ItemGroup>
 
 </Project>

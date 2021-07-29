@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TesterClient;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -9,7 +10,7 @@ namespace Basra.Server.Tests.Integration
 {
     public class IntegrationTests
     {
-        private readonly WebApplicationFactory<Startup> _factory;
+        private readonly CustomWebApplicationFactory<Startup> _factory;
         private readonly ITestOutputHelper _testOutputHelper;
         private List<Client> Clients { get; } = new();
 
@@ -21,11 +22,23 @@ namespace Basra.Server.Tests.Integration
 
         async Task<Client> MakeClient()
         {
-            var c = new Client(Clients.Count, _testOutputHelper);
-            Clients.Add(c);
-            _testOutputHelper.WriteLine("a new client is made with index: " + (Clients.Count - 1));
+            var c = new Client(Clients.Count, _factory.Logger);
 
-            await c.Connect(_factory.Server);
+            var hubConnection = new HubConnectionBuilder()
+                // .ConfigureLogging(lb => lb
+                //     .AddConsole()
+                //     .AddDebug()
+                //     .AddFilter(l => l == LogLevel.Information)
+                // )
+                .WithUrl("http://localhost:5000/connect?access_token=" + Clients.Count,
+                    o => o.HttpMessageHandlerFactory = _ => _factory.Server.CreateHandler())
+                .Build();
+
+            Clients.Add(c);
+
+            await c.Connect(hubConnection);
+
+            _testOutputHelper.WriteLine("a new client is made with index: " + (Clients.Count - 1));
 
             return c;
         }
@@ -225,19 +238,58 @@ namespace Basra.Server.Tests.Integration
             await c2.Connection.StopAsync();
             await Task.Delay(200);
 
-            await c2.Connect(_factory.Server);
+            await c2.Connection.StartAsync();
             await Task.Delay(200);
 
             await c2.Connection.StopAsync();
             await Task.Delay(200);
 
-            await c2.Connect(_factory.Server);
+            await c2.Connection.StartAsync();
             await Task.Delay(200);
 
             await c.Connection.StopAsync();
             await Task.Delay(200);
 
-            await c.Connect(_factory.Server);
+            await c2.Connection.StartAsync();
+            await Task.Delay(200);
+        }
+
+        [Fact(Timeout = 99999999)]
+        public async Task BuyCardBacks()
+        {
+            var c = await MakeClient();
+            var c2 = await MakeClient();
+
+            await Task.Delay(50);
+
+            await c.Connection.InvokeAsync("RequestRandomRoom", 0, 0);
+            await c2.Connection.InvokeAsync("RequestRandomRoom", 0, 0);
+
+            await c.Connection.InvokeAsync("Ready");
+            await c2.Connection.InvokeAsync("Ready");
+
+            for (int i = 0; i < 2; i++)
+            {
+                await c.Connection.InvokeAsync("Throw", 0);
+                await c2.Connection.InvokeAsync("Throw", 0);
+            }
+
+            await c2.Connection.StopAsync();
+            await Task.Delay(200);
+
+            await c2.Connection.StartAsync();
+            await Task.Delay(200);
+
+            await c2.Connection.StopAsync();
+            await Task.Delay(200);
+
+            await c2.Connection.StartAsync();
+            await Task.Delay(200);
+
+            await c.Connection.StopAsync();
+            await Task.Delay(200);
+
+            await c2.Connection.StartAsync();
             await Task.Delay(200);
         }
     }

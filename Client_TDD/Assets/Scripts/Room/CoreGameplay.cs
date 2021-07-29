@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using Basra.Common;
 using UnityEngine;
-using Zenject;
 
 public interface ICoreGameplay
 {
@@ -18,21 +18,28 @@ public interface ICoreGameplay
     void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts, int currentTurn);
 }
 
-public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
+public class CoreGameplay : ICoreGameplay
 {
-    [Inject] private readonly IGround _ground;
-    [Inject] private readonly PlayerBase.Factory _playerFactory;
-    [Inject] private readonly IController _controller;
-    [Inject] private readonly RoomSettings _roomSettings;
+    public static ICoreGameplay I;
 
-    public void Initialize()
+    public CoreGameplay()
     {
+        I = this;
+
+        Initialize().Forget();
+    }
+
+    public async UniTaskVoid Initialize()
+    {
+        await UniTask.DelayFrame(3);
+
+        RoomController.I.Destroyed += OnRoomDestroyed;
         AssignRpcs();
     }
 
-    public void Dispose()
+    public void OnRoomDestroyed()
     {
-        _controller.RemoveModuleRpcs(nameof(CoreGameplay));
+        Controller.I.RemoveModuleRpcs(nameof(CoreGameplay));
     }
 
     private List<IPlayerBase> Players { get; } = new List<IPlayerBase>();
@@ -51,18 +58,18 @@ public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
         var oppoPlaceCounter = 1;
         //oppo place starts at 1 to 3
 
-        for (int i = 0; i < _roomSettings.Capacity; i++)
+        for (int i = 0; i < RoomSettings.I.Capacity; i++)
         {
             PlayerBase player = null;
-            if (_roomSettings.MyTurn == i)
+            if (RoomSettings.I.MyTurn == i)
             {
-                player = await _playerFactory.Create(_roomSettings.UserInfos[i].SelectedCardback, 0, i);
+                player = await PlayerBase.Create(RoomSettings.I.UserInfos[i].SelectedCardback, 0, i);
                 Players.Add(player);
                 MyPlayer = player as IPlayer;
             }
             else
             {
-                player = await _playerFactory.Create(_roomSettings.UserInfos[i].SelectedCardback, oppoPlaceCounter++, i);
+                player = await PlayerBase.Create(RoomSettings.I.UserInfos[i].SelectedCardback, oppoPlaceCounter++, i);
                 Players.Add(player);
                 Oppos.Add(player as IOppo);
             }
@@ -82,7 +89,7 @@ public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
     {
         if (endPrevTurn) PlayerInTurn.EndTurn();
 
-        CurrentTurn = ++CurrentTurn % _roomSettings.Capacity;
+        CurrentTurn = ++CurrentTurn % RoomSettings.I.Capacity;
 
         if (PlayerInTurn.HandCards.Count == 0 && isLastDistribute) return;
 
@@ -91,15 +98,15 @@ public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
 
     public void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts, int currentTurn)
     {
-        _ground.Distribute(ground);
+        Ground.I.Distribute(ground);
 
         MyPlayer.Distribute(myHand);
 
         for (int i = 0; i < handCounts.Count; i++)
         {
-            if (i == _roomSettings.MyTurn) continue;
+            if (i == RoomSettings.I.MyTurn) continue;
 
-            ((IOppo) Players[i]).Distribute(handCounts[i]);
+            ((IOppo)Players[i]).Distribute(handCounts[i]);
         }
 
         CurrentTurn = currentTurn - 1;
@@ -110,24 +117,28 @@ public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
 
     private void AssignRpcs()
     {
-        _controller.AssignRpc<List<int>>(Distribute, nameof(CoreGameplay));
-        _controller.AssignRpc<List<int>>(LastDistribute, nameof(CoreGameplay));
-        _controller.AssignRpc<ThrowResult>(MyThrowResult, nameof(CoreGameplay));
-        _controller.AssignRpc<ThrowResult>(ForcePlay, nameof(CoreGameplay));
-        _controller.AssignRpc<ThrowResult>(CurrentOppoThrow, nameof(CoreGameplay));
+        Controller.I.AssignRpc<List<int>>(Distribute, nameof(CoreGameplay));
+        Controller.I.AssignRpc<List<int>>(LastDistribute, nameof(CoreGameplay));
+        Controller.I.AssignRpc<ThrowResult>(MyThrowResult, nameof(CoreGameplay));
+        Controller.I.AssignRpc<ThrowResult>(ForcePlay, nameof(CoreGameplay));
+        Controller.I.AssignRpc<ThrowResult>(CurrentOppoThrow, nameof(CoreGameplay));
     }
 
     private bool isLastDistribute;
 
     public void Distribute(List<int> handCardIds)
     {
-        MyPlayer.Distribute(handCardIds);
-
-        foreach (var oppo in Oppos)
+        UniTask.Create(async () =>
         {
-            oppo.Distribute();
-        }
+            // await UniTask.Delay(1500); //if there's a pending throw and eat
+
+            await MyPlayer.Distribute(handCardIds);
+
+            foreach (var oppo in Oppos)
+                await oppo.Distribute();
+        });
     }
+
     public void LastDistribute(List<int> handCardIds)
     {
         isLastDistribute = true;
@@ -143,14 +154,14 @@ public class CoreGameplay : ICoreGameplay, IInitializable, System.IDisposable
     }
     public void CurrentOppoThrow(ThrowResult throwResult)
     {
-        ((IOppo) PlayerInTurn).Throw(throwResult);
+        ((IOppo)PlayerInTurn).Throw(throwResult);
     }
 
     #endregion
 
     public void BeginGame(List<int> myHand, List<int> groundCards)
     {
-        _ground.Distribute(groundCards);
+        Ground.I.Distribute(groundCards);
 
         Distribute(myHand);
 

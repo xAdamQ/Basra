@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
-using Zenject;
+using UnityEngine.AddressableAssets;
 
 
 public enum CardOwner
@@ -14,53 +15,45 @@ public enum CardOwner
 
 public class Card : MonoBehaviour
 {
-    [Inject] private readonly Front.Factory _frontFactory;
-    [Inject] private readonly IGround _ground;
-
     public IPlayerBase Player;
     public static Vector2 Bounds = new Vector2(.75f, 1f);
     public Front Front { get; set; }
 
-    public void AddFront(int id)
+    public async UniTask AddFront(int id)
     {
-        Front = _frontFactory.Create(id, transform);
+        Front = await Front.Create(id, transform);
     }
 
-    public class Factory
+    #region factory methods
+
+    private static async UniTask<Card> Create(Transform parent, Sprite backSprite, int frontId)
     {
-        private readonly IInstantiator _instantiator;
-        private readonly GameObject _prefab;
-        public Factory(IInstantiator instantiator, GameObject prefab)
-        {
-            _instantiator = instantiator;
-            _prefab = prefab;
-        }
+        var card = (await Addressables.InstantiateAsync("card", parent)).GetComponent<Card>();
 
-        private Card Create(Transform parent, Sprite backSprite, CardOwner cardOwner, int frontId)
-        {
-            var card = _instantiator.InstantiatePrefab(_prefab, parent).GetComponent<Card>();
+        card.transform.localScale = Vector3.zero;
 
-            //init  
-            if (frontId != -1)
-                card.AddFront(frontId);
-            card.GetComponent<SpriteRenderer>().sprite = backSprite;
+        //init  
+        if (frontId != -1)
+            await card.AddFront(frontId);
 
-            return card;
-        }
+        card.GetComponent<SpriteRenderer>().sprite = backSprite;
 
-        public Card CreateGroundCard(int frontId, Transform parent)
-        {
-            return Create(parent, null, CardOwner.Ground, frontId);
-        }
-        public Card CreateMyPlayerCard(int frontId, Sprite backSprite, Transform parent)
-        {
-            return Create(parent, backSprite, CardOwner.Me, frontId);
-        }
-        public Card CreateOppoCard(Sprite backSprite, Transform parent)
-        {
-            return Create(parent, backSprite, CardOwner.Oppo, -1);
-        }
+        return card;
     }
+    public static async UniTask<Card> CreateGroundCard(int frontId, Transform parent)
+    {
+        return await Create(parent, null, frontId);
+    }
+    public static async UniTask<Card> CreateMyPlayerCard(int frontId, Sprite backSprite, Transform parent)
+    {
+        return await Create(parent, backSprite, frontId);
+    }
+    public static async UniTask<Card> CreateOppoCard(Sprite backSprite, Transform parent)
+    {
+        return await Create(parent, backSprite, -1);
+    }
+
+    #endregion
 
     public void OnMouseDown()
     {
@@ -78,10 +71,10 @@ public class Card : MonoBehaviour
         }
 
         if (player.IsPlayable &&
-            transform.position.x < _ground.TopRightBound.x &&
-            transform.position.y < _ground.TopRightBound.y &&
-            transform.position.x > _ground.LeftBottomBound.x &&
-            transform.position.y > _ground.LeftBottomBound.y)
+            transform.position.x < Ground.I.TopRightBound.x &&
+            transform.position.y < Ground.I.TopRightBound.y &&
+            transform.position.x > Ground.I.LeftBottomBound.x &&
+            transform.position.y > Ground.I.LeftBottomBound.y)
         {
             player.Throw(this);
         }

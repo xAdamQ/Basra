@@ -41,9 +41,7 @@ namespace Basra.Server.Tests
             _testOutputHelper = testOutputHelper;
         }
 
-   
-     
- 
+
         [Theory]
         [InlineData(0, 0, new int[] {30, 10}, new int[] {30, 22}, new int[] {0, 1}, new int[] {0, 0},
             new int[] {0, 0}, new int[] {1, 0}, new int[] {1, 1}, new int[] {100, 0}, new int[] {100, 0}, new int[] {1, 0})]
@@ -105,5 +103,13 @@ namespace Basra.Server.Tests
 
             Assert.Equal(user.Level, newLevel);
         } //testing by manual debugging
+
+        [Theory]
+        [InlineData(12, 6030)]
+        public void StartXpOfLevel(int level, int expeectedXp)
+        {
+            var actualXp = Room.GetStartXpOfLevel(level);
+            Assert.Equal(expeectedXp, actualXp);
+        }
     }
 }
