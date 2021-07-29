@@ -1,7 +1,7 @@
-using System.Collections;
 using Cysharp.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -22,18 +22,18 @@ namespace PlayModeTests
                     Money = 11,
                     Name = "Holy Hanaka",
                     Picture = Texture2D.linearGrayTexture,
-                    Xp = 14352913,
+                    Xp = 5742,
                     MoneyAimTimePassed = null,
                     MoneyAidRequested = 2,
                 }
             };
 
-            Repository.I.PersonalFullInfo.DecreaseMoneyAimTimeLeft();
+            Repository.I.PersonalFullInfo.DecreaseMoneyAimTimeLeft().Forget();
 
             Controller.I = new Mock<IController>().Object;
 
-            LobbyReferences.I = new LobbyReferences {Canvas = canvas};
-            ProjectRefernces.I = new ProjectRefernces {Canvas = canvas};
+            LobbyReferences.I = new LobbyReferences { Canvas = canvas };
+            ProjectRefernces.I = new ProjectRefernces { Canvas = canvas };
 
             await Toast.Create();
 

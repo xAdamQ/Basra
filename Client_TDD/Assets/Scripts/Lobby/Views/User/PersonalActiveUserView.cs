@@ -1,5 +1,5 @@
-using System.ComponentModel;
 using Cysharp.Threading.Tasks;
+using System.ComponentModel;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -63,7 +63,7 @@ public class PersonalActiveUserView : MinUserView
     public static int GetStartXpOfLevel(int level)
     {
         if (level == 0) return 0;
-        return (int) Mathf.Pow(10, Mathf.Log10(Divi * level) / Expo);
+        return (int)Mathf.Pow(10, Mathf.Log10(Divi * level) / Expo);
     }
 
     public int Xp
@@ -71,10 +71,11 @@ public class PersonalActiveUserView : MinUserView
         set
         {
             var myLevel = Repository.I.PersonalFullInfo.CalcLevel();
-            var startXpOfNectLevel = GetStartXpOfLevel(myLevel + 1);
-            var finishPercent = (float) value / startXpOfNectLevel;
+            var startXpOfNextLevel = GetStartXpOfLevel(myLevel + 1);
+            var startXpOfCurrentLevel = GetStartXpOfLevel(myLevel);
+            var finishPercent = (float)(value - startXpOfCurrentLevel) / (startXpOfNextLevel - startXpOfCurrentLevel);
 
-            xpText.text = $"{value}/{startXpOfNectLevel}";
+            xpText.text = $"{value}/{startXpOfNextLevel}";
             fill.sizeDelta = new Vector2(finishPercent * fillBackground.sizeDelta.x, fill.sizeDelta.y);
         }
     }

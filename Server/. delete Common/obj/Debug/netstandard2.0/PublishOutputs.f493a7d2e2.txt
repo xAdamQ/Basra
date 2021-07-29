@@ -1,3 +1,0 @@
-/home/adam/Projects/Basra/Client_TDD/Assets/Plugins/Common.dll
-/home/adam/Projects/Basra/Client_TDD/Assets/Plugins/Common.deps.json
-/home/adam/Projects/Basra/Client_TDD/Assets/Plugins/Common.pdb

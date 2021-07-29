@@ -1,3 +1,0 @@
-C:\Projects\Basra\Client_TDD\Assets\Common.dll
-C:\Projects\Basra\Client_TDD\Assets\Common.deps.json
-C:\Projects\Basra\Client_TDD\Assets\Common.pdb
