@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public class FullUserInfo : MinUserInfo
 {
-    public virtual int Money { get; set; }
+    public int Money { get; set; }
 
     public int PlayedRoomsCount { get; set; }
     public int WonRoomsCount { get; set; }
@@ -11,6 +11,7 @@ public class FullUserInfo : MinUserInfo
     public int TotalEarnedMoney { get; set; }
 
     public int WinStreak { get; set; }
+    public int MaxWinStreak { get; set; }
 
     public int BasraCount { get; set; }
     public int BigBasraCount { get; set; }

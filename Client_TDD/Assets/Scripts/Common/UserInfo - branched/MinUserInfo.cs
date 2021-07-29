@@ -10,21 +10,10 @@ public class MinUserInfo
         DownloadPicture().Forget();
     }
 
-
     //transferred model
     public string Id { get; set; }
     public virtual int Level { get; set; }
-    public virtual int SelectedTitleId
-    {
-        get;
-        set;
-        // get => selectedTitleId;
-        // set
-        // {
-        //     selectedTitleId = value;
-        //     Title = Repository.Titles[SelectedTitleId]; //todo, 
-        // }
-    }
+    public int SelectedTitleId { get; set; }
     private int selectedTitleId;
     public string Name { get; set; }
     public string PictureUrl { get; set; }
@@ -53,7 +42,14 @@ public class MinUserInfo
             var asyncOp = www.SendWebRequest();
 
             // await until it's done: 
-            await asyncOp;
+            try
+            {
+                await asyncOp;
+            }
+            catch (Exception)
+            {
+                Debug.Log($"{www.error}, URL:{www.url}");
+            }
 
             // read results:
             if (www.result == UnityWebRequest.Result.ConnectionError ||
