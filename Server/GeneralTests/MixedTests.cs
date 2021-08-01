@@ -58,7 +58,7 @@ namespace GeneralTests
         [Fact]
         public void Test5()
         {
-            var arr = new List<int>() {0, 5, 6};
+            var arr = new List<int>() { 0, 5, 6 };
             _testOutputHelper.WriteLine(arr.IndexOf(6).ToString());
         }
 
@@ -118,8 +118,8 @@ namespace GeneralTests
         [Fact]
         public void Test8()
         {
-            var x = new x() {prop1 = 1};
-            var zx = (z) x;
+            var x = new x() { prop1 = 1 };
+            var zx = (z)x;
             zx.prop2 = 11;
             zx.prop1 = 13;
 

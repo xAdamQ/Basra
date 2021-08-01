@@ -38,7 +38,7 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
     protected Sprite BackSprite;
 
-    protected static readonly int HandCardCapacity = 4;
+    protected const int HandCardCapacity = 4;
 
     private void Awake()
     {
@@ -61,7 +61,7 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         // BackSprite = backSprite;
         Turn = turn;
 
-        await Extensions.LoadAndReleaseAsset<Sprite>(((CardbackType) selectedBackIndex).ToString(),
+        await Extensions.LoadAndReleaseAsset<Sprite>(((CardbackType)selectedBackIndex).ToString(),
             sprite => BackSprite = sprite);
     }
 

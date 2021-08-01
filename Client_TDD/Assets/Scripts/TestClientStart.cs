@@ -1,9 +1,25 @@
+using TMPro;
 using UnityEngine;
 
 public class TestClientStart : MonoBehaviour
 {
-    public void StartClient(string index)
+    [SerializeField] TMP_Text idInput;
+
+    public void StartClient()
     {
-        Controller.I.TstStartClient(index);
+        Controller.I.TstStartClient(idInput.text);
+        // Destroy(gameObject);
+    }
+
+    public void addChar(string chr)
+    {
+        if (idInput.text.Length >= 5) return;
+
+        idInput.text += chr;
+    }
+
+    public void clearInput()
+    {
+        idInput.text = "";
     }
 }

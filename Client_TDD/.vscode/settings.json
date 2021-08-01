@@ -54,6 +54,7 @@
         "Temp/": true,
         //what i added
         "**/*.csproj": true,
+        "Builds": true,
         // "Assets/Plugins": true,
     },
     "search.exclude": {

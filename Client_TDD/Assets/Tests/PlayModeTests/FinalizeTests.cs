@@ -221,7 +221,7 @@ namespace PlayModeTests
                 }
             });
 
-            FinalizeController.Construct(canvas, new RoomSettings(0, 0, fullUserInfos.GetRange(0, 4), 0), finalizeResult);
+            await FinalizeController.Construct(canvas, new RoomSettings(0, 0, fullUserInfos.GetRange(0, 4), 0), finalizeResult);
 
             await UniTask.Delay(9999999);
         });

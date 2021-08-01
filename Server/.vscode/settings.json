@@ -1,3 +1,8 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "files.exclude": {
+        // "Basra.Common/": true,
+        "TestClientBase/": true,
+        "**/.idea/": true, //** wildcard for all directoties
+    }
 }

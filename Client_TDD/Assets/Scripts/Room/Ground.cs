@@ -49,7 +49,7 @@ public class Ground : MonoBehaviour, IGround
     public Vector3 LeftBottomBound { get; private set; }
     public Vector3 TopRightBound { get; private set; }
 
-    private static readonly Vector2 GridSize = new Vector2(3, 5);
+    private static readonly Vector2 GridSize = new Vector2(4, 3);
 
     private void Awake()
     {

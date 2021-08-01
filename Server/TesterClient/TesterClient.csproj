@@ -11,8 +11,51 @@
       <PackageReference Include="ReadLine" Version="2.0.1" />
     </ItemGroup>
 
+<!-- 
     <ItemGroup>
-      <ProjectReference Include="..\TestClientBase\TestClientBase.csproj" />
-    </ItemGroup>
+      <ProjectReference Include="..\Basra.Common\Basra.Common.csproj" />
+    </ItemGroup> -->
+    
+<!-- 
+<Target Name="CopyLinkedContentFiles" BeforeTargets="Build">
+    <Copy SourceFiles="%(Compile.Identity)" 
+          DestinationFiles="%(Compile.Link)" 
+          SkipUnchangedFiles='true' 
+          OverwriteReadOnlyFiles='true' 
+          Condition="'%(Compile.Link)' != ''" />
+ </Target>
+
+
+
+    <ItemGroup>
+        <Compile Include="..\..\Client_TDD\Assets\Scripts\Common\ActiveRoomState.cs">
+            <Link>Linked/ActiveRoomState.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Client_TDD\Assets\Scripts\Common\RoomStateData.cs">
+            <Link>Linked/RoomStateData.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Client_TDD\Assets\Scripts\Common\RoomXpReport.cs">
+            <Link>Linked/RoomXpReport.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Client_TDD\Assets\Scripts\Common\ThrowResult.cs">
+            <Link>Linked/ThrowResult.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Client_TDD\Assets\Scripts\Common\UserRoomStatus.cs">
+            <Link>Linked/UserRoomStatus.cs</Link>
+        </Compile>
+        <Compile  Include="..\..\Client_TDD\Assets\Scripts\ConstData.cs">
+            <Link>Linked/ConstData.cs</Link>
+        </Compile> 
+        
+        <Compile  Include="..\Basra.Server\FullUserInfo.cs">
+            <Link>Linked/UserInfo/FullUserInfo.cs</Link>
+        </Compile>
+        <Compile  Include="..\Basra.Server\MinUserInfo.cs">
+            <Link>Linked/UserInfo/MinUserInfo.cs</Link>
+        </Compile>
+        <Compile  Include="..\Basra.Server\PersonalFullUserInfo.cs">
+            <Link>Linked/UserInfo/PersonalFullUserInfo.cs</Link>
+        </Compile>
+    </ItemGroup> -->
 
 </Project>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Basra.Server.Exceptions;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace TesterClient
@@ -105,5 +104,9 @@ namespace TesterClient
 
             await c.Connect(hubConnection);
         }
+    }
+
+    internal class BadUserInputException : Exception
+    {
     }
 }

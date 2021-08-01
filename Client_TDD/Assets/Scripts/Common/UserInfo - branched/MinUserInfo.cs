@@ -7,7 +7,11 @@ public class MinUserInfo
 {
     public MinUserInfo()
     {
-        DownloadPicture().Forget();
+        UniTask.Create(async () =>
+        {
+            await UniTask.DelayFrame(1); //to get data from object inititalizer >> {abdc = value}
+            DownloadPicture().Forget();
+        });
     }
 
     public int CalcLevel()
@@ -19,7 +23,7 @@ public class MinUserInfo
     private const float Expo = .55f, Divi = 10;
     private static int GetLevelFromXp(int xp)
     {
-        var level = (int) (Mathf.Pow(xp, Expo) / Divi);
+        var level = (int)(Mathf.Pow(xp, Expo) / Divi);
         return level < MaxLevel ? level : MaxLevel;
     }
 
@@ -38,8 +42,6 @@ public class MinUserInfo
 
     private async UniTaskVoid DownloadPicture()
     {
-        await UniTask.DelayFrame(1);
-
         if (string.IsNullOrEmpty(PictureUrl)) return;
 
         Picture = await GetRemoteTexture(PictureUrl);

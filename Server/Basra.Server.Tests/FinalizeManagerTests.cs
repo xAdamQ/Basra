@@ -10,9 +10,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
+using Basra.Server.Services;
 
-
-namespace Basra.Server.Services
+namespace Basra.Server.Tests
 {
     public class FinalizeManagerTests
     {

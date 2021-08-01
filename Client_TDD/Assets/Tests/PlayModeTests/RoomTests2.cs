@@ -79,7 +79,7 @@ namespace PlayModeTests
         {
             await LoadEss();
 
-            Background.Create();
+            await Background.Create();
             Background.I.SetForRoom(new List<FullUserInfo>()
             {
                 new FullUserInfo()
@@ -103,7 +103,7 @@ namespace PlayModeTests
 
             await UniTask.Delay(5000);
 
-            Background.Create();
+            await Background.Create();
             Background.I.SetForRoom(new List<FullUserInfo>()
             {
                 new FullUserInfo()
@@ -132,7 +132,7 @@ namespace PlayModeTests
         {
             await LoadEss();
 
-            new ProjectRefernces() {Canvas = canvas};
+            new ProjectRefernces() { Canvas = canvas };
 
             Controller.I = new Mock<IController>().Object;
             new Repository();
@@ -147,13 +147,13 @@ namespace PlayModeTests
                 SelectedCardback = 2,
                 SelectedBackground = 3,
 
-                OwnedBackgroundsIds = new List<int>() {1, 3},
-                OwnedCardBackIds = new List<int>() {0, 2, 3, 9},
+                OwnedBackgroundsIds = new List<int>() { 1, 3 },
+                OwnedCardBackIds = new List<int>() { 0, 2, 3, 9 },
 
                 Money = 1000,
             };
 
-            Repository.I.PersonalFullInfo.DecreaseMoneyAimTimeLeft();
+            Repository.I.PersonalFullInfo.DecreaseMoneyAimTimeLeft().Forget();
 
             await Shop.Create(canvas, ItemType.Cardback);
             await Shop.Create(canvas, ItemType.Background);
@@ -174,7 +174,7 @@ namespace PlayModeTests
         {
             await LoadEss();
 
-            RoomReferences.I = new RoomReferences {Canvas = canvas};
+            RoomReferences.I = new RoomReferences { Canvas = canvas };
             Controller.I = new Mock<IController>().Object;
             RoomSettings.I = new RoomSettings(0, 0, null, 0);
 
@@ -232,7 +232,7 @@ namespace PlayModeTests
             // Debug.Log(handle3.Result.Count);
 
             Extensions.LoadAndReleaseAsset<Sprite>(BackgroundType.dotsOcean.ToString(), sprite => new GameObject()
-                .AddComponent<SpriteRenderer>().sprite = sprite);
+                .AddComponent<SpriteRenderer>().sprite = sprite).Forget(e => throw e);
 
             yield return new WaitUntil(() => false);
         }
@@ -242,7 +242,7 @@ namespace PlayModeTests
         {
             await LoadEss();
 
-            RoomReferences.I = new RoomReferences {Canvas = canvas, Root = new GameObject().transform};
+            RoomReferences.I = new RoomReferences { Canvas = canvas, Root = new GameObject().transform };
             RoomSettings.I = new RoomSettings(0, 0, fullUserInfos.ToList(), 0);
 
             new RoomUserView.Manager();
@@ -255,15 +255,15 @@ namespace PlayModeTests
             var oppo = await PlayerBase.Create(0, 1, 0) as IOppo;
             await oppo.Distribute();
 
-            Ground.I.Distribute(new List<int> {1, 2, 3, 4});
+            Ground.I.Distribute(new List<int> { 1, 2, 3, 4 });
 
-            oppo.Throw(new ThrowResult {ThrownCard = 5, EatenCardsIds = new List<int>()});
+            oppo.Throw(new ThrowResult { ThrownCard = 5, EatenCardsIds = new List<int>() });
             await UniTask.Delay(2000);
-            oppo.Throw(new ThrowResult {ThrownCard = 5, EatenCardsIds = new List<int>()});
+            oppo.Throw(new ThrowResult { ThrownCard = 5, EatenCardsIds = new List<int>() });
             await UniTask.Delay(2000);
-            oppo.Throw(new ThrowResult {ThrownCard = 5, EatenCardsIds = new List<int>()});
+            oppo.Throw(new ThrowResult { ThrownCard = 5, EatenCardsIds = new List<int>() });
             await UniTask.Delay(2000);
-            oppo.Throw(new ThrowResult {ThrownCard = 5, EatenCardsIds = new List<int>()});
+            oppo.Throw(new ThrowResult { ThrownCard = 5, EatenCardsIds = new List<int>() });
             await UniTask.Delay(2000);
         });
     }
