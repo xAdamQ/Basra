@@ -22,7 +22,13 @@ public class Repository : IRepository
         "piece of skill",
         "holy hanaka",
         "basra grandmaster",
-        "top eater"
+        "top eater",
+        "top eater",
+        "top eater",
+        "top eater",
+        "top eater",
+        "top eater",
+        "top eater",
     };
 
 

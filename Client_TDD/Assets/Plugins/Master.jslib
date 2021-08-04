@@ -1,51 +1,71 @@
+// function GetJsStringtoUnity(str) {
+
+//   var bufferSize = lengthBytesUTF8(str) + 1;
+//   var buffer = _malloc(bufferSize);
+//   stringToUTF8(str, buffer, bufferSize);
+
+// }
+
+
 mergeInto(LibraryManager.library, {
 
-    Hello: function () {
-        window.alert("Hello, world!");
-    },
+  Hello: function () {
+    window.alert("Hello, world!");
+  },
 
-    HelloString: function (str) {
-        window.alert(Pointer_stringify(str));
-    },
+  HelloString: function (str) {
+    window.alert(Pointer_stringify(str));
+  },
 
-    PrintFloatArray: function (array, size) {
-        for (var i = 0; i < size; i++)
-            console.log(HEAPF32[(array >> 2) + i]);
-    },
+  PrintFloatArray: function (array, size) {
+    for (var i = 0; i < size; i++)
+      console.log(HEAPF32[(array >> 2) + i]);
+  },
 
-    AddNumbers: function (x, y) {
-        return x + y;
-    },
+  AddNumbers: function (x, y) {
+    return x + y;
+  },
 
-    StringReturnValueFunction: function () {
-        var returnStr = "bla";
+  StringReturnValueFunction: function () {
+    var returnStr = "bla";
 
-        var bufferSize = lengthBytesUTF8(returnStr) + 1;
-        var buffer = _malloc(bufferSize);
-        stringToUTF8(returnStr, buffer, bufferSize);
+    var bufferSize = lengthBytesUTF8(returnStr) + 1;
+    var buffer = _malloc(bufferSize);
+    stringToUTF8(returnStr, buffer, bufferSize);
 
-        return buffer;
-    },
+    return buffer;
+  },
 
-    BindWebGLTexture: function (texture) {
-        GLctx.bindTexture(GLctx.TEXTURE_2D, GL.textures[texture]);
-    },
+  BindWebGLTexture: function (texture) {
+    GLctx.bindTexture(GLctx.TEXTURE_2D, GL.textures[texture]);
+  },
 
+  GetUserData: function () {
+    var ud = JSON.stringify({
+      Token: token,
+      EnteredBefore: enteredBefore,
+      Name: FBInstant.player.getName(),
+      PictureUrl: FBInstant.player.getPhoto(),
+    });
 
-    GetUserData: () => GetJsStringtoUnity
-        (
-            {
-                Token: token,
-                EnteredBefore = enteredBefore,
-                Name: FBInstant.player.getName(),
-                PictureUrl: FBInstant.player.getPhoto(),
-            }
-        ),
+    var bufferSize = lengthBytesUTF8(ud) + 1;
+    var buffer = _malloc(bufferSize);
+    stringToUTF8(ud, buffer, bufferSize);
 
-    GetFriends: () => GetJsStringtoUnity(JSON.stringify(friends)),
+    return buffer;
+  },
 
-    StartFbigGame: () => GetJsStringtoUnity(FBInstant.startGameAsync().then(onGameStart)),
+  GetFriends: function () {
+    var fs = JSON.stringify(friends);
 
+    var bufferSize = lengthBytesUTF8(fs) + 1;
+    var buffer = _malloc(bufferSize);
+    stringToUTF8(fs, buffer, bufferSize);
 
+    return buffer;
+  },
 
+  StartFbigGame: function () { FBInstant.startGameAsync().then(onGameStart) },
+
+  IsFigSdkInit: function () { return fbigSdkInitialized },
 });

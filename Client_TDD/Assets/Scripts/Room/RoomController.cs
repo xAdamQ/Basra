@@ -75,9 +75,9 @@ public class RoomController : IRoomController
 
         await CoreGameplay.I.CreatePlayers();
 
-        Background.I.SetForRoom(RoomSettings.I.UserInfos);
-
         Repository.I.PersonalFullInfo.Money -= RoomSettings.I.BetMoneyToPay();
+
+        Background.I.SetForRoom(RoomSettings.I.UserInfos);
 
         AssignRpcs();
 
@@ -91,6 +91,7 @@ public class RoomController : IRoomController
             CoreGameplay.I.ResumeGame(activeRoomState.MyHand, activeRoomState.Ground, activeRoomState.HandCounts,
                 activeRoomState.CurrentTurn);
         }
+
     }
 
     private void AssignRpcs()

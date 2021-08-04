@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 public class JsManager : MonoBehaviour
 {
 
-    // #if UNITY_WEBGL
+#if UNITY_WEBGL && !UNITY_EDITOR
 
     [DllImport("__Internal")]
     private static extern void Hello();
@@ -32,7 +32,10 @@ public class JsManager : MonoBehaviour
     public static extern string GetFriends();
 
     [DllImport("__Internal")]
-    public static extern string StartFbigGame();
+    public static extern void StartFbigGame();
+
+    [DllImport("__Internal")]
+    public static extern int IsFigSdkInit();
 
     [System.Obsolete]
     void Start()
@@ -52,6 +55,6 @@ public class JsManager : MonoBehaviour
         var texture = new Texture2D(0, 0, TextureFormat.ARGB32, false);
         BindWebGLTexture(texture.GetNativeTextureID());
     }
-    // #endif
+#endif
 
 }

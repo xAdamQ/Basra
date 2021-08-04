@@ -6,8 +6,8 @@ namespace TesterClient
 {
     public class ConsoleLogger : ILogger
     {
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception,
-            Func<TState, Exception?, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+            Func<TState, Exception, string> formatter)
         {
             var sb = new StringBuilder();
 

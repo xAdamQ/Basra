@@ -1,9 +1,15 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class TestClientStart : MonoBehaviour
 {
     [SerializeField] TMP_Text idInput;
+
+    public static void Create()
+    {
+        Addressables.InstantiateAsync("guestView", ProjectRefernces.I.Canvas);
+    }
 
     public void StartClient()
     {

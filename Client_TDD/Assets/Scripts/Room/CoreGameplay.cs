@@ -11,8 +11,8 @@ public interface ICoreGameplay
     UniTask CreatePlayers();
     void InitialTurn();
     void NextTurn(bool endPrevTurn = true);
-    void Distribute(List<int> handCardIds);
     void BeginGame(List<int> myHand, List<int> groundCards);
+    void Distribute(List<int> handCardIds);
     void LastDistribute(List<int> handCardIds);
     UniTask EatLast(int lastEaterTurnId);
     void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts, int currentTurn);
@@ -126,7 +126,7 @@ public class CoreGameplay : ICoreGameplay
 
     private bool isLastDistribute;
 
-    public void Distribute(List<int> handCardIds)
+    private void DistributeBase(List<int> handCardIds, bool last)
     {
         UniTask.Create(async () =>
         {
@@ -134,16 +134,20 @@ public class CoreGameplay : ICoreGameplay
 
             await MyPlayer.Distribute(handCardIds);
 
-            foreach (var oppo in Oppos)
-                await oppo.Distribute();
+            foreach (var oppo in Oppos) await oppo.Distribute();
+
+            isLastDistribute = last;
         });
     }
-
+    public void Distribute(List<int> handCardIds)
+    {
+        DistributeBase(handCardIds, false);
+    }
     public void LastDistribute(List<int> handCardIds)
     {
-        isLastDistribute = true;
-        Distribute(handCardIds);
+        DistributeBase(handCardIds, true);
     }
+
     public void MyThrowResult(ThrowResult throwResult)
     {
         MyPlayer.MyThrowResult(throwResult);

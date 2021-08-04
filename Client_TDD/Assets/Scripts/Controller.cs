@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using Basra.Common;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using System.Web;
+using Sirenix.OdinInspector;
 
 public interface IController
 {
@@ -59,13 +61,13 @@ public class Controller : MonoBehaviour, IController
     private void Awake()
     {
         I = this;
+        HTTPManager.Logger = new MyBestHttpLogger();
     }
 
     public async UniTaskVoid Start()
     {
         await InitModules();
 
-        HTTPManager.Logger = new MyBestHttpLogger();
 
         // #if UNITY_EDITOR
         //         UnityEngine.Object.Destroy(GameObject.Find("tst client buttons"));
@@ -73,12 +75,23 @@ public class Controller : MonoBehaviour, IController
         //         AssignGeneralRpcs();
         // #endif
 
+#if UNITY_EDITOR
+        TestClientStart.Create();
+#endif
 
-#if UNITY_WEBGL
+#if UNITY_WEBGL && !UNITY_EDITOR
+        if (JsManager.IsFigSdkInit() == 0)
+        {
+            Debug.Log("seems like you're in the demo not fig");
+            TestClientStart.Create();
+            return;
+        }
+
+
         var fbigUserData = JsonConvert.DeserializeObject<FbigUserData>(JsManager.GetUserData());
 
-        Debug.Log(JsManager.GetUserData());
-        Debug.Log(JsonConvert.SerializeObject(fbigUserData, Formatting.Indented));
+        Debug.Log("user data: " + JsManager.GetUserData());
+        Debug.Log("user data loaeds: " + JsonConvert.SerializeObject(fbigUserData, Formatting.Indented));
 
         if (fbigUserData.EnteredBefore == 0)
             ConnectToServer(fbigUserData.Token, fbigUserData.Name, fbigUserData.PictureUrl);
@@ -89,9 +102,12 @@ public class Controller : MonoBehaviour, IController
         .Select(f => new MinUserInfo { Id = f.Id, Name = f.Name, PictureUrl = f.PictureUrl })
         .ToArray();
 
-        Debug.Log(JsManager.GetFriends());
-        Debug.Log(JsonConvert.SerializeObject(Repository.I.TopFriends, Formatting.Indented));
+        Debug.Log("friends are: " + JsManager.GetFriends());
+        Debug.Log("friends loaded: " + JsonConvert.SerializeObject(Repository.I.TopFriends, Formatting.Indented));
 
+        JsManager.StartFbigGame();
+        //you can think it would make more sence to start when conntected, but there could be network issue and require reconnect for example
+        //the decision is not final anyway
 #endif
 
     }
@@ -114,13 +130,13 @@ public class Controller : MonoBehaviour, IController
     public void TstStartClient(string id)
     {
         ConnectToServer(id, demo: true);
-
-        AssignGeneralRpcs();
     }
 
     public void InitGame(PersonalFullUserInfo myFullUserInfo, MinUserInfo[] yesterdayChampions,
         MinUserInfo[] topFriends, ActiveRoomState activeRoomState)
     {
+        Debug.Log("InitGame is being called");
+
         Repository.I.PersonalFullInfo = myFullUserInfo;
         Repository.I.YesterdayChampions = yesterdayChampions;
         // Repository.I.TopFriends = topFriends;
@@ -135,6 +151,7 @@ public class Controller : MonoBehaviour, IController
         if (activeRoomState == null)
         {
             new LobbyController();
+            Debug.Log("attempt to create and forget Lobby");
         }
         else
         {
@@ -211,8 +228,10 @@ public class Controller : MonoBehaviour, IController
     #region hub
 
     private HubConnection hubConnection;
-    // private readonly string address = "http://localhost:5000/connect";
-    private readonly string address = "https://tstappname.azurewebsites.net/connect";
+
+    private readonly string address = "http://localhost:5000/connect";
+    // private readonly string address = "https://tstappname.azurewebsites.net/connect";
+
     private readonly IProtocol protocol = new JsonProtocol(new LitJsonEncoder());
     private readonly MyReconnectPolicy myReconnectPolicy = new MyReconnectPolicy();
 
@@ -221,23 +240,30 @@ public class Controller : MonoBehaviour, IController
     {
         Debug.Log("connecting with token " + fbigToken);
 
-        var uriBuilder = new UriBuilder(address);
-        uriBuilder.Query += $"access_token={fbigToken}";
+        var query = HttpUtility.ParseQueryString(string.Empty);
+
+        query["access_token"] = fbigToken;
 
         if (name != null)
-            uriBuilder.Query += $"name={name}";
+            query["name"] = name;
         if (pictureUrl != null)
-            uriBuilder.Query += $"pictureUrl={pictureUrl}";
+            query["pictureUrl"] = pictureUrl;
 
         if (demo)
-            uriBuilder.Query += $"demo=1";
+            query["demo"] = "1";
 
+
+        var uriBuilder = new UriBuilder(address);
+
+        uriBuilder.Query = query.ToString();
+
+        Debug.Log($"connecting with url {uriBuilder.ToString()}");
 
         hubConnection = new HubConnection(uriBuilder.Uri, protocol)
         {
             ReconnectPolicy = myReconnectPolicy
         };
-
+        AssignGeneralRpcs();
 
         //I don't have this term "authentication" despite I make token authentication
         // HubConnection.AuthenticationProvider = new DefaultAccessTokenAuthenticator(HubConnection);
@@ -260,9 +286,6 @@ public class Controller : MonoBehaviour, IController
     private void OnConnected(HubConnection obj)
     {
 
-#if UNITY_WEBGL
-        JsManager.StartFbigGame();
-#endif
 
 
         Debug.Log("connected to server");

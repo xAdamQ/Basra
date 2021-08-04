@@ -15,6 +15,7 @@ namespace Basra.Common
         public List<int> HandCounts { get; set; }
         public List<int> MyHand { get; set; }
         public List<int> Ground { get; set; }
+        public bool LastHand { get; set; }
         //state specific data
     }
 }

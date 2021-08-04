@@ -50,6 +50,8 @@ public class LobbyController : ILobbyController
 
         await Shop.Create(LobbyReferences.I.Canvas, ItemType.Background);
 
+        Background.I.SetForLobby();
+
         AssignRpcs();
     }
 

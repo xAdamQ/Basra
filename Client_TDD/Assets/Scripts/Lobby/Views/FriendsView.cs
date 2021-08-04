@@ -16,7 +16,7 @@ public class FriendsView : MonoBehaviour
 
     private async UniTaskVoid Start()
     {
-        for (int i = 0; i < Repository.I.TopFriends.Length; i++)
+        for (int i = 0; i < Repository.I.TopFriends?.Length; i++)
         {
             await MinUserView.Create(Repository.I.TopFriends[i], container);
         }

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class Background : MonoBehaviour
 {
     public static Background I;
+
     /// <summary>
     /// because of the parent, it's destroyed with module group
     /// </summary>
@@ -17,8 +18,6 @@ public class Background : MonoBehaviour
 
         I.GetComponent<Canvas>().worldCamera = Camera.main;
         I.transform.SetSiblingIndex(0);
-
-        I.SetForLobby();
     }
 
     /// <summary>
@@ -39,16 +38,13 @@ public class Background : MonoBehaviour
 
         // Addressables.Release(sprietHandle);
 
-        Extensions.LoadAndReleaseAsset<Sprite>(((BackgroundType) bgId).ToString(), sprite => GetComponent<Image>().sprite = sprite)
+        Extensions.LoadAndReleaseAsset<Sprite>(((BackgroundType)bgId).ToString(), sprite => GetComponent<Image>().sprite = sprite)
             .Forget(e => throw e);
-
-        RoomController.I.Destroyed += I.SetForLobby;
     }
-
 
     public void SetForLobby()
     {
-        Extensions.LoadAndReleaseAsset<Sprite>(BackgroundType.brownLeaf.ToString(), 
+        Extensions.LoadAndReleaseAsset<Sprite>(BackgroundType.brownLeaf.ToString(),
                 sprite => GetComponent<Image>().sprite = sprite)
             .Forget(e => throw e);
     }

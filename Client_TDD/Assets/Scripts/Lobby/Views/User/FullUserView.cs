@@ -7,7 +7,8 @@ using Object = UnityEngine.Object;
 
 public class FullUserView : MinUserView
 {
-    [SerializeField] private TMP_Text
+    [SerializeField]
+    private TMP_Text
         moneyText,
         playedRoomsText,
         wonRoomsText,
