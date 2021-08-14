@@ -1,7 +1,12 @@
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
+// [Preserve]
 public class FullUserInfo : MinUserInfo
 {
+    [Preserve]
+    public FullUserInfo() { }
+
     public virtual int Money { get; set; }
 
     public int PlayedRoomsCount { get; set; }
@@ -30,10 +35,10 @@ public class FullUserInfo : MinUserInfo
 
     #region helpers
 
-    public List<int>[] OwnedItemIds => new[] {OwnedCardBackIds, OwnedBackgroundsIds};
-    public int[] SelectedItem => new[] {SelectedCardback, SelectedBackground};
+    public List<int>[] OwnedItemIds => new[] { OwnedCardBackIds, OwnedBackgroundsIds };
+    public int[] SelectedItem => new[] { SelectedCardback, SelectedBackground };
 
-    public float WinRatio => (float) WonRoomsCount / PlayedRoomsCount;
+    public float WinRatio => (float)WonRoomsCount / PlayedRoomsCount;
 
     #endregion
 }

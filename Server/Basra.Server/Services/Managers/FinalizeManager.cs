@@ -54,7 +54,7 @@ namespace Basra.Server.Services
             room.RoomUsers.ForEach(ru => _sessionRepo.DeleteRoomUser(ru));
             _sessionRepo.DeleteRoom(room);
 
-            room.SetUsersDomains(typeof(UserDomain.App.Lobby.Idle));
+            room.SetUsersDomains(typeof(UserDomain.App.Lobby.Idle)); Mapp
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Basra.Server.Services
 
             for (int i = 0; i < room.Capacity; i++) xpReports.Add(new RoomXpReport());
 
-            var betWithoutTicket = (int) (room.Bet / 1.1f);
+            var betWithoutTicket = (int)(room.Bet / 1.1f);
             var totalBet = betWithoutTicket * room.Capacity;
             var maxScore = scores.Max();
             var betXp = CalcBetXp(room.BetChoice);
@@ -122,7 +122,7 @@ namespace Basra.Server.Services
                     dUser.Money += userRoomStatus[userIndex].WinMoney = moneyPart;
                     dUser.TotalEarnedMoney += moneyPart;
 
-                    dUser.XP += xpReports[userIndex].Competition = (int) Room.DrawXpPercent * betXp;
+                    dUser.XP += xpReports[userIndex].Competition = (int)Room.DrawXpPercent * betXp;
                 }
             }
             //winner
@@ -134,7 +134,7 @@ namespace Basra.Server.Services
                 dUser.TotalEarnedMoney += totalBet;
                 dUser.WinStreak++;
 
-                dUser.XP += xpReports[0].Competition = (int) Room.WinXpPercent * betXp;
+                dUser.XP += xpReports[0].Competition = (int)Room.WinXpPercent * betXp;
             }
 
 
@@ -143,7 +143,7 @@ namespace Basra.Server.Services
             {
                 var dUser = dataUsers[loserIndex];
                 if (loserIndex != resignedUserIndex)
-                    dUser.XP += xpReports[loserIndex].Competition = (int) Room.LoseXpPercent * betXp;
+                    dUser.XP += xpReports[loserIndex].Competition = (int)Room.LoseXpPercent * betXp;
 
                 dUser.WinStreak = 0;
             }
@@ -161,21 +161,21 @@ namespace Basra.Server.Services
 
                 if (i != resignedUserIndex)
                 {
-                    dUser.XP += xpReports[i].Basra = roomActor.BasraCount * (int) Room.BasraXpPercent * betXp;
-                    dUser.XP += xpReports[i].BigBasra = roomActor.BigBasraCount * (int) Room.BigBasraXpPercent * betXp;
+                    dUser.XP += xpReports[i].Basra = roomActor.BasraCount * (int)Room.BasraXpPercent * betXp;
+                    dUser.XP += xpReports[i].BigBasra = roomActor.BigBasraCount * (int)Room.BigBasraXpPercent * betXp;
 
                     if (roomActor.EatenCardsCount > Room.GreatEatThreshold)
-                        dataUsers[i].XP += xpReports[i].GreatEat = (int) Room.GreatEatXpPercent * betXp;
+                        dataUsers[i].XP += xpReports[i].GreatEat = (int)Room.GreatEatXpPercent * betXp;
                 }
 
-                if (dUser.MaxWinStreak < dUser.WinStreak) 
+                if (dUser.MaxWinStreak < dUser.WinStreak)
                     dUser.MaxWinStreak = dUser.WinStreak;
             }
 
             return (xpReports, userRoomStatus);
         }
 
-        private int CalcBetXp(int betChoice) => (int) (100 * MathF.Pow(betChoice, 1.4f)) + 100;
+        private int CalcBetXp(int betChoice) => (int)(100 * MathF.Pow(betChoice, 1.4f)) + 100;
 
         private void LastEat(Room room)
         {

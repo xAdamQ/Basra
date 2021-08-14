@@ -30,6 +30,7 @@ namespace Basra.Server.Services
             _serviceScopeFactory = serviceScopeFactory;
         }
 
+        //for users who miss turn
         private Dictionary<RoomUser, CancellationTokenSource> TurnCancellations { get; } = new();
         private const int TurnTime = 100 * 1000; //todo change
         public void SetupTurnTimeout(RoomUser roomUser)
@@ -124,7 +125,7 @@ namespace Basra.Server.Services
         }
 
 
-        private const int BotPlayMin = 1000, BotPlayMax = 2000; //todo change
+        private const int BotPlayMin = 2000, BotPlayMax = 3000; //todo change
 
         public void BotPlay(RoomBot roomBot)
         {

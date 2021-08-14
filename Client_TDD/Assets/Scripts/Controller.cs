@@ -11,7 +11,9 @@ using Basra.Common;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using System.Web;
-using Sirenix.OdinInspector;
+using UnityEngine.Scripting;
+
+// [assembly: Preserve]
 
 public interface IController
 {
@@ -62,6 +64,7 @@ public class Controller : MonoBehaviour, IController
     {
         I = this;
         HTTPManager.Logger = new MyBestHttpLogger();
+        HTTPManager.Logger.Level = BestHTTP.Logger.Loglevels.All;
     }
 
     public async UniTaskVoid Start()
@@ -80,34 +83,33 @@ public class Controller : MonoBehaviour, IController
 #endif
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-        if (JsManager.IsFigSdkInit() == 0)
-        {
-            Debug.Log("seems like you're in the demo not fig");
-            TestClientStart.Create();
-            return;
-        }
+            if (JsManager.IsFigSdkInit() == 0)
+            {
+                Debug.Log("seems like you're in the demo not fig");
+                TestClientStart.Create();
+                return;
+            }
 
+            var fbigUserData = JsonConvert.DeserializeObject<FbigUserData>(JsManager.GetUserData());
 
-        var fbigUserData = JsonConvert.DeserializeObject<FbigUserData>(JsManager.GetUserData());
+            Debug.Log("user data: " + JsManager.GetUserData());
+            Debug.Log("user data loaeds: " + JsonConvert.SerializeObject(fbigUserData, Formatting.Indented));
 
-        Debug.Log("user data: " + JsManager.GetUserData());
-        Debug.Log("user data loaeds: " + JsonConvert.SerializeObject(fbigUserData, Formatting.Indented));
+            if (fbigUserData.EnteredBefore == 0)
+                ConnectToServer(fbigUserData.Token, fbigUserData.Name, fbigUserData.PictureUrl);
+            else
+                ConnectToServer(fbigUserData.Token);
 
-        if (fbigUserData.EnteredBefore == 0)
-            ConnectToServer(fbigUserData.Token, fbigUserData.Name, fbigUserData.PictureUrl);
-        else
-            ConnectToServer(fbigUserData.Token);
+            Repository.I.TopFriends = JsonConvert.DeserializeObject<List<FbigFriend>>(JsManager.GetFriends())
+            .Select(f => new MinUserInfo { Id = f.Id, Name = f.Name, PictureUrl = f.PictureUrl })
+            .ToArray();
 
-        Repository.I.TopFriends = JsonConvert.DeserializeObject<List<FbigFriend>>(JsManager.GetFriends())
-        .Select(f => new MinUserInfo { Id = f.Id, Name = f.Name, PictureUrl = f.PictureUrl })
-        .ToArray();
+            Debug.Log("friends are: " + JsManager.GetFriends());
+            Debug.Log("friends loaded: " + JsonConvert.SerializeObject(Repository.I.TopFriends, Formatting.Indented));
 
-        Debug.Log("friends are: " + JsManager.GetFriends());
-        Debug.Log("friends loaded: " + JsonConvert.SerializeObject(Repository.I.TopFriends, Formatting.Indented));
-
-        JsManager.StartFbigGame();
-        //you can think it would make more sence to start when conntected, but there could be network issue and require reconnect for example
-        //the decision is not final anyway
+            JsManager.StartFbigGame();
+            //you can think it would make more sence to start when conntected, but there could be network issue and require reconnect for example
+            //the decision is not final anyway
 #endif
 
     }
@@ -229,8 +231,8 @@ public class Controller : MonoBehaviour, IController
 
     private HubConnection hubConnection;
 
-    private readonly string address = "http://localhost:5000/connect";
-    // private readonly string address = "https://tstappname.azurewebsites.net/connect";
+    // private readonly string address = "http://localhost:5000/connect";
+    private readonly string address = "https://tstappname.azurewebsites.net/connect";
 
     private readonly IProtocol protocol = new JsonProtocol(new LitJsonEncoder());
     private readonly MyReconnectPolicy myReconnectPolicy = new MyReconnectPolicy();

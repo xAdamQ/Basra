@@ -1,10 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Basra.Common;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public interface IOppo : IPlayerBase
 {
@@ -46,9 +46,22 @@ public class Oppo : PlayerBase, IOppo
         {
             card.transform.DOScale(Vector3.one, .7f);
             card.transform.DOLocalMove(pointer, .5f);
+            card.transform.DORotate(new Vector3(0, 180, Random.Range(-Card.RotBound, Card.RotBound)), .3f);
 
             pointer += spacing;
         }
+    }
+
+    public override void StartTurn()
+    {
+        base.StartTurn();
+        RoomUserView.Manager.I.RoomUserViews[Turn].GetComponent<Image>().color = new Color(0f, .55f, 1f, .5f);
+    }
+
+    public override void EndTurn()
+    {
+        base.EndTurn();
+        RoomUserView.Manager.I.RoomUserViews[Turn].GetComponent<Image>().color = new Color(0f, 0f, 0f, .5f);
     }
 
     public async UniTask Distribute()

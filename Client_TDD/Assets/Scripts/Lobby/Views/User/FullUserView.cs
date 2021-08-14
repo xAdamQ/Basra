@@ -51,7 +51,7 @@ public class FullUserView : MinUserView
         wonRoomsText.text = fullUserInfo.WonRoomsCount.ToString();
         eatenCardsText.text = fullUserInfo.EatenCardsCount.ToString();
         winStreakText.text = fullUserInfo.WinStreak.ToString();
-        maxWinStreakText.text = fullUserInfo.MaxWinStreak.ToString();
+        // maxWinStreakText.text = fullUserInfo.MaxWinStreak.ToString();
         basrasText.text = fullUserInfo.BasraCount.ToString();
         bigBasrasText.text = fullUserInfo.BigBasraCount.ToString();
         //winRatioText.text = ((float)fullUserInfo.WonRoomsCount / fullUserInfo.PlayedRoomsCount).ToString("p2");

@@ -49,7 +49,7 @@ namespace Basra.Server
 
             //I will use the value converter to create the comma separated id I want!
 
-            modelBuilder.Entity<UserRelation>().HasKey(_ => new {_.UserId, _.OtherUserId});
+            modelBuilder.Entity<UserRelation>().HasKey(_ => new { _.UserId, _.OtherUserId });
 
             modelBuilder.Entity<UserRelation>()
                 .HasOne(u => u.User)
@@ -228,7 +228,7 @@ namespace Basra.Server
                         PlayedRoomsCount = 11,
                         WonRoomsCount = 3,
                         Name = "botB",
-                        PictureUrl = "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
+                        PictureUrl = "https://pbs.twimg.com/profile_images/592734306725933057/s4-h_LQC.jpg",
                         OwnedBackgroundIds = new List<int> {3},
                         OwnedTitleIds = new List<int> {0, 1},
                         OwnedCardBackIds = new List<int> {0, 8},
@@ -239,6 +239,25 @@ namespace Basra.Server
                         RequestedMoneyAidToday = 0,
                         LastMoneyAimRequestTime = null,
                         SelectedCardback = 2
+                    },
+                    new()
+                    {
+                        Id = "99999",
+                        Fbid = null,
+                        PlayedRoomsCount = 11,
+                        WonRoomsCount = 3,
+                        Name = "botC",
+                        PictureUrl =
+                            "https://d3g9pb5nvr3u7.cloudfront.net/authors/57ea8955d8de1e1602f67ca0/1902081322/256.jpg",
+                        OwnedBackgroundIds = new List<int> {3},
+                        OwnedTitleIds = new List<int> {0, 1},
+                        OwnedCardBackIds = new List<int> {0, 8},
+                        Draws = 2,
+                        Level = 8,
+                        XP = 44,
+                        RequestedMoneyAidToday = 0,
+                        LastMoneyAimRequestTime = null,
+                        SelectedCardback = 2,
                     },
                 }
             );

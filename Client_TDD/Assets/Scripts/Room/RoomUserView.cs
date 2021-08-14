@@ -12,9 +12,14 @@ public class RoomUserView : MinUserView
 {
     [SerializeField] private Image turnFillImage;
 
+    private static Color
+     TurnFillStartColor = new Color(1, .815f, 0),
+     TurnFillEndColor = new Color(1, 0, 0);
+
     public void SetTurnFill(float progress)
     {
-        turnFillImage.fillAmount = progress;
+        turnFillImage.fillAmount = 1f - progress;
+        turnFillImage.color = Color.Lerp(TurnFillStartColor, TurnFillEndColor, progress);
     }
 
     public override void ShowFullInfo()

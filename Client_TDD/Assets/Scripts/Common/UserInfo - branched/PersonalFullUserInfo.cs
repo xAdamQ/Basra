@@ -5,13 +5,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 /// <summary>
 /// this is active by default, we could be more specific and make active user info type for
 /// class that has INotifyPropertyChanged
 /// </summary>
+// [Preserve]
 public class PersonalFullUserInfo : FullUserInfo, INotifyPropertyChanged
 {
+    [Preserve]
+    public PersonalFullUserInfo() { }
+
     public override int Money
     {
         get => money;

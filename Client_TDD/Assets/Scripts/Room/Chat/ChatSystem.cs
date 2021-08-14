@@ -3,28 +3,30 @@ using System.Collections.ObjectModel;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using RTLTMPro;
-using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
-[Title("emoji and text names are their ids")]
 public class ChatSystem : MonoBehaviour
 {
     public GameObject ChatPanel;
 
-    [SerializeField] private Transform
+    [SerializeField]
+    private Transform
         emojiParent,
         textParent;
 
-    [SerializeField] private GameObject
+    [SerializeField]
+    private GameObject
         emojiMessageViewPrefab,
         textMessageViewPrefab;
 
-    [Title("I use pos, rot and scale only")] [SerializeField]
+    [Header("I use pos, rot and scale only")]
+    [SerializeField]
     private Transform[] messagesStartTransform;
-    [Title("I use pos only")] [SerializeField]
+    [Header("I use pos only")]
+    [SerializeField]
     private Transform[] messagesEndTransform;
 
     private Dictionary<string, string> texts = new Dictionary<string, string>();

@@ -39,7 +39,6 @@ namespace Basra.Server.Services
         /// </summary>
         Task BotPlay(RoomBot roomBot);
         Task<ActiveRoomState> GetFullRoomState(RoomUser roomUser);
-        Task Surrender(RoomUser roomUser);
         Task ShowMessage(RoomUser roomUser, string msgId);
     }
 
@@ -120,7 +119,6 @@ namespace Basra.Server.Services
                 roomActor.Hand = roomActor.Room.Deck.CutRange(RoomActor.HandSize);
 
             var callName = room.Deck.Count > 0 ? "Distribute" : "LastDistribute";
-
 
             foreach (var roomUser in room.RoomUsers)
                 await _masterHub.Clients.User(roomUser.Id).SendAsync(callName, roomUser.Hand);
@@ -326,24 +324,24 @@ namespace Basra.Server.Services
             }
         } //tested
 
-        public async Task Surrender(RoomUser roomUser)
-        {
-            var room = roomUser.Room;
+        // public async Task Surrender(RoomUser roomUser)
+        // {
+        //     var room = roomUser.Room;
 
-            var currentActor = room.RoomActors[room.CurrentTurn];
-            if (currentActor is RoomUser ru)
-                _serverLoop.CancelTurnTimeout(ru);
+        //     var currentActor = room.RoomActors[room.CurrentTurn];
+        //     if (currentActor is RoomUser ru)
+        //         _serverLoop.CancelTurnTimeout(ru);
 
-            var otherUsers = room.RoomUsers.Where(ru => ru != roomUser);
-            await Task.WhenAll(otherUsers.Select(u =>
-                _masterHub.Clients.User(u.Id).SendAsync("UserSurrender", roomUser.TurnId)));
-            //blocks the client and waits for finalize result
+        //     var otherUsers = room.RoomUsers.Where(ru => ru != roomUser);
+        //     await Task.WhenAll(otherUsers.Select(u =>
+        //         _masterHub.Clients.User(u.Id).SendAsync("UserSurrender", roomUser.TurnId)));
+        //     //blocks the client and waits for finalize result
 
-            // room.RoomActors.First(_ => _ == roomUser);
+        //     // room.RoomActors.First(_ => _ == roomUser);
 
-            // if(room)
-            await _finalizeManager.FinalizeRoom(roomUser.Room, roomUser);
-        }
+        //     // if(room)
+        //     await _finalizeManager.FinalizeRoom(roomUser.Room, roomUser);
+        // }
 
 
         private static HashSet<string> EmojiIds = new()

@@ -5,6 +5,7 @@ using System.Linq;
 using Basra.Common;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.UI;
 
 public interface IPlayerBase
 {
@@ -65,7 +66,7 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
             sprite => BackSprite = sprite);
     }
 
-    private int Turn { get; set; }
+    protected int Turn { get; set; }
 
     public List<Card> HandCards { get; } = new List<Card>();
 
@@ -82,15 +83,13 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
         animSeq
             .Append(card.transform.DOMove(targetPoz, .5f))
-            .Join(card.transform.DORotate(new Vector3(0, 180), .3f).SetDelay(.2f));
+            .Join(card.transform.DORotate(card.transform.eulerAngles.SetY(180f), .3f).SetDelay(.2f));
 
         return targetPoz;
     }
 
     public async UniTask EatLast()
     {
-        UpdateEatStatus(Ground.I.Cards.Count, false, false);
-
         var sequence = DOTween.Sequence();
 
         await Ground.I.EatLast(HandCenter, sequence);
@@ -105,7 +104,6 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         Ground.I.Throw(card, result.EatenCardsIds, animSeq, meetPoint);
 
         var count = result.EatenCardsIds?.Count ?? 0;
-        UpdateEatStatus(count, result.Basra, result.BigBasra);
 
         HandCards.Remove(card);
         OrganizeHand();
@@ -113,49 +111,12 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         CoreGameplay.I.NextTurn();
     }
 
-    private void UpdateEatStatus(int eatenCount, bool basra, bool bbasra)
-    {
-        eatenCount += eatenCount;
-        eatenText.text = eatenCount.ToString();
-        if (basra) AddBasra();
-        if (bbasra) AddBigBasra();
-    }
-
-    #region player ui
-
-    private int eatenCount;
-    [SerializeField] private TextMesh eatenText;
-
-    [SerializeField] private GameObject basraSymbol, bigBasraSymbol;
-    [SerializeField] private TextMesh basraText, bigBasraText;
-    private int basraCount, bigBasraCount;
-
-    private void AddBasra()
-    {
-        basraCount++;
-        basraSymbol.SetActive(true);
-        basraText.text = basraCount.ToString();
-        if (basraCount != 1) basraText.gameObject.SetActive(true);
-    }
-    private void AddBigBasra()
-    {
-        bigBasraCount++;
-        bigBasraSymbol.SetActive(true);
-        bigBasraText.text = bigBasraCount.ToString();
-        if (bigBasraCount != 1) bigBasraText.gameObject.SetActive(true);
-    }
-
-    #endregion
-
     protected void OrganizeHand()
     {
         var pointer = startCard.localPosition;
 
         var handSize = endCard.localPosition.x - startCard.localPosition.x;
         var spacing = new Vector3(handSize / (HandCards.Count - 1), 0, .05f);
-
-        if (this is IPlayer)
-            HandCards.ForEach(card => card.transform.eulerAngles = Vector3.up * 180);
 
         foreach (var card in HandCards)
         {
@@ -167,11 +128,12 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
     public virtual void StartTurn()
     {
         turnTimer.Play();
+
     }
     public virtual void EndTurn()
     {
         turnTimer.Stop();
-        RoomUserView.Manager.I.RoomUserViews[Turn].SetTurnFill(0);
+        RoomUserView.Manager.I.RoomUserViews[Turn].SetTurnFill(1);
     }
 
 

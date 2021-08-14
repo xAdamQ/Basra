@@ -49,13 +49,17 @@ public class Player : PlayerBase, IPlayer
 
         foreach (var card in HandCards)
         {
+            card.transform.eulerAngles = new Vector3(0, 0, Random.Range(-Card.RotBound, Card.RotBound));
             card.transform.DOScale(Vector3.one, .7f);
             card.transform.DOLocalMove(pointer, .5f);
 
             pointer += spacing;
         }
 
-        HandCards.ForEach(card => card.transform.DORotate(Vector3.up * 180, .4f).SetDelay(.4f));
+        HandCards.ForEach(
+            card => card.transform.DORotate(card.transform.eulerAngles.SetY(180), .4f)
+            .OnComplete(() => Destroy(card.GetComponent<SpriteRenderer>()))
+            .SetDelay(.4f));
     }
 
     public void Throw(Card card)
@@ -77,7 +81,19 @@ public class Player : PlayerBase, IPlayer
     {
         base.StartTurn();
 
+        HandCards.ForEach(c => c.Front.GetComponent<SpriteRenderer>().color = Color.white);
+
         IsPlayable = true;
+    }
+
+    public override void EndTurn()
+    {
+        base.EndTurn();
+        HandCards.ForEach(c =>
+        {
+            // c.GetComponent<SpriteRenderer>().color = Color.clear;
+            c.Front.GetComponent<SpriteRenderer>().color = new Color(.5f, .5f, .5f, .7f);
+        });
     }
 
     private void MissTurn()

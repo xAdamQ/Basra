@@ -7,9 +7,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3543430328771617202, guid: 05c99b833f1c4ec1791667a4b7014fa6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7384095494490767505, guid: 05c99b833f1c4ec1791667a4b7014fa6, type: 3}
       propertyPath: m_Name
-      value: bg shop item
+      value: bg shop item Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7384095494490767510, guid: 05c99b833f1c4ec1791667a4b7014fa6, type: 3}
       propertyPath: m_Pivot.x

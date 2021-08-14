@@ -19,6 +19,8 @@ public class Card : MonoBehaviour
     public static Vector2 Bounds = new Vector2(.75f, 1f);
     public Front Front { get; set; }
 
+    public static int RotBound = 10;
+
     public async UniTask AddFront(int id)
     {
         Front = await Front.Create(id, transform);

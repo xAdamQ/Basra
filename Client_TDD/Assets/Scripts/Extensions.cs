@@ -37,4 +37,9 @@ public static class Extensions
         onComplete(handle.Result);
         Addressables.Release(handle);
     }
+    public static Vector3 SetY(this Vector3 vector3, float y)
+    {
+        return new Vector3(vector3.x, y, vector3.z);
+    }
+
 }

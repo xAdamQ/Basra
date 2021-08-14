@@ -49,7 +49,7 @@ public class Ground : MonoBehaviour, IGround
     public Vector3 LeftBottomBound { get; private set; }
     public Vector3 TopRightBound { get; private set; }
 
-    private static readonly Vector2 GridSize = new Vector2(4, 3);
+    private static readonly Vector2 GridSize = new Vector2(4, 4);
 
     private void Awake()
     {
@@ -72,16 +72,13 @@ public class Ground : MonoBehaviour, IGround
             var index = new Vector2(i % GridSize.x, i / (int)GridSize.x);
 
             var poz = new Vector3(leftBottomBound.position.x + index.x * unitDistance.x,
-                leftBottomBound.position.y + index.y * unitDistance.y, z);
+                leftBottomBound.position.y + index.y * unitDistance.y, index.y + z);
 
             Cards[i].transform.position = new Vector3(Cards[i].transform.position.x, Cards[i].transform.position.y, z);
             //because animating z is ugly in 2d world
 
             sequence.Insert(animTime, Cards[i].transform.DOMove(poz, .5f));
             //todo override the last animation on anim intersection
-
-            var zRot = Random.Range(-15, 15);
-            sequence.Insert(animTime, Cards[i].transform.DORotate(new Vector3(0, 180, zRot), .3f));
 
             z += -.05f;
         }
@@ -90,11 +87,14 @@ public class Ground : MonoBehaviour, IGround
 
     private void DistributeAnim(Sequence sequence)
     {
+        var animTime = sequence.Duration();
+
         OrganizeGrid(sequence);
 
         foreach (var card in Cards)
         {
-            card.transform.DOScale(Vector3.one, .7f);
+            sequence.Insert(animTime, card.transform.DOScale(Vector3.one, .7f));
+            sequence.Insert(animTime, card.transform.DORotate(new Vector3(0, 180, Random.Range(-Card.RotBound, Card.RotBound)), .3f));
         }
     }
 

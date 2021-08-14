@@ -94,7 +94,7 @@ namespace TesterClient
                 //     .AddDebug()
                 //     .AddFilter(l => l =+= LogLevel.Information)
                 // )
-                .WithUrl("http://localhost:5000/connect?access_token=" + Clients.Count + 4)
+                .WithUrl($"http://localhost:5000/connect?access_token={ Clients.Count + 4}&demo=1")
                 //.WithUrl("https://tstappname.azurewebsites.net/connect?access_token=" + Id + 4)
                 .Build();
 

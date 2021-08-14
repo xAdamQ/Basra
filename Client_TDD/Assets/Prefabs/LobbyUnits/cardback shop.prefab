@@ -61,14 +61,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.7058824}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6e3c0441e8e4485438eeaa2af3ac6ad8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d25e2ce15dd1c67438e4b70f404fb197, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 8
 --- !u!114 &3192317243511595253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,11 +323,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff0f1c76d314462a96c6d51525648908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundTiles:
-    m_AssetGUID: ec2bedc0bf43d0043b4bcf62b33c94e8
-    m_SubObjectName: 
-    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   shopItemPrefab: {fileID: 7384095494490767505, guid: 05c99b833f1c4ec1791667a4b7014fa6, type: 3}
   layoutGroup: {fileID: 3192317244493829205}
   shopPanel: {fileID: 3192317243511595019}

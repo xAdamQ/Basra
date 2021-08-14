@@ -2,9 +2,12 @@ using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// [Preserve]
 public class MinUserInfo
 {
+    [Preserve]
     public MinUserInfo()
     {
         UniTask.Create(async () =>

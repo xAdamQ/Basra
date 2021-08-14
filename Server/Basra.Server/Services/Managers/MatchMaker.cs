@@ -84,10 +84,11 @@ namespace Basra.Server.Services
             room.RoomBots = new();
             var botsCount = room.Capacity - room.RoomUsers.Count;
 
+            var botIds = new List<string> { "999", "9999", "99999" };
             for (int i = 0; i < botsCount; i++)
             {
-                var botId = StaticRandom.GetRandom(2) == 0 ? "999" : "9999"; //todo change this
-                room.RoomBots.Add(new RoomBot {Id = botId, Room = room});
+                var botId = botIds.Cut(StaticRandom.GetRandom(botIds.Count));
+                room.RoomBots.Add(new RoomBot { Id = botId, Room = room });
             }
 
             room.RoomActors.AddRange(room.RoomBots);

@@ -1,4 +1,3 @@
-using Sirenix.OdinInspector;
 using System;
 using TMPro;
 using UnityEngine;
@@ -31,7 +30,8 @@ public class Translatable : MonoBehaviour
 
     #endregion
 
-    [LabelText("Arabic is default, start with English, another...")] [SerializeField]
+    [Header("Arabic is default, start with English, another...")]
+    [SerializeField]
     private string[] translations = new string[languagesEnumValues.Length - 1];
 
     //first lang is english, matches index 1 in enum
@@ -48,12 +48,12 @@ public class Translatable : MonoBehaviour
         }
     }
 
-    private static Language[] languagesEnumValues = (Language[]) Enum.GetValues(typeof(Language));
+    private static Language[] languagesEnumValues = (Language[])Enum.GetValues(typeof(Language));
     public static Language[] LanguagesEnumValues => languagesEnumValues;
 
     public void Awake()
     {
-        var langindex = (int) CurrentLanguage - 1;
+        var langindex = (int)CurrentLanguage - 1;
 
         if (langindex >= 0)
             GetComponent<TMP_Text>().text = translations[langindex];

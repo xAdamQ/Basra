@@ -173,6 +173,12 @@ namespace GeneralTests
             var obj = new Mock<ID>().Object;
             obj.TstEvent += () => { _testOutputHelper.WriteLine("hello"); };
         }
+
+        [Fact]
+        public void BuildString()
+        {
+
+        }
     }
 
     class x

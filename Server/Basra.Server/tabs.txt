@@ -1,3 +1,0 @@
-https://dotnetcorecentral.com/blog/authentication-handler-in-asp-net-core/
-https://referbruv.com/blog/posts/implementing-custom-authentication-scheme-and-handler-in-aspnet-core-3x
-https://andrewlock.net/exploring-the-cookieauthenticationmiddleware-in-asp-net-core/
