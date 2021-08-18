@@ -33,13 +33,13 @@ public enum CardbackType
 
 public enum BackgroundType
 {
-    blueTrans,
+    blackFlower,
     arabesqueBlack,
     brownLeaf,
+    blueTrans,
     dotsOcean,
     arabesqueDark,
     berry,
-    blackFlower,
 }
 
 /// <summary>
@@ -157,11 +157,11 @@ public class Shop : MonoBehaviour
 
         // var itemSprites = await loadHandle;
 
-        var itemType = (int) ItemType;
+        var itemType = (int)ItemType;
 
         for (int i = 0; i < ConstData.ItemPrices[itemType].Length; i++)
         {
-            var itemId = ItemType == ItemType.Cardback ? (int) cardbacksInOrder[i] : (int) backgroundInOrder[i];
+            var itemId = ItemType == ItemType.Cardback ? (int)cardbacksInOrder[i] : (int)backgroundInOrder[i];
 
             var bought = Repository.I.PersonalFullInfo.OwnedItemIds[itemType].Contains(itemId);
             var inUse = Repository.I.PersonalFullInfo.SelectedItem[itemType] == itemId;

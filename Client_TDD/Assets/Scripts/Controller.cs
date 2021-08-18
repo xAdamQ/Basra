@@ -3,17 +3,13 @@ using BestHTTP.SignalRCore;
 using BestHTTP.SignalRCore.Encoders;
 using BestHTTP.SignalRCore.Messages;
 using Cysharp.Threading.Tasks;
-using Newtonsoft.Json;
-using System;
 using System.Linq;
+using System;
 using System.Collections.Generic;
 using Basra.Common;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using System.Web;
-using UnityEngine.Scripting;
-
-// [assembly: Preserve]
 
 public interface IController
 {
@@ -71,7 +67,6 @@ public class Controller : MonoBehaviour, IController
     {
         await InitModules();
 
-
         // #if UNITY_EDITOR
         //         UnityEngine.Object.Destroy(GameObject.Find("tst client buttons"));
         //         ConnectToServer("0").Forget();
@@ -83,33 +78,32 @@ public class Controller : MonoBehaviour, IController
 #endif
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-            if (JsManager.IsFigSdkInit() == 0)
-            {
-                Debug.Log("seems like you're in the demo not fig");
-                TestClientStart.Create();
-                return;
-            }
+        if (JsManager.IsFigSdkInit() == 0)
+        {
+            Debug.Log("seems like you're in the demo not fig");
+            TestClientStart.Create();
+            return;
+        }
 
-            var fbigUserData = JsonConvert.DeserializeObject<FbigUserData>(JsManager.GetUserData());
+        Debug.Log("user data: " + JsManager.GetUserData());
+        var fbigUserData = JsonUtility.FromJson<FbigUserData>(JsManager.GetUserData());
+        Debug.Log("user data loaeds: " + JsonUtility.ToJson(fbigUserData));
 
-            Debug.Log("user data: " + JsManager.GetUserData());
-            Debug.Log("user data loaeds: " + JsonConvert.SerializeObject(fbigUserData, Formatting.Indented));
+        if (fbigUserData.EnteredBefore == 0)
+            ConnectToServer(fbigUserData.Token, fbigUserData.Name, fbigUserData.PictureUrl);
+        else
+            ConnectToServer(fbigUserData.Token);
 
-            if (fbigUserData.EnteredBefore == 0)
-                ConnectToServer(fbigUserData.Token, fbigUserData.Name, fbigUserData.PictureUrl);
-            else
-                ConnectToServer(fbigUserData.Token);
+        Repository.I.TopFriends = JsonUtility.FromJson<List<FbigFriend>>(JsManager.GetFriends())
+        .Select(f => new MinUserInfo { Id = f.Id, Name = f.Name, PictureUrl = f.PictureUrl })
+        .ToArray();
 
-            Repository.I.TopFriends = JsonConvert.DeserializeObject<List<FbigFriend>>(JsManager.GetFriends())
-            .Select(f => new MinUserInfo { Id = f.Id, Name = f.Name, PictureUrl = f.PictureUrl })
-            .ToArray();
+        Debug.Log("friends are: " + JsManager.GetFriends());
+        Debug.Log("friends loaded: " + JsonUtility.ToJson(Repository.I.TopFriends));
 
-            Debug.Log("friends are: " + JsManager.GetFriends());
-            Debug.Log("friends loaded: " + JsonConvert.SerializeObject(Repository.I.TopFriends, Formatting.Indented));
-
-            JsManager.StartFbigGame();
-            //you can think it would make more sence to start when conntected, but there could be network issue and require reconnect for example
-            //the decision is not final anyway
+        JsManager.StartFbigGame();
+        //you can think it would make more sence to start when conntected, but there could be network issue and require reconnect for example
+        //the decision is not final anyway
 #endif
 
     }
@@ -131,7 +125,7 @@ public class Controller : MonoBehaviour, IController
 
     public void TstStartClient(string id)
     {
-        ConnectToServer(id, demo: true);
+        ConnectToServer(id, name: "some guest", demo: true);
     }
 
     public void InitGame(PersonalFullUserInfo myFullUserInfo, MinUserInfo[] yesterdayChampions,
@@ -280,7 +274,8 @@ public class Controller : MonoBehaviour, IController
 
     private bool OnMessage(HubConnection arg1, Message msg)
     {
-        Debug.Log($"msg is {JsonConvert.SerializeObject(msg, Formatting.Indented)}");
+
+        Debug.Log($"msg is { JsonUtility.ToJson(msg)}");
 
         return true;
     }

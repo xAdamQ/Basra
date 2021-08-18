@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1841399434738087151
 Transform:
   m_ObjectHideFlags: 0
@@ -79,11 +79,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startCard: {fileID: 4351395155193826544}
   endCard: {fileID: 5301519445194812547}
-  eatenText: {fileID: 0}
-  basraSymbol: {fileID: 0}
-  bigBasraSymbol: {fileID: 0}
-  basraText: {fileID: 0}
-  bigBasraText: {fileID: 0}
 --- !u!114 &1198226614742449554
 MonoBehaviour:
   m_ObjectHideFlags: 0
