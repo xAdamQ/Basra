@@ -1,5 +1,5 @@
-using System.Collections;
 using Cysharp.Threading.Tasks;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -34,12 +34,12 @@ public enum CardbackType
 public enum BackgroundType
 {
     blackFlower,
-    arabesqueBlack,
+    berry,
     brownLeaf,
     blueTrans,
     dotsOcean,
     arabesqueDark,
-    berry,
+    arabesqueBlack,
 }
 
 /// <summary>
@@ -87,15 +87,16 @@ public class Shop : MonoBehaviour
         CardbackType.redStarPlus,
         CardbackType.greenStarPlus,
     };
+
     private static BackgroundType[] backgroundInOrder =
     {
-        BackgroundType.berry,
-        BackgroundType.arabesqueBlack,
-        BackgroundType.arabesqueDark,
         BackgroundType.blackFlower,
-        BackgroundType.blueTrans,
+        BackgroundType.berry,
         BackgroundType.brownLeaf,
+        BackgroundType.blueTrans,
         BackgroundType.dotsOcean,
+        BackgroundType.arabesqueDark,
+        BackgroundType.arabesqueBlack,
     };
 
     private readonly List<ShopItem> shopItems = new List<ShopItem>();

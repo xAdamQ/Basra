@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -54,7 +53,7 @@ namespace Basra.Server.Services
             room.RoomUsers.ForEach(ru => _sessionRepo.DeleteRoomUser(ru));
             _sessionRepo.DeleteRoom(room);
 
-            room.SetUsersDomains(typeof(UserDomain.App.Lobby.Idle)); Mapp
+            room.SetUsersDomains(typeof(UserDomain.App.Lobby.Idle));
         }
 
         /// <summary>

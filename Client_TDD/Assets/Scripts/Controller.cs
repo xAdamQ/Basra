@@ -1,15 +1,15 @@
+using Basra.Common;
 using BestHTTP;
 using BestHTTP.SignalRCore;
 using BestHTTP.SignalRCore.Encoders;
 using BestHTTP.SignalRCore.Messages;
 using Cysharp.Threading.Tasks;
-using System.Linq;
 using System;
 using System.Collections.Generic;
-using Basra.Common;
+using System.Web;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using System.Web;
+using System.Linq;
 
 public interface IController
 {
@@ -60,7 +60,6 @@ public class Controller : MonoBehaviour, IController
     {
         I = this;
         HTTPManager.Logger = new MyBestHttpLogger();
-        HTTPManager.Logger.Level = BestHTTP.Logger.Loglevels.All;
     }
 
     public async UniTaskVoid Start()
@@ -125,7 +124,7 @@ public class Controller : MonoBehaviour, IController
 
     public void TstStartClient(string id)
     {
-        ConnectToServer(id, name: "some guest", demo: true);
+        ConnectToServer(id, name: "some_guest", demo: true);
     }
 
     public void InitGame(PersonalFullUserInfo myFullUserInfo, MinUserInfo[] yesterdayChampions,
@@ -225,7 +224,7 @@ public class Controller : MonoBehaviour, IController
 
     private HubConnection hubConnection;
 
-    // private readonly string address = "http://localhost:5000/connect";
+    //private readonly string address = "http://localhost:5000/connect";
     private readonly string address = "https://tstappname.azurewebsites.net/connect";
 
     private readonly IProtocol protocol = new JsonProtocol(new LitJsonEncoder());

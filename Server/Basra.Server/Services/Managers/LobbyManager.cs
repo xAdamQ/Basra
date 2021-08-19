@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Basra.Server.Exceptions;
-using System.Linq;
-using AutoMapper;
 using Basra.Server.Extensions;
 using Hangfire;
+using System;
+using System.Threading.Tasks;
 
 namespace Basra.Server.Services
 {
@@ -87,11 +84,11 @@ namespace Basra.Server.Services
         /// <summary>
         /// I can't remove items in the future, that's why their price order is the id
         /// </summary>
-        private static readonly int[] CardbackPrices = {50, 65, 100, 450, 600, 700, 1800, 2000, 2600};
+        private static readonly int[] CardbackPrices = { 50, 65, 100, 450, 600, 700, 1800, 2000, 2600 };
         /// <summary>
         /// I can't remove items in the future, that's why their price order is the id
         /// </summary>
-        private static readonly int[] BackgroundPrices = {50, 65, 100, 450, 900, 1200, 2400};
+        private static readonly int[] BackgroundPrices = { 50, 65, 100, 450, 900, 1200, 2400 };
 
         /*
         so say I want to add an item, what to do?
