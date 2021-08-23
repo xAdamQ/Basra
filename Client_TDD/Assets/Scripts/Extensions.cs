@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Text;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -40,6 +42,18 @@ public static class Extensions
     public static Vector3 SetY(this Vector3 vector3, float y)
     {
         return new Vector3(vector3.x, y, vector3.z);
+    }
+
+    public static string DescriptorString(this object obj)
+    {
+        var res = new StringBuilder();
+        foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(obj))
+        {
+            string name = descriptor.Name;
+            object value = descriptor.GetValue(obj);
+            res.Append(name + " <> " + value);
+        }
+        return res.ToString();
     }
 
 }

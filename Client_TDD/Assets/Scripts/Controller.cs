@@ -235,22 +235,40 @@ public class Controller : MonoBehaviour, IController
     {
         Debug.Log("connecting with token " + fbigToken);
 
-        var query = HttpUtility.ParseQueryString(string.Empty);
+        var query = "https://tstappname.azurewebsites.net/connect?";
 
-        query["access_token"] = fbigToken;
+        query += $"access_token={fbigToken}";
 
         if (name != null)
-            query["name"] = name;
+            query += $"&name={name}";
         if (pictureUrl != null)
-            query["pictureUrl"] = pictureUrl;
-
+            query += $"&pictureUrl={pictureUrl}";
         if (demo)
-            query["demo"] = "1";
+            query += $"&demo=1  ";
+
+        var uriBuilder = new UriBuilder(address)
+        {
+            Query = query,
+        };
+
+        #region build the query using httpUtility
+        // var query = HttpUtility.ParseQueryString(string.Empty);
+
+        // query["access_token"] = fbigToken;
+
+        // if (name != null)
+        //     query["name"] = name;
+        // if (pictureUrl != null)
+        //     query["pictureUrl"] = pictureUrl;
+
+        // if (demo)
+        //     query["demo"] = "1";
 
 
-        var uriBuilder = new UriBuilder(address);
+        // var uriBuilder = new UriBuilder(address);
 
-        uriBuilder.Query = query.ToString();
+        // uriBuilder.Query = query.ToString();
+        #endregion
 
         Debug.Log($"connecting with url {uriBuilder.ToString()}");
 

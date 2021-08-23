@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Startup.unity
-    guid: 30f7dc944bf8fb40997b8f1385b98805
+    path: Assets/Huawei/Demos/Account/AccountDemo.unity
+    guid: 1dbccd04ace8d724fb56d687a0118ac0
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 1e660542d718602ddb7331b085d42e43, type: 2}
