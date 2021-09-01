@@ -3,6 +3,7 @@ using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BestHTTP.SignalR;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
@@ -21,7 +22,8 @@ public class Ground : MonoBehaviour, IGround
 {
     public static async UniTask Create()
     {
-        I = (await Addressables.InstantiateAsync("ground", RoomReferences.I.Root)).GetComponent<Ground>();
+        I = (await Addressables.InstantiateAsync("ground", RoomReferences.I.Root))
+            .GetComponent<Ground>();
     }
 
     public static IGround I;
@@ -49,7 +51,7 @@ public class Ground : MonoBehaviour, IGround
     public Vector3 LeftBottomBound { get; private set; }
     public Vector3 TopRightBound { get; private set; }
 
-    private static readonly Vector2 GridSize = new Vector2(4, 4);
+    private Vector2Int GridSize = new Vector2Int(3, 4);
 
     private void Awake()
     {
@@ -59,22 +61,54 @@ public class Ground : MonoBehaviour, IGround
 
     private void OrganizeGrid(Sequence sequence)
     {
-        //todo full grid case
+        if (Cards.Count == 0 || Cards.Count == 1) return;
 
-        float z = 3;
+        var z = 3f;
         var animTime = sequence.Duration();
 
-        var unitDistance = new Vector2((topRightBound.position.x - leftBottomBound.position.x) / GridSize.x,
-            (topRightBound.position.y - leftBottomBound.position.y) / GridSize.y);
+        GridSize.x = Mathf.RoundToInt(Mathf.Sqrt(Cards.Count));
+        GridSize.y = Mathf.CeilToInt(Cards.Count / (float)GridSize.x);
+
+        var spacing = new Vector3(
+            (topRightBound.position.x - leftBottomBound.position.x) / (GridSize.x),
+            (topRightBound.position.y - leftBottomBound.position.y) / (GridSize.y),
+            .1f);
+
+        // var xSize = Cards.Count / 2;
+        // if (xSize == 0) return; //ground is empty
+        // var ySize = xSize + Cards.Count % xSize;
+        //
+        // var pointer = leftBottomBound.position;
+        //
+        // var linearIndex = 0;
+        //
+        // for (int y = 0; y < ySize; y++)
+        // {
+        //     pointer.y += unitDistance.y;
+        //
+        //     for (int x = 0; x < xSize; x++)
+        //     {
+        //         if (linearIndex >= Cards.Count) break;
+        //
+        //         pointer.x += unitDistance.x;
+        //         pointer.z += unitDistance.z;
+        //
+        //         Cards[linearIndex].transform.position = pointer;
+        //         linearIndex++;
+        //         Debug.Log(pointer);
+        //     }
+        //     pointer.x = leftBottomBound.position.x;
+        // }
 
         for (int i = 0; i < Cards.Count; i++)
         {
-            var index = new Vector2(i % GridSize.x, i / (int)GridSize.x);
+            var index = new Vector2Int(i % GridSize.x, i / GridSize.x);
 
-            var poz = new Vector3(leftBottomBound.position.x + index.x * unitDistance.x,
-                leftBottomBound.position.y + index.y * unitDistance.y, index.y + z);
+            var poz = new Vector3(leftBottomBound.position.x + index.x * spacing.x,
+                leftBottomBound.position.y + index.y * spacing.y, index.y + z);
 
-            Cards[i].transform.position = new Vector3(Cards[i].transform.position.x, Cards[i].transform.position.y, z);
+            Cards[i].transform.position = new Vector3(Cards[i].transform.position.x,
+                Cards[i].transform.position.y, z);
             //because animating z is ugly in 2d world
 
             sequence.Insert(animTime, Cards[i].transform.DOMove(poz, .5f));
@@ -94,14 +128,17 @@ public class Ground : MonoBehaviour, IGround
         foreach (var card in Cards)
         {
             sequence.Insert(animTime, card.transform.DOScale(Vector3.one, .7f));
-            sequence.Insert(animTime, card.transform.DORotate(new Vector3(0, 180, Random.Range(-Card.RotBound, Card.RotBound)), .3f));
+            sequence.Insert(animTime,
+                card.transform.DORotate(
+                    new Vector3(0, 180, Random.Range(-Card.RotBound, Card.RotBound)), .3f));
         }
     }
 
 
     private const float EatAnimTime = .5f;
 
-    public void Throw(Card thrownCard, List<int> eatenCardsIds, Sequence animSeq, Vector2? meetPoint)
+    public void Throw(Card thrownCard, List<int> eatenCardsIds, Sequence animSeq,
+        Vector2? meetPoint)
     {
         thrownCard.Player = null;
 
@@ -124,13 +161,15 @@ public class Ground : MonoBehaviour, IGround
         OrganizeGrid(animSeq);
     }
 
-    private void EatAnim(Card thrownCard, List<Card> eatenCards, Sequence animSeq, Vector2? meetPoint)
+    private void EatAnim(Card thrownCard, List<Card> eatenCards, Sequence animSeq,
+        Vector2? meetPoint)
     {
         var meetPointValue = meetPoint ?? thrownCard.transform.position;
 
         var animTime = animSeq.Duration();
 
-        eatenCards.ForEach(c => animSeq.Insert(animTime, c.transform.DOMove(meetPointValue, EatAnimTime)));
+        eatenCards.ForEach(c =>
+            animSeq.Insert(animTime, c.transform.DOMove(meetPointValue, EatAnimTime)));
         eatenCards.ForEach(c => c.transform.transform.position += Vector3.back * 3);
 
         animTime += EatAnimTime;

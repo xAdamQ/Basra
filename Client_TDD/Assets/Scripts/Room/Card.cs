@@ -19,7 +19,7 @@ public class Card : MonoBehaviour
     public static Vector2 Bounds = new Vector2(.75f, 1f);
     public Front Front { get; set; }
 
-    public static int RotBound = 10;
+    public static int RotBound = 5;
 
     public async UniTask AddFront(int id)
     {
@@ -46,7 +46,8 @@ public class Card : MonoBehaviour
     {
         return await Create(parent, null, frontId);
     }
-    public static async UniTask<Card> CreateMyPlayerCard(int frontId, Sprite backSprite, Transform parent)
+    public static async UniTask<Card> CreateMyPlayerCard(int frontId, Sprite backSprite,
+        Transform parent)
     {
         return await Create(parent, backSprite, frontId);
     }
@@ -66,13 +67,15 @@ public class Card : MonoBehaviour
     private IEnumerator Drag(Vector3 initialPoz)
     {
         var player = (Player as IPlayer);
-        while (Input.GetMouseButton(0) && player.IsPlayable)
+        while (Input.GetMouseButton(0) && player!.IsPlayable)
         {
-            transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
+            transform.position =
+                Camera.main!.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
+                    Input.mousePosition.y, 10));
             yield return null;
         }
 
-        if (player.IsPlayable &&
+        if (player!.IsPlayable &&
             transform.position.x < Ground.I.TopRightBound.x &&
             transform.position.y < Ground.I.TopRightBound.y &&
             transform.position.x > Ground.I.LeftBottomBound.x &&

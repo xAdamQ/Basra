@@ -37,6 +37,26 @@ namespace HmsPlugin
             }
         }
 
+        private static AccountAuthService OAuthService
+        {
+            get
+            {
+                Debug.Log("[HMS]: GET AUTH");
+                var authParams = new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
+                    .SetAuthorizationCode()
+                    .SetEmail()
+                    .SetUid()
+                    .SetId()
+                    .SetProfile()
+                    .CreateParams();
+
+                Debug.Log("[HMS]: AUTHPARAMS AUTHSERVICE" + authParams);
+                var result = AccountAuthManager.GetService(authParams);
+                Debug.Log("[HMS]: RESULT AUTHSERVICE" + result);
+                return result;
+            }
+        }
+
         //private static AccountAuthService DefaultDriveAuthService
         //{
         //    get
@@ -66,7 +86,8 @@ namespace HmsPlugin
         {
             base.Awake();
             Debug.Log("[HMSAccountManager]: AWAKE AUTHSERVICE");
-            authService = DefaultAuthService;
+            // authService = DefaultAuthService;
+            authService = OAuthService;
             //authServiceDrive = DefaultDriveAuthService;
         }
 

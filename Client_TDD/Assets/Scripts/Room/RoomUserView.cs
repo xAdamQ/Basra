@@ -10,11 +10,16 @@ using UnityEngine.UI;
 /// </summary>
 public class RoomUserView : MinUserView
 {
-    [SerializeField] private Image turnFillImage;
+    [SerializeField] private Image turnFillImage, turnFocusOutline;
 
     private static Color
-     TurnFillStartColor = new Color(1, .815f, 0),
-     TurnFillEndColor = new Color(1, 0, 0);
+        TurnFillStartColor = new Color(1, .815f, 0),
+        TurnFillEndColor = new Color(1, 0, 0);
+
+    public void TurnFocus(bool getFocus)
+    {
+        // turnFocusOutline.gameObject.SetActive(getFocus);
+    }
 
     public void SetTurnFill(float progress)
     {
@@ -38,7 +43,9 @@ public class RoomUserView : MinUserView
 
         private async UniTask<RoomUserView> Create(int place, MinUserInfo minUserInfo)
         {
-            var view = (await Addressables.InstantiateAsync($"roomUserView{place}", RoomReferences.I.Canvas)).GetComponent<RoomUserView>();
+            var view =
+                (await Addressables.InstantiateAsync($"roomUserView{place}",
+                    RoomReferences.I.Canvas)).GetComponent<RoomUserView>();
 
             view.Init(minUserInfo);
 

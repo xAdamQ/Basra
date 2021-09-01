@@ -53,12 +53,16 @@ public class RoomController : IRoomController
     //the initialization issue, this should be after injection, means after awake
     private async UniTask Initialize(ActiveRoomState activeRoomState)
     {
+        Controller.I.OnAppPause += DestroyModuleGroup;
+
         var containerRoot = new GameObject("Room").transform;
 
         new RoomReferences();
         RoomReferences.I.Canvas = (await Addressables.InstantiateAsync("canvas", containerRoot))
             .GetComponent<Transform>();
         RoomReferences.I.Root = containerRoot;
+
+        PrizeView.Create();
 
         await ChatSystem.Create();
 
@@ -88,10 +92,10 @@ public class RoomController : IRoomController
             //todo why this
             await UniTask.DelayFrame(1);
 
-            CoreGameplay.I.ResumeGame(activeRoomState.MyHand, activeRoomState.Ground, activeRoomState.HandCounts,
+            CoreGameplay.I.ResumeGame(activeRoomState.MyHand, activeRoomState.Ground,
+                activeRoomState.HandCounts,
                 activeRoomState.CurrentTurn);
         }
-
     }
 
     private void AssignRpcs()
@@ -123,22 +127,32 @@ public class RoomController : IRoomController
 
             //immmm this will cause issues on the running funs like decreaseMoneyAimTime and events
             //change indie values instead of rewrite the whole object
+            finalizeResult.PersonalFullUserInfo.Followers =
+                Repository.I.PersonalFullInfo.Followers;
+            finalizeResult.PersonalFullUserInfo.Followings =
+                Repository.I.PersonalFullInfo.Followings;
+
             Repository.I.PersonalFullInfo = finalizeResult.PersonalFullUserInfo;
             Repository.I.PersonalFullInfo.DecreaseMoneyAimTimeLeft().Forget();
-            //todo you MUST edit each value on it's own now?
+            //todo you MUST edit each value on it's own now?, this is about replacing the whole
+            //data object, but it seems fine
 
-            FinalizeController.Construct(RoomReferences.I.Canvas, RoomSettings.I, finalizeResult).Forget();
+            FinalizeController.Construct(RoomReferences.I.Canvas, RoomSettings.I, finalizeResult)
+                .Forget();
         });
     }
 
     public void StartRoomRpc(List<int> handCardIds, List<int> groundCardIds)
     {
         CoreGameplay.I.BeginGame(handCardIds, groundCardIds);
-        BlockingPanel.I.Hide();
+
+        BlockingPanel.Hide();
     }
 
     public void DestroyModuleGroup()
     {
+        Controller.I.OnAppPause -= DestroyModuleGroup;
+
         //killing non mb
         RoomReferences.I = null;
         CoreGameplay.I = null;
@@ -149,6 +163,8 @@ public class RoomController : IRoomController
         Object.Destroy(GameObject.Find("Room"));
 
         Controller.I.RemoveModuleRpcs(GetType().ToString());
+
+        I = null;
 
         Destroyed?.Invoke();
     }

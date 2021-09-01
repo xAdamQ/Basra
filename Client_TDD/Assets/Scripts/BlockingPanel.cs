@@ -3,46 +3,56 @@ using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.UI;
 
-public interface IBlockingPanel
-{
-    void Show(string message = null);
-    void Hide(string message = null);
-}
-
-public class BlockingPanel : MonoBehaviour, IBlockingPanel
+public class BlockingPanel : MonoBehaviour
 {
     [SerializeField] private TMP_Text messageText;
-    [SerializeField] private GameObject dismissButton;
+    [SerializeField] private Button dismissButton; //for both cancellation and dismiss
 
-    public static IBlockingPanel I;
+    private static BlockingPanel i;
 
-    public static async UniTask Create()
+    public static async UniTask Show(string message = null, Action dismissButtonAction = null)
     {
-        I = (await Addressables.InstantiateAsync("blockingPanel", ProjectRefernces.I.Canvas)).GetComponent<BlockingPanel>();
-    }
+        if (i) Destroy(i.gameObject);
+        //you can remove this to support multiple panels
+        //but the new should draw over the old
 
-    private void Awake()
-    {
-        I = this;
-    }
+        i = (await Addressables.InstantiateAsync("blockingPanel", ProjectReferences.I.Canvas))
+            .GetComponent<BlockingPanel>();
 
-    public void Show(string message = null)
-    {
-        dismissButton.SetActive(false);
-        gameObject.SetActive(true);
-        messageText.text = message ?? "";
-    }
-    public void Hide(string message = null)
-    {
-        if (message != null)
+        if (dismissButtonAction != null)
         {
-            messageText.text = message;
-            dismissButton.SetActive(true);
+            i.dismissButton.onClick.AddListener(() => dismissButtonAction());
+            //if you want to reuse the same object make sure to save and remove this
+            i.dismissButton.gameObject.SetActive(true);
         }
         else
         {
-            gameObject.SetActive(false);
+            i.dismissButton.gameObject.SetActive(false);
+        }
+
+        i.messageText.text = message ?? "";
+    }
+
+    public static void HideDismiss()
+    {
+        i.dismissButton.gameObject.SetActive(false);
+    }
+
+    //you shouldn't hide manually if you have cancellation action
+    //cancel itself hide
+    public static void Hide(string message = null)
+    {
+        if (string.IsNullOrEmpty(message))
+        {
+            if (i) //this line enables you to call hide aggressively
+                Destroy(i.gameObject);
+        }
+        else
+        {
+            i.messageText.text = message;
+            i.dismissButton.gameObject.SetActive(true);
         }
     }
 }

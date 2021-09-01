@@ -15,10 +15,9 @@ public class Repository : IRepository
     public MinUserInfo[] YesterdayChampions { get; set; }
     public MinUserInfo[] TopFriends { get; set; }
 
-
     public static string[] Titles =
     {
-        "thw chosen one",
+        "Basra Player", //all take this because the feature is not implemented yet
         "piece of skill",
         "holy hanaka",
         "basra grandmaster",
@@ -31,13 +30,12 @@ public class Repository : IRepository
         "top eater",
     };
 
-
     //since controller module group doesn't die 
     public static IRepository I;
 
     public Repository()
     {
-        if (I != null) throw new Exception("reinitializing singleton that already exists");
+        // if (I != null) throw new Exception("reinitializing singleton that already exists");
         I = this;
     }
 }

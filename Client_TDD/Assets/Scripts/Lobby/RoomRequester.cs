@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -19,7 +20,7 @@ public class RoomRequester : MonoBehaviour
         var bet = RoomSettings.Bets[transform.GetSiblingIndex()];
 
         betText.text = bet.ToString();
-        ticketText.text = (bet * .1f).ToString();
+        ticketText.text = (bet / 11f).ToString();
     }
 
     public async void RequestRandomRoom(int betChoice)
@@ -30,9 +31,11 @@ public class RoomRequester : MonoBehaviour
             return;
         }
 
-        await BlockingOperationManager.I.Start(Controller.I.RequestRandomRoom(betChoice, capacityChoiceButton.CurrentChoice));
+        await BlockingOperationManager.I.Start(
+            Controller.I.RequestRandomRoom(betChoice, capacityChoiceButton.CurrentChoice));
 
-        BlockingPanel.I.Show("room is pending");
+        BlockingPanel.Show("finding players")
+            .Forget(e => throw e);
         //this is shown even if the room is started, it's removed before game start directly
     }
 }

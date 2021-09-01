@@ -15,7 +15,9 @@ using UnityEngine.Scripting;
 public class PersonalFullUserInfo : FullUserInfo, INotifyPropertyChanged
 {
     [Preserve]
-    public PersonalFullUserInfo() { }
+    public PersonalFullUserInfo()
+    {
+    }
 
     public override int Money
     {
@@ -62,6 +64,12 @@ public class PersonalFullUserInfo : FullUserInfo, INotifyPropertyChanged
     public int FlipWinCount { get; set; }
 
     public List<int> Titles { get; set; }
+
+    //every approach has it's cons and pros
+    //but paging has some real downside in terms of performance that I can't resolve
+    //so I load all and limit to 100 follower/ing
+    public List<MinUserInfo> Followers { get; set; }
+    public List<MinUserInfo> Followings { get; set; }
 
     public event PropertyChangedEventHandler PropertyChanged;
     [NotifyPropertyChangedInvocator]

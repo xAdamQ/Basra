@@ -3,6 +3,7 @@
 using HuaweiMobileServices.Base;
 using HuaweiMobileServices.IAP;
 using HuaweiMobileServices.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,12 +51,20 @@ namespace HmsPlugin
         public void CheckIapAvailability()
         {
             iapClient = Iap.GetIapClient();
-            ITask<EnvReadyResult> task = iapClient.EnvReady;
+
+
+            var task = iapClient.EnvReady;
             task.AddOnSuccessListener((result) =>
             {
                 Debug.Log("[HMSIAPManager] checkIapAvailabity SUCCESS");
+
+                if (result != null)
+                    Debug.Log("envRes : " + JsonConvert.SerializeObject(result, Formatting.Indented));
+                Debug.Log("hola");
+
                 iapAvailable = true;
                 OnCheckIapAvailabilitySuccess?.Invoke();
+
                 ObtainProductInfo(HMSIAPProductListSettings.Instance.GetProductIdentifiersByType(HMSIAPProductType.Consumable),
                     HMSIAPProductListSettings.Instance.GetProductIdentifiersByType(HMSIAPProductType.NonConsumable),
                     HMSIAPProductListSettings.Instance.GetProductIdentifiersByType(HMSIAPProductType.Subscription));
@@ -237,7 +246,7 @@ namespace HmsPlugin
                 return;
             }
 
-            PurchaseIntentReq purchaseIntentReq = new PurchaseIntentReq
+            var purchaseIntentReq = new PurchaseIntentReq
             {
                 PriceType = productInfo.PriceType,
                 ProductId = productInfo.ProductId,
@@ -249,18 +258,26 @@ namespace HmsPlugin
             {
                 if (result != null)
                 {
+                    Debug.Log("PurchaseIntentResult p data: " + result.PaymentData);
+                    Debug.Log("PurchaseIntentResult sig: " + result.PaymentSignature);
+
                     Debug.Log("[HMSIAPManager]:" + result.ErrMsg + result.ReturnCode.ToString());
                     Debug.Log("[HMSIAPManager]: Buying " + purchaseIntentReq.ProductId);
+
+
                     Status status = result.Status;
-                    status.StartResolutionForResult((androidIntent) =>
+                    status.StartResolutionForResult(androidIntent =>
                     {
-                        PurchaseResultInfo purchaseResultInfo = iapClient.ParsePurchaseResultInfoFromIntent(androidIntent);
+                        var purchaseResultInfo = iapClient.ParsePurchaseResultInfoFromIntent(androidIntent);
 
                         if (purchaseResultInfo.ReturnCode == OrderStatusCode.ORDER_STATE_SUCCESS)
                         {
-                            Debug.Log("[HMSIAPManager] HMSInAppPurchaseData" + purchaseResultInfo.InAppPurchaseData);
-                            Debug.Log("[HMSIAPManager] HMSInAppDataSignature" + purchaseResultInfo.InAppDataSignature);
+                            Debug.Log("[HMSIAPManager] HMSInAppPurchaseData: " +
+                                JsonConvert.SerializeObject(purchaseResultInfo.InAppPurchaseData, Formatting.Indented));
+                            Debug.Log("[HMSIAPManager] HMSInAppDataSignature: " + purchaseResultInfo.InAppDataSignature);
+
                             OnBuyProductSuccess.Invoke(purchaseResultInfo);
+
                             if (consumeAfter)
                                 ConsumePurchase(purchaseResultInfo);
                         }

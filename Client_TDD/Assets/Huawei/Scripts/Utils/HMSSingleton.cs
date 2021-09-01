@@ -19,11 +19,15 @@ public class HMSSingleton<T> : MonoBehaviour where T : MonoBehaviour
 
     public virtual void Awake()
     {
-        DontDestroyOnLoad(this);
         if (instance == null)
+        {
             instance = this as T;
-        else if (instance != this)
-            Destroy(this);
+            DontDestroyOnLoad(this);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }
 

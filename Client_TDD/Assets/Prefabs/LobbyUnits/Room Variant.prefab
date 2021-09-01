@@ -575,6 +575,7 @@ MonoBehaviour:
   - {fileID: 2515066043916251675}
   startChoice: 0
   CurrentChoice: 0
+  choiceColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &4735187312569646025
 GameObject:
   m_ObjectHideFlags: 0
@@ -1277,11 +1278,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2374603536482375698, guid: 07e9ce2e520f7ec4d88b62d6d0524410, type: 3}
       propertyPath: m_fontColor.b
-      value: 0.23921569
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2374603536482375698, guid: 07e9ce2e520f7ec4d88b62d6d0524410, type: 3}
       propertyPath: m_fontColor.g
-      value: 0.84313726
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2374603536482375698, guid: 07e9ce2e520f7ec4d88b62d6d0524410, type: 3}
       propertyPath: m_fontColor.r
@@ -1293,7 +1294,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2374603536482375698, guid: 07e9ce2e520f7ec4d88b62d6d0524410, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4282243071
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 2689701050895293250, guid: 07e9ce2e520f7ec4d88b62d6d0524410, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1831,7 +1832,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7430388248347704698, guid: 9c549eff4cfbe38448a731225fd9adfd, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 73.9062
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 7430388248347704698, guid: 9c549eff4cfbe38448a731225fd9adfd, type: 3}
       propertyPath: m_SizeDelta.y

@@ -19,7 +19,6 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 {
     [SerializeField] protected Transform startCard, endCard;
 
-    //todo test this
     public static int ConvertTurnToPlace(int turn, int myTurn)
     {
         if (myTurn == turn) return 0;
@@ -55,11 +54,6 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
     private async UniTask Init(int selectedBackIndex, int turn)
     {
-        //todo this will be different with the full back sprite set
-        //i suggest array of sprite addresses
-
-        // var backSprite = await Addressables.LoadAssetAsync<Sprite>($"cardbackSprites[0_{selectedBackIndex}]");
-        // BackSprite = backSprite;
         Turn = turn;
 
         await Extensions.LoadAndReleaseAsset<Sprite>(((CardbackType)selectedBackIndex).ToString(),
@@ -83,7 +77,8 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
         animSeq
             .Append(card.transform.DOMove(targetPoz, .5f))
-            .Join(card.transform.DORotate(card.transform.eulerAngles.SetY(180f), .3f).SetDelay(.2f));
+            .Join(card.transform.DORotate(card.transform.eulerAngles.SetY(180f), .3f)
+                .SetDelay(.2f));
 
         return targetPoz;
     }
@@ -111,24 +106,23 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         CoreGameplay.I.NextTurn();
     }
 
-    protected void OrganizeHand()
+    private void OrganizeHand()
     {
         var pointer = startCard.localPosition;
 
         var handSize = endCard.localPosition.x - startCard.localPosition.x;
-        var spacing = new Vector3(handSize / (HandCards.Count - 1), 0, .05f);
+        var spacing = new Vector3(handSize / (HandCards.Count + 1), 0, .05f);
 
         foreach (var card in HandCards)
         {
-            card.transform.DOLocalMove(pointer, .75f);
             pointer += spacing;
+            card.transform.DOLocalMove(pointer, .75f);
         }
     }
 
     public virtual void StartTurn()
     {
         turnTimer.Play();
-
     }
     public virtual void EndTurn()
     {
@@ -139,7 +133,9 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
     public static async UniTask<PlayerBase> Create(int selectedCardback, int placeIndex, int turn)
     {
-        var player = (await Addressables.InstantiateAsync($"player{placeIndex}", RoomReferences.I.Root)).GetComponent<PlayerBase>();
+        var player =
+            (await Addressables.InstantiateAsync($"player{placeIndex}", RoomReferences.I.Root))
+            .GetComponent<PlayerBase>();
 
         await player.Init(selectedCardback, turn);
 

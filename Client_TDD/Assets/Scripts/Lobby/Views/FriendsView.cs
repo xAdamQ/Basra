@@ -1,12 +1,16 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 public class FriendsView : MonoBehaviour
 {
+    public static FriendsView I;
+
     public static async UniTask Create()
     {
-        await Addressables.InstantiateAsync("friendsView", LobbyReferences.I.Canvas);
+        I = (await Addressables.InstantiateAsync("friendsView", LobbyReferences.I.Canvas))
+            .GetComponent<FriendsView>();
     }
 
     /// <summary>
@@ -14,11 +18,20 @@ public class FriendsView : MonoBehaviour
     /// </summary>
     [SerializeField] private Transform container;
 
+    public async UniTask ShowFriendList(bool followings)
+    {
+        var list = followings
+            ? Repository.I.PersonalFullInfo.Followings
+            : Repository.I.PersonalFullInfo.Followers;
+
+        foreach (Transform go in container)
+            Destroy(go.gameObject);
+        foreach (var info in list)
+            await MinUserView.Create(info, container);
+    }
+
     private async UniTaskVoid Start()
     {
-        for (int i = 0; i < Repository.I.TopFriends?.Length; i++)
-        {
-            await MinUserView.Create(Repository.I.TopFriends[i], container);
-        }
+        await ShowFriendList(true);
     }
 }

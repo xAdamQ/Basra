@@ -10,6 +10,8 @@ using HuaweiMobileServices.Id;
 using HmsPlugin;
 using HuaweiMobileServices.Utils;
 using UnityEngine.UI;
+using Newtonsoft.Json;
+using Cysharp.Threading.Tasks;
 
 public class IapDemoManager : MonoBehaviour
 {
@@ -38,11 +40,16 @@ public class IapDemoManager : MonoBehaviour
     private void OnCheckIapAvailabilitySuccess()
     {
         statusText.text = "IAP is ready.";
+        HMSIAPManager.Instance.OnIsSandboxActivatedSuccess += res => Debug.Log("sandbox res is: " + JsonConvert.SerializeObject(res));
+        HMSIAPManager.Instance.IsSandboxActivated();
     }
 
     public void SignIn()
     {
-        HMSIAPManager.Instance.CheckIapAvailability();
+        HMSAccountManager.Instance.OnSignInSuccess += acc =>
+         HMSIAPManager.Instance.CheckIapAvailability();
+
+        HMSAccountManager.Instance.SilentSignIn();
     }
 
     private void RestorePurchases()
@@ -60,18 +67,24 @@ public class IapDemoManager : MonoBehaviour
 
     private void OnBuyProductSuccess(PurchaseResultInfo obj)
     {
-        if (obj.InAppPurchaseData.ProductId == "removeads")
+        UniTask.Create(async () =>
         {
-            // Hide banner Ad for example
-            //HMSAdsKitManager.Instance.HideBannerAd();
-        }
-        else if (obj.InAppPurchaseData.ProductId == "coins100")
-        {
-            // Give your player coins here.
-        }
-        else if (obj.InAppPurchaseData.ProductId == "premium")
-        {
-            // Grant your player premium feature.
-        }
+            await Controller.I.SendAsync("IAPBuy", obj.InAppPurchaseData.ProductId);
+
+            switch (obj.InAppPurchaseData.ProductId)
+            {
+                case "money500":
+                    Debug.Log("added 500 money on the server and the client should this");
+                    break;
+
+                case "money3000":
+                    Debug.Log("added 500 money on the server and the client should this");
+                    break;
+
+                case "royalBg":
+                    Debug.Log("the user owns the royal bg on the server now");
+                    break;
+            }
+        });
     }
 }

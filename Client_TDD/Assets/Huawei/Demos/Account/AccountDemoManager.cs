@@ -43,7 +43,11 @@ public class AccountDemoManager : MonoBehaviour
     {
         loggedInUser.text = string.Format(LOGGED_IN, authHuaweiId.DisplayName);
 
-        JsonConvert.SerializeObject(loggedInUser, Formatting.Indented);
+        Debug.Log("authCode: " + authHuaweiId.AuthorizationCode);
+        Debug.Log("accToken: " + authHuaweiId.AccessToken);
+        Debug.Log("idToken: " + authHuaweiId.IdToken);
+        Debug.Log("uid: " + authHuaweiId.Uid);
+        Debug.Log("openId: " + authHuaweiId.OpenId);
     }
 
     public void OnLoginFailure(HMSException error)

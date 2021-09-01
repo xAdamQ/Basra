@@ -49,7 +49,7 @@ public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
     {
         if (!hasPurchasedNoAds)
         {
-            LoadBannerAd(UnityBannerAdPositionCodeType.POSITION_BOTTOM);
+            LoadBannerAd(UnityBannerAdPositionCodeType.POSITION_TOP, UnityBannerAdSize.BANNER_SIZE_SMART);
             LoadInterstitialAd();
         }
         LoadRewardedAd();
@@ -84,7 +84,11 @@ public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
         bannerView.SizeType = bannerSize;
         bannerView.AdStatusListener = bannerAdStatusListener;
         _isBannerAdLoaded = false;
+
+        Debug.Log("the used banner id is: " + bannerView.AdId);
+
         bannerView.LoadBanner(new AdParam.Builder().Build());
+
         if (adsKitSettings.GetBool(HMSAdsKitSettings.ShowBannerOnLoad))
             bannerView.ShowBanner();
         else

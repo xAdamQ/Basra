@@ -33,7 +33,7 @@ namespace PlayModeTests
             Controller.I = new Mock<IController>().Object;
 
             LobbyReferences.I = new LobbyReferences { Canvas = canvas };
-            ProjectRefernces.I = new ProjectRefernces { Canvas = canvas };
+            ProjectReferences.I = new ProjectReferences { Canvas = canvas };
 
             await Toast.Create();
 

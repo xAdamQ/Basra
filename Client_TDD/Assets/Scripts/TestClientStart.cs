@@ -8,7 +8,7 @@ public class TestClientStart : MonoBehaviour
 
     public static void Create()
     {
-        Addressables.InstantiateAsync("guestView", ProjectRefernces.I.Canvas);
+        Addressables.InstantiateAsync("guestView", ProjectReferences.I.Canvas);
     }
 
     public void StartClient()

@@ -16,32 +16,42 @@ public class FinalMuv : MonoBehaviour
         bigBasrasText,
         winMoneyText;
 
-    public void Init(MinUserInfo minUserInfo, UserRoomStatus oppoRoomResult)
+    [SerializeField] private Button followButton;
+
+    private FullUserInfo fullUserInfo;
+
+    public void Init(FullUserInfo fullUserInfo, UserRoomStatus oppoRoomResult)
     {
-        Id = minUserInfo.Id;
+        this.fullUserInfo = fullUserInfo;
+
+        Id = fullUserInfo.Id;
 
         eatenCardsText.text = oppoRoomResult.EatenCards.ToString();
         basrasText.text = oppoRoomResult.Basras.ToString();
         bigBasrasText.text = oppoRoomResult.BigBasras.ToString();
         winMoneyText.text = oppoRoomResult.WinMoney.ToString();
 
-        if (minUserInfo.IsPictureLoaded)
-            SetPicture(minUserInfo.Picture);
+        UpdateFriendShipView();
+
+        if (fullUserInfo.IsPictureLoaded)
+            SetPicture(fullUserInfo.Picture);
         else
-            minUserInfo.PictureLoaded += pic => SetPicture(pic);
+            fullUserInfo.PictureLoaded += pic => SetPicture(pic);
     }
 
-    public static async UniTaskVoid Create(MinUserInfo minUserInfo, UserRoomStatus oppoRoomResult, Transform parent)
+    public static async UniTaskVoid Create(FullUserInfo fullUserInfo, UserRoomStatus oppoRoomResult,
+        Transform parent)
     {
         var asset = await Addressables.InstantiateAsync("finalMuv", parent);
-        asset.GetComponent<FinalMuv>().Init(minUserInfo, oppoRoomResult);
+        asset.GetComponent<FinalMuv>().Init(fullUserInfo, oppoRoomResult);
     }
 
     private void SetPicture(Texture2D texture2D)
     {
         if (texture2D != null)
             picture.sprite =
-                Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), new Vector2(.5f, .5f));
+                Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height),
+                    new Vector2(.5f, .5f));
     }
 
     /// <summary>
@@ -49,11 +59,46 @@ public class FinalMuv : MonoBehaviour
     /// </summary>
     public void ShowFullInfo()
     {
-        BlockingOperationManager.I.Forget(Controller.I.GetPublicFullUserInfo(Id), FullUserView.Show);
+        followButton.interactable = false;
+        FullUserView.Show(fullUserInfo);
+        // BlockingOperationManager.I.Forget(Controller.I.GetPublicFullUserInfo(Id), FullUserView.Show);
     }
 
-    public void AddFriend()
+    public void ToggleFollow()
     {
-        throw new System.NotImplementedException();
+        UniTask.Create(async () =>
+        {
+            await Controller.I.SendAsync("ToggleFollow", Id);
+
+            switch (fullUserInfo.Friendship)
+            {
+                case (int)FriendShip.Friend:
+                    fullUserInfo.Friendship = (int)FriendShip.Following;
+                    Repository.I.PersonalFullInfo.Followings
+                        .RemoveAll(i => i.Id == Id);
+                    break;
+                case (int)FriendShip.Follower:
+                    fullUserInfo.Friendship = (int)FriendShip.None;
+                    Repository.I.PersonalFullInfo.Followings
+                        .RemoveAll(i => i.Id == Id);
+                    break;
+                case (int)FriendShip.Following:
+                    fullUserInfo.Friendship = (int)FriendShip.Friend;
+                    Repository.I.PersonalFullInfo.Followings.Add(fullUserInfo);
+                    break;
+                case (int)FriendShip.None:
+                    fullUserInfo.Friendship = (int)FriendShip.Follower;
+                    Repository.I.PersonalFullInfo.Followings.Add(fullUserInfo);
+                    break;
+            }
+
+            UpdateFriendShipView();
+        });
+    }
+    private void UpdateFriendShipView()
+    {
+        //follower and not friend means you're not following back
+        followButton.interactable = fullUserInfo.Friendship == (int)FriendShip.Following ||
+                                    fullUserInfo.Friendship == (int)FriendShip.None;
     }
 }

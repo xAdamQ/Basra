@@ -287,7 +287,10 @@ MonoBehaviour:
   bigBasrasText: {fileID: 0}
   winRatioText: {fileID: 0}
   totalEarnedMoney: {fileID: 0}
+  followingBackText: {fileID: 0}
+  followButtonText: {fileID: 0}
   addFriendButton: {fileID: 0}
+  challengeButton: {fileID: 0}
 --- !u!1 &5708478432740458537
 GameObject:
   m_ObjectHideFlags: 0
@@ -2190,7 +2193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6293033527109255914, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 200
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 6293033527109255914, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2226,7 +2229,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6293033527109255914, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 64
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 6293033527109255914, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

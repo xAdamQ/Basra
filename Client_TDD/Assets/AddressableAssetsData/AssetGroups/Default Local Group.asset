@@ -185,6 +185,26 @@ MonoBehaviour:
     m_Address: blue
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 23439f6f8b0c42cf6a991002fc201565
+    m_Address: personalFuv
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b88df44ca29b82cbf8edd03e50ba2059
+    m_Address: challengeResponsePanel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3dd6197a88a52531b886335b1e091095
+    m_Address: signInPanel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e472a5005f55d2e30862196db83c81d3
+    m_Address: levelUpPanel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7079fdbf10628a11daacdb86f4687e1c
+    m_Address: prizeView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b2c7024f110de7f4f9f1208d9a0e5d05, type: 2}
   m_SchemaSet:

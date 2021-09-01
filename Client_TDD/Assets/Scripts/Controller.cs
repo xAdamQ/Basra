@@ -7,14 +7,17 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Web;
+using HmsPlugin;
+using HuaweiMobileServices.Id;
+using HuaweiMobileServices.Utils;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using System.Linq;
+using UnityEngine.SceneManagement;
 
 public interface IController
 {
-    void InitGame(PersonalFullUserInfo myFullUserInfo, MinUserInfo[] yesterdayChampions,
-        MinUserInfo[] topFriends, ActiveRoomState activeRoomState);
+    void InitGame(PersonalFullUserInfo myFullUserInfo, ActiveRoomState activeRoomState);
 
     //they are unitasks because they are rpcs
     UniTask<FullUserInfo> GetPublicFullUserInfo(string userId);
@@ -38,13 +41,17 @@ public interface IController
 
     void RemoveModuleRpcs(string moduleName);
     UniTask<MinUserInfo> TestWaitWithReturn();
+    UniTask<T> InvokeAsync<T>(string method, params object[] args);
+    UniTask<T> InvokeAsync<T>(string method);
+    void Send(string method, params object[] args);
+    event Action OnAppPause;
 }
 
-public class ProjectRefernces
+public class ProjectReferences
 {
-    public static ProjectRefernces I;
+    public static ProjectReferences I;
 
-    public ProjectRefernces()
+    public ProjectReferences()
     {
         I = this;
     }
@@ -62,15 +69,60 @@ public class Controller : MonoBehaviour, IController
         HTTPManager.Logger = new MyBestHttpLogger();
     }
 
+    [ContextMenu("pause")]
+    public void pauseTest()
+    {
+        OnApplicationPause(true);
+    }
+    [ContextMenu("resume")]
+    public void resumeTest()
+    {
+        OnApplicationPause(false);
+    }
+
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        Debug.Log("app pause: " + pauseStatus);
+
+        if (pauseStatus) //paused
+        {
+            // UniTask.Create(async () =>
+            // {
+            //     await SceneManager.UnloadSceneAsync(0);
+            // });
+
+            // OnAppPause?.Invoke(); //module groups register themselves to die here
+            // hubConnection.CloseAsync();
+            // hubConnection?.StartClose();
+        }
+        else //returned
+        {
+            UniTask.Create(async () =>
+            {
+                // if (hubConnection != null)
+                await hubConnection.CloseAsync();
+
+                SceneManager.LoadSceneAsync(0);
+            });
+        }
+    }
+
+    public event Action OnAppPause;
+
+    [SerializeField] private GameObject AdPlaceholder;
+
     public async UniTaskVoid Start()
     {
+        AdPlaceholder.SetActive(!HMSAdsKitManager.Instance.IsBannerAdLoaded);
+        HMSAdsKitManager.Instance.OnBannerLoadEvent += () => AdPlaceholder.SetActive(false);
+
         await InitModules();
 
-        // #if UNITY_EDITOR
-        //         UnityEngine.Object.Destroy(GameObject.Find("tst client buttons"));
-        //         ConnectToServer("0").Forget();
-        //         AssignGeneralRpcs();
-        // #endif
+#if UNITY_ANDROID && !UNITY_EDITOR
+        HMSAccountManager.Instance.OnSignInSuccess = OnLoginSuccess;
+        HMSAccountManager.Instance.OnSignInFailed = OnLoginFailure;
+        SignInPanel.Create();
+#endif
 
 #if UNITY_EDITOR
         TestClientStart.Create();
@@ -89,9 +141,9 @@ public class Controller : MonoBehaviour, IController
         Debug.Log("user data loaeds: " + JsonUtility.ToJson(fbigUserData));
 
         if (fbigUserData.EnteredBefore == 0)
-            ConnectToServer(fbigUserData.Token, fbigUserData.Name, fbigUserData.PictureUrl);
+            ConnectToServer(fbigToken: fbigUserData.Token, fbigUserData.Name, fbigUserData.PictureUrl);
         else
-            ConnectToServer(fbigUserData.Token);
+            ConnectToServer(fbigToken: fbigUserData.Token);
 
         Repository.I.TopFriends = JsonUtility.FromJson<List<FbigFriend>>(JsManager.GetFriends())
         .Select(f => new MinUserInfo { Id = f.Id, Name = f.Name, PictureUrl = f.PictureUrl })
@@ -104,19 +156,38 @@ public class Controller : MonoBehaviour, IController
         //you can think it would make more sence to start when conntected, but there could be network issue and require reconnect for example
         //the decision is not final anyway
 #endif
-
     }
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+    private void OnLoginFailure(HMSException exc)
+    {
+        Debug.Log("failed huawei login: " + exc);
+    }
+
+    private void OnLoginSuccess(AuthAccount authAccount)
+    {
+        ConnectToServer(huaweiAuthCode: authAccount.AuthorizationCode);
+        // ConnectToServer(fbigToken: "123", name: "some_guest", demo: true);
+    }
+#endif
+
+    public void LevelUp(int newLevel, int moneyReward)
+    {
+        LevelUpPanel.Create(newLevel, moneyReward).Forget();
+        // Repository.I.PersonalFullInfo.Money += moneyReward;
+        //both are added because the whole personal info object is updated 
+    }
+
 
     private async UniTask InitModules()
     {
-        new ProjectRefernces();
+        new ProjectReferences();
 
-        ProjectRefernces.I.Canvas = (await Addressables.InstantiateAsync("canvas"))
+        ProjectReferences.I.Canvas = (await Addressables.InstantiateAsync("canvas"))
             .GetComponent<Transform>();
-        ProjectRefernces.I.Canvas.GetComponent<Canvas>().sortingOrder = 10;
+        ProjectReferences.I.Canvas.GetComponent<Canvas>().sortingOrder = 10;
 
         new Repository();
-        await BlockingPanel.Create();
         new BlockingOperationManager();
         await Background.Create();
         await Toast.Create();
@@ -124,17 +195,14 @@ public class Controller : MonoBehaviour, IController
 
     public void TstStartClient(string id)
     {
-        ConnectToServer(id, name: "some_guest", demo: true);
+        ConnectToServer(fbigToken: id, name: "guest", demo: true);
     }
 
-    public void InitGame(PersonalFullUserInfo myFullUserInfo, MinUserInfo[] yesterdayChampions,
-        MinUserInfo[] topFriends, ActiveRoomState activeRoomState)
+    public void InitGame(PersonalFullUserInfo myFullUserInfo, ActiveRoomState activeRoomState)
     {
         Debug.Log("InitGame is being called");
 
         Repository.I.PersonalFullInfo = myFullUserInfo;
-        Repository.I.YesterdayChampions = yesterdayChampions;
-        // Repository.I.TopFriends = topFriends;
 
         Repository.I.PersonalFullInfo.DecreaseMoneyAimTimeLeft().Forget();
 
@@ -155,11 +223,21 @@ public class Controller : MonoBehaviour, IController
         }
     }
 
+    public void ToggleFollow(string targetId)
+    {
+        Controller.I.SendAsync("ToggleFollow", targetId);
+    }
+    public async UniTask<bool> IsFollowing(string targetId)
+    {
+        return await Controller.I.InvokeAsync<bool>("IsFollowing", targetId);
+    }
+
     #region rpc works
 
     private void AssignGeneralRpcs()
     {
-        hubConnection.On<PersonalFullUserInfo, MinUserInfo[], MinUserInfo[], ActiveRoomState>(nameof(InitGame), InitGame);
+        hubConnection.On<PersonalFullUserInfo, ActiveRoomState>(nameof(InitGame), InitGame);
+        hubConnection.On<int, int>(nameof(LevelUp), LevelUp);
     }
 
     private Dictionary<string, List<string>> RpcsNames = new Dictionary<string, List<string>>();
@@ -224,58 +302,74 @@ public class Controller : MonoBehaviour, IController
 
     private HubConnection hubConnection;
 
-    //private readonly string address = "http://localhost:5000/connect";
-    private readonly string address = "https://tstappname.azurewebsites.net/connect";
+    [SerializeField] private int selctedAddress;
+    [SerializeField] private string[] addresses;
+    private string address => addresses[selctedAddress] + "/connect";
 
     private readonly IProtocol protocol = new JsonProtocol(new LitJsonEncoder());
     private readonly MyReconnectPolicy myReconnectPolicy = new MyReconnectPolicy();
 
     //I use event funtions because awaiting returns hubconn and this is useless
-    private void ConnectToServer(string fbigToken, string name = null, string pictureUrl = null, bool demo = false)
+    private void ConnectToServer(string fbigToken = null, string huaweiAuthCode = null,
+        string name = null, string pictureUrl = null,
+        bool demo = false)
     {
         Debug.Log("connecting with token " + fbigToken);
 
-        var query = "https://tstappname.azurewebsites.net/connect?";
+        #region query with strings only
 
-        query += $"access_token={fbigToken}";
+        // var query = "https://tstappname.azurewebsites.net/connect?";
 
-        if (name != null)
-            query += $"&name={name}";
-        if (pictureUrl != null)
-            query += $"&pictureUrl={pictureUrl}";
-        if (demo)
-            query += $"&demo=1  ";
-
-        var uriBuilder = new UriBuilder(address)
-        {
-            Query = query,
-        };
-
-        #region build the query using httpUtility
-        // var query = HttpUtility.ParseQueryString(string.Empty);
-
-        // query["access_token"] = fbigToken;
+        // query += $"access_token={fbigToken}";
 
         // if (name != null)
-        //     query["name"] = name;
+        // query += $"&name={name}";
         // if (pictureUrl != null)
-        //     query["pictureUrl"] = pictureUrl;
-
+        //     query += $"&pictureUrl={pictureUrl}";
         // if (demo)
-        //     query["demo"] = "1";
+        //     query += $"&demo=1  ";
 
+        // var uriBuilder = new UriBuilder(address)
+        // {
+        //     Query = query,
+        // };
 
-        // var uriBuilder = new UriBuilder(address);
-
-        // uriBuilder.Query = query.ToString();
         #endregion
+
+        var query = HttpUtility.ParseQueryString(string.Empty);
+
+        if (fbigToken != null)
+            query["access_token"] = fbigToken;
+
+        if (huaweiAuthCode != null)
+            query["huaweiAuthCode"] = huaweiAuthCode;
+
+        if (name != null)
+            query["name"] = name;
+        if (pictureUrl != null)
+            query["pictureUrl"] = pictureUrl;
+
+        if (demo)
+            query["demo"] = "1";
+
+
+        var uriBuilder = new UriBuilder(address);
+
+        uriBuilder.Query = query.ToString();
 
         Debug.Log($"connecting with url {uriBuilder.ToString()}");
 
-        hubConnection = new HubConnection(uriBuilder.Uri, protocol)
+        var hubOptions = new HubOptions()
         {
-            ReconnectPolicy = myReconnectPolicy
+            SkipNegotiation = true,
+            PreferedTransport = TransportTypes.WebSocket,
         };
+
+        hubConnection = new HubConnection(uriBuilder.Uri, protocol, hubOptions)
+        {
+            ReconnectPolicy = myReconnectPolicy,
+        };
+
         AssignGeneralRpcs();
 
         //I don't have this term "authentication" despite I make token authentication
@@ -286,23 +380,26 @@ public class Controller : MonoBehaviour, IController
         hubConnection.OnClosed += OnClosed;
         hubConnection.OnMessage += OnMessage;
 
-        hubConnection.ConnectAsync();
+        BlockingOperationManager.I.Forget(hubConnection.ConnectAsync().AsUniTask());
     }
 
     private bool OnMessage(HubConnection arg1, Message msg)
     {
+#if !UNITY_WEBGL
+        Debug.Log($"msg is {JsonConvert.SerializeObject(msg, Formatting.Indented)}");
+#else
+        Debug.Log($"msg is {JsonUtility.ToJson(msg)}");
+#endif
 
-        Debug.Log($"msg is { JsonUtility.ToJson(msg)}");
 
         return true;
     }
 
     private void OnConnected(HubConnection obj)
     {
-
-
-
         Debug.Log("connected to server");
+
+        SignInPanel.Destroy();
 
         Destroy(FindObjectOfType<TestClientStart>()?.gameObject);
     }
@@ -333,11 +430,13 @@ public class Controller : MonoBehaviour, IController
     }
     public async UniTask SelectItem(ItemType itemType, int id)
     {
-        await hubConnection.SendAsync(itemType == ItemType.Cardback ? "SelectCardback" : "SelectBackground", id);
+        await hubConnection.SendAsync(
+            itemType == ItemType.Cardback ? "SelectCardback" : "SelectBackground", id);
     }
     public async UniTask BuyItem(ItemType itemType, int id)
     {
-        await hubConnection.SendAsync(itemType == ItemType.Cardback ? "BuyCardback" : "BuyBackground", id);
+        await hubConnection.SendAsync(
+            itemType == ItemType.Cardback ? "BuyCardback" : "BuyBackground", id);
     }
 
     public async UniTask RequestRandomRoom(int betChoice, int capacityChoice)
@@ -351,9 +450,23 @@ public class Controller : MonoBehaviour, IController
 
     #endregion
 
+
     public async UniTask<object> SendAsync(string method, params object[] args)
     {
         return await hubConnection.SendAsync(method, args);
+    }
+    public void Send(string method, params object[] args)
+    {
+        hubConnection.Send(method, args);
+    }
+
+    public async UniTask<T> InvokeAsync<T>(string method, params object[] args)
+    {
+        return await hubConnection.InvokeAsync<T>(method, args);
+    }
+    public async UniTask<T> InvokeAsync<T>(string method)
+    {
+        return await hubConnection.InvokeAsync<T>(method);
     }
 
     public async UniTask<MinUserInfo> TestWaitWithReturn()

@@ -33,7 +33,7 @@ public class Toast : MonoBehaviour, IToast
 
     public static async UniTask Create()
     {
-        I = (await Addressables.InstantiateAsync("toast", ProjectRefernces.I.Canvas)).GetComponent<Toast>();
+        I = (await Addressables.InstantiateAsync("toast", ProjectReferences.I.Canvas)).GetComponent<Toast>();
     }
 
     [SerializeField] private TMP_Text messageText;

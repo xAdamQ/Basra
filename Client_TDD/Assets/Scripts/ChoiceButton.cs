@@ -9,19 +9,23 @@ public class ChoiceButton : MonoBehaviour
 
     [HideInInspector] public int CurrentChoice;
 
+    [SerializeField] private Color choiceColor = Color.red;
     private void Start()
     {
         CurrentChoice = startChoice;
 
-        choiceIndicators[CurrentChoice].color = Color.red;
+        foreach (var ci in choiceIndicators)
+            ci.color = Color.white;
+
+        choiceIndicators[CurrentChoice].color = choiceColor;
     }
 
-    public void NextChoice()
+    public virtual void NextChoice()
     {
         choiceIndicators[CurrentChoice].color = Color.white;
 
         CurrentChoice = ++CurrentChoice % choiceIndicators.Length;
 
-        choiceIndicators[CurrentChoice].color = Color.red;
+        choiceIndicators[CurrentChoice].color = choiceColor;
     }
 }

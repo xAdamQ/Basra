@@ -10,7 +10,8 @@ public class RoomSettings
         I = this;
     }
 
-    public RoomSettings(int betChoice, int capacityChoice, List<FullUserInfo> userInfos, int myTurn) : this()
+    public RoomSettings(int betChoice, int capacityChoice, List<FullUserInfo> userInfos,
+        int myTurn) : this()
     {
         BetChoice = betChoice;
         CapacityChoice = capacityChoice;
@@ -33,12 +34,14 @@ public class RoomSettings
 
 
     public int Bet => Bets[BetChoice];
-    public static int[] Bets => new[] {55, 110, 220};
+    public static int[] Bets => new[] { 55, 110, 220, 550, 1100, 5500 };
 
     public int Capacity => Capacities[CapacityChoice];
-    public static readonly int[] Capacities = {2, 3, 4};
+    public static readonly int[] Capacities = { 2, 3, 4 };
 
     public static int MinBet => Bets[0];
+
+    public int TotalPrize => (int)(Bet / 1.1f) * Capacity;
 
 
     public int BetMoneyToPay()
@@ -47,6 +50,6 @@ public class RoomSettings
     }
     public int BetWinShown()
     {
-        return (int) ((Bet - (Bet * .1f)) * 2);
+        return (int)((Bet - (Bet * .1f)) * 2);
     } //not used in finalize panel
 }
