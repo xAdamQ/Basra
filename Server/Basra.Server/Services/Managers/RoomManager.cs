@@ -144,7 +144,7 @@ namespace Basra.Server.Services
 
             if (actorInTurn is RoomUser roomUser)
             {
-                if (roomUser.ActiveUser.Disconnected) await ForceUserPlay(roomUser);
+                if (roomUser.ActiveUser.IsDisconnected) await ForceUserPlay(roomUser);
                 else _serverLoop.SetupTurnTimeout(roomUser);
             }
             else
@@ -156,7 +156,8 @@ namespace Basra.Server.Services
 
         private ThrowResult PlayBase(RoomActor roomActor, int cardIndexInHand)
         {
-            var eaten = Eat(roomActor.Hand[cardIndexInHand], roomActor.Room.GroundCards, out bool basra,
+            var eaten = Eat(roomActor.Hand[cardIndexInHand], roomActor.Room.GroundCards,
+                out bool basra,
                 out bool bigBasra);
 
             var card = roomActor.Hand.Cut(cardIndexInHand);
@@ -187,7 +188,8 @@ namespace Basra.Server.Services
 
         public async Task UserPlayRpc(RoomUser roomUser, int cardIndexInHand)
         {
-            if (roomUser.TurnId != roomUser.Room.CurrentTurn || !cardIndexInHand.IsInRange(roomUser.Hand.Count))
+            if (roomUser.TurnId != roomUser.Room.CurrentTurn ||
+                !cardIndexInHand.IsInRange(roomUser.Hand.Count))
                 throw new BadUserInputException();
             //this is invoked by the server also, and may be a server error and it's handle way is ignoring and
             //terminate the action hub exc are not handled when the actor is the system
@@ -210,12 +212,14 @@ namespace Basra.Server.Services
             //todo possible issue: one of the clients takes the the message, the other is experiencing network issue
             //then next turn won't be called while we are waiting for that user, and the fast user can make action and lead to exc 
 
-            _logger.LogInformation($"user has played card {cardIndexInHand} with value {throwResult.ThrownCard} userId {roomUser.Id}");
+            _logger.LogInformation(
+                $"user has played card {cardIndexInHand} with value {throwResult.ThrownCard} userId {roomUser.Id}");
 
             await NextTurn(roomUser.Room);
-        } //todo good candidate for unit testing
+        }
 
-        public async Task MissTurnRpc(RoomUser roomUser) //the difference is that rpc contains validation
+        public async Task
+            MissTurnRpc(RoomUser roomUser) //the difference is that rpc contains validation
         {
             if (roomUser.TurnId != roomUser.Room.CurrentTurn)
                 //this check is done by the domain, but i think it should be done like this because we already have the turn stuff here
@@ -247,12 +251,13 @@ namespace Basra.Server.Services
 
             var tasks = new List<Task>();
 
-            if (!roomUser.ActiveUser.Disconnected)
+            if (!roomUser.ActiveUser.IsDisconnected)
                 tasks.Add(_masterHub.Clients.User(roomUser.Id)
                     .SendAsync("ForcePlay", throwResult));
 
             //todo then you have to do the same assertion on this!
-            tasks.Add(_masterHub.Clients.Users(roomUser.Room.RoomUsers.Where(ru => ru != roomUser).Select(ru => ru.Id))
+            tasks.Add(_masterHub.Clients
+                .Users(roomUser.Room.RoomUsers.Where(ru => ru != roomUser).Select(ru => ru.Id))
                 .SendAsync("CurrentOppoThrow", throwResult));
 
             await Task.WhenAll(tasks);
@@ -279,7 +284,8 @@ namespace Basra.Server.Services
 
         private const int KOMI_ID = 19, BOY_VALUE = 11;
         private static readonly int[] BOY_IDS = { 10, 23, 36, 49 };
-        private static List<int> Eat(int cardId, List<int> ground, out bool basra, out bool bigBasra)
+        public static List<int> Eat(int cardId, List<int> ground, out bool basra,
+            out bool bigBasra)
         {
             basra = false;
             bigBasra = false;
@@ -295,13 +301,15 @@ namespace Basra.Server.Services
 
             if (cardValue == BOY_VALUE)
             {
-                bigBasra = ground.Count == 1 && BOY_IDS.Contains(ground[0]);
+                bigBasra = ground.TrueForAll(c => cardValueFromId(c) == BOY_VALUE);
 
                 return ground.ToList();
             }
             if (cardValue > 10)
             {
-                return ground.Where(c => cardValueFromId(c) == cardValue).ToList();
+                var eaten = ground.Where(c => cardValueFromId(c) == cardValue).ToList();
+                basra = eaten.Count != 0 && eaten.Count == ground.Count;
+                return eaten;
             }
 
             var groups = ground.Permutations();
@@ -309,12 +317,16 @@ namespace Basra.Server.Services
             List<int> bestGroup = new List<int>();
             foreach (var group in groups)
             {
-                if (group.Select(c => cardValueFromId(c)).Sum() == cardValue && group.Count > bestGroupLength)
+                if (group.Select(c => cardValueFromId(c)).Sum() == cardValue &&
+                    group.Count > bestGroupLength)
                 {
                     bestGroup = group;
                     bestGroupLength = bestGroup.Count;
                 }
             }
+
+            //since you're here
+            basra = bestGroup.Count != 0 && bestGroup.Count == ground.Count;
 
             return bestGroup;
 
@@ -324,7 +336,7 @@ namespace Basra.Server.Services
             }
         } //tested
 
-        // public async Task Surrender(RoomUser roomUser)
+        // public async Task Surrender(RoomUser roomUser)(RoomUser roomUser)
         // {
         //     var room = roomUser.Room;
 
@@ -344,20 +356,24 @@ namespace Basra.Server.Services
         // }
 
 
-        private static HashSet<string> EmojiIds = new()
+        private static readonly HashSet<string> EmojiIds = new()
         {
             "angle",
             "angry",
             "dead",
-            "tongue",
             "cry",
             "devil",
             "heart",
-            "injury",
-            "dizzy",
-            "sunglass",
+            "cat1",
+            "cat2",
+            "cat3",
+            "moon",
+            "mindBlow",
+            "bigEye",
+            "frog",
+            "laughCry",
         };
-        private static HashSet<string> TextIds = new()
+        private static readonly HashSet<string> TextIds = new()
         {
             "soLucky",
             "comeAgain",
@@ -374,7 +390,8 @@ namespace Basra.Server.Services
                 throw new BadUserInputException("message Id is not valid");
 
             var oppoIds = roomUser.Room.RoomUsers.Where(u => u != roomUser).Select(u => u.Id);
-            await _masterHub.Clients.Users(oppoIds).SendAsync("ShowMessage", roomUser.TurnId, msgId);
+            await _masterHub.Clients.Users(oppoIds)
+                .SendAsync("ShowMessage", roomUser.TurnId, msgId);
         }
 
 

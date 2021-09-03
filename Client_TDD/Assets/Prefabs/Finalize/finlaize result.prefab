@@ -289,8 +289,9 @@ MonoBehaviour:
   totalEarnedMoney: {fileID: 0}
   followingBackText: {fileID: 0}
   followButtonText: {fileID: 0}
-  addFriendButton: {fileID: 0}
+  openMatchesText: {fileID: 0}
   challengeButton: {fileID: 0}
+  openMatchesCheck: {fileID: 0}
 --- !u!1 &5708478432740458537
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,8 +405,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 157.5}
+  m_SizeDelta: {x: 0, y: -75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6477466464582175357
 MonoBehaviour:

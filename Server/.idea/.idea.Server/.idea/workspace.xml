@@ -5,44 +5,602 @@
     <projectFile>TesterClient/TesterClient.csproj</projectFile>
     <projectFile>Basra.Server.Tests/Basra.Server.Tests.csproj</projectFile>
     <projectFile>GeneralTests/GeneralTests.csproj</projectFile>
+    <projectFile profileName="IIS Express">Basra.Server/Basra.Server.csproj</projectFile>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e449006-4b33-468a-a3f1-b36fa9dfdfce" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/TMP/sound-medium.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/TMP/sound-medium.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/TMP/sound-off.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/TMP/sound-off.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardFan1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardFan1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardFan2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardFan2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardOpenPackage1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardOpenPackage1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardOpenPackage2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardOpenPackage2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace3.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace3.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace4.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace4.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove3.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove3.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove4.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove4.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShuffle.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShuffle.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide3.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide3.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide4.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide4.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide5.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide5.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide6.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide6.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide7.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide7.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide8.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide8.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardTakeOutPackage1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardTakeOutPackage1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardTakeOutPackage2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardTakeOutPackage2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay3.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay3.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide3.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide3.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide4.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide4.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle3.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle3.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle4.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle4.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle5.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle5.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle6.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle6.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack3.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack3.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack4.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack4.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack5.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack5.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack6.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack6.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow3.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow3.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow4.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow4.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieGrab1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieGrab1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieGrab2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieGrab2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle3.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle3.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow1.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow1.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow2.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow2.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow3.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow3.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/cinematic-chillhop-main-6676.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/cinematic-chillhop-main-6676.mp3.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/coins_old.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/coins_old.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/coins_old2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/coins_old2.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/emojis2/cinematic-chillhop-main-6676.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/emojis2/cinematic-chillhop-main-6676.mp3.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/computerNoise_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/computerNoise_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/computerNoise_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/computerNoise_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/computerNoise_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/computerNoise_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/computerNoise_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/computerNoise_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/desktop.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/desktop.ini.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/doorClose_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/doorClose_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/doorClose_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/doorClose_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/doorClose_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/doorClose_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/doorOpen_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/doorOpen_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/doorOpen_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/doorOpen_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/doorOpen_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/doorOpen_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/engineCircular_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/engineCircular_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/engineCircular_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/engineCircular_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/engineCircular_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/engineCircular_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/engineCircular_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/engineCircular_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/engineCircular_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/engineCircular_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/explosionCrunch_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/explosionCrunch_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/explosionCrunch_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/explosionCrunch_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/explosionCrunch_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/explosionCrunch_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/explosionCrunch_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/explosionCrunch_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/explosionCrunch_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/explosionCrunch_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_carpet_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_carpet_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_carpet_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_carpet_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_carpet_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_carpet_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_carpet_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_carpet_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_carpet_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_carpet_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_concrete_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_concrete_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_concrete_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_concrete_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_concrete_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_concrete_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_concrete_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_concrete_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_concrete_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_concrete_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_grass_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_grass_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_grass_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_grass_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_grass_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_grass_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_grass_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_grass_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_grass_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_grass_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_snow_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_snow_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_snow_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_snow_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_snow_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_snow_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_snow_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_snow_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_snow_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_snow_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_wood_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_wood_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_wood_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_wood_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_wood_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_wood_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_wood_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_wood_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_wood_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/footstep_wood_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/forceField_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/forceField_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/forceField_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/forceField_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/forceField_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/forceField_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/forceField_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/forceField_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/forceField_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/forceField_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactBell_heavy_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactBell_heavy_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactBell_heavy_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactBell_heavy_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactBell_heavy_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactBell_heavy_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactBell_heavy_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactBell_heavy_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactBell_heavy_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactBell_heavy_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGeneric_light_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGeneric_light_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGeneric_light_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGeneric_light_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGeneric_light_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGeneric_light_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGeneric_light_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGeneric_light_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGeneric_light_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGeneric_light_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_heavy_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_heavy_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_heavy_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_heavy_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_heavy_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_heavy_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_heavy_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_heavy_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_heavy_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_heavy_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_light_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_light_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_light_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_light_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_light_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_light_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_light_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_light_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_light_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_light_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_medium_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_medium_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_medium_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_medium_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_medium_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_medium_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_medium_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_medium_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_medium_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactGlass_medium_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_heavy_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_heavy_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_heavy_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_heavy_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_heavy_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_heavy_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_heavy_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_heavy_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_heavy_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_heavy_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_light_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_light_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_light_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_light_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_light_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_light_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_light_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_light_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_light_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_light_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_medium_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_medium_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_medium_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_medium_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_medium_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_medium_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_medium_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_medium_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_medium_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMetal_medium_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMining_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMining_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMining_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMining_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMining_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMining_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMining_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMining_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMining_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactMining_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlank_medium_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlank_medium_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlank_medium_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlank_medium_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlank_medium_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlank_medium_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlank_medium_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlank_medium_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlank_medium_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlank_medium_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_heavy_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_heavy_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_heavy_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_heavy_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_heavy_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_heavy_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_heavy_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_heavy_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_heavy_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_heavy_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_light_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_light_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_light_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_light_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_light_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_light_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_light_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_light_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_light_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_light_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_medium_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_medium_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_medium_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_medium_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_medium_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_medium_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_medium_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_medium_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_medium_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPlate_medium_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_heavy_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_heavy_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_heavy_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_heavy_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_heavy_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_heavy_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_heavy_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_heavy_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_heavy_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_heavy_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_medium_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_medium_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_medium_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_medium_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_medium_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_medium_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_medium_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_medium_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_medium_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactPunch_medium_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_heavy_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_heavy_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_heavy_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_heavy_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_heavy_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_heavy_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_heavy_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_heavy_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_heavy_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_heavy_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_medium_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_medium_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_medium_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_medium_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_medium_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_medium_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_medium_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_medium_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_medium_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactSoft_medium_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactTin_medium_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactTin_medium_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactTin_medium_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactTin_medium_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactTin_medium_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactTin_medium_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactTin_medium_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactTin_medium_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactTin_medium_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactTin_medium_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_heavy_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_heavy_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_heavy_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_heavy_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_heavy_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_heavy_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_heavy_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_heavy_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_heavy_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_heavy_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_light_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_light_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_light_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_light_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_light_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_light_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_light_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_light_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_light_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_light_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_medium_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_medium_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_medium_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_medium_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_medium_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_medium_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_medium_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_medium_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_medium_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/impactWood_medium_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserLarge_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserLarge_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserLarge_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserLarge_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserLarge_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserLarge_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserLarge_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserLarge_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserLarge_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserLarge_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserRetro_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserRetro_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserRetro_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserRetro_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserRetro_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserRetro_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserRetro_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserRetro_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserRetro_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserRetro_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserSmall_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserSmall_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserSmall_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserSmall_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserSmall_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserSmall_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserSmall_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserSmall_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserSmall_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/laserSmall_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/lowFrequency_explosion_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/lowFrequency_explosion_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/lowFrequency_explosion_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/lowFrequency_explosion_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/slime_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/slime_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/slime_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/slime_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLarge_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLarge_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLarge_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLarge_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLarge_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLarge_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLarge_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLarge_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLarge_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLarge_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLow_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLow_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLow_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLow_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLow_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLow_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLow_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLow_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLow_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineLow_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineSmall_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineSmall_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineSmall_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineSmall_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineSmall_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineSmall_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineSmall_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineSmall_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineSmall_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngineSmall_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngine_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngine_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngine_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngine_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngine_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngine_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngine_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/spaceEngine_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/thrusterFire_000.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/thrusterFire_000.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/thrusterFire_001.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/thrusterFire_001.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/thrusterFire_002.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/thrusterFire_002.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/thrusterFire_003.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/thrusterFire_003.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/thrusterFire_004.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/impact audio/thrusterFire_004.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/sound-medium.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/sound-medium.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/sound-off.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/sound-off.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/soundButton.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/soundButton.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/AudioManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/AudioManager.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/MonoModule.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/MonoModule.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/SoundButton.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/SoundButton.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/AddressableAssetsData/AssetGroups/Default Local Group.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/AddressableAssetsData/AssetGroups/Default Local Group.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/TMP/Changa Standard.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/TMP/Changa Standard.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/coins.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/coins.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSAdsKitSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSAdsKitSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/blocking panel.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/blocking panel.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/levelUpPanel.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/levelUpPanel.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/Finalize/final muv parent.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/Finalize/final muv parent.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/Finalize/finlaize result.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/Finalize/finlaize result.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/personal active uv Variant.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/personal active uv Variant.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/room choices.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/room choices.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/RoomUnits/UI/attr kvp.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/RoomUnits/UI/attr kvp.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/RoomUnits/UI/chat/chatSystem.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/RoomUnits/UI/chat/chatSystem.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/RoomUnits/UI/prize.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/RoomUnits/UI/prize.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Lobby.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Lobby.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Room.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Room.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Startup.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Startup.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/finalize.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/finalize.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/BlockingPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/BlockingPanel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Controller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Controller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/Views/User/FullUserView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/Views/User/FullUserView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/WebGLTemplates/Fbig/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/WebGLTemplates/Fbig/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Finalize/FinalMuv.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Finalize/FinalMuv.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/LevelUpPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/LevelUpPanel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/LobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/LobbyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/RoomRequester.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/RoomRequester.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/Shop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/Shop.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/CoreGameplay.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/CoreGameplay.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/PlayerBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/PlayerBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/RoomController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/RoomController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/RoomSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/RoomSettings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/RoomUserView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/RoomUserView.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/ProjectSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Server/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/Asp/MasterManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Asp/MasterManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Basra.Server.Tests/FinalizeManagerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server.Tests/FinalizeManagerTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Basra.Server.Tests/RoomManagerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server.Tests/RoomManagerTests.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Basra.Server/Asp/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Asp/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/Basra.Server.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Basra.Server.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/Services/Managers/RoomManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Services/Managers/RoomManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Basra.Server/Services/FbigSecurityManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Services/FbigSecurityManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Basra.Server/Services/ServerLoop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Services/ServerLoop.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Basra.Server.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Basra.Server.deps.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Basra.Server.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Basra.Server.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Basra.Server.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.Internal.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Microsoft.Extensions.Identity.Core.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Microsoft.Extensions.Identity.Stores.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/MySqlConnector.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Pomelo.EntityFrameworkCore.MySql.dll" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/ref/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/ref/Basra.Server.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Basra.Server.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Basra.Server.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Basra.Server.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Basra.Server.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.FileListAbsolute.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/ref/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/ref/Basra.Server.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/rider.project.restore.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeneralTests/MixedTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GeneralTests/MixedTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Server.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TesterClient/Client.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TesterClient/Client.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TesterClient/Linked/UserInfo/FullUserInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TesterClient/Linked/UserInfo/FullUserInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TesterClient/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TesterClient/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,9 +621,12 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/C6F16FEF-8657-4957-94FA-0CEC1121D993/228/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/C6F16FEF-8657-4957-94FA-0CEC1121D993/E0/TimeSpan.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a5b8e90eb688401d9ae2662b86f59e448d8200/9b/55e683d7/ExecutionContext.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3af2ddc3e1b546389a6c069c978110676f800/6c/7512d28d/CollectionAssertions`2.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a5b8e90eb688401d9ae2662b86f59e448d8200/40/933631f1/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6ea2ba6f018640239c24e78f24067d4161600/27/DefaultHubCallerContext.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Basra.Server/Exceptions/BadUserInputException.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6ea2ba6f018640239c24e78f24067d4161600/F/Hub.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -82,7 +643,6 @@
       <option value="$PROJECT_DIR$/Basra.Server.Tests/TestHelper.cs" />
       <option value="$PROJECT_DIR$/Basra.Server.Tests/FinalizeManagerTests.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/Program.cs" />
-      <option value="$PROJECT_DIR$/Basra.Server/Asp/Startup.cs" />
       <option value="$PROJECT_DIR$/GeneralTests/UnitTest1.cs" />
       <option value="$PROJECT_DIR$/Basra.Server.Tests/Intergration/XUnitLogger.cs" />
       <option value="$PROJECT_DIR$/Basra.Server.Tests/LobbyManagerTests.cs" />
@@ -100,7 +660,6 @@
       <option value="$PROJECT_DIR$/Basra.Server/Services/Managers/FinalizeManager.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/Data/MasterRepo.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/ClientModels/MinUserInfo.cs" />
-      <option value="$PROJECT_DIR$/Basra.Server/Asp/MasterHub.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/ClientModels/FinalizeResult.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/Data/User.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/Data/MasterContext.cs" />
@@ -115,7 +674,9 @@
       <option value="$PROJECT_DIR$/Basra.Common/Basra.Common.csproj" />
       <option value="$PROJECT_DIR$/Basra.Server/appsettings.json" />
       <option value="$PROJECT_DIR$/Basra.Server/appsettings.Development.json" />
+      <option value="$PROJECT_DIR$/Basra.Server/Asp/Startup.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/Services/ServerLoop.cs" />
+      <option value="$PROJECT_DIR$/Basra.Server/Asp/MasterHub.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1tnrfTLgd6tcnQOZFfNtLiQH3wF" />
@@ -129,15 +690,17 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.39500815" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.49369988" />
     <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="TODO_SCOPE" value="All Places" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="XThreadsFramesViewSplitterKey" value="0.51809955" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/ConstData.cs" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Basra.Server">
     <configuration default="true" type="CompoundRunConfigurationType">
@@ -219,8 +782,24 @@
         <option name="Build" />
       </method>
     </configuration>
+    <configuration name="Basra.Server: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Basra.Server/Basra.Server.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net5.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue=".NET Launch Settings Profile.Basra.Server" />
+      <item itemvalue=".NET Launch Settings Profile.Basra.Server: IIS Express" />
       <item itemvalue=".NET Project.TesterClient" />
       <item itemvalue=".NET Project.Basra.Server.Tests" />
       <item itemvalue=".NET Project.GeneralTests" />
@@ -266,9 +845,21 @@
       <workItem from="1627579618359" duration="2465000" />
       <workItem from="1628194083257" duration="47000" />
       <workItem from="1628194180380" duration="317000" />
+      <workItem from="1630046847005" duration="2558000" />
+      <workItem from="1630057764428" duration="5382000" />
+      <workItem from="1630113106118" duration="22845000" />
+      <workItem from="1630204273657" duration="1015000" />
+      <workItem from="1630221129982" duration="6561000" />
+      <workItem from="1630247709450" duration="7452000" />
+      <workItem from="1630336423202" duration="3533000" />
+      <workItem from="1630399546386" duration="14643000" />
+      <workItem from="1630476358572" duration="12008000" />
+      <workItem from="1630569166286" duration="2119000" />
+      <workItem from="1630596143614" duration="4760000" />
     </task>
     <servers />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="Vcs.Log.Tabs.Properties">
@@ -289,23 +880,8 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Basra.Server/Services/Managers/RoomManager.cs</url>
-          <line>141</line>
-          <properties documentPath="$PROJECT_DIR$/Basra.Server/Services/Managers/RoomManager.cs" initialLine="141" containingFunctionPresentation="method 'NextTurn'">
-            <startOffsets>
-              <option value="4630" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4665" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
-        <breakpoint enabled="true" type="DotNet Exception Breakpoints" />
+        <breakpoint enabled="true" suspend="NONE" type="DotNet Exception Breakpoints" />
       </default-breakpoints>
     </breakpoint-manager>
   </component>

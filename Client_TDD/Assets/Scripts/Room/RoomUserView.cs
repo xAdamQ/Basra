@@ -29,8 +29,13 @@ public class RoomUserView : MinUserView
 
     public override void ShowFullInfo()
     {
-        var oppoFullInfo = RoomSettings.I.UserInfos.FirstOrDefault(_ => _.Id == Id);
-        FullUserView.Show(oppoFullInfo ?? Repository.I.PersonalFullInfo);
+        if (Id == Repository.I.PersonalFullInfo.Id)
+            FullUserView.Show(Repository.I.PersonalFullInfo);
+        else
+        {
+            var oppoFullInfo = RoomSettings.I.UserInfos.FirstOrDefault(_ => _.Id == Id);
+            FullUserView.Show(oppoFullInfo);
+        }
     }
 
     public class Manager

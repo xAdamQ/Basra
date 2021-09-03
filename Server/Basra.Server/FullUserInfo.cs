@@ -20,5 +20,9 @@ namespace Basra.Common
 
         public int SelectedCardback { get; set; }
         public int SelectedBackground { get; set; }
+
+        public bool EnableOpenMatches { get; set; }
+
+        public int Friendship { get; set; }
     }
 }

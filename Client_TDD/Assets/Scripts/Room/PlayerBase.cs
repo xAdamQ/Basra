@@ -19,6 +19,9 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 {
     [SerializeField] protected Transform startCard, endCard;
 
+    private static AudioClip throwClip, turnClip;
+    private static bool InitOnce; //be aware this is once in the whole game, even after scene reload
+
     public static int ConvertTurnToPlace(int turn, int myTurn)
     {
         if (myTurn == turn) return 0;
@@ -35,7 +38,6 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         // return oppoPlaceCounter;
     }
 
-
     protected Sprite BackSprite;
 
     protected const int HandCardCapacity = 4;
@@ -43,6 +45,15 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
     private void Awake()
     {
         turnTimer = GetComponent<TurnTimer>();
+
+        if (InitOnce) return;
+
+        InitOnce = true;
+
+        Addressables.LoadAssetAsync<AudioClip>("throwClip").Completed +=
+            handle => throwClip = handle.Result;
+        Addressables.LoadAssetAsync<AudioClip>("turnClip").Completed +=
+            handle => turnClip = handle.Result;
     }
 
     protected virtual void Start()
@@ -92,6 +103,7 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
     protected void ThrowBase(ThrowResult result, Sequence animSeq = null, Vector2? meetPoint = null)
     {
+        AudioManager.I.Play(throwClip);
         animSeq ??= DOTween.Sequence();
 
         var card = HandCards.First(c => c.Front != null && c.Front.Index == result.ThrownCard);
@@ -122,6 +134,8 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
     public virtual void StartTurn()
     {
+        // AudioManager.I.PlayIfSilent(turnClip);
+
         turnTimer.Play();
     }
     public virtual void EndTurn()
@@ -129,7 +143,6 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         turnTimer.Stop();
         RoomUserView.Manager.I.RoomUserViews[Turn].SetTurnFill(1);
     }
-
 
     public static async UniTask<PlayerBase> Create(int selectedCardback, int placeIndex, int turn)
     {

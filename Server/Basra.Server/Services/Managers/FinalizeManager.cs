@@ -5,13 +5,14 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Basra.Server.Services
 {
     public interface IFinalizeManager
     {
-        Task FinalizeRoom(Room room, RoomUser resignedUser = null);
+        Task FinalizeRoom(Room room);
     }
 
     public class FinalizeManager : IFinalizeManager
@@ -20,7 +21,8 @@ namespace Basra.Server.Services
         private readonly IMasterRepo _masterRepo;
         private readonly ISessionRepo _sessionRepo;
         private readonly ILogger<FinalizeManager> _logger;
-        public FinalizeManager(IHubContext<MasterHub> masterHub, IMasterRepo masterRepo, ISessionRepo sessionRepo,
+        public FinalizeManager(IHubContext<MasterHub> masterHub, IMasterRepo masterRepo,
+            ISessionRepo sessionRepo,
             ILogger<FinalizeManager> logger)
         {
             _masterHub = masterHub;
@@ -29,16 +31,20 @@ namespace Basra.Server.Services
             _logger = logger;
         }
 
-        public async Task FinalizeRoom(Room room, RoomUser resignedUser = null)
+        public async Task FinalizeRoom(Room room)
         {
-            room.SetUsersDomains(typeof(UserDomain.App.Room.FinishedRoom)); //does this has usage or u can just use lobby idle? 
+            room.SetUsersDomains(typeof(UserDomain.App.Room.FinishedRoom));
+            //does this has usage or u can just use lobby idle? 
 
             LastEat(room);
 
-            var roomDataUsers = await _masterRepo.GetUsersByIdsAsync(room.RoomActors.Select(_ => _.Id).ToList());
-            //todo test if the result is the same order as roomUsers
+            var roomDataUsersUnOrdered =
+                await _masterRepo.GetUsersByIdsAsync(room.RoomActors.Select(_ => _.Id).ToList());
 
-            var scores = CalcScores(room.RoomActors, resignedUser);
+            var roomDataUsers = room.RoomActors.Join(roomDataUsersUnOrdered, ru => ru.Id,
+                du => du.Id, (_, du) => du).ToList();
+
+            var scores = CalcScores(room.RoomActors);
 
             var reportsAndStatus = UpdateUserStates(room, roomDataUsers, scores);
 
@@ -46,7 +52,8 @@ namespace Basra.Server.Services
 
             await _masterRepo.SaveChangesAsync();
 
-            await SendFinalizeResult(room.RoomUsers, roomDataUsers, reportsAndStatus.Item1, reportsAndStatus.Item2, room.LastEater.TurnId);
+            await SendFinalizeResult(room.RoomUsers, roomDataUsers, reportsAndStatus.Item1,
+                reportsAndStatus.Item2, room.LastEater.TurnId);
 
             RemoveDisconnectedUsers(room.RoomUsers);
 
@@ -56,26 +63,16 @@ namespace Basra.Server.Services
             room.SetUsersDomains(typeof(UserDomain.App.Lobby.Idle));
         }
 
-        /// <summary>
-        /// score for resigned user is -1
-        /// </summary> 
-        private List<int> CalcScores(List<RoomActor> roomActors, RoomUser resignedUser = null)
+        private List<int> CalcScores(List<RoomActor> roomActors)
         {
-            var lastedUsers = resignedUser == null ? roomActors : roomActors.Where(_ => _ != resignedUser).ToList();
-
-            var biggestEatenCount = lastedUsers.Max(u => u.EatenCardsCount);
-            var biggestEaters = lastedUsers.Where(u => u.EatenCardsCount == biggestEatenCount).ToArray();
+            var biggestEatenCount = roomActors.Max(u => u.EatenCardsCount);
+            var biggestEaters = roomActors.Where(u => u.EatenCardsCount == biggestEatenCount)
+                .ToArray();
 
             var scores = new List<int>();
 
             foreach (var roomActor in roomActors)
             {
-                if (roomActor == resignedUser)
-                {
-                    scores.Add(-1);
-                    continue;
-                }
-
                 scores.Add(roomActor.BasraCount * 10 +
                            roomActor.BigBasraCount * 30 +
                            (biggestEaters.Contains(roomActor) ? 30 : 0));
@@ -85,17 +82,17 @@ namespace Basra.Server.Services
         }
 
         /// <returns> the added xp and for what </returns>
-        private (List<RoomXpReport>, List<UserRoomStatus>) UpdateUserStates(Room room, List<User> dataUsers, List<int> scores)
+        private (List<RoomXpReport>, List<UserRoomStatus>) UpdateUserStates(Room room,
+            List<User> dataUsers, List<int> scores)
         {
             var xpReports = new List<RoomXpReport>();
+            for (int i = 0; i < room.Capacity; i++) xpReports.Add(new RoomXpReport());
             var userRoomStatus = room.RoomActors.Select(u => new UserRoomStatus
             {
                 Basras = u.BasraCount,
                 BigBasras = u.BigBasraCount,
                 EatenCards = u.EatenCardsCount,
             }).ToList();
-
-            for (int i = 0; i < room.Capacity; i++) xpReports.Add(new RoomXpReport());
 
             var betWithoutTicket = (int)(room.Bet / 1.1f);
             var totalBet = betWithoutTicket * room.Capacity;
@@ -108,7 +105,6 @@ namespace Basra.Server.Services
             var loserIndices = Enumerable.Range(0, room.Capacity)
                 .Where(i => !winnerIndices.Contains(i))
                 .ToList();
-            var resignedUserIndex = scores.IndexOf(-1); //if no resign it retrun -1
 
             //drawers
             if (winnerIndices.Count > 1)
@@ -121,7 +117,7 @@ namespace Basra.Server.Services
                     dUser.Money += userRoomStatus[userIndex].WinMoney = moneyPart;
                     dUser.TotalEarnedMoney += moneyPart;
 
-                    dUser.XP += xpReports[userIndex].Competition = (int)Room.DrawXpPercent * betXp;
+                    xpReports[userIndex].Competition = (int)(Room.DrawXpPercent * betXp);
                 }
             }
             //winner
@@ -133,7 +129,7 @@ namespace Basra.Server.Services
                 dUser.TotalEarnedMoney += totalBet;
                 dUser.WinStreak++;
 
-                dUser.XP += xpReports[0].Competition = (int)Room.WinXpPercent * betXp;
+                xpReports[0].Competition = (int)(Room.WinXpPercent * betXp);
             }
 
 
@@ -141,8 +137,7 @@ namespace Basra.Server.Services
             foreach (var loserIndex in loserIndices)
             {
                 var dUser = dataUsers[loserIndex];
-                if (loserIndex != resignedUserIndex)
-                    dUser.XP += xpReports[loserIndex].Competition = (int)Room.LoseXpPercent * betXp;
+                xpReports[loserIndex].Competition = (int)(Room.LoseXpPercent * betXp);
 
                 dUser.WinStreak = 0;
             }
@@ -158,13 +153,19 @@ namespace Basra.Server.Services
                 dUser.BasraCount += roomActor.BasraCount;
                 dUser.BigBasraCount += roomActor.BigBasraCount;
 
-                if (i != resignedUserIndex)
-                {
-                    dUser.XP += xpReports[i].Basra = roomActor.BasraCount * (int)Room.BasraXpPercent * betXp;
-                    dUser.XP += xpReports[i].BigBasra = roomActor.BigBasraCount * (int)Room.BigBasraXpPercent * betXp;
+                dUser.XP = xpReports[i].Competition;
 
-                    if (roomActor.EatenCardsCount > Room.GreatEatThreshold)
-                        dataUsers[i].XP += xpReports[i].GreatEat = (int)Room.GreatEatXpPercent * betXp;
+                xpReports[i].Basra = roomActor.BasraCount * (int)(Room.BasraXpPercent * betXp);
+                dUser.XP += xpReports[i].Basra;
+
+                xpReports[i].BigBasra =
+                    roomActor.BigBasraCount * (int)(Room.BigBasraXpPercent * betXp);
+                dUser.XP += xpReports[i].BigBasra;
+
+                if (roomActor.EatenCardsCount > Room.GreatEatThreshold)
+                {
+                    xpReports[i].GreatEat = (int)(Room.GreatEatXpPercent * betXp);
+                    dUser.XP += xpReports[i].GreatEat;
                 }
 
                 if (dUser.MaxWinStreak < dUser.WinStreak)
@@ -184,10 +185,10 @@ namespace Basra.Server.Services
         }
 
         /// <summary>
-        /// check current level againest xp to level up and send to client
-        /// functions that takes data user as param dosn't save changes
+        /// check current level against xp to level up and send to client
+        /// functions that takes data user as param doesn't save changes
         /// </summary>
-        private async Task LevelWorks(User roomDataUser) //separate this to be called on every XP change 
+        private async Task LevelWorks(User roomDataUser)
         {
             var calcedLevel = Room.GetLevelFromXp(roomDataUser.XP);
             if (calcedLevel > roomDataUser.Level)
@@ -207,24 +208,22 @@ namespace Basra.Server.Services
                 await _masterHub.Clients.User(roomDataUser.Id)
                     .SendAsync("LevelUp", calcedLevel, totalMoneyReward);
             }
-        }
+        } //separate this to be called on every XP change 
 
-
-        private async Task SendFinalizeResult(List<RoomUser> roomUsers, List<User> roomDataUsers, List<RoomXpReport> roomXpReports,
-            List<UserRoomStatus> userRoomStatuses, int lastEaterTurnId)
+        private async Task SendFinalizeResult(List<RoomUser> roomUsers, List<User> roomDataUsers,
+            List<RoomXpReport> roomXpReports, List<UserRoomStatus> userRoomStatuses,
+            int lastEaterTurnId)
         {
-            var dUsersMapped = roomUsers.Join(roomDataUsers, ru => ru.Id, du => du.Id,
-                (_, du) => du).ToList();
-            var xpRepMapped = roomUsers.Join(roomXpReports, rUser => rUser.TurnId,
-                roomXpReports.IndexOf, (_, report) => report).ToList();
+            // var xpRepMapped = roomUsers.Join(roomXpReports, rUser => rUser.TurnId,
+            // roomXpReports.IndexOf, (_, report) => report).ToList();
 
             var finalizeTasks = new List<Task>();
             for (int i = 0; i < roomUsers.Count; i++)
             {
                 var finalizeResult = new FinalizeResult
                 {
-                    RoomXpReport = xpRepMapped[i],
-                    PersonalFullUserInfo = Mapper.ConvertUserDataToClient(dUsersMapped[i]),
+                    RoomXpReport = roomXpReports[i],
+                    PersonalFullUserInfo = Mapper.ConvertUserDataToClient(roomDataUsers[i]),
                     LastEaterTurnId = lastEaterTurnId,
                     UserRoomStatus = userRoomStatuses,
                 };
@@ -238,10 +237,9 @@ namespace Basra.Server.Services
             await Task.WhenAll(finalizeTasks);
         }
 
-
         private void RemoveDisconnectedUsers(List<RoomUser> roomUsers)
         {
-            foreach (var roomUser in roomUsers.Where(ru => ru.ActiveUser.Disconnected))
+            foreach (var roomUser in roomUsers.Where(ru => ru.ActiveUser.IsDisconnected))
                 //where filtered with new collection, I don't know the performance but I will see how
                 //linq works under the hood, because I think the created collection doesn't affect performance
                 _sessionRepo.RemoveActiveUser(roomUser.ActiveUser.Id);

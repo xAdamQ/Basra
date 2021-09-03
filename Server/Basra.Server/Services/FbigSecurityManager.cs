@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.WebUtilities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Text;
@@ -25,7 +26,8 @@ namespace Basra.Server.Services
         private readonly IMasterRepo _masterRepo;
         private readonly ISessionRepo _sessionRepo;
 
-        public FbigSecurityManager(IConfiguration configuration, IMasterRepo masterRepo, ISessionRepo sessionRepo)
+        public FbigSecurityManager(IConfiguration configuration, IMasterRepo masterRepo,
+            ISessionRepo sessionRepo)
         {
             _configuration = configuration;
             _masterRepo = masterRepo;
@@ -106,10 +108,15 @@ namespace Basra.Server.Services
                 Name = name,
                 PictureUrl = pictureUrl,
                 Money = 200,
+                EnableOpenMatches = true,
+                OwnedBackgroundIds = new List<int> { 0 },
+                OwnedTitleIds = new List<int> { 0 },
+                OwnedCardBackIds = new List<int> { 0 },
             };
 
             await _masterRepo.CreateUserAsync(user);
             //todo the result of creation maybe failure
+            //but what to do in this case
 
             await _masterRepo.SaveChangesAsync();
             return user;

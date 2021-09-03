@@ -4,6 +4,7 @@ using Basra.Common;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public interface IPlayer : IPlayerBase
 {
@@ -18,15 +19,22 @@ public class Player : PlayerBase, IPlayer
 {
     public bool IsPlayable { get; set; }
 
+    private static AudioClip distributeClip;
+
     protected override void Start()
     {
         base.Start();
+
+        Addressables.LoadAssetAsync<AudioClip>("distributeClip").Completed +=
+            handle => distributeClip = handle.Result;
 
         turnTimer.Elapsed += MissTurn;
     }
 
     public async UniTask Distribute(List<int> cardIds)
     {
+        AudioManager.I.Play(distributeClip);
+
         foreach (var cardId in cardIds)
         {
             var card = await Card.CreateMyPlayerCard(cardId, BackSprite, transform);
@@ -39,7 +47,8 @@ public class Player : PlayerBase, IPlayer
 
     private void DistributeAnim()
     {
-        HandCards.ForEach(c => c.transform.position = Vector2.Lerp(startCard.position, endCard.position, .5f));
+        HandCards.ForEach(c =>
+            c.transform.position = Vector2.Lerp(startCard.position, endCard.position, .5f));
         //the start anim position
 
         var pointer = startCard.localPosition;
@@ -49,7 +58,8 @@ public class Player : PlayerBase, IPlayer
 
         foreach (var card in HandCards)
         {
-            card.transform.eulerAngles = new Vector3(0, 0, Random.Range(-Card.RotBound, Card.RotBound));
+            card.transform.eulerAngles =
+                new Vector3(0, 0, Random.Range(-Card.RotBound, Card.RotBound));
             card.transform.DOScale(Vector3.one, .7f);
             card.transform.DOLocalMove(pointer, .5f);
 
@@ -58,8 +68,8 @@ public class Player : PlayerBase, IPlayer
 
         HandCards.ForEach(
             card => card.transform.DORotate(card.transform.eulerAngles.SetY(180), .4f)
-            .OnComplete(() => Destroy(card.GetComponent<SpriteRenderer>()))
-            .SetDelay(.4f));
+                .OnComplete(() => Destroy(card.GetComponent<SpriteRenderer>()))
+                .SetDelay(.4f));
     }
 
     public void Throw(Card card)
@@ -80,6 +90,8 @@ public class Player : PlayerBase, IPlayer
     public override void StartTurn()
     {
         base.StartTurn();
+
+        AudioManager.I.Vibrate();
 
         HandCards.ForEach(c => c.Front.GetComponent<SpriteRenderer>().color = Color.white);
 

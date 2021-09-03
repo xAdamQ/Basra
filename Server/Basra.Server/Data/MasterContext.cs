@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
@@ -16,10 +19,11 @@ namespace Basra.Server
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRelation> UserRelations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            SeedData(modelBuilder);
+            #region learning notes
 
             // modelBuilder.Entity<DisplayUser>(); this meas that I included this type in the database creation
             //despite it's not mentioned in a DbSet or explored by nav prop
@@ -49,20 +53,52 @@ namespace Basra.Server
 
             //I will use the value converter to create the comma separated id I want!
 
-            modelBuilder.Entity<UserRelation>().HasKey(_ => new { _.UserId, _.OtherUserId });
+            #endregion
+
+            SetMaxLength(modelBuilder);
 
             modelBuilder.Entity<UserRelation>()
-                .HasOne(u => u.User)
-                .WithMany(u => u.Relations)
-                .HasForeignKey(u => u.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasKey(r => new { r.FollowerId, r.FollowingId });
+
+            #region pathetic tries
+
+            // modelBuilder.Entity<UserRelation>().Property(u => u.FollowerId).HasMaxLength(64);
+            // modelBuilder.Entity<UserRelation>().Property(u => u.FollowingId).HasMaxLength(64);
+            //
+            // modelBuilder.Entity<UserRelation>().HasKey(_ => new { _.FollowerId, _.FollowingId });
+
+            // modelBuilder.Entity<UserRelation>()
+            //     .HasOne(u => u.Follower)
+            //     .WithMany(u => u.Followers)
+            //     .HasForeignKey(u => u.FollowerId)
+            //     .OnDelete(DeleteBehavior.Restrict);
+            // // fluent api is harder then explicit sql?
+            //
+            // modelBuilder.Entity<UserRelation>()
+            //     .HasOne(u => u.Following)
+            //     .WithMany()
+            //     .HasForeignKey(u => u.FollowingId);
+            //
+            // modelBuilder.Entity<UserRelation>()
+            //     .HasKey(u => new { u.FollowerId, u.FollowingId });
 
 
-            modelBuilder.Entity<UserRelation>()
-                .HasOne(u => u.OtherUser)
-                .WithMany()
-                .HasForeignKey(u => u.OtherUserId);
+            // modelBuilder.Entity<User>()
+            //     .HasMany(u => u.Followers)
+            //     .WithMany(u => u.Followings)
+            //     .UsingEntity<UserRelation>(
+            //         j => j
+            //             .HasOne(r => r.Follower)
+            //             .WithMany(u => u.UserRelations)
+            //             .HasForeignKey(r => r.FollowerId),
+            //         j => j
+            //             .HasOne(r => r.Following)
+            //             .WithMany(u => u.UserRelations)
+            //             .HasForeignKey(r => r.FollowingId),
+            //         j =>
+            //             j.HasKey(r => new { r.FollowerId, r.FollowingId }));
 
+            //many to many with no 
             // modelBuilder.Entity<User>().Property(u => u.XP).HasConversion(
             //     v => v + "xp",
             //     v => int.Parse(v.Remove(v.Length - 2)));
@@ -85,7 +121,26 @@ namespace Basra.Server
             // );
             //mapping hints
 
+            #endregion
+
             IntListConversion(modelBuilder);
+
+            SeedData(modelBuilder);
+        }
+        private void SetMaxLength(ModelBuilder modelBuilder)
+        {
+            var stringProps = modelBuilder.Model.GetEntityTypes().SelectMany(t => t.GetProperties())
+                .Where(p => p.ClrType == typeof(string));
+            foreach (var property in stringProps)
+                property.AsProperty().Builder.HasMaxLength(128, ConfigurationSource.Convention);
+            //set string props maxlength as 128
+
+            modelBuilder.Entity<User>().Property(u => u.PictureUrl).HasMaxLength(256);
+
+            //2343 move fbigid to other table
+            modelBuilder.Entity<User>().Property(u => u.Fbid).HasMaxLength(256);
+
+            modelBuilder.Entity<User>().Property(u => u.Id).HasMaxLength(64);
         }
         private void IntListConversion(ModelBuilder modelBuilder)
         {
@@ -119,28 +174,91 @@ namespace Basra.Server
         }
         private void SeedData(ModelBuilder modelBuilder)
         {
+            var user0 = new User()
+            {
+                Id = "0",
+                Fbid = "0",
+                PlayedRoomsCount = 3,
+                WonRoomsCount = 4,
+                Name = "hany",
+                OwnedBackgroundIds = new List<int> { 1, 3 },
+                OwnedTitleIds = new List<int> { 2, 4 },
+                PictureUrl = "https://pbs.twimg.com/profile_images/592734306725933057/s4-h_LQC.jpg",
+                Draws = 3,
+                Level = 13,
+                Money = 22250,
+                XP = 806,
+                OwnedCardBackIds = new List<int>() { 0, 2 },
+                RequestedMoneyAidToday = 2,
+                LastMoneyAimRequestTime = null,
+                SelectedCardback = 2,
+            };
+
+            var bot999 = new User()
+            {
+                Id = "999",
+                Fbid = null,
+                PlayedRoomsCount = 9,
+                WonRoomsCount = 2,
+                Name = "botA",
+                PictureUrl = "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
+                OwnedBackgroundIds = new List<int> { 0, 3 },
+                OwnedTitleIds = new List<int> { 1 },
+                OwnedCardBackIds = new List<int> { 8 },
+                Draws = 2,
+                Level = 7,
+                Money = 1000,
+                XP = 34,
+                RequestedMoneyAidToday = 0,
+                LastMoneyAimRequestTime = null,
+                SelectedCardback = 1
+            };
+            var bot9999 = new User()
+            {
+                Id = "9999",
+                Fbid = null,
+                PlayedRoomsCount = 11,
+                WonRoomsCount = 3,
+                Name = "botB",
+                PictureUrl = "https://pbs.twimg.com/profile_images/592734306725933057/s4-h_LQC.jpg",
+                OwnedBackgroundIds = new List<int> { 3 },
+                OwnedTitleIds = new List<int> { 0, 1 },
+                OwnedCardBackIds = new List<int> { 0, 8 },
+                Draws = 2,
+                Level = 8,
+                Money = 1100,
+                XP = 44,
+                RequestedMoneyAidToday = 0,
+                LastMoneyAimRequestTime = null,
+                SelectedCardback = 2
+            };
+            var bot99999 = new User()
+            {
+                Id = "99999",
+                Fbid = null,
+                PlayedRoomsCount = 11,
+                WonRoomsCount = 3,
+                Name = "botC",
+                PictureUrl =
+                    "https://d3g9pb5nvr3u7.cloudfront.net/authors/57ea8955d8de1e1602f67ca0/1902081322/256.jpg",
+                OwnedBackgroundIds = new List<int> { 3 },
+                OwnedTitleIds = new List<int> { 0, 1 },
+                OwnedCardBackIds = new List<int> { 0, 8 },
+                Draws = 2,
+                Level = 8,
+                XP = 44,
+                RequestedMoneyAidToday = 0,
+                LastMoneyAimRequestTime = null,
+                SelectedCardback = 2,
+            };
+
             modelBuilder.Entity<User>().HasData(
                 new List<User>
                 {
-                    new()
-                    {
-                        Id = "0",
-                        Fbid = "0",
-                        PlayedRoomsCount = 3,
-                        WonRoomsCount = 4,
-                        Name = "hany",
-                        OwnedBackgroundIds = new List<int> {1, 3},
-                        OwnedTitleIds = new List<int> {2, 4},
-                        PictureUrl = "https://pbs.twimg.com/profile_images/592734306725933057/s4-h_LQC.jpg",
-                        Draws = 3,
-                        Level = 13,
-                        Money = 22250,
-                        XP = 806,
-                        OwnedCardBackIds = new List<int>() {0, 2},
-                        RequestedMoneyAidToday = 2,
-                        LastMoneyAimRequestTime = null,
-                        SelectedCardback = 2,
-                    },
+                    user0,
+                    bot999,
+                    bot9999,
+                    bot99999,
                     new()
                     {
                         Id = "1",
@@ -148,15 +266,15 @@ namespace Basra.Server
                         PlayedRoomsCount = 7,
                         WonRoomsCount = 11,
                         Name = "samy",
-                        OwnedBackgroundIds = new List<int> {0, 9},
-                        OwnedTitleIds = new List<int> {11, 6},
+                        OwnedBackgroundIds = new List<int> { 0, 9 },
+                        OwnedTitleIds = new List<int> { 11, 6 },
                         PictureUrl =
                             "https://d3g9pb5nvr3u7.cloudfront.net/authors/57ea8955d8de1e1602f67ca0/1902081322/256.jpg",
                         Draws = 1,
                         Level = 43,
                         Money = 89000,
                         XP = 1983,
-                        OwnedCardBackIds = new List<int>() {0, 1, 2},
+                        OwnedCardBackIds = new List<int>() { 0, 1, 2 },
                         RequestedMoneyAidToday = 0,
                         LastMoneyAimRequestTime = null,
                         SelectedCardback = 1,
@@ -168,9 +286,9 @@ namespace Basra.Server
                         PlayedRoomsCount = 973,
                         WonRoomsCount = 192,
                         Name = "anni",
-                        OwnedBackgroundIds = new List<int> {10, 8},
-                        OwnedTitleIds = new List<int> {1, 3},
-                        OwnedCardBackIds = new List<int> {4, 9},
+                        OwnedBackgroundIds = new List<int> { 10, 8 },
+                        OwnedTitleIds = new List<int> { 1, 3 },
+                        OwnedCardBackIds = new List<int> { 4, 9 },
                         PictureUrl = "https://pbs.twimg.com/profile_images/633661532350623745/8U1sJUc8_400x400.png",
                         Draws = 37,
                         Level = 139,
@@ -188,9 +306,9 @@ namespace Basra.Server
                         WonRoomsCount = 2,
                         Name = "ali",
                         PictureUrl = "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
-                        OwnedBackgroundIds = new List<int> {10, 8},
-                        OwnedTitleIds = new List<int> {1, 3},
-                        OwnedCardBackIds = new List<int> {2, 4, 8},
+                        OwnedBackgroundIds = new List<int> { 10, 8 },
+                        OwnedTitleIds = new List<int> { 1, 3 },
+                        OwnedCardBackIds = new List<int> { 2, 4, 8 },
                         Draws = 1,
                         Level = 4,
                         Money = 3,
@@ -199,110 +317,30 @@ namespace Basra.Server
                         LastMoneyAimRequestTime = null,
                         SelectedCardback = 2
                     },
-
-
-                    new()
-                    {
-                        Id = "999",
-                        Fbid = null,
-                        PlayedRoomsCount = 9,
-                        WonRoomsCount = 2,
-                        Name = "botA",
-                        PictureUrl = "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
-                        OwnedBackgroundIds = new List<int> {0, 3},
-                        OwnedTitleIds = new List<int> {1},
-                        OwnedCardBackIds = new List<int> {8},
-                        Draws = 2,
-                        Level = 7,
-                        Money = 1000,
-                        XP = 34,
-                        RequestedMoneyAidToday = 0,
-                        LastMoneyAimRequestTime = null,
-                        SelectedCardback = 1
-                    },
-
-                    new()
-                    {
-                        Id = "9999",
-                        Fbid = null,
-                        PlayedRoomsCount = 11,
-                        WonRoomsCount = 3,
-                        Name = "botB",
-                        PictureUrl = "https://pbs.twimg.com/profile_images/592734306725933057/s4-h_LQC.jpg",
-                        OwnedBackgroundIds = new List<int> {3},
-                        OwnedTitleIds = new List<int> {0, 1},
-                        OwnedCardBackIds = new List<int> {0, 8},
-                        Draws = 2,
-                        Level = 8,
-                        Money = 1100,
-                        XP = 44,
-                        RequestedMoneyAidToday = 0,
-                        LastMoneyAimRequestTime = null,
-                        SelectedCardback = 2
-                    },
-                    new()
-                    {
-                        Id = "99999",
-                        Fbid = null,
-                        PlayedRoomsCount = 11,
-                        WonRoomsCount = 3,
-                        Name = "botC",
-                        PictureUrl =
-                            "https://d3g9pb5nvr3u7.cloudfront.net/authors/57ea8955d8de1e1602f67ca0/1902081322/256.jpg",
-                        OwnedBackgroundIds = new List<int> {3},
-                        OwnedTitleIds = new List<int> {0, 1},
-                        OwnedCardBackIds = new List<int> {0, 8},
-                        Draws = 2,
-                        Level = 8,
-                        XP = 44,
-                        RequestedMoneyAidToday = 0,
-                        LastMoneyAimRequestTime = null,
-                        SelectedCardback = 2,
-                    },
                 }
             );
 
-            // modelBuilder.Entity<RoomUser>().HasData
-            // (
-            //     new List<RoomUser>()
-            //     {
-            //         new RoomUser
-            //         {
-            //             Id = "0",
-            //             RoomId = "0",
-            //             UserId = "3" //ali
-            //         },
-            //         new RoomUser
-            //         {
-            //             Id = "1",
-            //             RoomId = "1",
-            //             UserId = "0" //hany
-            //         },
-            //     }
-            // );
-            // modelBuilder.Entity<Room>().HasData(
-            //     new List<Room>
-            //     {
-            //         new Room
-            //         {
-            //             Id = "0",
-            //         },
-            //         new Room
-            //         {
-            //             Id = "1",
-            //         },
-            //     }
-            // );
-            // modelBuilder.Entity<PendingRoom>().HasData(
-            //     new List<PendingRoom>
-            //     {
-            //         new PendingRoom
-            //         {
-            //             Id = 1,
-            //             RoomId = "1"
-            //         }
-            //     }
-            // );
+            modelBuilder.Entity<UserRelation>().HasData(
+                new List<UserRelation>()
+                {
+                    new()
+                    {
+                        FollowerId = "0",
+                        FollowingId = "999",
+                    },
+                    new()
+                    {
+                        FollowerId = "0",
+                        FollowingId = "9999",
+                    },
+
+                    new()
+                    {
+                        FollowerId = "9999",
+                        FollowingId = "0",
+                    }
+                }
+            );
         }
     }
 }

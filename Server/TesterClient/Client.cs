@@ -35,7 +35,8 @@ namespace TesterClient
 
         private void SetupRpcs()
         {
-            Connection.On<PersonalFullUserInfo, MinUserInfo[], MinUserInfo[], ActiveRoomState>("InitGame",
+            Connection.On<PersonalFullUserInfo, MinUserInfo[], MinUserInfo[], ActiveRoomState>(
+                "InitGame",
                 (p, y, t, a) =>
                 {
                     _logger.LogInformation($"init game called on {Id} with\n" +
@@ -45,10 +46,11 @@ namespace TesterClient
                                            $"with active room state {JsonConvert.SerializeObject(a, Formatting.Indented)}\n");
                 });
 
-            Connection.On<int, int, List<FullUserInfo>, int>("PrepareRequestedRoomRpc", (betChoice, capacityChoice, oppos, turn) =>
-                _logger.LogInformation($"PrepareRequestedRoomRpc called on {Id} with\n" +
-                                       $"oppo info are {JsonConvert.SerializeObject(oppos, Formatting.Indented)}\n" +
-                                       $"and turn {turn}\n"));
+            Connection.On<int, int, List<FullUserInfo>, int>("PrepareRequestedRoomRpc",
+                (betChoice, capacityChoice, oppos, turn) =>
+                    _logger.LogInformation($"PrepareRequestedRoomRpc called on {Id} with\n" +
+                                           $"oppo info are {JsonConvert.SerializeObject(oppos, Formatting.Indented)}\n" +
+                                           $"and turn {turn}\n"));
 
 
             Connection.On<ThrowResult>("MyThrowResult", res =>
@@ -103,6 +105,15 @@ namespace TesterClient
                 _logger.LogInformation($"ShowMessage is called on {Id} with\n" +
                                        $"sender {sender}\n" +
                                        $"message id {msgId}\n"));
+
+            Connection.On<MinUserInfo>("ChallengeRequest", (sender) =>
+                _logger.LogInformation($"ShowMessage is called on {Id} with\n" +
+                                       $"sender {JsonConvert.SerializeObject(sender)}\n"));
+
+            Connection.On<int>("RespondChallenge", (response) =>
+                _logger.LogInformation($"ShowMessage is called on {Id} with\n" +
+                                       $"response is {response}\n"));
+
 
             int ConvertCardIndexToValue(int index)
             {

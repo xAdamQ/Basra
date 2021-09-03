@@ -28,12 +28,21 @@ namespace Basra.Server.Tests
         [InlineData(30, 22, 0, 1, 0, 0, 0)]
         [InlineData(20, 32, 1, 1, 1, 0, -1)]
         [InlineData(20, 32, 1, 0, 1, 0, 0)]
-        public async Task FinalizeGame_RightWinner(int eaten1, int eaten2, int basra1, int basra2, int bbasra1, int bbasra2, int winner)
+        public async Task FinalizeGame_RightWinner(int eaten1, int eaten2, int basra1, int basra2,
+            int bbasra1, int bbasra2, int winner)
         {
             var roomDataUsers = new List<User>()
             {
-                new(),
-                new(),
+                new()
+                {
+                    Id = "0",
+                    Level = 9999,
+                },
+                new()
+                {
+                    Id = "1",
+                    Level = 9999,
+                },
             };
             //every int is 0
 
@@ -41,6 +50,7 @@ namespace Basra.Server.Tests
             {
                 new()
                 {
+                    Id = "0",
                     EatenCardsCount = eaten1,
                     BasraCount = basra1,
                     BigBasraCount = bbasra1,
@@ -48,6 +58,7 @@ namespace Basra.Server.Tests
                 },
                 new()
                 {
+                    Id = "1",
                     EatenCardsCount = eaten2,
                     BasraCount = basra2,
                     BigBasraCount = bbasra2,
@@ -66,8 +77,9 @@ namespace Basra.Server.Tests
             masterRepoMock.Setup(mr => mr.GetUsersByIdsAsync(It.IsAny<List<string>>()))
                 .Returns(() => Task.FromResult(roomDataUsers));
 
-            var finMan = new FinalizeManager(MasterHubTests.GetMockWithSendFuns().Object, masterRepoMock.Object, new Mock<ISessionRepo>()
-                .Object, new Mock<ILogger<FinalizeManager>>().Object);
+            var finMan = new FinalizeManager(MasterHubTests.GetMockWithSendFuns().Object,
+                masterRepoMock.Object, new Mock<ISessionRepo>()
+                    .Object, new Mock<ILogger<FinalizeManager>>().Object);
 
             await finMan.FinalizeRoom(room);
 
@@ -79,15 +91,24 @@ namespace Basra.Server.Tests
         }
 
         [Theory]
-        [InlineData(new int[] { 0, 0 }, new int[] { 22, 30 }, new int[] { 1, 3 }, new int[] { 0, 0 }, -1, new int[] { 10, 60 })]
-        [InlineData(new int[] { 0, 0 }, new int[] { 15, 52 - 15 }, new int[] { 1, 2 }, new int[] { 2, 0 }, -1, new int[] { 70, 50 })]
-        [InlineData(new int[] { 0, 0 }, new int[] { 40, 12 }, new int[] { 1, 5 }, new int[] { 2, 9 }, 1, new int[] { 100, -1 })]
-        [InlineData(new int[] { 0, 0 }, new int[] { 40, 12 }, new int[] { 1, 1 }, new int[] { 2, 0 }, 0, new int[] { -1, 40 })]
-        [InlineData(new int[] { 0, 0 }, new int[] { 27, 27 }, new int[] { 1, 1 }, new int[] { 1, 1 }, -1, new int[] { 70, 70 })]
-        [InlineData(new int[] { 0, 0 }, new int[] { 27, 27 }, new int[] { 0, 0 }, new int[] { 0, 0 }, 0, new int[] { -1, 30 })]
-        [InlineData(new int[] { 0, 0, 1 }, new int[] { 27, 10, 17 }, new int[] { 0, 0, 1 }, new int[] { 0, 0, 0 }, -1, new int[] { 30, 0, 10 })]
-        [InlineData(new int[] { 0, 0, 1 }, new int[] { 20, 12, 20 }, new int[] { 0, 0, 1 }, new int[] { 0, 0, 0 }, -1, new int[] { 30, 0, 40 })]
-        public void CalcScore(int[] types, int[] eatenCounts, int[] basraCounts, int[] bigBasraCounts, int resignedUserInd, int[] scores)
+        [InlineData(new int[] { 0, 0 }, new int[] { 22, 30 }, new int[] { 1, 3 },
+            new int[] { 0, 0 }, new int[] { 10, 60 })]
+        [InlineData(new int[] { 0, 0 }, new int[] { 15, 52 - 15 }, new int[] { 1, 2 },
+            new int[] { 2, 0 }, new int[] { 70, 50 })]
+        [InlineData(new int[] { 0, 0 }, new int[] { 40, 12 }, new int[] { 1, 5 },
+            new int[] { 2, 9 }, new int[] { 100, -1 })]
+        [InlineData(new int[] { 0, 0 }, new int[] { 40, 12 }, new int[] { 1, 1 },
+            new int[] { 2, 0 }, new int[] { -1, 40 })]
+        [InlineData(new int[] { 0, 0 }, new int[] { 27, 27 }, new int[] { 1, 1 },
+            new int[] { 1, 1 }, new int[] { 70, 70 })]
+        [InlineData(new int[] { 0, 0 }, new int[] { 27, 27 }, new int[] { 0, 0 },
+            new int[] { 0, 0 }, new int[] { -1, 30 })]
+        [InlineData(new int[] { 0, 0, 1 }, new int[] { 27, 10, 17 }, new int[] { 0, 0, 1 },
+            new int[] { 0, 0, 0 }, new int[] { 30, 0, 10 })]
+        [InlineData(new int[] { 0, 0, 1 }, new int[] { 20, 12, 20 }, new int[] { 0, 0, 1 },
+            new int[] { 0, 0, 0 }, new int[] { 30, 0, 40 })]
+        public void CalcScore(int[] types, int[] eatenCounts, int[] basraCounts,
+            int[] bigBasraCounts, int[] scores)
         {
             var roomActors = new List<RoomActor>();
             for (int i = 0; i < eatenCounts.Length; i++)
@@ -108,12 +129,13 @@ namespace Basra.Server.Tests
                     });
             }
 
-            var resignedUser = resignedUserInd == -1 ? null : roomActors[resignedUserInd];
 
-            var finMan = new FinalizeManager(MasterHubTests.GetMockWithSendFuns().Object, new Mock<IMasterRepo>().Object, new
-                Mock<ISessionRepo>().Object, new Mock<ILogger<FinalizeManager>>().Object);
+            var finMan = new FinalizeManager(MasterHubTests.GetMockWithSendFuns().Object,
+                new Mock<IMasterRepo>().Object, new
+                    Mock<ISessionRepo>().Object, new Mock<ILogger<FinalizeManager>>().Object);
 
-            var actualScores = (List<int>)TestHelper.CallPrivateMethod("CalcScores", finMan, new Object[] { roomActors, resignedUser });
+            var actualScores = (List<int>)TestHelper.CallPrivateMethod("CalcScores", finMan,
+                new Object[] { roomActors });
 
             Assert.Equal(scores, actualScores);
         }
@@ -166,14 +188,17 @@ namespace Basra.Server.Tests
                 }
             };
 
-            var status = new List<UserRoomStatus>() {
-                new(){
+            var status = new List<UserRoomStatus>()
+            {
+                new()
+                {
                     Basras = 1,
                     BigBasras = 1,
                     EatenCards = 33,
                     WinMoney = 100,
                 },
-                new(){
+                new()
+                {
                     Basras = 1,
                     BigBasras = 1,
                     EatenCards = 33,
@@ -187,9 +212,12 @@ namespace Basra.Server.Tests
             var hubClient = new Mock<IHubClients>();
             var clientProxy = new Mock<IClientProxy>();
 
-            clientProxy.Setup(_ => _.SendCoreAsync("FinalizeRoom", It.IsAny<object[]>(), CancellationToken.None))
-                .Callback<string, object[], CancellationToken>((_, args, _) => passedArgs.Add((FinalizeResult)args[0]));
-            hubClient.Setup(_ => _.GroupExcept(It.IsAny<string>(), It.IsAny<IReadOnlyList<string>>()))
+            clientProxy.Setup(_ =>
+                    _.SendCoreAsync("FinalizeRoom", It.IsAny<object[]>(), CancellationToken.None))
+                .Callback<string, object[], CancellationToken>((_, args, _) =>
+                    passedArgs.Add((FinalizeResult)args[0]));
+            hubClient.Setup(_ =>
+                    _.GroupExcept(It.IsAny<string>(), It.IsAny<IReadOnlyList<string>>()))
                 .Returns(clientProxy.Object);
             hubClient.Setup(_ => _.User(It.IsAny<string>())).Returns(clientProxy.Object);
 
@@ -199,9 +227,11 @@ namespace Basra.Server.Tests
             var fm = new FinalizeManager(hub.Object, new Mock<IMasterRepo>().Object, new
                 Mock<ISessionRepo>().Object, new Mock<ILogger<FinalizeManager>>().Object);
 
-            await TestHelper.CallAsyncPrivateAction("SendFinalizeResult", fm, new object[] { roomUsers, dataUsers, xpRep, status, 0 });
+            await TestHelper.CallAsyncPrivateAction("SendFinalizeResult", fm,
+                new object[] { roomUsers, dataUsers, xpRep, status, 0 });
 
-            _testOutputHelper.WriteLine(JsonConvert.SerializeObject(passedArgs, Formatting.Indented));
+            _testOutputHelper.WriteLine(
+                JsonConvert.SerializeObject(passedArgs, Formatting.Indented));
 
             Assert.Equal(xpRep[0], passedArgs[0].RoomXpReport);
             Assert.Equal(roomUsers[0].Id, passedArgs[0].PersonalFullUserInfo.Id);

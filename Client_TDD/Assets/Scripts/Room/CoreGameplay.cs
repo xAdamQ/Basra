@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using Basra.Common;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public interface ICoreGameplay
 {
@@ -15,7 +16,8 @@ public interface ICoreGameplay
     void Distribute(List<int> handCardIds);
     void LastDistribute(List<int> handCardIds);
     UniTask EatLast(int lastEaterTurnId);
-    void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts, int currentTurn);
+    UniTaskVoid ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts,
+        int currentTurn);
 }
 
 public class CoreGameplay : ICoreGameplay
@@ -33,6 +35,7 @@ public class CoreGameplay : ICoreGameplay
     {
         await UniTask.DelayFrame(3);
 
+        // ThrowClip = await Addressables.LoadAssetAsync<AudioClip>("throwClip");
         RoomController.I.Destroyed += OnRoomDestroyed;
         AssignRpcs();
     }
@@ -63,13 +66,15 @@ public class CoreGameplay : ICoreGameplay
             PlayerBase player = null;
             if (RoomSettings.I.MyTurn == i)
             {
-                player = await PlayerBase.Create(RoomSettings.I.UserInfos[i].SelectedCardback, 0, i);
+                player = await PlayerBase.Create(RoomSettings.I.UserInfos[i].SelectedCardback, 0,
+                    i);
                 Players.Add(player);
                 MyPlayer = player as IPlayer;
             }
             else
             {
-                player = await PlayerBase.Create(RoomSettings.I.UserInfos[i].SelectedCardback, oppoPlaceCounter++, i);
+                player = await PlayerBase.Create(RoomSettings.I.UserInfos[i].SelectedCardback,
+                    oppoPlaceCounter++, i);
                 Players.Add(player);
                 Oppos.Add(player as IOppo);
             }
@@ -96,7 +101,8 @@ public class CoreGameplay : ICoreGameplay
         PlayerInTurn.StartTurn();
     }
 
-    public void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts, int currentTurn)
+    public async UniTaskVoid ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts,
+        int currentTurn)
     {
         Ground.I.Distribute(ground);
 

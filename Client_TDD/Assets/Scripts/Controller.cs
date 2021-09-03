@@ -97,13 +97,7 @@ public class Controller : MonoBehaviour, IController
         }
         else //returned
         {
-            UniTask.Create(async () =>
-            {
-                // if (hubConnection != null)
-                await hubConnection.CloseAsync();
-
-                SceneManager.LoadSceneAsync(0);
-            });
+            RestartGame();
         }
     }
 
@@ -379,9 +373,11 @@ public class Controller : MonoBehaviour, IController
         hubConnection.OnError += OnError;
         hubConnection.OnClosed += OnClosed;
         hubConnection.OnMessage += OnMessage;
+        hubConnection.OnReconnecting += OnReconnecting;
 
         BlockingOperationManager.I.Forget(hubConnection.ConnectAsync().AsUniTask());
     }
+
 
     private bool OnMessage(HubConnection arg1, Message msg)
     {
@@ -390,8 +386,6 @@ public class Controller : MonoBehaviour, IController
 #else
         Debug.Log($"msg is {JsonUtility.ToJson(msg)}");
 #endif
-
-
         return true;
     }
 
@@ -405,11 +399,35 @@ public class Controller : MonoBehaviour, IController
     }
     private void OnClosed(HubConnection obj)
     {
+        //don't restart game here because this is called only when the connection
+        //is gracefully closed
         Debug.Log("OnClosed");
     }
     private void OnError(HubConnection arg1, string arg2)
     {
+        RestartGame();
         Debug.Log($"OnError: {arg2}");
+    }
+    private void OnReconnecting(HubConnection arg1, string arg2)
+    {
+        Debug.Log("reconnecting");
+    }
+
+    private void RestartGame()
+    {
+        UniTask.Create(async () =>
+        {
+            try
+            {
+                await hubConnection.CloseAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+            }
+
+            SceneManager.LoadSceneAsync(0);
+        }).Forget(e => throw e);
     }
 
     #endregion

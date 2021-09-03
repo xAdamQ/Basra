@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Basra.Server
@@ -49,8 +50,6 @@ namespace Basra.Server
         /// </summary>
         public bool IsMoneyAidProcessing => LastMoneyAimRequestTime != null;
 
-        public List<UserRelation> Relations { get; set; }
-
         public List<int> OwnedBackgroundIds { get; set; } = new();
         public List<int> OwnedCardBackIds { get; set; } = new();
         public List<int> OwnedTitleIds { get; set; } = new();
@@ -58,16 +57,17 @@ namespace Basra.Server
         public int SelectedTitleId { get; set; }
         public int SelectedCardback { get; set; }
         public int SelectedBackground { get; set; }
+
+        /// <summary>
+        /// if true, anyone challenge the user
+        /// if false, people who he follows only can challenge him
+        /// </summary>
+        public bool EnableOpenMatches { get; set; }
     }
 
     public class UserRelation
     {
-        public User User { get; set; }
-        public string UserId { get; set; }
-
-        public User OtherUser { get; set; }
-        public string OtherUserId { get; set; }
-
-        public int RelationType { get; set; }
+        [ForeignKey("User")] public string FollowerId { get; set; }
+        [ForeignKey("User")] public string FollowingId { get; set; }
     }
 }

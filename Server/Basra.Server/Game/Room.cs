@@ -11,10 +11,7 @@ namespace Basra.Server
     {
         public bool Started;
 
-        //todo ready timeout, timeouts overall as defensive strategy
-        //todo action that happened after it's time e.g. play card
-
-        public const int DeckSize = 52; //2343 --> make it 52
+        public const int DeckSize = 52; //todo make it change with user count
         public const int ShapeSize = 13;
 
         //each bet has specific xp gain, when you lose for example you take only .25 only of it 

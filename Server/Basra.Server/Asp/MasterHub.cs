@@ -13,7 +13,6 @@ using System.Linq;
 
 namespace Basra.Server
 {
-    [Authorize]
     public class MasterHub : Hub
     {
         #region services
@@ -27,7 +26,8 @@ namespace Basra.Server
 
 
         public MasterHub(IMasterRepo masterRepo, ILobbyManager lobbyManager,
-            ISessionRepo sessionRepo, IRoomManager roomManager, IMatchMaker matchMaker, ILogger<MasterHub> logger)
+            ISessionRepo sessionRepo, IRoomManager roomManager, IMatchMaker matchMaker,
+            ILogger<MasterHub> logger)
         {
             _masterRepo = masterRepo;
             _lobbyManager = lobbyManager;
@@ -49,13 +49,14 @@ namespace Basra.Server
 
             if (_sessionRepo.IsUserActive(Context.UserIdentifier))
             {
-                if (ActiveUser.Disconnected == false)
-                    throw new BadUserInputException("user is connected already and trying to connect again");
+                if (ActiveUser.IsDisconnected == false)
+                    throw new BadUserInputException(
+                        "user is connected already and trying to connect again");
                 //todo i think the auth handler should be responsible for this part, should be terminated faster
 
                 activeRoomState = await _roomManager.GetFullRoomState(RoomUser);
 
-                ActiveUser.Disconnected = false;
+                ActiveUser.IsDisconnected = false;
             }
             else
             {
@@ -68,31 +69,27 @@ namespace Basra.Server
         }
         private void CreateActiveUser()
         {
-            _sessionRepo.AddActiveUser(new ActiveUser(Context.UserIdentifier, Context.ConnectionId, typeof(UserDomain.App.Lobby.Idle)));
+            _sessionRepo.AddActiveUser(new ActiveUser(Context.UserIdentifier, Context.ConnectionId,
+                typeof(UserDomain.App.Lobby.Idle)));
         }
         private async Task InitClientGame(ActiveRoomState activeRoomState)
         {
             var user = await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier);
             var clientPersonalInfo = Mapper.ConvertUserDataToClient(user);
+            //you travel to db 2 more times
+            clientPersonalInfo.Followers =
+                await _masterRepo.GetFollowersAsync(Context.UserIdentifier);
+            clientPersonalInfo.Followings =
+                await _masterRepo.GetFollowingsAsync(Context.UserIdentifier);
 
-            var yesterdayChampions = new MinUserInfo[]
-            {
-                new MinUserInfo {Id = "1", Name = "champ1", Xp = 837, SelectedTitleId = 0},
-                new MinUserInfo {Id = "2", Name = "champ2", Xp = 373, SelectedTitleId = 1},
-                new MinUserInfo {Id = "3", Name = "champ3", Xp = 143121, SelectedTitleId = 2},
-            };
-            var topFriends = new MinUserInfo[]
-            {
-                new MinUserInfo {Id = "1", Name = "friend2", Xp = 23243, SelectedTitleId = 3},
-                new MinUserInfo {Id = "2", Name = "friend3", Xp = 3122, SelectedTitleId = 4},
-            };
-
-            await Clients.Caller.SendAsync("InitGame", clientPersonalInfo, yesterdayChampions, topFriends, activeRoomState);
+            await Clients.Caller.SendAsync("InitGame", clientPersonalInfo, activeRoomState);
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             _logger.LogInformation($"{Context.UserIdentifier} Disconnected");
+
+            ActiveUser.Disconnect();
 
             //remove pending room user
             if (RoomUser != null && !RoomUser.Room.IsFull)
@@ -101,8 +98,9 @@ namespace Basra.Server
             //RoomUser.Room is null when he was the last player in pending room and disconnected
 
             //mark user in room as disconnected
-            if (RoomUser != null && RoomUser.Room != null) //todo test get non existing user
-                ActiveUser.Disconnected = true;
+            if (RoomUser is { Room: { } }) //todo test get non existing user
+                //this means the room user is not null it's room is not also
+                ActiveUser.IsDisconnected = true;
             else
                 _sessionRepo.RemoveActiveUser(Context.UserIdentifier);
 
@@ -112,16 +110,19 @@ namespace Basra.Server
         #endregion
 
         private RoomUser roomUser;
-        private RoomUser RoomUser => roomUser ??= _sessionRepo.GetRoomUserWithId(Context.UserIdentifier);
+        private RoomUser RoomUser =>
+            roomUser ??= _sessionRepo.GetRoomUserWithId(Context.UserIdentifier);
         private ActiveUser activeUser;
-        private ActiveUser ActiveUser => activeUser ??= _sessionRepo.GetActiveUser(Context.UserIdentifier);
+        private ActiveUser ActiveUser =>
+            activeUser ??= _sessionRepo.GetActiveUser(Context.UserIdentifier);
 
         #region general
 
         [RpcDomain(typeof(UserDomain.App))]
         public async Task<PersonalFullUserInfo> GetPersonalUserData()
         {
-            return Mapper.ConvertUserDataToClient(await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier));
+            return Mapper.ConvertUserDataToClient(
+                await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier));
         }
 
         /// <summary>
@@ -130,7 +131,24 @@ namespace Basra.Server
         [RpcDomain(typeof(UserDomain.App))]
         public async Task<FullUserInfo> GetUserData(string id)
         {
-            return await _masterRepo.GetFullUserInfoAsync(id);
+            var data = await _masterRepo.GetFullUserInfoAsync(id);
+            data.Friendship = (int)_masterRepo.GetFriendship(Context.UserIdentifier, id);
+            return data;
+        }
+
+        [RpcDomain(typeof(UserDomain.App))]
+        public async Task ToggleFollow(string targetId)
+        {
+            _masterRepo.ToggleFollow(Context.UserIdentifier, targetId);
+            await _masterRepo.SaveChangesAsync();
+        }
+
+        [RpcDomain(typeof(UserDomain.App))]
+        public async Task ToggleOpenMatches()
+        {
+            var user = await _masterRepo.GetUserByIdAsyc(Context.UserIdentifier);
+            user.EnableOpenMatches = !user.EnableOpenMatches;
+            await _masterRepo.SaveChangesAsync();
         }
 
         #endregion
@@ -141,6 +159,25 @@ namespace Basra.Server
         public async Task RequestRandomRoom(int betChoice, int capacityChoice)
         {
             await _matchMaker.RequestRandomRoom(betChoice, capacityChoice, ActiveUser);
+        }
+
+        [RpcDomain(typeof(UserDomain.App.Lobby.Idle))]
+        public async Task<MatchMaker.MatchRequestResult> RequestMatch(string oppoId)
+        {
+            return await _matchMaker.RequestMatch(ActiveUser, oppoId);
+        }
+
+        [RpcDomain(typeof(UserDomain.App.Lobby.Pending))]
+        public void CancelChallengeRequest(string oppoId)
+        {
+            _matchMaker.CancelChallengeRequest(ActiveUser);
+        }
+
+        [RpcDomain(typeof(UserDomain.App.Lobby.Idle))]
+        public async Task<MatchMaker.ChallengeResponseResult> RespondChallengeRequest
+            (string senderId, bool response)
+        {
+            return await _matchMaker.RespondChallengeRequest(ActiveUser, response, senderId);
         }
 
         [RpcDomain(typeof(UserDomain.App.Lobby.GettingReady))]
@@ -246,7 +283,7 @@ namespace Basra.Server
         public async Task<MinUserInfo> TestReturnObject()
         {
             await Task.Delay(5000);
-            return new MinUserInfo {Name = "some data to test"};
+            return new MinUserInfo { Name = "some data to test" };
         }
 
         [RpcDomain(typeof(UserDomain.App))]
@@ -259,7 +296,8 @@ namespace Basra.Server
         {
             public MethodDomains()
             {
-                var rpcs = typeof(MasterHub).GetMethods(BindingFlags.Public | BindingFlags.Instance);
+                var rpcs =
+                    typeof(MasterHub).GetMethods(BindingFlags.Public | BindingFlags.Instance);
 
                 foreach (var rpc in rpcs)
                 {

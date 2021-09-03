@@ -60,8 +60,10 @@ public class FinalMuv : MonoBehaviour
     public void ShowFullInfo()
     {
         followButton.interactable = false;
-        FullUserView.Show(fullUserInfo);
-        // BlockingOperationManager.I.Forget(Controller.I.GetPublicFullUserInfo(Id), FullUserView.Show);
+
+        FullUserView.Show(Id == Repository.I.PersonalFullInfo.Id
+            ? Repository.I.PersonalFullInfo
+            : fullUserInfo);
     }
 
     public void ToggleFollow()

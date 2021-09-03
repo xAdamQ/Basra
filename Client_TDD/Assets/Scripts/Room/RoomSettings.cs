@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Basra.Common;
+using UnityEngine;
 
 public class RoomSettings
 {
@@ -32,7 +33,6 @@ public class RoomSettings
     public int BetChoice { get; }
     public int CapacityChoice { get; }
 
-
     public int Bet => Bets[BetChoice];
     public static int[] Bets => new[] { 55, 110, 220, 550, 1100, 5500 };
 
@@ -41,15 +41,10 @@ public class RoomSettings
 
     public static int MinBet => Bets[0];
 
-    public int TotalPrize => (int)(Bet / 1.1f) * Capacity;
-
+    public int TotalPrize => Mathf.RoundToInt(Bet / 1.1f) * Capacity;
 
     public int BetMoneyToPay()
     {
         return Bet;
     }
-    public int BetWinShown()
-    {
-        return (int)((Bet - (Bet * .1f)) * 2);
-    } //not used in finalize panel
 }

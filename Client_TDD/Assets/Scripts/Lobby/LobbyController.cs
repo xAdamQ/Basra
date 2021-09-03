@@ -34,7 +34,7 @@ public class LobbyController : ILobbyController
         Initialize().Forget();
     }
 
-    public async UniTaskVoid Initialize()
+    private async UniTaskVoid Initialize()
     {
         Controller.I.OnAppPause += DestroyLobby;
 
@@ -48,6 +48,8 @@ public class LobbyController : ILobbyController
             .GetComponent<Transform>();
 
         await FriendsView.Create();
+
+        SoundButton.Create();
 
         await PersonalActiveUserView.Create();
 

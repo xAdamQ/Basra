@@ -94,7 +94,7 @@ public class RoomController : IRoomController
 
             CoreGameplay.I.ResumeGame(activeRoomState.MyHand, activeRoomState.Ground,
                 activeRoomState.HandCounts,
-                activeRoomState.CurrentTurn);
+                activeRoomState.CurrentTurn).Forget();
         }
     }
 
@@ -124,6 +124,7 @@ public class RoomController : IRoomController
             RoomUserView.Manager.I.RoomUserViews.ForEach(ruv => Object.Destroy(ruv.gameObject));
             Object.FindObjectsOfType<PlayerBase>().ForEach(obj => Object.Destroy(obj.gameObject));
             Object.Destroy(Object.FindObjectOfType<ChatSystem>().gameObject);
+            Object.Destroy(PrizeView.I.gameObject);
 
             //immmm this will cause issues on the running funs like decreaseMoneyAimTime and events
             //change indie values instead of rewrite the whole object
@@ -136,6 +137,7 @@ public class RoomController : IRoomController
             Repository.I.PersonalFullInfo.DecreaseMoneyAimTimeLeft().Forget();
             //todo you MUST edit each value on it's own now?, this is about replacing the whole
             //data object, but it seems fine
+
 
             FinalizeController.Construct(RoomReferences.I.Canvas, RoomSettings.I, finalizeResult)
                 .Forget();

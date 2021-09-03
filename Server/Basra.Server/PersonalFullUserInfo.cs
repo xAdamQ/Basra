@@ -14,5 +14,8 @@ namespace Basra.Common
         public List<int> Titles { get; set; }
 
         public DateTime? LastMoneyAimRequestTime { get; set; }
+
+        public List<MinUserInfo> Followers { get; set; }
+        public List<MinUserInfo> Followings { get; set; }
     }
 }

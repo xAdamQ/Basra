@@ -168,6 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   messageText: {fileID: 1477294148036471487}
   dismissButton: {fileID: 7115588367358527889}
+  waitImage: {fileID: 1080859952308924103}
 --- !u!1001 &1080859951124933026
 PrefabInstance:
   m_ObjectHideFlags: 0

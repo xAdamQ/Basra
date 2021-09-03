@@ -157,7 +157,7 @@ PlayerSettings:
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 21
   AndroidTargetSdkVersion: 0
-  AndroidPreferredInstallLocation: 1
+  AndroidPreferredInstallLocation: 0
   aotOptions: 
   stripEngineCode: 0
   iPhoneStrippingLevel: 0
@@ -667,6 +667,7 @@ PlayerSettings:
     Android: 0
   il2cppCompilerConfiguration: {}
   managedStrippingLevel:
+    Android: 0
     WebGL: 3
   incrementalIl2cppBuild: {}
   suppressCommonWarnings: 1

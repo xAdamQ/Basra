@@ -1,13 +1,14 @@
 namespace Basra.Server
 {
-    public partial class MasterRepo
+    /// <summary>
+    /// Follower: I am follower
+    /// Following: He is Following
+    /// </summary>
+    public enum FriendShip
     {
-        public enum FriendShip
-        {
-            None,
-            Follower,
-            Following,
-            Friend,
-        }
+        None,
+        Follower,
+        Following,
+        Friend,
     }
 }

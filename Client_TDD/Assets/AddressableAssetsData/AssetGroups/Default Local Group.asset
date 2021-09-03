@@ -205,6 +205,22 @@ MonoBehaviour:
     m_Address: prizeView
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 696122235d23ffbc49cbf33fe12eefc9
+    m_Address: distributeClip
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9331bcf1bccf68c0981eb35188e0f32b
+    m_Address: throwClip
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ddad84f7a78e4d57d96539bc9b1dae60
+    m_Address: turnClip
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: feb1582f02f3cfd83838e2d01ecf07b7
+    m_Address: soundButton
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b2c7024f110de7f4f9f1208d9a0e5d05, type: 2}
   m_SchemaSet:

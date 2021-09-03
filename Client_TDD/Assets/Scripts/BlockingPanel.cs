@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -9,6 +11,7 @@ public class BlockingPanel : MonoBehaviour
 {
     [SerializeField] private TMP_Text messageText;
     [SerializeField] private Button dismissButton; //for both cancellation and dismiss
+    [SerializeField] private Image waitImage;
 
     private static BlockingPanel i;
 
@@ -16,7 +19,7 @@ public class BlockingPanel : MonoBehaviour
     {
         if (i) Destroy(i.gameObject);
         //you can remove this to support multiple panels
-        //but the new should draw over the old
+        //but the new should draw over the old  
 
         i = (await Addressables.InstantiateAsync("blockingPanel", ProjectReferences.I.Canvas))
             .GetComponent<BlockingPanel>();
@@ -33,6 +36,9 @@ public class BlockingPanel : MonoBehaviour
         }
 
         i.messageText.text = message ?? "";
+
+        i.waitImage.transform.DORotate(Vector3.forward * 180, 2f)
+            .SetLoops(9999, LoopType.Yoyo);
     }
 
     public static void HideDismiss()
