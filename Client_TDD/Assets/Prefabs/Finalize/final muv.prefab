@@ -458,7 +458,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_fontSize
-      value: 30
+      value: 35.2
       objectReference: {fileID: 0}
     - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: originalText
@@ -479,6 +479,10 @@ PrefabInstance:
     - target: {fileID: 3411827141506980613, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Text
       value: win streak
+      objectReference: {fileID: 0}
+    - target: {fileID: 4189659715013338005, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Basras
       objectReference: {fileID: 0}
     - target: {fileID: 7878697191330894570, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Enabled
@@ -631,7 +635,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_fontSize
-      value: 30
+      value: 35.2
       objectReference: {fileID: 0}
     - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: originalText
@@ -660,6 +664,10 @@ PrefabInstance:
     - target: {fileID: 3411827141506980613, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Text
       value: win ratio change
+      objectReference: {fileID: 0}
+    - target: {fileID: 4189659715013338005, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Prize
       objectReference: {fileID: 0}
     - target: {fileID: 7878697191330894570, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Enabled
@@ -812,7 +820,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_fontSize
-      value: 30
+      value: 28.45
       objectReference: {fileID: 0}
     - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: originalText
@@ -837,6 +845,10 @@ PrefabInstance:
     - target: {fileID: 3411827141506980613, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Text
       value: eaten cards
+      objectReference: {fileID: 0}
+    - target: {fileID: 4189659715013338005, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Eaten Cards
       objectReference: {fileID: 0}
     - target: {fileID: 7878697191330894570, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Enabled
@@ -989,7 +1001,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_fontSize
-      value: 30
+      value: 35.2
       objectReference: {fileID: 0}
     - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: originalText
@@ -1010,6 +1022,10 @@ PrefabInstance:
     - target: {fileID: 3411827141506980613, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Text
       value: basras
+      objectReference: {fileID: 0}
+    - target: {fileID: 4189659715013338005, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Super Basras
       objectReference: {fileID: 0}
     - target: {fileID: 7878697191330894570, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Enabled
@@ -1267,6 +1283,10 @@ PrefabInstance:
     - target: {fileID: 6293033527109255917, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_Name
       value: add friend button
+      objectReference: {fileID: 0}
+    - target: {fileID: 7383206591553431180, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Follow
       objectReference: {fileID: 0}
     - target: {fileID: 7800333019196284979, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size

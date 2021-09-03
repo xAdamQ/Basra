@@ -96,13 +96,13 @@ public class LobbyController : ILobbyController
         if (!response)
         {
             BlockingPanel.Hide();
-            Toast.I.Show("تم رفض اللعب من قبل اللاعب");
+            Toast.I.Show(Translatable.GetText("player_rejected"));
         }
         else
         {
             BlockingPanel.HideDismiss();
             //panel is removed at start
-            Toast.I.Show("يتم تجهيز الغرفه الان");
+            Toast.I.Show(Translatable.GetText("creating_room"));
         }
     }
 

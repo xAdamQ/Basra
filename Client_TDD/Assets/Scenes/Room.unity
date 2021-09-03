@@ -1702,26 +1702,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 870125648}
     m_Modifications:
-    - target: {fileID: 8799017562248729266, guid: aee46fed1431b162591ed610e08715aa, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 286
-      objectReference: {fileID: 0}
-    - target: {fileID: 8799017562248729266, guid: aee46fed1431b162591ed610e08715aa, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -686
-      objectReference: {fileID: 0}
-    - target: {fileID: 8799017562953981333, guid: aee46fed1431b162591ed610e08715aa, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 108
-      objectReference: {fileID: 0}
-    - target: {fileID: 8799017562953981333, guid: aee46fed1431b162591ed610e08715aa, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -676
-      objectReference: {fileID: 0}
-    - target: {fileID: 8799017563080143609, guid: aee46fed1431b162591ed610e08715aa, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -370
-      objectReference: {fileID: 0}
     - target: {fileID: 8799017563187351082, guid: aee46fed1431b162591ed610e08715aa, type: 3}
       propertyPath: m_Name
       value: chatSystem
@@ -1809,10 +1789,6 @@ PrefabInstance:
     - target: {fileID: 8799017563187351083, guid: aee46fed1431b162591ed610e08715aa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8799017563443483805, guid: aee46fed1431b162591ed610e08715aa, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -560
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aee46fed1431b162591ed610e08715aa, type: 3}

@@ -231,7 +231,7 @@ namespace PlayModeTests
             //
             // Debug.Log(handle3.Result.Count);
 
-            Extensions.LoadAndReleaseAsset<Sprite>(BackgroundType.dotsOcean.ToString(), sprite =>
+            Extensions.LoadAndReleaseAsset<Sprite>(BackgroundType.purpleCris.ToString(), sprite =>
                 new GameObject()
                     .AddComponent<SpriteRenderer>().sprite = sprite).Forget(e => throw e);
 

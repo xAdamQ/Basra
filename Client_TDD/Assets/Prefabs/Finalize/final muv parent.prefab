@@ -68,6 +68,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 673890779976774740}
     m_Modifications:
+    - target: {fileID: 767293361998067829, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Follow players to play with them again
+      objectReference: {fileID: 0}
     - target: {fileID: 1909415557060690868, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: m_text
       value: "\u0627\uFEBF\uFED2 \u0627\uFEFB\uFEBB\uFEAA\uFED7\uFE8E\u0621 \uFEDF\uFEE0\uFECC\uFE90

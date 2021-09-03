@@ -450,6 +450,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8038713110593021938}
     m_Modifications:
+    - target: {fileID: 767293361998067829, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Follows you
+      objectReference: {fileID: 0}
     - target: {fileID: 1909415557060690868, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: m_text
       value: "\uFEF3\uFE98\uFE8E\uFE91\uFECC\uFEDA"
@@ -739,7 +743,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_fontSize
-      value: 45.25
+      value: 49.4
       objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
@@ -837,6 +841,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Super Basras
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091302119000245, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Total Super Basra
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!224 &5806628392895257230 stripped
@@ -864,7 +876,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_fontSize
-      value: 45.25
+      value: 49.4
       objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
@@ -962,6 +974,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Win Ratio
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091302119000245, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Win Ratio
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!114 &5398358650180742423 stripped
@@ -989,7 +1009,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_fontSize
-      value: 45.25
+      value: 49.4
       objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
@@ -1091,6 +1111,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Money
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091302119000245, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Money
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!224 &5806628392670358332 stripped
@@ -1118,7 +1146,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_fontSize
-      value: 45.25
+      value: 49.4
       objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
@@ -1215,6 +1243,10 @@ PrefabInstance:
     - target: {fileID: 1661124610227095098, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Total Winning
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
@@ -1333,6 +1365,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: challenge button
       objectReference: {fileID: 0}
+    - target: {fileID: 7383206591553431180, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Challenge
+      objectReference: {fileID: 0}
     - target: {fileID: 7800333019196284979, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -1402,7 +1438,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_fontSize
-      value: 45.25
+      value: 49.4
       objectReference: {fileID: 0}
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_colorMode
@@ -1608,6 +1644,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Win Streak
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091302119000245, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Current Win Streak
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!114 &5398358650119741979 stripped
@@ -1635,7 +1679,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_fontSize
-      value: 45.25
+      value: 49.4
       objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
@@ -1732,6 +1776,14 @@ PrefabInstance:
     - target: {fileID: 1661124610227095098, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Won Rooms
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091302119000245, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Won Rooms
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
@@ -1850,6 +1902,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: follow
       objectReference: {fileID: 0}
+    - target: {fileID: 7383206591553431180, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Follow
+      objectReference: {fileID: 0}
     - target: {fileID: 7800333019196284979, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -1941,7 +1997,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_fontSize
-      value: 45.25
+      value: 49.4
       objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
@@ -2039,6 +2095,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Basras
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!224 &5806628393679192564 stripped
@@ -2066,7 +2126,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_fontSize
-      value: 45.25
+      value: 49.4
       objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
@@ -2163,6 +2223,14 @@ PrefabInstance:
     - target: {fileID: 1661124610227095098, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Eaten Cards
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091302119000245, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Total Eaten Cards
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
@@ -2321,7 +2389,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_fontSize
-      value: 45.25
+      value: 49.4
       objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
@@ -2423,6 +2491,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Played Rooms
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091302119000245, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Played Rooms
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!114 &6766467808516171152 stripped
@@ -2450,7 +2526,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_fontSize
-      value: 45.25
+      value: 49.4
       objectReference: {fileID: 0}
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_colorMode
@@ -2655,6 +2731,14 @@ PrefabInstance:
     - target: {fileID: 1661124610227095098, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Max Win Streak
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091302119000245, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Max Win Streak
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}

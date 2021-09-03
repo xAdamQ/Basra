@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -30,11 +31,31 @@ public class Translatable : MonoBehaviour
 
     #endregion
 
-    [Header("Arabic is default, start with English, another...")]
-    [SerializeField]
+    [Header("Arabic is default, start with English, another...")] [SerializeField]
     private string[] translations = new string[languagesEnumValues.Length - 1];
 
     //first lang is english, matches index 1 in enum
+
+    private static Dictionary<string, string[]> Dictionary =
+        new Dictionary<string, string[]>
+        {
+            { "player_rejected", new[] { "تم رفض اللعب من قبل اللاعب", "player rejected" } },
+            { "creating_room", new[] { "يتم تجهيز الغرفه الان", "creating room" } },
+            { "wait_time", new[] { "استني الوقت", "wait" } },
+            {
+                "daily_limit",
+                new[] { "وصلت للحد الاقصى النهارده", "you reached your daily max limit" }
+            },
+            { "already_money", new[] { "انت اصلا معاك فلوس", "you already have money" } },
+            { "no_money", new[] { "مفيش فلوس كفايه", "No enough money" } },
+            // { "player_rejected", new[] { ,  } },
+            // { "player_rejected", new[] { ,  } },
+        };
+
+    public static string GetText(string key)
+    {
+        return Dictionary[key][(int)CurrentLanguage];
+    }
 
     //we get current lang from presisitant storage like instantGames 1mb
     private static Language currentLanguage = Language.Arabic;

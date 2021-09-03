@@ -16,7 +16,7 @@ public interface ICoreGameplay
     void Distribute(List<int> handCardIds);
     void LastDistribute(List<int> handCardIds);
     UniTask EatLast(int lastEaterTurnId);
-    UniTaskVoid ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts,
+    void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts,
         int currentTurn);
 }
 
@@ -28,7 +28,9 @@ public class CoreGameplay : ICoreGameplay
     {
         I = this;
 
-        Initialize().Forget();
+        // Initialize().Forget();
+        RoomController.I.Destroyed += OnRoomDestroyed;
+        AssignRpcs();
     }
 
     public async UniTaskVoid Initialize()
@@ -36,8 +38,6 @@ public class CoreGameplay : ICoreGameplay
         await UniTask.DelayFrame(3);
 
         // ThrowClip = await Addressables.LoadAssetAsync<AudioClip>("throwClip");
-        RoomController.I.Destroyed += OnRoomDestroyed;
-        AssignRpcs();
     }
 
     public void OnRoomDestroyed()
@@ -101,7 +101,7 @@ public class CoreGameplay : ICoreGameplay
         PlayerInTurn.StartTurn();
     }
 
-    public async UniTaskVoid ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts,
+    public void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts,
         int currentTurn)
     {
         Ground.I.Distribute(ground);
@@ -117,6 +117,17 @@ public class CoreGameplay : ICoreGameplay
 
         CurrentTurn = currentTurn - 1;
         NextTurn(false);
+    }
+
+    public void BeginGame(List<int> myHand, List<int> groundCards)
+    {
+        Ground.I.Distribute(groundCards);
+
+        Distribute(myHand);
+
+        Debug.Log($"hand cards are {string.Join(", ", myHand)}");
+
+        InitialTurn();
     }
 
     #region rpcs
@@ -168,15 +179,4 @@ public class CoreGameplay : ICoreGameplay
     }
 
     #endregion
-
-    public void BeginGame(List<int> myHand, List<int> groundCards)
-    {
-        Ground.I.Distribute(groundCards);
-
-        Distribute(myHand);
-
-        Debug.Log($"hand cards are {string.Join(", ", myHand)}");
-
-        InitialTurn();
-    }
 }

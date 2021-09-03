@@ -113,7 +113,7 @@ public class FullUserView : MinUserView
     public void Challenge()
     {
         if (Repository.I.PersonalFullInfo.Money < RoomSettings.MinBet)
-            Toast.I.Show("مالك لا يكفي");
+            Toast.I.Show(Translatable.GetText("no_money"));
 
         UniTask.Create(async () =>
         {

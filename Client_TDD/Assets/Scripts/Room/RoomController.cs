@@ -90,11 +90,11 @@ public class RoomController : IRoomController
         else
         {
             //todo why this
-            await UniTask.DelayFrame(1);
+            // await UniTask.DelayFrame(1);
 
             CoreGameplay.I.ResumeGame(activeRoomState.MyHand, activeRoomState.Ground,
                 activeRoomState.HandCounts,
-                activeRoomState.CurrentTurn).Forget();
+                activeRoomState.CurrentTurn);
         }
     }
 

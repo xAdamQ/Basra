@@ -559,6 +559,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1197100656300163002}
     m_Modifications:
+    - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: m_fontSize
+      value: 49.4
+      objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
       value: "\uFECF\uFEAE\u0641 \uFEDF\uFECC\uFE92\uFE96"
@@ -659,6 +663,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Played Rooms
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!224 &1197100656340682044 stripped
@@ -684,6 +692,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1197100656300163002}
     m_Modifications:
+    - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: m_fontSize
+      value: 49.4
+      objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
       value: "\uFE91\uFEBC\uFEAE\u0627\u062A"
@@ -780,6 +792,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Basras
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!224 &545345381577937942 stripped
@@ -805,6 +821,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1197100656300163002}
     m_Modifications:
+    - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: m_fontSize
+      value: 49.4
+      objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
       value: "\u0627\uFEDF\uFEEE\u0631\u0642 \u0627\uFEDF\uFEE4\uFE8E\uFEDB\uFEEE\u0644"
@@ -901,6 +921,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Eaten Cards
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!224 &545345381250763445 stripped
@@ -926,6 +950,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1197100656300163002}
     m_Modifications:
+    - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: m_fontSize
+      value: 49.4
+      objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
       value: "\uFECF\uFEAE\u0641 \u0631\uFE91\uFEA4\uFE96"
@@ -1022,6 +1050,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Won Rooms
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!224 &545345381198415311 stripped
@@ -1047,6 +1079,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1197100656300163002}
     m_Modifications:
+    - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: m_fontSize
+      value: 49.4
+      objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
       value: "\u0627\uFEDF\uFED4\uFEE0\uFEEE\u0633"
@@ -1147,6 +1183,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Money
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091302119000245, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Money
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!114 &2156925056989154192 stripped
@@ -1172,6 +1216,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1197100656300163002}
     m_Modifications:
+    - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: m_fontSize
+      value: 49.4
+      objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
       value: "\uFEE7\uFEB4\uFE92\uFE94 \u0627\uFEDF\uFEAE\uFE91\uFEA2"
@@ -1268,6 +1316,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Win Ratio
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!114 &2156925057124169973 stripped
@@ -1293,6 +1345,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1197100656300163002}
     m_Modifications:
+    - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: m_fontSize
+      value: 49.4
+      objectReference: {fileID: 0}
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_colorMode
       value: 2
@@ -1497,6 +1553,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Win Streak
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!114 &2156925056664680441 stripped
@@ -1522,6 +1582,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1197100656300163002}
     m_Modifications:
+    - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: m_fontSize
+      value: 49.4
+      objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
       value: "\u0627\uFEDF\uFEE4\uFEDC\uFEB4\uFE90 \u0627\uFEDF\uFEDC\uFEE0\uFEF2"
@@ -1618,6 +1682,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Total Winning
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!114 &2156925056898981959 stripped
@@ -1643,6 +1711,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1197100656300163002}
     m_Modifications:
+    - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: m_fontSize
+      value: 49.4
+      objectReference: {fileID: 0}
     - target: {fileID: 968866956658816478, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_text
       value: "\uFE91\uFEBC\uFEAE\u0627\u062A \uFEB3\uFEEE\uFE91\uFEAE"
@@ -1738,6 +1810,10 @@ PrefabInstance:
     - target: {fileID: 1661124610227095098, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Super Basras
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
@@ -2343,6 +2419,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1197100656300163002}
     m_Modifications:
     - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: m_fontSize
+      value: 49.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 968866956423508852, guid: 741361bffff2174499b4ebe14721a325, type: 3}
       propertyPath: m_colorMode
       value: 2
       objectReference: {fileID: 0}
@@ -2546,6 +2626,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2137091301879762463, guid: 741361bffff2174499b4ebe14721a325, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Max Win Streak
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741361bffff2174499b4ebe14721a325, type: 3}
 --- !u!224 &2932081951429969323 stripped
@@ -2578,7 +2662,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1909415557060690868, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: m_fontSize
-      value: 38
+      value: 34.55
       objectReference: {fileID: 0}
     - target: {fileID: 1909415557060690868, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: originalText

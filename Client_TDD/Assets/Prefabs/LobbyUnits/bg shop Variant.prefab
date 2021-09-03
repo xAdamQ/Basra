@@ -168,6 +168,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1113621052841554156, guid: c9d5b889e4f409ef0848ebd8cd2c097d, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Wallpaper Shop
+      objectReference: {fileID: 0}
     - target: {fileID: 1115653071161715525, guid: c9d5b889e4f409ef0848ebd8cd2c097d, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -226,7 +230,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7566622642138106738, guid: c9d5b889e4f409ef0848ebd8cd2c097d, type: 3}
       propertyPath: m_Name
-      value: bg shop Variant
+      value: bg shop
       objectReference: {fileID: 0}
     - target: {fileID: 7566622642138106738, guid: c9d5b889e4f409ef0848ebd8cd2c097d, type: 3}
       propertyPath: m_IsActive

@@ -27,7 +27,7 @@ public class RoomRequester : MonoBehaviour
     {
         if (Repository.I.PersonalFullInfo.Money < RoomSettings.Bets[betChoice])
         {
-            Toast.I.Show("No enough money");
+            Toast.I.Show(Translatable.GetText("no_money"));
             return;
         }
 

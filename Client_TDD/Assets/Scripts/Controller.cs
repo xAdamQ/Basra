@@ -97,6 +97,10 @@ public class Controller : MonoBehaviour, IController
         }
         else //returned
         {
+            Debug.Log("is signing in: " + HMSAccountManager.Instance.SigningIn);
+
+            if (HMSAccountManager.Instance.SigningIn) return;
+
             RestartGame();
         }
     }
@@ -415,6 +419,8 @@ public class Controller : MonoBehaviour, IController
 
     private void RestartGame()
     {
+        Debug.Log("restarting game");
+
         UniTask.Create(async () =>
         {
             try

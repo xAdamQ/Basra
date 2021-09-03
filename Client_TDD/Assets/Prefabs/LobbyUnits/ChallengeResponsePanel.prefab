@@ -204,6 +204,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: rej
       objectReference: {fileID: 0}
+    - target: {fileID: 7383206591553431180, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Reject
+      objectReference: {fileID: 0}
     - target: {fileID: 7800333019196284979, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -412,7 +416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3632272278521054526, guid: 39ba3d0dd99d1c27da0ab437169fa420, type: 3}
       propertyPath: m_fontSize
-      value: 27.2
+      value: 33.1
       objectReference: {fileID: 0}
     - target: {fileID: 3632272278521054526, guid: 39ba3d0dd99d1c27da0ab437169fa420, type: 3}
       propertyPath: originalText
@@ -421,6 +425,10 @@ PrefabInstance:
         \u0627\u0644\u062A\u0627\u064A\u062A\u0644 \u0627\u0644\u062A\u0627\u064A\u062A\u0644
         \u0627\u0644\u062A\u0627\u064A\u062A\u0644 \u0627\u0644\u062A\u0627\u064A\u062A\u0644
         \u0627\u0644\u062A\u0627\u064A\u062A\u0644 "
+      objectReference: {fileID: 0}
+    - target: {fileID: 3632272278521054526, guid: 39ba3d0dd99d1c27da0ab437169fa420, type: 3}
+      propertyPath: m_isRightToLeft
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3632272278521054526, guid: 39ba3d0dd99d1c27da0ab437169fa420, type: 3}
       propertyPath: m_enableAutoSizing
@@ -607,6 +615,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: acc
       objectReference: {fileID: 0}
+    - target: {fileID: 7383206591553431180, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Accept
+      objectReference: {fileID: 0}
     - target: {fileID: 7800333019196284979, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -661,6 +673,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3090774912721458194}
     m_Modifications:
+    - target: {fileID: 767293361998067829, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: You're Challenged
+      objectReference: {fileID: 0}
     - target: {fileID: 1909415557060690868, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: m_text
       value: "\uFEDF\uFED8\uFEAA \uFEA3\uFEBC\uFEE0\uFE96 \uFECB\uFEE0\uFEF0 \uFE97\uFEA4\uFEAA\u064A"

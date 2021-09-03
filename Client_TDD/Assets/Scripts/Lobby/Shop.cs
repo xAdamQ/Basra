@@ -37,9 +37,12 @@ public enum BackgroundType
     berry,
     brownLeaf,
     blueTrans,
-    dotsOcean,
-    arabesqueDark,
     arabesqueBlack,
+    veges,
+    greenLines,
+    hearts,
+    eyes,
+    purpleCris
 }
 
 /// <summary>
@@ -94,9 +97,12 @@ public class Shop : MonoBehaviour
         BackgroundType.berry,
         BackgroundType.brownLeaf,
         BackgroundType.blueTrans,
-        BackgroundType.dotsOcean,
-        BackgroundType.arabesqueDark,
         BackgroundType.arabesqueBlack,
+        BackgroundType.eyes,
+        BackgroundType.purpleCris,
+        BackgroundType.veges,
+        BackgroundType.greenLines,
+        BackgroundType.hearts,
     };
 
     private readonly List<ShopItem> shopItems = new List<ShopItem>();
