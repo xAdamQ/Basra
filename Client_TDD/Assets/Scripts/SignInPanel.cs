@@ -38,7 +38,7 @@ public class SignInPanel : MonoBehaviour
 
 #if UNITY_ANDROID && !UNITY_EDITOR
         Debug.Log("huawei sign in");
-        HMSAccountManager.Instance.SignIn();
+        HMSAccountManager.Instance.SilentSignIn();
 #endif
     }
 
