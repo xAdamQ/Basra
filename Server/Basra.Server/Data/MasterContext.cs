@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
@@ -144,7 +143,8 @@ namespace Basra.Server
         }
         private void IntListConversion(ModelBuilder modelBuilder)
         {
-            Expression<Func<List<int>, List<int>, bool>> equalsExpression = (c1, c2) => c1.SequenceEqual(c2);
+            Expression<Func<List<int>, List<int>, bool>> equalsExpression =
+                (c1, c2) => c1.SequenceEqual(c2);
             Expression<Func<List<int>, int>> hashCodeExpression = hce =>
                 hce.Aggregate((a, v) => HashCode.Combine(a, v.GetHashCode()));
             //this makes a hashcode to the list from it's elements
@@ -156,7 +156,8 @@ namespace Basra.Server
                 c => c.ToList() //this is not used, because taking the snapshot doesn't have anything customized 
             );
 
-            Expression<Func<List<int>, string>> serializeIntListExpression = v => JsonSerializer.Serialize(v, null);
+            Expression<Func<List<int>, string>> serializeIntListExpression =
+                v => JsonSerializer.Serialize(v, null);
             Expression<Func<string, List<int>>> deserializeIntListExpression =
                 v => JsonSerializer.Deserialize<List<int>>(v, null);
 
@@ -201,7 +202,8 @@ namespace Basra.Server
                 PlayedRoomsCount = 9,
                 WonRoomsCount = 2,
                 Name = "botA",
-                PictureUrl = "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
+                PictureUrl =
+                    "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
                 OwnedBackgroundIds = new List<int> { 0, 3 },
                 OwnedTitleIds = new List<int> { 1 },
                 OwnedCardBackIds = new List<int> { 8 },
@@ -289,7 +291,8 @@ namespace Basra.Server
                         OwnedBackgroundIds = new List<int> { 10, 8 },
                         OwnedTitleIds = new List<int> { 1, 3 },
                         OwnedCardBackIds = new List<int> { 4, 9 },
-                        PictureUrl = "https://pbs.twimg.com/profile_images/633661532350623745/8U1sJUc8_400x400.png",
+                        PictureUrl =
+                            "https://pbs.twimg.com/profile_images/633661532350623745/8U1sJUc8_400x400.png",
                         Draws = 37,
                         Level = 139,
                         Money = 8500,
@@ -305,7 +308,8 @@ namespace Basra.Server
                         PlayedRoomsCount = 6,
                         WonRoomsCount = 2,
                         Name = "ali",
-                        PictureUrl = "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
+                        PictureUrl =
+                            "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
                         OwnedBackgroundIds = new List<int> { 10, 8 },
                         OwnedTitleIds = new List<int> { 1, 3 },
                         OwnedCardBackIds = new List<int> { 2, 4, 8 },

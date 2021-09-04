@@ -91,11 +91,12 @@ namespace Basra.Server.Services
         /// I can't remove items in the future, that's why their price order is the id
         /// </summary>
         private static readonly int[] CardbackPrices =
-            { 50, 65, 100, 450, 600, 700, 1800, 2000, 2600 };
+            { 50, 65, 120, 450, 800, 1100, 2000, 3000, 5000 };
         /// <summary>
         /// I can't remove items in the future, that's why their price order is the id
         /// </summary>
-        private static readonly int[] BackgroundPrices = { 50, 65, 100, 450, 900, 1200, 2400 };
+        private static readonly int[] BackgroundPrices =
+            { 50, 65, 300, 600, 1000, 2100, 3050, 3900, 6000, 9000 };
 
         /*
         so say I want to add an item, what to do?
@@ -103,42 +104,6 @@ namespace Basra.Server.Services
         1- add it's price to the server
         2- add it's string adress to the client and append this address in the enum as last element
         */
-
-        public enum CardbackType
-        {
-            Red,
-            Green,
-            Blue,
-            Violet,
-            Yellow,
-            RedStars,
-            BlueStars,
-        }
-
-        public enum BackgroundType
-        {
-            Red,
-            Green,
-            Blue,
-            BlackFlower,
-            Yellow,
-        }
-
-        // private static readonly Dictionary<string, int> cardbackData = new()
-        // {
-        //     {"red", 50},
-        //     {"blue", 100},
-        //     {"violet", 250},
-        //     {"yellow", 300},
-        // };
-        //
-        // private static readonly Dictionary<string, int> backgrounData = new()
-        // {
-        //     {"red", 50},
-        //     {"blue", 100},
-        //     {"blackFlower", 250},
-        //     {"yellow", 300},
-        // };
 
         public async Task BuyCardBack(int cardbackId, string activeUserId)
         {

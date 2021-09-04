@@ -54,7 +54,7 @@ namespace Basra.Server
 
         public int BetChoice { get; }
         public int Bet => Bets[BetChoice];
-        public static int[] Bets => new[] { 55, 110, 220 };
+        public static int[] Bets => new[] { 55, 110, 220, 550, 1100, 5500 };
 
         /// <summary>
         /// used in money aim code
