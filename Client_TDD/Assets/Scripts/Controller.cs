@@ -99,7 +99,11 @@ public class Controller : MonoBehaviour, IController
         {
             Debug.Log("is signing in: " + HMSAccountManager.Instance.SigningIn);
 
-            if (HMSAccountManager.Instance.SigningIn) return;
+            if (RoomController.I == null) return;
+            //you restart on the room only
+
+            // if (HMSAccountManager.Instance.SigningIn)
+            // return;
 
             RestartGame();
         }
