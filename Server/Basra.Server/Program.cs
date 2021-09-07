@@ -16,7 +16,7 @@ namespace Basra.Server
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    // webBuilder.UseUrls("http://*:5566");
+                    webBuilder.UseUrls("http://*:5566");
                 })
                 .ConfigureLogging(loggingBuilder => loggingBuilder.AddAzureWebAppDiagnostics());
     }

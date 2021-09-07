@@ -19,6 +19,8 @@ public class AccountDemoManager : MonoBehaviour
 
         HMSAccountManager.Instance.OnSignInSuccess = OnLoginSuccess;
         HMSAccountManager.Instance.OnSignInFailed = OnLoginFailure;
+        
+        
     }
 
     public void LogIn()

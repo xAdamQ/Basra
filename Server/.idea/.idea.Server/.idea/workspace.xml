@@ -12,84 +12,68 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e449006-4b33-468a-a3f1-b36fa9dfdfce" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/1F1EA-1F1EC.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/1F1EA-1F1EC.png.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/1F1EC-1F1E7.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/1F1EC-1F1E7.png.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/background-2001196_640.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/background-2001196_640.jpg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/background-4704517_640.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/background-4704517_640.png.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/cards-1240686_640.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/cards-1240686_640.png.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/carrot-6020131_640.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/carrot-6020131_640.png.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/eyes-4751572_640.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/eyes-4751572_640.png.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/pattern-3340885_640.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/pattern-3340885_640.png.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/plum-711496_640.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/plum-711496_640.png.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/screens.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/screens/12bc198d8787ae3d51c8adc38fa72617.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/screens/12bc198d8787ae3d51c8adc38fa72617.jpeg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/screens/Matt-Bomer-CRED-Twitter.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/screens/Matt-Bomer-CRED-Twitter.png.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/screens/Screenshot2.unity" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/screens/Screenshot2.unity.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/screens/screenshot1.unity" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/screens/screenshot1.unity.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/screens/ss3.unity" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/screens/ss3.unity.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/screens/teenager-142.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/screens/teenager-142.jpg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/ScriptableBuildPipeline.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSAchievementsSettings.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSAchievementsSettings.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSAdsKitSettings.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSAdsKitSettings.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSGameServiceSettings.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSGameServiceSettings.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSIAPKitSettings.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSIAPKitSettings.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSIAPProductListSettings.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSIAPProductListSettings.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSLeaderboardSettings.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSLeaderboardSettings.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSMainEditorSettings.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSMainEditorSettings.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSPluginSettings.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSPluginSettings.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSRemoteConfigSettings.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSRemoteConfigSettings.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSRemoteDefaultValueSettings.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSRemoteDefaultValueSettings.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/add money popup.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/add money popup.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/iap shop 1.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/iap shop 1.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/AddMoneyPopup.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/AddMoneyPopup.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/AddressableAssetsData/AssetGroups/Default Local Group.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/AddressableAssetsData/AssetGroups/Default Local Group.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/AddressableAssetsData/AssetGroups/bg tiles.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/AddressableAssetsData/AssetGroups/bg tiles.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/TMP/Changa Outline.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/TMP/Changa Outline.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/background-2001196_640.jpg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/background-2001196_640.jpg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/background-4704517_640.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/background-4704517_640.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg0.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg0.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg1.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg1.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg2.jpg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg2.jpg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg3.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg3.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg4.jpg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg4.jpg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg5.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg5.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg6.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg6.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/cards-1240686_640.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/cards-1240686_640.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/carrot-6020131_640.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/carrot-6020131_640.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/eyes-4751572_640.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/eyes-4751572_640.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/pattern-3340885_640.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/pattern-3340885_640.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/plum-711496_640.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/plum-711496_640.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Demos/Account/AccountDemoManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Demos/Account/AccountDemoManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Scripts/Account/HMSAccountManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Scripts/Account/HMSAccountManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Plugins/Newtonsoft.Json.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Plugins/Newtonsoft.Json.dll.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/fullUserView.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/fullUserView.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/levelUpPanel.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/levelUpPanel.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/minUserView.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/minUserView.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/peronsalFuv.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/peronsalFuv.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/sign in panel.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/AppUnits/UI/sign in panel.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/Finalize/final muv parent.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/Finalize/final muv parent.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/Finalize/final muv.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/Finalize/final muv.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/Finalize/finlaize result.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/Finalize/finlaize result.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/ChallengeResponsePanel.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/ChallengeResponsePanel.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/Room Variant.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/Room Variant.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/bg shop Variant.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/bg shop Variant.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/cardback shop item.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/cardback shop item.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/cardback shop.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/cardback shop.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/friends.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/friends.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/room choices.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/room choices.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/RoomUnits/UI/chat/chatSystem.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/RoomUnits/UI/chat/chatSystem.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/UI/kvp style 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/UI/kvp style 1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Scripts/Ads/HMSAdsKitManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Scripts/Ads/HMSAdsKitManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Scripts/Utils/HMSSingleton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Scripts/Utils/HMSSingleton.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/get money popup.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/get money popup.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/iap shop.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/iap shop.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Lobby.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Lobby.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Room.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Room.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Startup.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Startup.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/finalize.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/finalize.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/tst.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/tst.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/ChoiceButton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/ChoiceButton.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/ConstData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/ConstData.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Controller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Controller.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/IapShop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/IapShop.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/LobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/LobbyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/MoneyAidButton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/MoneyAidButton.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/RoomRequester.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/RoomRequester.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/Shop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/Shop.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/ShopItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/ShopItem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/Views/User/FullUserView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/Views/User/FullUserView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/CoreGameplay.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/CoreGameplay.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/RoomController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Room/RoomController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/MyScripts.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/MyScripts.asmdef" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/SignInPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/SignInPanel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Translatable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Translatable.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Tests/PlayModeTests/RoomTests2.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Tests/PlayModeTests/RoomTests2.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/StreamingAssets/agconnect-services.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/StreamingAssets/agconnect-services.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/StreamingAssets/agconnect-services.json.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/StreamingAssets/agconnect-services.json.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/BuildReportToolOptions.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/BuildReportToolOptions.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/UnityConnectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/UnityConnectSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Server/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -98,7 +82,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/Basra.Server" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -117,6 +101,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6ea2ba6f018640239c24e78f24067d4161600/27/DefaultHubCallerContext.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Basra.Server/Exceptions/BadUserInputException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6ea2ba6f018640239c24e78f24067d4161600/F/Hub.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a5b8e90eb688401d9ae2662b86f59e448d8200/1A7/ExecutionContext.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -347,6 +332,7 @@
       <workItem from="1630569166286" duration="2119000" />
       <workItem from="1630596143614" duration="4760000" />
       <workItem from="1630636294711" duration="4091000" />
+      <workItem from="1631029599798" duration="6297000" />
     </task>
     <servers />
   </component>

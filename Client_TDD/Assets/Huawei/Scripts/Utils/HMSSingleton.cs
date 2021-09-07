@@ -23,7 +23,7 @@ public class HMSSingleton<T> : MonoBehaviour where T : MonoBehaviour
         if (instance == null)
             instance = this as T;
         else if (instance != this)
-            Destroy(this);
+            Destroy(gameObject);
     }
 }
 

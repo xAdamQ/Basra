@@ -5,6 +5,8 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json.Linq;
 
 namespace Basra.Server.Services
 {
@@ -17,6 +19,7 @@ namespace Basra.Server.Services
         Task BuyBackground(int backgroundId, string activeUserId);
         Task SelectCardback(int cardbackId, string activeUserId);
         Task SelectBackground(int backgroundId, string activeUserId);
+        Task MakePurchase(ActiveUser activeUser, string purchaseData, string sign);
     }
 
     //todo split this to shop and other things for example
@@ -24,12 +27,15 @@ namespace Basra.Server.Services
     {
         private readonly IMasterRepo _masterRepo;
         private readonly IBackgroundJobClient _backgroundJobClient;
+        private readonly IHubContext<MasterHub> _masterHub;
         // private readonly IRequestCache _requestCache;
 
-        public LobbyManager(IMasterRepo masterRepo, IBackgroundJobClient backgroundJobClient)
+        public LobbyManager(IMasterRepo masterRepo, IBackgroundJobClient backgroundJobClient,
+            IHubContext<MasterHub> masterHub)
         {
             _masterRepo = masterRepo;
             _backgroundJobClient = backgroundJobClient;
+            _masterHub = masterHub;
         }
 
         public async Task RequestMoneyAid(ActiveUser activeUser)
@@ -178,7 +184,35 @@ namespace Basra.Server.Services
             user.SelectedBackground = backgroundId;
 
             await _masterRepo.SaveChangesAsync();
-        } //trivial to test
+        }
+
+        public async Task MakePurchase(ActiveUser activeUser, string purchaseData, string sign)
+        {
+            dynamic dataObj = JObject.Parse(purchaseData);
+            string productId = dataObj.productId;
+
+            switch (productId)
+            {
+                case "money500":
+                    await AddMoney(activeUser, 500);
+                    break;
+
+                case "money3000":
+                    await AddMoney(activeUser, 3000);
+                    break;
+            }
+        }
+
+        private async Task AddMoney(ActiveUser activeUser, int amount)
+        {
+            var dUser = await _masterRepo.GetUserByIdAsyc(activeUser.Id);
+
+            dUser.Money += amount;
+
+            await _masterRepo.SaveChangesAsync();
+
+            await _masterHub.Clients.User(activeUser.Id).SendAsync("AddMoney", amount);
+        }
 
         public static bool VerifyIAPSign(string content, string sign, string pubKey)
         {

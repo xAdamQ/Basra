@@ -1,8 +1,8 @@
 using System;
 using Cysharp.Threading.Tasks;
-#if UNITY_ANDROID && !UNITY_EDITOR
 using HmsPlugin;
-#endif
+using HuaweiMobileServices.Id;
+using HuaweiMobileServices.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -31,6 +31,23 @@ public class SignInPanel : MonoBehaviour
         langChoice.SetChoice(lang);
     }
 
+    private void Start()
+    {
+        HMSAccountManager.Instance.OnSignInSuccess = OnLoginSuccess;
+        HMSAccountManager.Instance.OnSignInFailed = OnLoginFailure;
+    }
+
+    private void OnLoginFailure(HMSException exc)
+    {
+        Debug.Log("failed huawei login with exception: " + exc);
+        BlockingPanel.Hide("getting huawei info");
+    }
+
+    private void OnLoginSuccess(AuthAccount authAccount)
+    {
+        Controller.I.ConnectToServer(huaweiAuthCode: authAccount.AuthorizationCode);
+    }
+
     public void HuaweiSignIn()
     {
         PlayerPrefs.SetInt("lang", langChoice.CurrentChoice);
@@ -38,10 +55,10 @@ public class SignInPanel : MonoBehaviour
 
         Translatable.CurrentLanguage = (Language)langChoice.CurrentChoice;
 
-#if UNITY_ANDROID && !UNITY_EDITOR
-        Debug.Log("huawei sign in");
+        BlockingPanel.Show("getting huawei info")
+            .Forget(e => throw e);
+
         HMSAccountManager.Instance.SilentSignIn();
-#endif
     }
 
 

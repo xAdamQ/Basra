@@ -7,13 +7,9 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Web;
-
-#if UNITY_ANDROID && !UNITY_EDITOR
 using HmsPlugin;
 using HuaweiMobileServices.Id;
 using HuaweiMobileServices.Utils;
-#endif
-
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -49,6 +45,8 @@ public interface IController
     UniTask<T> InvokeAsync<T>(string method);
     void Send(string method, params object[] args);
     event Action OnAppPause;
+    void ConnectToServer(string fbigToken = null, string huaweiAuthCode = null,
+        string name = null, string pictureUrl = null, bool demo = false);
 }
 
 public class ProjectReferences
@@ -123,8 +121,6 @@ public class Controller : MonoBehaviour, IController
         AdPlaceholder.SetActive(!HMSAdsKitManager.Instance.IsBannerAdLoaded);
         HMSAdsKitManager.Instance.OnBannerLoadEvent += () => AdPlaceholder.SetActive(false);
 
-        HMSAccountManager.Instance.OnSignInSuccess = OnLoginSuccess;
-        HMSAccountManager.Instance.OnSignInFailed = OnLoginFailure;
         SignInPanel.Create();
 #endif
 
@@ -162,18 +158,6 @@ public class Controller : MonoBehaviour, IController
 #endif
     }
 
-#if UNITY_ANDROID && !UNITY_EDITOR
-    private void OnLoginFailure(HMSException exc)
-    {
-        Debug.Log("failed huawei login: " + exc);
-    }
-
-    private void OnLoginSuccess(AuthAccount authAccount)
-    {
-        ConnectToServer(huaweiAuthCode: authAccount.AuthorizationCode);
-        // ConnectToServer(fbigToken: "123", name: "some_guest", demo: true);
-    }
-#endif
 
     public void LevelUp(int newLevel, int moneyReward)
     {
@@ -314,31 +298,10 @@ public class Controller : MonoBehaviour, IController
     private readonly MyReconnectPolicy myReconnectPolicy = new MyReconnectPolicy();
 
     //I use event funtions because awaiting returns hubconn and this is useless
-    private void ConnectToServer(string fbigToken = null, string huaweiAuthCode = null,
-        string name = null, string pictureUrl = null,
-        bool demo = false)
+    public void ConnectToServer(string fbigToken = null, string huaweiAuthCode = null,
+        string name = null, string pictureUrl = null, bool demo = false)
     {
         Debug.Log("connecting with token " + fbigToken);
-
-        #region query with strings only
-
-        // var query = "https://tstappname.azurewebsites.net/connect?";
-
-        // query += $"access_token={fbigToken}";
-
-        // if (name != null)
-        // query += $"&name={name}";
-        // if (pictureUrl != null)
-        //     query += $"&pictureUrl={pictureUrl}";
-        // if (demo)
-        //     query += $"&demo=1  ";
-
-        // var uriBuilder = new UriBuilder(address)
-        // {
-        //     Query = query,
-        // };
-
-        #endregion
 
         var query = HttpUtility.ParseQueryString(string.Empty);
 
@@ -357,9 +320,10 @@ public class Controller : MonoBehaviour, IController
             query["demo"] = "1";
 
 
-        var uriBuilder = new UriBuilder(address);
-
-        uriBuilder.Query = query.ToString();
+        var uriBuilder = new UriBuilder(address)
+        {
+            Query = query.ToString()
+        };
 
         Debug.Log($"connecting with url {uriBuilder.ToString()}");
 

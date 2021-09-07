@@ -323,6 +323,18 @@ MonoBehaviour:
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 58c25eef57b507e1a9e20bcdd8ee1481
+    m_Address: iapShop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 7d372d430443807219f3647b458cacd1
+    m_Address: addMoneyPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b2c7024f110de7f4f9f1208d9a0e5d05, type: 2}
   m_SchemaSet:

@@ -9,7 +9,6 @@ using static HuaweiConstants.UnityBannerAdPositionCode;
 
 public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
 {
-
     private const string TestBannerAdId = "testw6vs28auh3";
     private const string TestInterstitialAdId = "testb4znbuh3n2";
     private const string TestRewardedAdId = "testx9dtjwj8hp";
@@ -49,7 +48,9 @@ public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
     {
         if (!hasPurchasedNoAds)
         {
-            LoadBannerAd(UnityBannerAdPositionCodeType.POSITION_BOTTOM);
+            LoadBannerAd(UnityBannerAdPositionCodeType.POSITION_TOP,
+                BannerAdSize.BANNER_SIZE_SMART.ToString());
+
             LoadInterstitialAd();
         }
         LoadRewardedAd();
@@ -65,7 +66,8 @@ public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
 
     #region PUBLIC METHODS
 
-    public void LoadBannerAd(UnityBannerAdPositionCodeType position, string bannerSize = UnityBannerAdSize.BANNER_SIZE_320_50)
+    public void LoadBannerAd(UnityBannerAdPositionCodeType position,
+        string bannerSize = UnityBannerAdSize.BANNER_SIZE_320_50)
     {
         if (!isInitialized || !adsKitSettings.GetBool(HMSAdsKitSettings.EnableBannerAd)) return;
 
@@ -79,12 +81,15 @@ public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
         bannerAdStatusListener.mOnAdFailed += BannerAdStatusListener_mOnAdFailed;
 
         bannerView = new BannerAd(bannerAdStatusListener);
-        bannerView.AdId = adsKitSettings.GetBool(HMSAdsKitSettings.UseTestAds) ? TestBannerAdId : adsKitSettings.Get(HMSAdsKitSettings.BannerAdID);
+        bannerView.AdId = adsKitSettings.GetBool(HMSAdsKitSettings.UseTestAds)
+            ? TestBannerAdId
+            : adsKitSettings.Get(HMSAdsKitSettings.BannerAdID);
         bannerView.PositionType = (int)position;
         bannerView.SizeType = bannerSize;
         bannerView.AdStatusListener = bannerAdStatusListener;
         if (!string.IsNullOrEmpty(adsKitSettings.Get(HMSAdsKitSettings.BannerRefreshInterval)))
-            bannerView.BannerRefresh = long.Parse(adsKitSettings.Get(HMSAdsKitSettings.BannerRefreshInterval));
+            bannerView.BannerRefresh =
+                long.Parse(adsKitSettings.Get(HMSAdsKitSettings.BannerRefreshInterval));
         _isBannerAdLoaded = false;
         bannerView.LoadBanner(new AdParam.Builder().Build());
         if (adsKitSettings.GetBool(HMSAdsKitSettings.ShowBannerOnLoad))
@@ -136,7 +141,11 @@ public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
     }
 
     private bool _isBannerAdLoaded;
-    public bool IsBannerAdLoaded { get => _isBannerAdLoaded; set => _isBannerAdLoaded = value; }
+    public bool IsBannerAdLoaded
+    {
+        get => _isBannerAdLoaded;
+        set => _isBannerAdLoaded = value;
+    }
 
     #endregion
 
@@ -188,11 +197,14 @@ public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
 
     public void LoadInterstitialAd()
     {
-        if (!isInitialized || !adsKitSettings.GetBool(HMSAdsKitSettings.EnableInterstitialAd)) return;
+        if (!isInitialized ||
+            !adsKitSettings.GetBool(HMSAdsKitSettings.EnableInterstitialAd)) return;
         Debug.Log("[HMS] HMSAdsKitManager Loading Interstitial Ad.");
         interstitialView = new InterstitialAd
         {
-            AdId = adsKitSettings.GetBool(HMSAdsKitSettings.UseTestAds) ? TestInterstitialAdId : adsKitSettings.Get(HMSAdsKitSettings.InterstitialAdID),
+            AdId = adsKitSettings.GetBool(HMSAdsKitSettings.UseTestAds)
+                ? TestInterstitialAdId
+                : adsKitSettings.Get(HMSAdsKitSettings.InterstitialAdID),
             AdListener = new InterstitialAdListener(this)
         };
         interstitialView.LoadAd(new AdParam.Builder().Build());
@@ -223,6 +235,7 @@ public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
     #endregion
 
     #region LISTENERS
+
     private class InterstitialAdListener : IAdListener
     {
         private readonly HMSAdsKitManager mAdsManager;
@@ -295,17 +308,20 @@ public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
     {
         if (!isInitialized || !adsKitSettings.GetBool(HMSAdsKitSettings.EnableRewardedAd)) return;
         Debug.Log("[HMS] HMSAdsKitManager LoadRewardedAd");
-        rewardedView = new RewardAd(adsKitSettings.GetBool(HMSAdsKitSettings.UseTestAds) ? TestRewardedAdId : adsKitSettings.Get(HMSAdsKitSettings.RewardedAdID));
+        rewardedView = new RewardAd(adsKitSettings.GetBool(HMSAdsKitSettings.UseTestAds)
+            ? TestRewardedAdId
+            : adsKitSettings.Get(HMSAdsKitSettings.RewardedAdID));
         rewardedView.LoadAd(new AdParam.Builder().Build(), () =>
-        {
-            Debug.Log("[HMS] HMSAdsKitManager Rewarded ad loaded!");
-            OnRewardedAdLoaded?.Invoke();
-        },
-        (errorCode) =>
-        {
-            Debug.Log($"[HMS] HMSAdsKitManager Rewarded ad loading failed with error ${errorCode}");
-            OnRewardedAdFailedToLoad?.Invoke(errorCode);
-        });
+            {
+                Debug.Log("[HMS] HMSAdsKitManager Rewarded ad loaded!");
+                OnRewardedAdLoaded?.Invoke();
+            },
+            (errorCode) =>
+            {
+                Debug.Log(
+                    $"[HMS] HMSAdsKitManager Rewarded ad loading failed with error ${errorCode}");
+                OnRewardedAdFailedToLoad?.Invoke(errorCode);
+            });
     }
 
     public void ShowRewardedAd()

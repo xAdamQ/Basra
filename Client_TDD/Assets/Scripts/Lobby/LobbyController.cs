@@ -59,6 +59,8 @@ public class LobbyController : ILobbyController
 
         await Shop.Create(LobbyReferences.I.Canvas, ItemType.Background);
 
+        IapShop.Create();
+
         Background.I.SetForLobby();
 
         AssignRpcs();
@@ -74,6 +76,15 @@ public class LobbyController : ILobbyController
 
         Controller.I.AssignRpc<bool>(RespondChallenge,
             nameof(LobbyController));
+        
+        Controller.I.AssignRpc<int>(AddMoney,
+            nameof(LobbyController));
+    }
+
+    public void AddMoney(int amount)
+    {
+        AddMoneyPopup.Show(amount)
+            .Forget(e => throw e);
     }
 
     public void PrepareRequestedRoomRpc(int betChoice, int capacityChoice,

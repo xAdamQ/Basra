@@ -156,6 +156,12 @@ namespace Basra.Server
         #region lobby
 
         [RpcDomain(typeof(UserDomain.App.Lobby.Idle))]
+        public async Task MakePurchase(string purchaseData, string sign)
+        {
+            await _lobbyManager.MakePurchase(ActiveUser, purchaseData, sign);
+        }
+
+        [RpcDomain(typeof(UserDomain.App.Lobby.Idle))]
         public async Task RequestRandomRoom(int betChoice, int capacityChoice)
         {
             await _matchMaker.RequestRandomRoom(betChoice, capacityChoice, ActiveUser);
