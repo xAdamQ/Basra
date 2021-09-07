@@ -1,6 +1,8 @@
 using System;
 using Cysharp.Threading.Tasks;
+#if UNITY_ANDROID && !UNITY_EDITOR
 using HmsPlugin;
+#endif
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;

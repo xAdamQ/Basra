@@ -3,8 +3,6 @@ using HuaweiMobileServices.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 using HmsPlugin;
-using System.ComponentModel;
-using Newtonsoft.Json;
 
 public class AccountDemoManager : MonoBehaviour
 {
@@ -42,12 +40,6 @@ public class AccountDemoManager : MonoBehaviour
     public void OnLoginSuccess(AuthAccount authHuaweiId)
     {
         loggedInUser.text = string.Format(LOGGED_IN, authHuaweiId.DisplayName);
-
-        Debug.Log("authCode: " + authHuaweiId.AuthorizationCode);
-        Debug.Log("accToken: " + authHuaweiId.AccessToken);
-        Debug.Log("idToken: " + authHuaweiId.IdToken);
-        Debug.Log("uid: " + authHuaweiId.Uid);
-        Debug.Log("openId: " + authHuaweiId.OpenId);
     }
 
     public void OnLoginFailure(HMSException error)

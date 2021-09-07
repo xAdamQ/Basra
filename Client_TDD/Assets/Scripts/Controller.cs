@@ -7,9 +7,13 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Web;
+
+#if UNITY_ANDROID && !UNITY_EDITOR
 using HmsPlugin;
 using HuaweiMobileServices.Id;
 using HuaweiMobileServices.Utils;
+#endif
+
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -97,8 +101,6 @@ public class Controller : MonoBehaviour, IController
         }
         else //returned
         {
-            Debug.Log("is signing in: " + HMSAccountManager.Instance.SigningIn);
-
             if (RoomController.I == null) return;
             //you restart on the room only
 
@@ -115,12 +117,12 @@ public class Controller : MonoBehaviour, IController
 
     public async UniTaskVoid Start()
     {
-        AdPlaceholder.SetActive(!HMSAdsKitManager.Instance.IsBannerAdLoaded);
-        HMSAdsKitManager.Instance.OnBannerLoadEvent += () => AdPlaceholder.SetActive(false);
-
         await InitModules();
 
 #if UNITY_ANDROID && !UNITY_EDITOR
+        AdPlaceholder.SetActive(!HMSAdsKitManager.Instance.IsBannerAdLoaded);
+        HMSAdsKitManager.Instance.OnBannerLoadEvent += () => AdPlaceholder.SetActive(false);
+
         HMSAccountManager.Instance.OnSignInSuccess = OnLoginSuccess;
         HMSAccountManager.Instance.OnSignInFailed = OnLoginFailure;
         SignInPanel.Create();

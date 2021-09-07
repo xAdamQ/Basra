@@ -49,7 +49,7 @@ public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
     {
         if (!hasPurchasedNoAds)
         {
-            LoadBannerAd(UnityBannerAdPositionCodeType.POSITION_TOP, UnityBannerAdSize.BANNER_SIZE_SMART);
+            LoadBannerAd(UnityBannerAdPositionCodeType.POSITION_BOTTOM);
             LoadInterstitialAd();
         }
         LoadRewardedAd();
@@ -83,12 +83,10 @@ public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
         bannerView.PositionType = (int)position;
         bannerView.SizeType = bannerSize;
         bannerView.AdStatusListener = bannerAdStatusListener;
+        if (!string.IsNullOrEmpty(adsKitSettings.Get(HMSAdsKitSettings.BannerRefreshInterval)))
+            bannerView.BannerRefresh = long.Parse(adsKitSettings.Get(HMSAdsKitSettings.BannerRefreshInterval));
         _isBannerAdLoaded = false;
-
-        Debug.Log("the used banner id is: " + bannerView.AdId);
-
         bannerView.LoadBanner(new AdParam.Builder().Build());
-
         if (adsKitSettings.GetBool(HMSAdsKitSettings.ShowBannerOnLoad))
             bannerView.ShowBanner();
         else
@@ -125,6 +123,18 @@ public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
         bannerView.DestroyBanner();
     }
 
+    public void SetBannerRefresh(long seconds)
+    {
+        if (bannerView != null)
+        {
+            bannerView.SetBannerRefresh(seconds);
+        }
+        else
+        {
+            Debug.LogError("[HMS] HMSAdsKitManager BannerView not initialized yet.");
+        }
+    }
+
     private bool _isBannerAdLoaded;
     public bool IsBannerAdLoaded { get => _isBannerAdLoaded; set => _isBannerAdLoaded = value; }
 
@@ -137,7 +147,7 @@ public class HMSAdsKitManager : HMSSingleton<HMSAdsKitManager>
 
     private void BannerAdStatusListener_mOnAdFailed(object sender, AdLoadErrorCodeEventArgs e)
     {
-        Debug.Log("[HMS] HMSAdsKitManager BannerAdLoadFailed. Error Code: " + e.ErrorCode);
+        Debug.LogError("[HMS] HMSAdsKitManager BannerAdLoadFailed. Error Code: " + e.ErrorCode);
         OnBannerFailedToLoadEvent?.Invoke();
     }
 
