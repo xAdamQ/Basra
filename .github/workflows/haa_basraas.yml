@@ -36,7 +36,6 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
-          working-directory: ./Server/Basra.Server
         
   deploy:
     runs-on: ubuntu-latest
@@ -50,13 +49,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: .net-app
-          working-directory: ./Server/Basra.Server
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          working-directory: ./Server/Basra.Server
           app-name: 'basraAS'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5B077D90474641AA84665837651741D9 }}
