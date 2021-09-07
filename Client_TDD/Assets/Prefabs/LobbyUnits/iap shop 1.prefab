@@ -601,7 +601,8 @@ PrefabInstance:
       propertyPath: m_isRightToLeft
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7383206591553431180, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
 --- !u!224 &9104028956680261380 stripped
 RectTransform:
@@ -1059,7 +1060,8 @@ PrefabInstance:
       propertyPath: m_isRightToLeft
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7383206591553431180, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
 --- !u!224 &8048229210093115727 stripped
 RectTransform:

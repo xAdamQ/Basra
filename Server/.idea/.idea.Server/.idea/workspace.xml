@@ -12,68 +12,68 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e449006-4b33-468a-a3f1-b36fa9dfdfce" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSAchievementsSettings.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSAchievementsSettings.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSAdsKitSettings.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSAdsKitSettings.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSGameServiceSettings.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSGameServiceSettings.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSIAPKitSettings.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSIAPKitSettings.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSIAPProductListSettings.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSIAPProductListSettings.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSLeaderboardSettings.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSLeaderboardSettings.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSMainEditorSettings.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSMainEditorSettings.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSPluginSettings.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSPluginSettings.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSRemoteConfigSettings.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSRemoteConfigSettings.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSRemoteDefaultValueSettings.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Settings/Resources/HMSRemoteDefaultValueSettings.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/add money popup.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/add money popup.prefab.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/iap shop 1.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/iap shop 1.prefab.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/AddMoneyPopup.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/AddMoneyPopup.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/AddressableAssetsData/AssetGroups/Default Local Group.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/AddressableAssetsData/AssetGroups/Default Local Group.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/background-2001196_640.jpg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/background-2001196_640.jpg.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/background-4704517_640.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/background-4704517_640.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg0.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg0.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg1.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg1.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg2.jpg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg2.jpg.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg3.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg3.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg4.jpg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg4.jpg.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg5.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg5.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg6.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/bg6.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/cards-1240686_640.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/cards-1240686_640.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/carrot-6020131_640.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/carrot-6020131_640.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/eyes-4751572_640.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/eyes-4751572_640.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/pattern-3340885_640.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/pattern-3340885_640.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/plum-711496_640.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/tiles/plum-711496_640.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Demos/Account/AccountDemoManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Demos/Account/AccountDemoManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Scripts/Account/HMSAccountManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Scripts/Account/HMSAccountManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Scripts/Ads/HMSAdsKitManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Scripts/Ads/HMSAdsKitManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Scripts/Utils/HMSSingleton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Huawei/Scripts/Utils/HMSSingleton.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/get money popup.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/get money popup.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/iap shop.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/iap shop.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/1F1EA-1F1EC.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/1F1EA-1F1EC.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/1F1EC-1F1E7.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/1F1EC-1F1E7.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardFan1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardFan1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardFan2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardFan2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardOpenPackage1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardOpenPackage1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardOpenPackage2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardOpenPackage2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShuffle.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShuffle.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide5.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide5.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide6.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide6.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide7.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide7.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide8.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide8.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardTakeOutPackage1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardTakeOutPackage1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardTakeOutPackage2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardTakeOutPackage2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle5.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle5.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle6.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle6.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack5.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack5.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack6.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack6.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieGrab1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieGrab1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieGrab2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieGrab2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/emojis2/1F618.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/emojis2/1F618.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/iap shop 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/iap shop 1.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Lobby.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Lobby.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Startup.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Startup.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Controller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Controller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/IapShop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/IapShop.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/LobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/LobbyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/MyScripts.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/MyScripts.asmdef" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/SignInPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/SignInPanel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/StreamingAssets/agconnect-services.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/StreamingAssets/agconnect-services.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/StreamingAssets/agconnect-services.json.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/StreamingAssets/agconnect-services.json.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/BuildReportToolOptions.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/BuildReportToolOptions.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Translatable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Translatable.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/UnityConnectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/UnityConnectSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Server/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -332,7 +332,7 @@
       <workItem from="1630569166286" duration="2119000" />
       <workItem from="1630596143614" duration="4760000" />
       <workItem from="1630636294711" duration="4091000" />
-      <workItem from="1631029599798" duration="6297000" />
+      <workItem from="1631029599798" duration="6905000" />
     </task>
     <servers />
   </component>

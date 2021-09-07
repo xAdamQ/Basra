@@ -76,8 +76,10 @@ public class Translatable : MonoBehaviour
     {
         var langindex = (int)CurrentLanguage - 1;
 
-        if (langindex >= 0)
+        if (langindex >= 0 && !string.IsNullOrEmpty(translations[langindex]))
+        {
             GetComponent<TMP_Text>().text = translations[langindex];
+        }
 
 #if UNITY_EDITOR
         //if (translations.Any(t => string.IsNullOrWhiteSpace(t)))
