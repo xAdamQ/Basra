@@ -11,13 +11,24 @@ namespace Basra.Server
             Id = id;
             ConnectionId = connectionId;
             Domain = initialDomain;
+            Disconnected += () => ChallengeRequestTarget = null;
         }
 
         public string Id { get; }
         public string ConnectionId { get; }
         public Type Domain { get; set; }
-        public bool Disconnected { get; set; }
+        public bool IsDisconnected { get; set; }
+
+        public string ChallengeRequestTarget;
+
+        public event Action Disconnected;
+
+        public void Disconnect()
+        {
+            Disconnected?.Invoke();
+        }
     }
+
 
     public abstract class UserDomain
     {

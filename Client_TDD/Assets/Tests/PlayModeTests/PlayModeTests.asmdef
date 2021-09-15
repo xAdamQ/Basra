@@ -3,15 +3,11 @@
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner",
-        "Zenject",
-        "Zenject-TestFramework",
         "MyScripts",
         "UniTask",
         "Unity.Addressables",
         "UniTask.Addressables",
-        "Unity.ResourceManager",
-        "Unity.VisualStudio.Editor"
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [
         "Editor"
@@ -21,9 +17,7 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "nunit.framework.dll",
-        "Zenject-usage.dll",
         "Moq.dll",
-        "Common.dll",
         "DOTween.dll",
         "DOTweenEditor.dll"
     ],

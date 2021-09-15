@@ -2,7 +2,11 @@ using Basra.Server.Exceptions;
 using Basra.Server.Extensions;
 using Hangfire;
 using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json.Linq;
 
 namespace Basra.Server.Services
 {
@@ -15,6 +19,7 @@ namespace Basra.Server.Services
         Task BuyBackground(int backgroundId, string activeUserId);
         Task SelectCardback(int cardbackId, string activeUserId);
         Task SelectBackground(int backgroundId, string activeUserId);
+        Task MakePurchase(ActiveUser activeUser, string purchaseData, string sign);
     }
 
     //todo split this to shop and other things for example
@@ -22,24 +27,29 @@ namespace Basra.Server.Services
     {
         private readonly IMasterRepo _masterRepo;
         private readonly IBackgroundJobClient _backgroundJobClient;
+        private readonly IHubContext<MasterHub> _masterHub;
         // private readonly IRequestCache _requestCache;
 
-        public LobbyManager(IMasterRepo masterRepo, IBackgroundJobClient backgroundJobClient)
+        public LobbyManager(IMasterRepo masterRepo, IBackgroundJobClient backgroundJobClient,
+            IHubContext<MasterHub> masterHub)
         {
             _masterRepo = masterRepo;
             _backgroundJobClient = backgroundJobClient;
-            // _requestCache = requestCache;
-        } //todo try to eliminate room manager
+            _masterHub = masterHub;
+        }
 
         public async Task RequestMoneyAid(ActiveUser activeUser)
         {
             var user = await _masterRepo.GetUserByIdAsyc(activeUser.Id);
             if (user.IsMoneyAidProcessing)
-                throw new BadUserInputException("the user requested money while there's a waiting request");
+                throw new BadUserInputException(
+                    "the user requested money while there's a waiting request");
             if (user.RequestedMoneyAidToday >= 4)
-                throw new BadUserInputException("the user was trying to request money aid above limit");
+                throw new BadUserInputException(
+                    "the user was trying to request money aid above limit");
             if (user.Money >= Room.MinBet)
-                throw new BadUserInputException("the user was trying to request money aid while he have enough money");
+                throw new BadUserInputException(
+                    "the user was trying to request money aid while he have enough money");
             //not tested because logic is trivial
 
             user.LastMoneyAimRequestTime = DateTime.UtcNow;
@@ -68,9 +78,11 @@ namespace Basra.Server.Services
             var user = await _masterRepo.GetUserByIdAsyc(activeUser.Id);
 
             if (user.LastMoneyAimRequestTime == null)
-                throw new BadUserInputException("the user was trying to claim while he didn't request");
+                throw new BadUserInputException(
+                    "the user was trying to claim while he didn't request");
             if (user.LastMoneyAimRequestTime.SecondsPassedSince() < ConstData.MoneyAimTime)
-                throw new BadUserInputException("the user was trying to claim while the time is not done");
+                throw new BadUserInputException(
+                    "the user was trying to claim while the time is not done");
 
             user.LastMoneyAimRequestTime = null;
             user.Money += Room.MinBet;
@@ -84,11 +96,13 @@ namespace Basra.Server.Services
         /// <summary>
         /// I can't remove items in the future, that's why their price order is the id
         /// </summary>
-        private static readonly int[] CardbackPrices = { 50, 65, 100, 450, 600, 700, 1800, 2000, 2600 };
+        private static readonly int[] CardbackPrices =
+            { 50, 65, 120, 450, 800, 1100, 2000, 3000, 5000 };
         /// <summary>
         /// I can't remove items in the future, that's why their price order is the id
         /// </summary>
-        private static readonly int[] BackgroundPrices = { 50, 65, 100, 450, 900, 1200, 2400 };
+        private static readonly int[] BackgroundPrices =
+            { 50, 65, 300, 600, 1000, 2100, 3050, 3900, 6000, 9000 };
 
         /*
         so say I want to add an item, what to do?
@@ -97,42 +111,6 @@ namespace Basra.Server.Services
         2- add it's string adress to the client and append this address in the enum as last element
         */
 
-        public enum CardbackType
-        {
-            Red,
-            Green,
-            Blue,
-            Violet,
-            Yellow,
-            RedStars,
-            BlueStars,
-        }
-
-        public enum BackgroundType
-        {
-            Red,
-            Green,
-            Blue,
-            BlackFlower,
-            Yellow,
-        }
-
-        // private static readonly Dictionary<string, int> cardbackData = new()
-        // {
-        //     {"red", 50},
-        //     {"blue", 100},
-        //     {"violet", 250},
-        //     {"yellow", 300},
-        // };
-        //
-        // private static readonly Dictionary<string, int> backgrounData = new()
-        // {
-        //     {"red", 50},
-        //     {"blue", 100},
-        //     {"blackFlower", 250},
-        //     {"yellow", 300},
-        // };
-
         public async Task BuyCardBack(int cardbackId, string activeUserId)
         {
             var user = await _masterRepo.GetUserByIdAsyc(activeUserId);
@@ -140,9 +118,11 @@ namespace Basra.Server.Services
             if (cardbackId < 0 || cardbackId >= CardbackPrices.Length)
                 throw new BadUserInputException("client give cardback id exceed count");
             if (user.Money < CardbackPrices[cardbackId])
-                throw new BadUserInputException("the client is trying to buy cardback without enough money");
+                throw new BadUserInputException(
+                    "the client is trying to buy cardback without enough money");
             if (user.OwnedCardBackIds.Contains(cardbackId))
-                throw new BadUserInputException("the client is trying to buy cardback that he already owns");
+                throw new BadUserInputException(
+                    "the client is trying to buy cardback that he already owns");
 
             user.Money -= CardbackPrices[cardbackId];
             user.OwnedCardBackIds.Add(cardbackId);
@@ -164,9 +144,11 @@ namespace Basra.Server.Services
             if (backgroundId < 0 || backgroundId >= BackgroundPrices.Length)
                 throw new BadUserInputException("client give background id exceed count");
             if (user.Money < BackgroundPrices[backgroundId])
-                throw new BadUserInputException("the client is trying to buy background without enough money");
+                throw new BadUserInputException(
+                    "the client is trying to buy background without enough money");
             if (user.OwnedBackgroundIds.Contains(backgroundId))
-                throw new BadUserInputException("the client is trying to buy background that he already owns");
+                throw new BadUserInputException(
+                    "the client is trying to buy background that he already owns");
 
             user.Money -= BackgroundPrices[backgroundId];
             user.OwnedBackgroundIds.Add(backgroundId);
@@ -202,6 +184,55 @@ namespace Basra.Server.Services
             user.SelectedBackground = backgroundId;
 
             await _masterRepo.SaveChangesAsync();
-        } //trivial to test
+        }
+
+        public async Task MakePurchase(ActiveUser activeUser, string purchaseData, string sign)
+        {
+            dynamic dataObj = JObject.Parse(purchaseData);
+            string productId = dataObj.productId;
+
+            switch (productId)
+            {
+                case "money500":
+                    await AddMoney(activeUser, 500);
+                    break;
+
+                case "money3000":
+                    await AddMoney(activeUser, 3000);
+                    break;
+            }
+        }
+
+        private async Task AddMoney(ActiveUser activeUser, int amount)
+        {
+            var dUser = await _masterRepo.GetUserByIdAsyc(activeUser.Id);
+
+            dUser.Money += amount;
+
+            await _masterRepo.SaveChangesAsync();
+
+            await _masterHub.Clients.User(activeUser.Id).SendAsync("AddMoney", amount);
+        }
+
+        public static bool VerifyIAPSign(string content, string sign, string pubKey)
+        {
+            var contentBytes = Convert.FromBase64String(content);
+            var signBytes = Encoding.UTF8.GetBytes(sign);
+            var pubKeyBytes = Convert.FromBase64String(pubKey);
+
+            var rsa = new RSACryptoServiceProvider();
+            rsa.ImportSubjectPublicKeyInfo(pubKeyBytes, out _);
+
+            var hashData = SHA256.Create().ComputeHash(contentBytes);
+
+            var res1 = rsa.VerifyData(contentBytes, CryptoConfig.MapNameToOID("SHA256"), signBytes);
+            var res2 = rsa.VerifyHash(hashData, CryptoConfig.MapNameToOID("SHA256"), signBytes);
+            var res3 = rsa.VerifyHash(hashData, signBytes, HashAlgorithmName.SHA256,
+                RSASignaturePadding.Pkcs1);
+            var res4 = rsa.VerifyData(contentBytes, signBytes, HashAlgorithmName.SHA256,
+                RSASignaturePadding.Pkcs1);
+
+            return res1 && res2 && res3 && res4;
+        }
     }
 }

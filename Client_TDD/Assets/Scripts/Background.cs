@@ -28,17 +28,8 @@ public class Background : MonoBehaviour
         var maxLevel = userInfos.Max(u => u.Xp);
         var bgId = userInfos.First(u => u.Xp == maxLevel).SelectedBackground;
 
-
-        // var sprietHandle =
-        // Addressables.LoadAssetAsync<Sprite>($"bg{bgIndex}");
-        // var sprite = await sprietHandle;
-        //todo bgs with be collected into one sheet anyway
-
-        // GetComponent<Image>().sprite = sprite;
-
-        // Addressables.Release(sprietHandle);
-
-        Extensions.LoadAndReleaseAsset<Sprite>(((BackgroundType)bgId).ToString(), sprite => GetComponent<Image>().sprite = sprite)
+        Extensions.LoadAndReleaseAsset<Sprite>(((BackgroundType)bgId).ToString(),
+                sprite => GetComponent<Image>().sprite = sprite)
             .Forget(e => throw e);
     }
 

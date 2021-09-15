@@ -19,7 +19,9 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 {
     [SerializeField] protected Transform startCard, endCard;
 
-    //todo test this
+    private static AudioClip throwClip, turnClip;
+    private static bool InitOnce; //be aware this is once in the whole game, even after scene reload
+
     public static int ConvertTurnToPlace(int turn, int myTurn)
     {
         if (myTurn == turn) return 0;
@@ -36,7 +38,6 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         // return oppoPlaceCounter;
     }
 
-
     protected Sprite BackSprite;
 
     protected const int HandCardCapacity = 4;
@@ -44,6 +45,15 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
     private void Awake()
     {
         turnTimer = GetComponent<TurnTimer>();
+
+        if (InitOnce) return;
+
+        InitOnce = true;
+
+        Addressables.LoadAssetAsync<AudioClip>("throwClip").Completed +=
+            handle => throwClip = handle.Result;
+        Addressables.LoadAssetAsync<AudioClip>("turnClip").Completed +=
+            handle => turnClip = handle.Result;
     }
 
     protected virtual void Start()
@@ -55,11 +65,6 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
     private async UniTask Init(int selectedBackIndex, int turn)
     {
-        //todo this will be different with the full back sprite set
-        //i suggest array of sprite addresses
-
-        // var backSprite = await Addressables.LoadAssetAsync<Sprite>($"cardbackSprites[0_{selectedBackIndex}]");
-        // BackSprite = backSprite;
         Turn = turn;
 
         await Extensions.LoadAndReleaseAsset<Sprite>(((CardbackType)selectedBackIndex).ToString(),
@@ -83,7 +88,8 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
         animSeq
             .Append(card.transform.DOMove(targetPoz, .5f))
-            .Join(card.transform.DORotate(card.transform.eulerAngles.SetY(180f), .3f).SetDelay(.2f));
+            .Join(card.transform.DORotate(card.transform.eulerAngles.SetY(180f), .3f)
+                .SetDelay(.2f));
 
         return targetPoz;
     }
@@ -97,6 +103,7 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
     protected void ThrowBase(ThrowResult result, Sequence animSeq = null, Vector2? meetPoint = null)
     {
+        AudioManager.I.Play(throwClip);
         animSeq ??= DOTween.Sequence();
 
         var card = HandCards.First(c => c.Front != null && c.Front.Index == result.ThrownCard);
@@ -111,24 +118,25 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         CoreGameplay.I.NextTurn();
     }
 
-    protected void OrganizeHand()
+    private void OrganizeHand()
     {
         var pointer = startCard.localPosition;
 
         var handSize = endCard.localPosition.x - startCard.localPosition.x;
-        var spacing = new Vector3(handSize / (HandCards.Count - 1), 0, .05f);
+        var spacing = new Vector3(handSize / (HandCards.Count + 1), 0, .05f);
 
         foreach (var card in HandCards)
         {
-            card.transform.DOLocalMove(pointer, .75f);
             pointer += spacing;
+            card.transform.DOLocalMove(pointer, .75f);
         }
     }
 
     public virtual void StartTurn()
     {
-        turnTimer.Play();
+        // AudioManager.I.PlayIfSilent(turnClip);
 
+        turnTimer.Play();
     }
     public virtual void EndTurn()
     {
@@ -136,10 +144,11 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         RoomUserView.Manager.I.RoomUserViews[Turn].SetTurnFill(1);
     }
 
-
     public static async UniTask<PlayerBase> Create(int selectedCardback, int placeIndex, int turn)
     {
-        var player = (await Addressables.InstantiateAsync($"player{placeIndex}", RoomReferences.I.Root)).GetComponent<PlayerBase>();
+        var player =
+            (await Addressables.InstantiateAsync($"player{placeIndex}", RoomReferences.I.Root))
+            .GetComponent<PlayerBase>();
 
         await player.Init(selectedCardback, turn);
 

@@ -14,8 +14,12 @@ public class MinUserView : MonoBehaviour
 
     [SerializeField] private Image picture;
 
-    protected void Init(MinUserInfo minUserInfo)
+    public MinUserInfo MinUserInfo { get; set; }
+
+    public void Init(MinUserInfo minUserInfo)
     {
+        MinUserInfo = minUserInfo;
+
         Id = minUserInfo.Id;
         Level = minUserInfo.CalcLevel();
         DisplayName = minUserInfo.Name;
@@ -33,7 +37,8 @@ public class MinUserView : MonoBehaviour
 
         if (texture2D != null)
             picture.sprite =
-                Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), new Vector2(.5f, .5f));
+                Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height),
+                    new Vector2(.5f, .5f));
     }
 
     private bool destroyed;
@@ -48,7 +53,8 @@ public class MinUserView : MonoBehaviour
     /// </summary>
     public virtual void ShowFullInfo()
     {
-        BlockingOperationManager.I.Forget(Controller.I.GetPublicFullUserInfo(Id), FullUserView.Show);
+        BlockingOperationManager.I.Forget(Controller.I.GetPublicFullUserInfo(Id),
+            FullUserView.Show);
     }
 
     protected string Id;
@@ -80,7 +86,8 @@ public class MinUserView : MonoBehaviour
 
     public static async UniTask<MinUserView> Create(MinUserInfo info, Transform parent)
     {
-        var muv = (await Addressables.InstantiateAsync("minUserView", parent)).GetComponent<MinUserView>();
+        var muv = (await Addressables.InstantiateAsync("minUserView", parent))
+            .GetComponent<MinUserView>();
 
         muv.Init(info);
 

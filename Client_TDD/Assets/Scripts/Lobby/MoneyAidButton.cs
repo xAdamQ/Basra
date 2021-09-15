@@ -28,9 +28,10 @@ public class MoneyAidButton : MonoBehaviour
             GetComponent<Image>().color = new Color(1, 1, 1, 1f);
 
             // var remainingTime = TimeSpan.FromSeconds((ConstData.MoneyAimTime - info.MoneyAimTimePassed).Value);
-            var remainingTime2 = (int) (ConstData.MoneyAimTime - info.MoneyAimTimePassed).Value;
+            var remainingTime2 = (int)(ConstData.MoneyAimTime - info.MoneyAimTimePassed).Value;
             // buttonText.text = $"{RoomSettings.MinBet} in {remainingTime:mm\\:ss}";
-            buttonText.text = $"{RoomSettings.MinBet} in {remainingTime2 / 60:00}:{remainingTime2 % 60:00}";
+            buttonText.text =
+                $"{RoomSettings.MinBet} in {remainingTime2 / 60:00}:{remainingTime2 % 60:00}";
         } //pending
         else if (info.Money >= RoomSettings.MinBet || info.MoneyAidRequested >= 4)
         {
@@ -60,15 +61,15 @@ public class MoneyAidButton : MonoBehaviour
         } //claimable
         else if (info.MoneyAimTimePassed != null)
         {
-            Toast.I.Show("استني الوقت");
+            Toast.I.Show(Translatable.GetText("wait_time"));
         } //pending
         else if (info.MoneyAidRequested >= 4)
         {
-            Toast.I.Show("وصلت للحد الاقصى النهارده");
+            Toast.I.Show(Translatable.GetText("daily_limit"));
         } //max requests reached
         else if (info.Money >= RoomSettings.MinBet) //from here MoneyAimTimeLeft = null for sure
         {
-            Toast.I.Show("انت اصلا معاك فلوس");
+            Toast.I.Show(Translatable.GetText("already_money"));
         } //can't ask, a lot of money
         else
         {

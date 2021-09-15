@@ -39,13 +39,19 @@ namespace Basra.Server
         Task<List<User>> GetUsersByIdsAsync(List<string> ids);
         Task<FullUserInfo> GetFullUserInfoAsync(string id);
         Task<List<FullUserInfo>> GetFullUserInfoListAsync(IEnumerable<string> ids);
+
+        Task<List<MinUserInfo>> GetFollowingsAsync(string userId);
+        Task<List<MinUserInfo>> GetFollowersAsync(string userId);
+        void ToggleFollow(string userId, string targetId);
+        bool IsFollowing(string userId, string targetId);
+        FriendShip GetFriendship(string userId, string targetId);
     }
 
     /// <summary>
     /// hide queries
     /// reause queries
     /// </summary>
-    public class MasterRepo : IMasterRepo
+    public partial class MasterRepo : IMasterRepo
     {
         private readonly MasterContext _context;
 
@@ -80,7 +86,8 @@ namespace Basra.Server
 
         public async Task<List<User>> GetUsersByIdsAsync(List<string> ids)
         {
-            return await _context.Users.Where(u => ids.Contains(u.Id)).Take(ids.Count).ToListAsync();
+            return await _context.Users.Where(u => ids.Contains(u.Id)).Take(ids.Count)
+                .ToListAsync();
         }
 
         public async Task<string> GetNameOfUserAsync(string id)
@@ -89,16 +96,6 @@ namespace Basra.Server
 
             return await _context.Users.Where(u => u.Id == id).Select(u => u.Name).FirstAsync();
         }
-
-        // public bool GetUserActiveState(string id)
-        // {
-        //     return _context.Users.Where(u => u.Id == id).Select(u => u.IsActive).First();
-        // }
-
-        // public void MarkAllUsersNotActive()
-        // {
-        //     _context.Users.ToList().ForEach(u => u.IsActive = false);
-        // }
 
         //todo should test query
         // public List<DisplayUser> GetRoomDisplayUsersAsync(Room room)
@@ -115,20 +112,82 @@ namespace Basra.Server
         //     return _context.Users.Where(u => userIds.Contains(u.Id)).Select(DisplayUser.Projection).ToList();
         // }
 
-        // public async Task<DisplayUser> GetDisplayUserAsync(string id)
-        // {
-        //     return await _context.Users.Where(_ => _.Id == id).Select(DisplayUser.Projection).FirstAsync();
-        // }
-
         public async Task<FullUserInfo> GetFullUserInfoAsync(string id)
         {
-            return await _context.Users.Where(_ => _.Id == id).Select(Mapper.UserToFullUserInfoProjection).FirstAsync();
+            return await _context.Users.Where(_ => _.Id == id)
+                .Select(Mapper.UserToFullUserInfoProjection).FirstAsync();
         }
         public async Task<List<FullUserInfo>> GetFullUserInfoListAsync(IEnumerable<string> ids)
         {
             return await _context.Users.Where(u => ids.Contains(u.Id)).Take(ids.Count())
                 .Select(Mapper.UserToFullUserInfoProjection)
                 .ToListAsync();
+        }
+
+        #endregion
+
+        #region user relation
+
+        public void ToggleFollow(string userId, string targetId)
+        {
+            if (IsFollower(userId, targetId)) //unfollow
+                _context.Remove(new UserRelation { FollowerId = userId, FollowingId = targetId });
+            else //follow
+                _context.Add(new UserRelation { FollowerId = userId, FollowingId = targetId });
+        }
+
+        /// <summary>
+        /// Am I follower
+        /// </summary>
+        public bool IsFollower(string userId, string targetId)
+        {
+            return _context.UserRelations.Any(r =>
+                r.FollowerId == userId && r.FollowingId == targetId);
+        }
+
+        /// <summary>
+        /// Is HE following me
+        /// </summary>
+        public bool IsFollowing(string userId, string targetId)
+        {
+            return _context.UserRelations.Any(r =>
+                r.FollowingId == userId && r.FollowerId == targetId);
+        }
+
+        public FriendShip GetFriendship(string userId, string targetId)
+        {
+            var isFollower = IsFollower(userId, targetId);
+            var isFollowing = IsFollowing(userId, targetId);
+
+            if (isFollower && isFollowing)
+                return FriendShip.Friend;
+            if (isFollower)
+                return FriendShip.Follower;
+            if (isFollowing)
+                return FriendShip.Following;
+
+            return FriendShip.None;
+        }
+
+        public async Task<List<MinUserInfo>> GetFollowingsAsync(string userId)
+        {
+            var relationsWhereIFolllow = _context.UserRelations.Where(u => u.FollowerId == userId);
+
+            var myFollowingInfo = relationsWhereIFolllow.Join(_context.Users,
+                relation => relation.FollowingId, u => u.Id,
+                (_, u) => Mapper.UserToMinUserInfoFunc(u));
+
+            return await myFollowingInfo.ToListAsync();
+        }
+        public async Task<List<MinUserInfo>> GetFollowersAsync(string userId)
+        {
+            var relationsWhereIFolllow = _context.UserRelations.Where(u => u.FollowingId == userId);
+
+            var myFollowingInfo = relationsWhereIFolllow.Join(_context.Users,
+                relation => relation.FollowerId, u => u.Id,
+                (_, u) => Mapper.UserToMinUserInfoFunc(u));
+
+            return await myFollowingInfo.ToListAsync();
         }
 
         #endregion

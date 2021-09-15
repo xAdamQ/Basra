@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <BuildReportToolOptions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EditorLogOverridePath>/home/adam/.config/unity3d/Editor.log</EditorLogOverridePath>
   <BuildReportFolderName>UnityBuildReports</BuildReportFolderName>
   <SaveType>0</SaveType>
   <CollectBuildInfo>true</CollectBuildInfo>

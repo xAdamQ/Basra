@@ -70,12 +70,13 @@ public class ShopItem : MonoBehaviour
         //client assertion
         if (State != ShopItemState.Locked)
         {
-            Debug.LogError($"cardback with index {id} is already unlocked or set, what the fuck you're doing");
+            Debug.LogError(
+                $"cardback with index {id} is already unlocked or set, what the fuck you're doing");
             return;
         }
         if (Repository.I.PersonalFullInfo.Money < price)
         {
-            Toast.I.Show("no enough money", 2);
+            Toast.I.Show(Translatable.GetText("no_money"), 2);
             return;
         }
 

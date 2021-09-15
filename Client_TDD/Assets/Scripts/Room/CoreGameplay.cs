@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using Basra.Common;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public interface ICoreGameplay
 {
@@ -15,7 +16,8 @@ public interface ICoreGameplay
     void Distribute(List<int> handCardIds);
     void LastDistribute(List<int> handCardIds);
     UniTask EatLast(int lastEaterTurnId);
-    void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts, int currentTurn);
+    void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts,
+        int currentTurn);
 }
 
 public class CoreGameplay : ICoreGameplay
@@ -26,15 +28,16 @@ public class CoreGameplay : ICoreGameplay
     {
         I = this;
 
-        Initialize().Forget();
+        // Initialize().Forget();
+        RoomController.I.Destroyed += OnRoomDestroyed;
+        AssignRpcs();
     }
 
     public async UniTaskVoid Initialize()
     {
         await UniTask.DelayFrame(3);
 
-        RoomController.I.Destroyed += OnRoomDestroyed;
-        AssignRpcs();
+        // ThrowClip = await Addressables.LoadAssetAsync<AudioClip>("throwClip");
     }
 
     public void OnRoomDestroyed()
@@ -63,13 +66,15 @@ public class CoreGameplay : ICoreGameplay
             PlayerBase player = null;
             if (RoomSettings.I.MyTurn == i)
             {
-                player = await PlayerBase.Create(RoomSettings.I.UserInfos[i].SelectedCardback, 0, i);
+                player = await PlayerBase.Create(RoomSettings.I.UserInfos[i].SelectedCardback, 0,
+                    i);
                 Players.Add(player);
                 MyPlayer = player as IPlayer;
             }
             else
             {
-                player = await PlayerBase.Create(RoomSettings.I.UserInfos[i].SelectedCardback, oppoPlaceCounter++, i);
+                player = await PlayerBase.Create(RoomSettings.I.UserInfos[i].SelectedCardback,
+                    oppoPlaceCounter++, i);
                 Players.Add(player);
                 Oppos.Add(player as IOppo);
             }
@@ -96,7 +101,8 @@ public class CoreGameplay : ICoreGameplay
         PlayerInTurn.StartTurn();
     }
 
-    public void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts, int currentTurn)
+    public void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts,
+        int currentTurn)
     {
         Ground.I.Distribute(ground);
 
@@ -111,6 +117,17 @@ public class CoreGameplay : ICoreGameplay
 
         CurrentTurn = currentTurn - 1;
         NextTurn(false);
+    }
+
+    public void BeginGame(List<int> myHand, List<int> groundCards)
+    {
+        Ground.I.Distribute(groundCards);
+
+        Distribute(myHand);
+
+        Debug.Log($"hand cards are {string.Join(", ", myHand)}");
+
+        InitialTurn();
     }
 
     #region rpcs
@@ -162,15 +179,4 @@ public class CoreGameplay : ICoreGameplay
     }
 
     #endregion
-
-    public void BeginGame(List<int> myHand, List<int> groundCards)
-    {
-        Ground.I.Distribute(groundCards);
-
-        Distribute(myHand);
-
-        Debug.Log($"hand cards are {string.Join(", ", myHand)}");
-
-        InitialTurn();
-    }
 }

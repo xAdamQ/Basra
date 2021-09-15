@@ -5,44 +5,76 @@
     <projectFile>TesterClient/TesterClient.csproj</projectFile>
     <projectFile>Basra.Server.Tests/Basra.Server.Tests.csproj</projectFile>
     <projectFile>GeneralTests/GeneralTests.csproj</projectFile>
+    <projectFile profileName="IIS Express">Basra.Server/Basra.Server.csproj</projectFile>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e449006-4b33-468a-a3f1-b36fa9dfdfce" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Controller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Controller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/Views/User/FullUserView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Lobby/Views/User/FullUserView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/WebGLTemplates/Fbig/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/WebGLTemplates/Fbig/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/1F1EA-1F1EC.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/1F1EA-1F1EC.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/1F1EC-1F1E7.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/1F1EC-1F1E7.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardFan1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardFan1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardFan2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardFan2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardOpenPackage1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardOpenPackage1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardOpenPackage2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardOpenPackage2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardPlace4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShove4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShuffle.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardShuffle.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide5.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide5.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide6.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide6.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide7.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide7.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide8.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardSlide8.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardTakeOutPackage1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardTakeOutPackage1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardTakeOutPackage2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/cardTakeOutPackage2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipLay3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsCollide4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle5.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle5.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle6.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsHandle6.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack5.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack5.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack6.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/chipsStack6.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow4.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/diceThrow4.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieGrab1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieGrab1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieGrab2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieGrab2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieShuffle3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow1.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow1.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow2.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow2.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow3.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/casino audio/dieThrow3.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/emojis2/1F618.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Artwork/emojis2/1F618.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/iap shop 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Prefabs/LobbyUnits/iap shop 1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Lobby.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Lobby.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Startup.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scenes/Startup.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Translatable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/Translatable.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Client_TDD/ProjectSettings/ProjectSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Server/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/Asp/MasterManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Asp/MasterManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/Asp/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Asp/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/Basra.Server.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Basra.Server.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/Services/Managers/RoomManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Services/Managers/RoomManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/Services/ServerLoop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Services/ServerLoop.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Basra.Server.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Basra.Server.deps.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Basra.Server.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Basra.Server.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Basra.Server.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.Internal.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Microsoft.Extensions.Identity.Core.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Microsoft.Extensions.Identity.Stores.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/MySqlConnector.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/Pomelo.EntityFrameworkCore.MySql.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/ref/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/bin/Debug/net5.0/ref/Basra.Server.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Basra.Server.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Basra.Server.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Basra.Server.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Basra.Server.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.csproj.FileListAbsolute.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/Basra.Server.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/ref/Basra.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/Debug/net5.0/ref/Basra.Server.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/obj/rider.project.restore.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeneralTests/MixedTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GeneralTests/MixedTests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +82,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/Basra.Server" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -63,9 +95,13 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/C6F16FEF-8657-4957-94FA-0CEC1121D993/228/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/C6F16FEF-8657-4957-94FA-0CEC1121D993/E0/TimeSpan.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a5b8e90eb688401d9ae2662b86f59e448d8200/9b/55e683d7/ExecutionContext.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3af2ddc3e1b546389a6c069c978110676f800/6c/7512d28d/CollectionAssertions`2.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a5b8e90eb688401d9ae2662b86f59e448d8200/40/933631f1/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6ea2ba6f018640239c24e78f24067d4161600/27/DefaultHubCallerContext.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Basra.Server/Exceptions/BadUserInputException.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6ea2ba6f018640239c24e78f24067d4161600/F/Hub.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a5b8e90eb688401d9ae2662b86f59e448d8200/1A7/ExecutionContext.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -82,7 +118,6 @@
       <option value="$PROJECT_DIR$/Basra.Server.Tests/TestHelper.cs" />
       <option value="$PROJECT_DIR$/Basra.Server.Tests/FinalizeManagerTests.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/Program.cs" />
-      <option value="$PROJECT_DIR$/Basra.Server/Asp/Startup.cs" />
       <option value="$PROJECT_DIR$/GeneralTests/UnitTest1.cs" />
       <option value="$PROJECT_DIR$/Basra.Server.Tests/Intergration/XUnitLogger.cs" />
       <option value="$PROJECT_DIR$/Basra.Server.Tests/LobbyManagerTests.cs" />
@@ -100,7 +135,6 @@
       <option value="$PROJECT_DIR$/Basra.Server/Services/Managers/FinalizeManager.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/Data/MasterRepo.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/ClientModels/MinUserInfo.cs" />
-      <option value="$PROJECT_DIR$/Basra.Server/Asp/MasterHub.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/ClientModels/FinalizeResult.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/Data/User.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/Data/MasterContext.cs" />
@@ -115,7 +149,9 @@
       <option value="$PROJECT_DIR$/Basra.Common/Basra.Common.csproj" />
       <option value="$PROJECT_DIR$/Basra.Server/appsettings.json" />
       <option value="$PROJECT_DIR$/Basra.Server/appsettings.Development.json" />
+      <option value="$PROJECT_DIR$/Basra.Server/Asp/Startup.cs" />
       <option value="$PROJECT_DIR$/Basra.Server/Services/ServerLoop.cs" />
+      <option value="$PROJECT_DIR$/Basra.Server/Asp/MasterHub.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1tnrfTLgd6tcnQOZFfNtLiQH3wF" />
@@ -129,15 +165,17 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.39500815" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.49377123" />
     <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="TODO_SCOPE" value="All Places" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="XThreadsFramesViewSplitterKey" value="0.51809955" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/ConstData.cs" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Basra.Server">
     <configuration default="true" type="CompoundRunConfigurationType">
@@ -219,8 +257,24 @@
         <option name="Build" />
       </method>
     </configuration>
+    <configuration name="Basra.Server: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Basra.Server/Basra.Server.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net5.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue=".NET Launch Settings Profile.Basra.Server" />
+      <item itemvalue=".NET Launch Settings Profile.Basra.Server: IIS Express" />
       <item itemvalue=".NET Project.TesterClient" />
       <item itemvalue=".NET Project.Basra.Server.Tests" />
       <item itemvalue=".NET Project.GeneralTests" />
@@ -266,9 +320,23 @@
       <workItem from="1627579618359" duration="2465000" />
       <workItem from="1628194083257" duration="47000" />
       <workItem from="1628194180380" duration="317000" />
+      <workItem from="1630046847005" duration="2558000" />
+      <workItem from="1630057764428" duration="5382000" />
+      <workItem from="1630113106118" duration="22845000" />
+      <workItem from="1630204273657" duration="1015000" />
+      <workItem from="1630221129982" duration="6561000" />
+      <workItem from="1630247709450" duration="7452000" />
+      <workItem from="1630336423202" duration="3533000" />
+      <workItem from="1630399546386" duration="14643000" />
+      <workItem from="1630476358572" duration="12008000" />
+      <workItem from="1630569166286" duration="2119000" />
+      <workItem from="1630596143614" duration="4760000" />
+      <workItem from="1630636294711" duration="4091000" />
+      <workItem from="1631029599798" duration="6905000" />
     </task>
     <servers />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="Vcs.Log.Tabs.Properties">
@@ -289,23 +357,8 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Basra.Server/Services/Managers/RoomManager.cs</url>
-          <line>141</line>
-          <properties documentPath="$PROJECT_DIR$/Basra.Server/Services/Managers/RoomManager.cs" initialLine="141" containingFunctionPresentation="method 'NextTurn'">
-            <startOffsets>
-              <option value="4630" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4665" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
-        <breakpoint enabled="true" type="DotNet Exception Breakpoints" />
+        <breakpoint enabled="true" suspend="NONE" type="DotNet Exception Breakpoints" />
       </default-breakpoints>
     </breakpoint-manager>
   </component>

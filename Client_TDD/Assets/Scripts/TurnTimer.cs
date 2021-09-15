@@ -20,8 +20,7 @@ public interface ITurnTimer
 //I merged both together and used coroutine
 public class TurnTimer : MonoBehaviour, ITurnTimer
 {
-    private const int HandTime = 8; //the total interval
-    private const float HandTimeStep = .1f;
+    private const int HandTime = 7; //the total interval
 
     public event Action Elapsed;
     public event Action<float> Ticked;
@@ -40,13 +39,13 @@ public class TurnTimer : MonoBehaviour, ITurnTimer
     {
         IsPlaying = true;
 
-        var ticksCount = HandTime / HandTimeStep;
+        var ticksCount = HandTime / Time.fixedDeltaTime;
         for (var i = 0; i < ticksCount; i++)
         {
-            var progress = (float) i / ticksCount;
+            var progress = (float)i / ticksCount;
             Ticked?.Invoke(progress);
 
-            yield return new WaitForSeconds(HandTimeStep);
+            yield return new WaitForFixedUpdate();
         }
 
         Ticked?.Invoke(1);

@@ -37,9 +37,12 @@ public enum BackgroundType
     berry,
     brownLeaf,
     blueTrans,
-    dotsOcean,
-    arabesqueDark,
     arabesqueBlack,
+    veges,
+    greenLines,
+    hearts,
+    eyes,
+    purpleCris
 }
 
 /// <summary>
@@ -94,9 +97,12 @@ public class Shop : MonoBehaviour
         BackgroundType.berry,
         BackgroundType.brownLeaf,
         BackgroundType.blueTrans,
-        BackgroundType.dotsOcean,
-        BackgroundType.arabesqueDark,
         BackgroundType.arabesqueBlack,
+        BackgroundType.eyes,
+        BackgroundType.purpleCris,
+        BackgroundType.veges,
+        BackgroundType.greenLines,
+        BackgroundType.hearts,
     };
 
     private readonly List<ShopItem> shopItems = new List<ShopItem>();
@@ -105,7 +111,8 @@ public class Shop : MonoBehaviour
 
     public static async UniTask Create(Transform parent, ItemType itemType)
     {
-        (await Addressables.InstantiateAsync(itemType == ItemType.Cardback ? "cardbackShop" : "backgroundShop", parent))
+        (await Addressables.InstantiateAsync(
+                itemType == ItemType.Cardback ? "cardbackShop" : "backgroundShop", parent))
             .GetComponent<Shop>().ItemType = itemType;
     }
 
@@ -127,6 +134,7 @@ public class Shop : MonoBehaviour
         Active = null;
         shopPanel.SetActive(false);
         foreach (Transform t in layoutGroup) Destroy(t.gameObject); //optional
+        shopItems.Clear();
     }
 
     // private Sprite[] itemSprites;
@@ -162,7 +170,9 @@ public class Shop : MonoBehaviour
 
         for (int i = 0; i < ConstData.ItemPrices[itemType].Length; i++)
         {
-            var itemId = ItemType == ItemType.Cardback ? (int)cardbacksInOrder[i] : (int)backgroundInOrder[i];
+            var itemId = ItemType == ItemType.Cardback
+                ? (int)cardbacksInOrder[i]
+                : (int)backgroundInOrder[i];
 
             var bought = Repository.I.PersonalFullInfo.OwnedItemIds[itemType].Contains(itemId);
             var inUse = Repository.I.PersonalFullInfo.SelectedItem[itemType] == itemId;

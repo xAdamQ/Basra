@@ -34,7 +34,8 @@ public class Oppo : PlayerBase, IOppo
 
     private void DistributeAnim()
     {
-        HandCards.ForEach(c => c.transform.position = Vector2.Lerp(startCard.position, endCard.position, .5f));
+        HandCards.ForEach(c =>
+            c.transform.position = Vector2.Lerp(startCard.position, endCard.position, .5f));
         //the start anim position
 
         var pointer = startCard.localPosition;
@@ -46,7 +47,8 @@ public class Oppo : PlayerBase, IOppo
         {
             card.transform.DOScale(Vector3.one, .7f);
             card.transform.DOLocalMove(pointer, .5f);
-            card.transform.DORotate(new Vector3(0, 180, Random.Range(-Card.RotBound, Card.RotBound)), .3f);
+            card.transform.DORotate(
+                new Vector3(0, 180, Random.Range(-Card.RotBound, Card.RotBound)), .3f);
 
             pointer += spacing;
         }
@@ -55,13 +57,13 @@ public class Oppo : PlayerBase, IOppo
     public override void StartTurn()
     {
         base.StartTurn();
-        RoomUserView.Manager.I.RoomUserViews[Turn].GetComponent<Image>().color = new Color(0f, .55f, 1f, .5f);
+        RoomUserView.Manager.I.RoomUserViews[Turn].TurnFocus(true);
     }
 
     public override void EndTurn()
     {
         base.EndTurn();
-        RoomUserView.Manager.I.RoomUserViews[Turn].GetComponent<Image>().color = new Color(0f, 0f, 0f, .5f);
+        RoomUserView.Manager.I.RoomUserViews[Turn].TurnFocus(false);
     }
 
     public async UniTask Distribute()

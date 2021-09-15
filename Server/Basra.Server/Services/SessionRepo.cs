@@ -51,8 +51,8 @@ namespace Basra.Server.Services
 
         private ConcurrentDictionary<(int, int), ConcurrentBag<Room>> PendingRooms;
 
-        private readonly int[] GenrePosses = {0, 1, 2, 3};
-        private readonly int[] UserCountPosses = {2, 3, 4};
+        // private readonly int[] GenrePosses = {0, 1, 2, 3};
+        private readonly int[] UserCountPosses = { 2, 3, 4 };
 
         public SessionRepo(ILogger<SessionRepo> logger)
         {
@@ -62,7 +62,8 @@ namespace Basra.Server.Services
             ActiveUsers = new ConcurrentDictionary<string, ActiveUser>();
 
             PendingRooms = new ConcurrentDictionary<(int, int), ConcurrentBag<Room>>();
-            for (int i = 0; i < GenrePosses.Length; i++)
+
+            for (int i = 0; i < Room.Bets.Length; i++)
             {
                 for (int j = 0; j < UserCountPosses.Length; j++)
                 {

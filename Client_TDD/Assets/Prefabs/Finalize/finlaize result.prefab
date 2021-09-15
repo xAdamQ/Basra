@@ -287,7 +287,11 @@ MonoBehaviour:
   bigBasrasText: {fileID: 0}
   winRatioText: {fileID: 0}
   totalEarnedMoney: {fileID: 0}
-  addFriendButton: {fileID: 0}
+  followingBackText: {fileID: 0}
+  followButtonText: {fileID: 0}
+  openMatchesText: {fileID: 0}
+  challengeButton: {fileID: 0}
+  openMatchesCheck: {fileID: 0}
 --- !u!1 &5708478432740458537
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,8 +405,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 157.5}
+  m_SizeDelta: {x: 0, y: -75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6477466464582175357
 MonoBehaviour:
@@ -507,6 +511,10 @@ PrefabInstance:
       value: "\uFE91\uFEBC\uFEAE\u0629"
       objectReference: {fileID: 0}
     - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: m_fontSize
+      value: 43.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: originalText
       value: "\u0628\u0635\u0631\u0629"
       objectReference: {fileID: 0}
@@ -517,6 +525,10 @@ PrefabInstance:
     - target: {fileID: 3411827141506980613, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Text
       value: win streak
+      objectReference: {fileID: 0}
+    - target: {fileID: 4189659715013338005, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Basras
       objectReference: {fileID: 0}
     - target: {fileID: 7878697191330894570, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Color.a
@@ -813,6 +825,10 @@ PrefabInstance:
       value: "\uFE91\uFEBC\uFEAE\u0647 \uFEB3\uFEEE\uFE91\uFEAE"
       objectReference: {fileID: 0}
     - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: m_fontSize
+      value: 43.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: originalText
       value: "\u0628\u0635\u0631\u0647 \u0633\u0648\u0628\u0631"
       objectReference: {fileID: 0}
@@ -823,6 +839,10 @@ PrefabInstance:
     - target: {fileID: 3411827141506980613, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Text
       value: basras
+      objectReference: {fileID: 0}
+    - target: {fileID: 4189659715013338005, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Super Basras
       objectReference: {fileID: 0}
     - target: {fileID: 7878697191330894570, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Color.a
@@ -962,6 +982,10 @@ PrefabInstance:
       value: "\u0627\uFEDF\uFEE4\uFEDC\uFEB4\uFE90"
       objectReference: {fileID: 0}
     - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: m_fontSize
+      value: 43.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: originalText
       value: "\u0627\u0644\u0645\u0643\u0633\u0628"
       objectReference: {fileID: 0}
@@ -980,6 +1004,10 @@ PrefabInstance:
     - target: {fileID: 3411827141506980613, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Text
       value: win ratio change
+      objectReference: {fileID: 0}
+    - target: {fileID: 4189659715013338005, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Prize
       objectReference: {fileID: 0}
     - target: {fileID: 7878697191330894570, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Color.a
@@ -1119,6 +1147,10 @@ PrefabInstance:
       value: "\u0627\uFEDF\uFEEE\u0631\u0642 \u0627\uFEDF\uFEE4\uFE8E\uFEDB\uFEEE\u0644"
       objectReference: {fileID: 0}
     - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: m_fontSize
+      value: 43.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: originalText
       value: "\u0627\u0644\u0648\u0631\u0642 \u0627\u0644\u0645\u0627\u0643\u0648\u0644"
       objectReference: {fileID: 0}
@@ -1133,6 +1165,10 @@ PrefabInstance:
     - target: {fileID: 3411827141506980613, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Text
       value: eaten cards
+      objectReference: {fileID: 0}
+    - target: {fileID: 4189659715013338005, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Eaten Cards
       objectReference: {fileID: 0}
     - target: {fileID: 7878697191330894570, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Color.a
@@ -1267,6 +1303,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6477466464582175358}
     m_Modifications:
+    - target: {fileID: 767293361998067829, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Your Result
+      objectReference: {fileID: 0}
     - target: {fileID: 1909415557060690868, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: m_text
       value: "\uFEE7\uFE98\uFE8E\uFE8B\uFEA0\uFEDA"
@@ -1337,7 +1377,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2294705893260247268, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2294705893260247268, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1373,7 +1413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2294705893260247268, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -275
+      value: -280
       objectReference: {fileID: 0}
     - target: {fileID: 2294705893260247268, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1711,6 +1751,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 713794066920113961}
     m_Modifications:
+    - target: {fileID: 767293361998067829, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Basra
+      objectReference: {fileID: 0}
     - target: {fileID: 1909415557060690868, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: m_text
       value: "\uFE91\uFEBC\uFEAE\u0629"
@@ -1857,6 +1901,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 713794068653572511}
     m_Modifications:
+    - target: {fileID: 767293361998067829, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Super Basra
+      objectReference: {fileID: 0}
     - target: {fileID: 1909415557060690868, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: m_text
       value: +oxp
@@ -2190,7 +2238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6293033527109255914, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 200
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 6293033527109255914, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2226,7 +2274,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6293033527109255914, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 64
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 6293033527109255914, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2255,6 +2303,10 @@ PrefabInstance:
     - target: {fileID: 6293033527109255917, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_Name
       value: to menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7383206591553431180, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: To Lobby
       objectReference: {fileID: 0}
     - target: {fileID: 7800333019196284979, guid: 66b086d6863ad2a4ea5eea3d021407c1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -2476,6 +2528,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 713794068635173968}
     m_Modifications:
+    - target: {fileID: 767293361998067829, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: competition
+      objectReference: {fileID: 0}
     - target: {fileID: 1909415557060690868, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: m_text
       value: "\u0627\uFEDF\uFEE4\uFEE8\uFE8E\uFED3\uFEB4\uFEEA"
@@ -2626,6 +2682,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 713794067874129495}
     m_Modifications:
+    - target: {fileID: 767293361998067829, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Great Eating
+      objectReference: {fileID: 0}
     - target: {fileID: 1909415557060690868, guid: 7f0e795d0a6a7ae49b818f82d5cfa2c0, type: 3}
       propertyPath: m_text
       value: +oxp
@@ -2784,6 +2844,10 @@ PrefabInstance:
       value: "\u0627\uFEDF\uFED4\uFEEE\u0632 \u0627\uFEDF\uFEE4\uFE98\uFE98\uFE8E\uFEDF\uFEF2"
       objectReference: {fileID: 0}
     - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: m_fontSize
+      value: 43.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098137045197887572, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_colorMode
       value: 2
       objectReference: {fileID: 0}
@@ -2862,6 +2926,10 @@ PrefabInstance:
     - target: {fileID: 3411827141506980613, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Text
       value: money
+      objectReference: {fileID: 0}
+    - target: {fileID: 4189659715013338005, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
+      propertyPath: translations.Array.data[0]
+      value: Win Streak
       objectReference: {fileID: 0}
     - target: {fileID: 7878697191330894570, guid: 1df16ed5a8f18834a9d1017d902183a5, type: 3}
       propertyPath: m_Color.a

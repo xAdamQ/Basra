@@ -26,22 +26,23 @@ public class BlockingOperationManager
     /// </summary>
     public async UniTask Start(UniTask operation)
     {
-        BlockingPanel.I.Show();
+        await BlockingPanel.Show();
         try
         {
             await operation;
-            BlockingPanel.I.Hide();
+            BlockingPanel.Hide();
         }
         catch (BadUserInputException) //todo test if you can get bad user input exc here
         {
-            BlockingPanel.I.Hide("operation is not allowed");
+            BlockingPanel.Hide("operation is not allowed");
             throw;
         }
     }
 
     public void Forget<T>(UniTask<T> operation, Action<T> onComplete)
     {
-        Start(operation).ContinueWith(onComplete).Forget(e => throw e); //the error exception happens normally inside start
+        Start(operation).ContinueWith(onComplete)
+            .Forget(e => throw e); //the error exception happens normally inside start
     }
 
     /// <summary>
@@ -49,16 +50,16 @@ public class BlockingOperationManager
     /// </summary>
     public async UniTask<T> Start<T>(UniTask<T> operation)
     {
-        BlockingPanel.I.Show();
+        await BlockingPanel.Show();
         try
         {
             var result = await operation;
-            BlockingPanel.I.Hide();
+            BlockingPanel.Hide();
             return result;
         }
         catch (BadUserInputException) //todo test if you can get bad user input exc here
         {
-            BlockingPanel.I.Hide("operation is not allowed");
+            BlockingPanel.Hide("operation is not allowed");
             throw;
         }
     }

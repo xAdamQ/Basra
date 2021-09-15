@@ -75,69 +75,69 @@ namespace PlayModeTests
         };
 
         [UnityTest]
-        public IEnumerator Background_ShouldShowWithBiggestLevel() => UniTask.ToCoroutine(async () =>
-        {
-            await LoadEss();
-
-            await Background.Create();
-            Background.I.SetForRoom(new List<FullUserInfo>()
+        public IEnumerator Background_ShouldShowWithBiggestLevel() => UniTask.ToCoroutine(
+            async () =>
             {
-                new FullUserInfo()
+                await LoadEss();
+
+                await Background.Create();
+                Background.I.SetForRoom(new List<FullUserInfo>()
                 {
-                    SelectedBackground = 2,
-                },
-                new FullUserInfo()
+                    new FullUserInfo()
+                    {
+                        SelectedBackground = 2,
+                    },
+                    new FullUserInfo()
+                    {
+                        SelectedBackground = 3,
+                    },
+                    new FullUserInfo()
+                    {
+                        SelectedBackground = 1,
+                    },
+                    new FullUserInfo()
+                    {
+                        SelectedBackground = 0,
+                    },
+                });
+
+
+                await UniTask.Delay(5000);
+
+                await Background.Create();
+                Background.I.SetForRoom(new List<FullUserInfo>()
                 {
-                    SelectedBackground = 3,
-                },
-                new FullUserInfo()
-                {
-                    SelectedBackground = 1,
-                },
-                new FullUserInfo()
-                {
-                    SelectedBackground = 0,
-                },
+                    new FullUserInfo()
+                    {
+                        SelectedBackground = 2,
+                    },
+                    new FullUserInfo()
+                    {
+                        SelectedBackground = 3,
+                    },
+                    new FullUserInfo()
+                    {
+                        SelectedBackground = 1,
+                    },
+                    new FullUserInfo()
+                    {
+                        SelectedBackground = 0,
+                    },
+                });
+
+                await UniTask.Delay(5000);
             });
-
-
-            await UniTask.Delay(5000);
-
-            await Background.Create();
-            Background.I.SetForRoom(new List<FullUserInfo>()
-            {
-                new FullUserInfo()
-                {
-                    SelectedBackground = 2,
-                },
-                new FullUserInfo()
-                {
-                    SelectedBackground = 3,
-                },
-                new FullUserInfo()
-                {
-                    SelectedBackground = 1,
-                },
-                new FullUserInfo()
-                {
-                    SelectedBackground = 0,
-                },
-            });
-
-            await UniTask.Delay(5000);
-        });
 
         [UnityTest]
         public IEnumerator ItemShops_Interactive() => UniTask.ToCoroutine(async () =>
         {
             await LoadEss();
 
-            new ProjectRefernces() { Canvas = canvas };
+            new ProjectReferences() { Canvas = canvas };
 
             Controller.I = new Mock<IController>().Object;
             new Repository();
             await Toast.Create();
-            await BlockingPanel.Create();
             new BlockingOperationManager();
 
             await UniTask.DelayFrame(2);
@@ -231,8 +231,9 @@ namespace PlayModeTests
             //
             // Debug.Log(handle3.Result.Count);
 
-            Extensions.LoadAndReleaseAsset<Sprite>(BackgroundType.dotsOcean.ToString(), sprite => new GameObject()
-                .AddComponent<SpriteRenderer>().sprite = sprite).Forget(e => throw e);
+            Extensions.LoadAndReleaseAsset<Sprite>(BackgroundType.purpleCris.ToString(), sprite =>
+                new GameObject()
+                    .AddComponent<SpriteRenderer>().sprite = sprite).Forget(e => throw e);
 
             yield return new WaitUntil(() => false);
         }
@@ -242,7 +243,8 @@ namespace PlayModeTests
         {
             await LoadEss();
 
-            RoomReferences.I = new RoomReferences { Canvas = canvas, Root = new GameObject().transform };
+            RoomReferences.I = new RoomReferences
+                { Canvas = canvas, Root = new GameObject().transform };
             RoomSettings.I = new RoomSettings(0, 0, fullUserInfos.ToList(), 0);
 
             new RoomUserView.Manager();

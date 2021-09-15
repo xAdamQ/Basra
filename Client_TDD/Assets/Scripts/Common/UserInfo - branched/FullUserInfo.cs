@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine.Scripting;
 
-// [Preserve]
 public class FullUserInfo : MinUserInfo
 {
     [Preserve]
-    public FullUserInfo() { }
+    public FullUserInfo()
+    {
+    }
 
     public virtual int Money { get; set; }
 
@@ -32,6 +33,11 @@ public class FullUserInfo : MinUserInfo
     public List<int> OwnedBackgroundsIds { get; set; }
     public int SelectedCardback { get; set; }
     public int SelectedBackground { get; set; }
+
+    public bool EnableOpenMatches { get; set; }
+
+    public int Friendship { get; set; }
+
 
     #region helpers
 

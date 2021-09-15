@@ -38,20 +38,20 @@ namespace Basra.Server.Services
                 $"Calling hub method '{invocationContext.HubMethodName}'" +
                 $" with args {string.Join(", ", invocationContext.HubMethodArguments)}");
 
-
-            // todo can the active user be null in this stage? seems not
             var activeUser = _sessionRepo.GetActiveUser(invocationContext.Context.UserIdentifier);
             var domain = _methodDomains.GetDomain(invocationContext.HubMethodName);
 
-            if (activeUser.Disconnected)
-                throw new Exception("there's something wrong with ur sys, a user is disconnected and calling!");
+            if (activeUser.IsDisconnected)
+                throw new Exception(
+                    "there's something wrong with ur sys, a user is disconnected and calling!");
 
             if (domain == null)
             {
                 throw new BadUserInputException(
                     "the user is invoking a function that doesn't exist or it's not an rpc");
             }
-            if (!activeUser.Domain.IsSubclassOf(domain) && !activeUser.Domain.IsEquivalentTo(domain))
+            if (!activeUser.Domain.IsSubclassOf(domain) &&
+                !activeUser.Domain.IsEquivalentTo(domain))
             {
                 throw new BadUserInputException(
                     $"the called function with domain {domain} is not valid in the current user domain {activeUser.Domain}");
@@ -89,7 +89,8 @@ namespace Basra.Server.Services
         }
 
         // Optional method
-        public Task OnConnectedAsync(HubLifetimeContext context, Func<HubLifetimeContext, Task> next)
+        public Task OnConnectedAsync(HubLifetimeContext context,
+            Func<HubLifetimeContext, Task> next)
         {
             return next(context);
         }

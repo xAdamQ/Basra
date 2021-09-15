@@ -9,6 +9,7 @@ using Hangfire.MemoryStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging.AzureAppServices;
+using Microsoft.AspNetCore.Http.Connections;
 
 namespace Basra.Server
 {
@@ -48,6 +49,7 @@ namespace Basra.Server
 
             // services.Configure<AzureFileLoggerOptions>(_configuration.GetSection("AzureLogging"));
 
+
             services.AddDbContext<MasterContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("Main")));
 
@@ -75,22 +77,44 @@ namespace Basra.Server
 
             services.AddScoped<FbigSecurityManager>();
 
+
+            // services.AddAuthentication(options =>
+            // {
+            //     options.AddScheme<FbigAuthenticationHandler>(FbigAuthenticationHandler.PROVIDER_NAME,
+            //                     FbigAuthenticationHandler.PROVIDER_NAME);
+
+
+            //     // options.DefaultAuthenticateScheme = FbigAuthenticationHandler.PROVIDER_NAME;
+            //     options.DefaultScheme = FbigAuthenticationHandler.PROVIDER_NAME;
+            // });
+
+            // services.AddAuthentication().AddScheme<FbigAuthenticationSchemeOptions, FbigAuthenticationHandler>(
+            //     FbigAuthenticationHandler.PROVIDER_NAME,
+            //     null,
+            //      _ => { });
+
+            // services.AddAuthentication(FbigAuthenticationHandler.PROVIDER_NAME);
+
+            // services.AddAuthentication()
             services.AddHttpContextAccessor();
 
-            services.AddAuthentication(options =>
-            {
-                options.AddScheme<FbigAuthenticationHandler>(FbigAuthenticationHandler.PROVIDER_NAME,
-                    FbigAuthenticationHandler.PROVIDER_NAME);
+            // services.AddAuthentication(options =>
+            // {
+            //     options.AddScheme<FbigAuthenticationHandler>(FbigAuthenticationHandler.PROVIDER_NAME,
+            //     FbigAuthenticationHandler.PROVIDER_NAME);
 
-                options.DefaultScheme = FbigAuthenticationHandler.PROVIDER_NAME;
-            });
+            //     options.DefaultScheme = FbigAuthenticationHandler.PROVIDER_NAME;
+            // });
+
+            services.AddAuthentication(FbigAuthenticationHandler.PROVIDER_NAME)
+                .AddScheme<FbigAuthenticationSchemeOptions, FbigAuthenticationHandler>(FbigAuthenticationHandler.PROVIDER_NAME, null);
 
             services.AddCors();
             services.AddControllers();
             services.AddSignalR(options =>
             {
                 options.AddFilter<BadUserInputFilter>();
-                options.ClientTimeoutInterval = TimeSpan.FromHours(1); //change this in production
+                options.ClientTimeoutInterval = TimeSpan.FromHours(1); //2343
             });
 
 
@@ -108,12 +132,6 @@ namespace Basra.Server
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMasterRepo masterRepo)
         {
-            app.UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-            );
-
             // if (env.IsDevelopment())
             // {
             //     app.UseDeveloperExceptionPage();
@@ -122,15 +140,22 @@ namespace Basra.Server
 
             // app.UseHttpsRedirection();
 
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+            );
+
             app.UseAuthentication();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseEndpoints(endpoint =>
+                endpoint.MapHub<MasterHub>("/connect", options => { options.Transports = HttpTransportType.WebSockets; }));
 
-            // app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
-            app.UseEndpoints(endpoint => endpoint.MapHub<MasterHub>("/connect"));
+            // app.UseAuthorization();
 
 
             // //tododone check if this is needed

@@ -26,24 +26,30 @@ public class RoomResultPanel : MonoBehaviour
         competitionStateText;
 
 
-    public static async UniTaskVoid Instantiate(Transform parent, RoomXpReport roomXpReport, PersonalFullUserInfo personalFullUserInfo,
+    public static async UniTaskVoid Instantiate(Transform parent, RoomXpReport roomXpReport,
+        PersonalFullUserInfo personalFullUserInfo,
         UserRoomStatus userRoomStatus)
     {
         var obj = await Addressables.InstantiateAsync("myRoomResultView", parent);
-        obj.GetComponent<RoomResultPanel>().Construct(roomXpReport, personalFullUserInfo, userRoomStatus);
+        obj.GetComponent<RoomResultPanel>()
+            .Construct(roomXpReport, personalFullUserInfo, userRoomStatus);
     }
 
-    private void Construct(RoomXpReport roomXpReport, PersonalFullUserInfo personalFullUserInfo, UserRoomStatus userRoomStatus)
+    private void Construct(RoomXpReport roomXpReport, PersonalFullUserInfo personalFullUserInfo,
+        UserRoomStatus userRoomStatus)
     {
-        if (roomXpReport.Competition == 0) competetionScoreText.transform.parent.gameObject.SetActive(false);
+        if (roomXpReport.Competition == 0)
+            competetionScoreText.transform.parent.gameObject.SetActive(false);
         if (roomXpReport.Basra == 0) basraScoreText.transform.parent.gameObject.SetActive(false);
-        if (roomXpReport.BigBasra == 0) bigBasraScoreText.transform.parent.gameObject.SetActive(false);
-        if (roomXpReport.GreatEat == 0) greatEatScoreText.transform.parent.gameObject.SetActive(false);
+        if (roomXpReport.BigBasra == 0)
+            bigBasraScoreText.transform.parent.gameObject.SetActive(false);
+        if (roomXpReport.GreatEat == 0)
+            greatEatScoreText.transform.parent.gameObject.SetActive(false);
 
-        competetionScoreText.text = roomXpReport.Competition.ToString();
-        basraScoreText.text = roomXpReport.Basra.ToString();
-        bigBasraScoreText.text = roomXpReport.BigBasra.ToString();
-        greatEatScoreText.text = roomXpReport.GreatEat.ToString();
+        competetionScoreText.text = $"+{roomXpReport.Competition}xp";
+        basraScoreText.text = $"+{roomXpReport.Basra}xp";
+        bigBasraScoreText.text = $"+{roomXpReport.BigBasra}xp";
+        greatEatScoreText.text = $"+{roomXpReport.GreatEat}xp";
 
         eatenCards.text = userRoomStatus.EatenCards.ToString();
         basras.text = userRoomStatus.Basras.ToString();
