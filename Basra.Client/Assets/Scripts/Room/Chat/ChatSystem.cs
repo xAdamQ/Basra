@@ -8,6 +8,8 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
+
+[Rpc]
 public class ChatSystem : MonoBehaviour
 {
     public GameObject ChatPanel;
@@ -44,8 +46,9 @@ public class ChatSystem : MonoBehaviour
 
     private void Awake()
     {
-        Controller.I.AssignRpc<int, string>(ShowMessage, nameof(RoomController));
-
+        // Controller.I.AssignRpc<int, string>(ShowMessage, nameof(RoomController));
+        Controller.I.AddRpcContainer(this);
+        
         foreach (Transform emoji in emojiParent)
             emojis.Add(emoji.name, emoji.GetComponent<Image>().sprite);
 
@@ -59,6 +62,7 @@ public class ChatSystem : MonoBehaviour
     /// <summary>
     /// uses RoomSettings: my turn
     /// </summary>
+    [Rpc]
     public void ShowMessage(int senderTurn, string messageId)
     {
         var senderPlace = PlayerBase.ConvertTurnToPlace(senderTurn, RoomSettings.I.MyTurn);

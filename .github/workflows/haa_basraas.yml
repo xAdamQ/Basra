@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - BasraServer
 on:
   push:
     branches:
-      - HAA
+      - main
   workflow_dispatch:
 
 jobs:

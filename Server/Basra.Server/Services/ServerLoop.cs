@@ -178,7 +178,7 @@ namespace Basra.Server.Services
 
         #endregion
 
-        private const int BotPlayMin = 500, BotPlayMax = 4000; 
+        private const int BotPlayMin = 500, BotPlayMax = 4000;
 
         public void BotPlay(RoomBot roomBot)
         {
@@ -196,53 +196,53 @@ namespace Basra.Server.Services
         }
 
 
-// private Dictionary<Action, CancellationTokenSource> DelayCancellations { get; } = new();
-// public void Delay(int delay, Action onComplete, Object key)
-// {
-//     var cSource = new CancellationTokenSource();
-//     DelayCancellations.Add(onComplete, cSource);
-//
-//     Task.Delay(ReadyTimeout, cSource.Token).ContinueWith(_ => onComplete, cSource.Token);
-//     DelayCancellations.Remove(onComplete);
-// }
-// public void CancelDelay(Room room)
-// {
-//     ForceStartCancellations[room].Cancel();
-// }
+        // private Dictionary<Action, CancellationTokenSource> DelayCancellations { get; } = new();
+        // public void Delay(int delay, Action onComplete, Object key)
+        // {
+        //     var cSource = new CancellationTokenSource();
+        //     DelayCancellations.Add(onComplete, cSource);
+        //
+        //     Task.Delay(ReadyTimeout, cSource.Token).ContinueWith(_ => onComplete, cSource.Token);
+        //     DelayCancellations.Remove(onComplete);
+        // }
+        // public void CancelDelay(Room room)
+        // {
+        //     ForceStartCancellations[room].Cancel();
+        // }
 
 
-// public void StartTurn(string userId)
-// {
-//     var turnTime = 10000;
-//     var cSource = new CancellationTokenSource();
-//     TurnCancellations.Add(userId, cSource);
-//
-//     Task.Delay(turnTime).ContinueWith(t => OnTurnTimout(userId), cSource.Token);
-// }
-//
-// private async Task OnTurnTimout(string userId)
-// {
-//     // await RandomPlay(userId);
-// }
+        // public void StartTurn(string userId)
+        // {
+        //     var turnTime = 10000;
+        //     var cSource = new CancellationTokenSource();
+        //     TurnCancellations.Add(userId, cSource);
+        //
+        //     Task.Delay(turnTime).ContinueWith(t => OnTurnTimout(userId), cSource.Token);
+        // }
+        //
+        // private async Task OnTurnTimout(string userId)
+        // {
+        //     // await RandomPlay(userId);
+        // }
 
-// private async Task RandomPlay(string userId)
-// {
-//     //pick user
-//     //
-//
-//     var randomCardIndex = StaticRandom.GetRandom(Cards.Count);
-//
-//     await Task.WhenAll
-//     (
-//         Play(randomCardIndex),
-//         Program.HubContext.Clients.Client(ConnectionId).SendAsync("OverrideMyLastThrow", randomCardIndex)
-//         // Structure.SendAsync("OverrideThrow", card)
-//     );
-// }
+        // private async Task RandomPlay(string userId)
+        // {
+        //     //pick user
+        //     //
+        //
+        //     var randomCardIndex = StaticRandom.GetRandom(Cards.Count);
+        //
+        //     await Task.WhenAll
+        //     (
+        //         Play(randomCardIndex),
+        //         Program.HubContext.Clients.Client(ConnectionId).SendAsync("OverrideMyLastThrow", randomCardIndex)
+        //         // Structure.SendAsync("OverrideThrow", card)
+        //     );
+        // }
 
-// protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-// {
-//     Console.WriteLine("excute,,,,,,");
-// }
+        // protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        // {
+        //     Console.WriteLine("excute,,,,,,");
+        // }
     }
 }

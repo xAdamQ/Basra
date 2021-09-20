@@ -9,7 +9,8 @@ using Random = UnityEngine.Random;
 public interface IOppo : IPlayerBase
 {
     //tested
-    void Throw(ThrowResult throwResult);
+    UniTask Throw(ThrowResult throwResult);
+
     //tested
     UniTask Distribute();
     UniTask Distribute(int cardsCount);
@@ -17,19 +18,18 @@ public interface IOppo : IPlayerBase
 
 public class Oppo : PlayerBase, IOppo
 {
-    public void Throw(ThrowResult throwResult)
+    public async UniTask Throw(ThrowResult throwResult)
     {
-        UniTask.Create(async () =>
-        {
-            var randCard = HandCards.GetRandom();
-            await randCard.AddFront(throwResult.ThrownCard);
+        var randCard = HandCards.GetRandom();
 
-            var throwSeq = DOTween.Sequence();
+        await randCard.AddFront(throwResult.ThrownCard);
+        //check if call is awaitable and wait for it from the controller itself
 
-            var targetPoz = PlaceCard(randCard, throwSeq);
+        var throwSeq = DOTween.Sequence();
 
-            ThrowBase(throwResult, throwSeq, targetPoz);
-        });
+        var targetPoz = PlaceCard(randCard, throwSeq);
+
+        ThrowBase(throwResult, throwSeq, targetPoz);
     }
 
     private void DistributeAnim()
@@ -70,6 +70,7 @@ public class Oppo : PlayerBase, IOppo
     {
         await Distribute(HandCardCapacity);
     }
+
     public async UniTask Distribute(int cardsCount)
     {
         for (var i = 0; i < cardsCount; i++)

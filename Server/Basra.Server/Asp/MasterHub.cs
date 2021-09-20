@@ -82,7 +82,7 @@ namespace Basra.Server
             clientPersonalInfo.Followings =
                 await _masterRepo.GetFollowingsAsync(Context.UserIdentifier);
 
-            await Clients.Caller.SendAsync("InitGame", clientPersonalInfo, activeRoomState);
+            await Clients.Caller.SendAsync("InitGame", ++ActiveUser.MessageIndex, clientPersonalInfo, activeRoomState, ActiveUser.MessageIndex);
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)

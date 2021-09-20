@@ -18,6 +18,7 @@ namespace Basra.Server
         public string ConnectionId { get; }
         public Type Domain { get; set; }
         public bool IsDisconnected { get; set; }
+        public int MessageIndex { get; set; }
 
         public string ChallengeRequestTarget;
 

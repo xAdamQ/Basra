@@ -16,9 +16,9 @@ public abstract class MonoModule<T> : MonoBehaviour where T : MonoBehaviour
         I = gameObject.GetComponent<T>(); //because "this" won't work
     }
 
-    // public static void Destroy()
-    // {
-    //     Object.Destroy(I.gameObject);
-    //     I = null;
-    // }
+    public static void DestroyModule()
+    {
+        if(I) Object.Destroy(I.gameObject);
+        I = null;
+    }
 }

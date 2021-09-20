@@ -1,4 +1,5 @@
 using Basra.Common;
+using Basra.Server.Extensions;
 using Basra.Server.Helpers;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -48,7 +49,14 @@ namespace Basra.Server.Services
 
             var reportsAndStatus = UpdateUserStates(room, roomDataUsers, scores);
 
-            await Task.WhenAll(roomDataUsers.Select(LevelWorks));
+            for (int i = 0; i < roomDataUsers.Count; i++)
+            {
+                ActiveUser activeUser = room.RoomActors[i] is RoomUser ru
+                ? activeUser = ru.ActiveUser
+                : null;
+
+                await LevelWorks(roomDataUsers[i], activeUser);
+            }
 
             await _masterRepo.SaveChangesAsync();
 
@@ -188,7 +196,7 @@ namespace Basra.Server.Services
         /// check current level against xp to level up and send to client
         /// functions that takes data user as param doesn't save changes
         /// </summary>
-        private async Task LevelWorks(User roomDataUser)
+        private async Task LevelWorks(User roomDataUser, ActiveUser activeUser)
         {
             var calcedLevel = Room.GetLevelFromXp(roomDataUser.XP);
             if (calcedLevel > roomDataUser.Level)
@@ -205,8 +213,8 @@ namespace Basra.Server.Services
                 roomDataUser.Level = calcedLevel;
                 roomDataUser.Money += totalMoneyReward;
 
-                await _masterHub.Clients.User(roomDataUser.Id)
-                    .SendAsync("LevelUp", calcedLevel, totalMoneyReward);
+                if (activeUser != null)
+                    await _masterHub.SendOrderedAsync(activeUser, "LevelUp", calcedLevel, totalMoneyReward);
             }
         } //separate this to be called on every XP change 
 
@@ -228,8 +236,8 @@ namespace Basra.Server.Services
                     UserRoomStatus = userRoomStatuses,
                 };
 
-                finalizeTasks.Add(_masterHub.Clients.User(roomUsers[i].Id)
-                    .SendAsync("FinalizeRoom", finalizeResult));
+                finalizeTasks.Add(_masterHub.SendOrderedAsync(roomUsers[i].ActiveUser,
+                    "FinalizeRoom", finalizeResult));
             }
 
             _logger.LogInformation("finalize called");

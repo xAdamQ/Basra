@@ -13,6 +13,7 @@ public interface IRoomController
 }
 
 
+[Rpc]
 public class RoomController : IRoomController
 {
     public event System.Action Destroyed;
@@ -22,6 +23,7 @@ public class RoomController : IRoomController
     private RoomController()
     {
         I = this;
+        Controller.I.AddRpcContainer(this);
     }
 
     // public RoomController(ActiveRoomState activeRoomState) : this()
@@ -53,7 +55,7 @@ public class RoomController : IRoomController
     //the initialization issue, this should be after injection, means after awake
     private async UniTask Initialize(ActiveRoomState activeRoomState)
     {
-        Controller.I.OnAppPause += DestroyModuleGroup;
+        // Controller.I.OnAppPause += DestroyModuleGroup;
 
         var containerRoot = new GameObject("Room").transform;
 
@@ -83,7 +85,7 @@ public class RoomController : IRoomController
 
         Background.I.SetForRoom(RoomSettings.I.UserInfos);
 
-        AssignRpcs();
+        // AssignRpcs();
 
         if (activeRoomState == null)
             Controller.I.SendAsync("Ready").Forget(e => throw e);
@@ -98,14 +100,15 @@ public class RoomController : IRoomController
         }
     }
 
-    private void AssignRpcs()
-    {
-        var moduleGroupName = nameof(RoomController);
+    // private void AssignRpcs()
+    // {
+    //     var moduleGroupName = nameof(RoomController);
+    //
+    //     Controller.I.AssignRpc<List<int>, List<int>>(StartRoomRpc, moduleGroupName);
+    //     Controller.I.AssignRpc<FinalizeResult>(FinalizeRoom, moduleGroupName);
+    // }
 
-        Controller.I.AssignRpc<List<int>, List<int>>(StartRoomRpc, moduleGroupName);
-        Controller.I.AssignRpc<FinalizeResult>(FinalizeRoom, moduleGroupName);
-    }
-
+    [Rpc]
     public void FinalizeRoom(FinalizeResult finalizeResult)
     {
         UniTask.Create(async () =>
@@ -144,6 +147,7 @@ public class RoomController : IRoomController
         });
     }
 
+    [Rpc]
     public void StartRoomRpc(List<int> handCardIds, List<int> groundCardIds)
     {
         CoreGameplay.I.BeginGame(handCardIds, groundCardIds);
@@ -153,7 +157,7 @@ public class RoomController : IRoomController
 
     public void DestroyModuleGroup()
     {
-        Controller.I.OnAppPause -= DestroyModuleGroup;
+        // Controller.I.OnAppPause -= DestroyModuleGroup;
 
         //killing non mb
         RoomReferences.I = null;
@@ -164,7 +168,7 @@ public class RoomController : IRoomController
         //killing mb
         Object.Destroy(GameObject.Find("Room"));
 
-        Controller.I.RemoveModuleRpcs(GetType().ToString());
+        // Controller.I.RemoveModuleRpcs(GetType().ToString());
 
         I = null;
 

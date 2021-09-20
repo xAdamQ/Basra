@@ -4,15 +4,16 @@ using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public interface ITurnTimer
 {
     bool IsPlaying { get; }
 
-    event Action Elapsed;
+    event Action<int> Elapsed;
     event Action<float> Ticked;
 
-    void Play();
+    void Play(int currentTurn);
     void Stop();
 }
 
@@ -22,39 +23,65 @@ public class TurnTimer : MonoBehaviour, ITurnTimer
 {
     private const int HandTime = 7; //the total interval
 
-    public event Action Elapsed;
+    public event Action<int> Elapsed;
     public event Action<float> Ticked;
 
     public bool IsPlaying { get; private set; }
 
     private Coroutine activeTimerCoroutine;
 
-    public void Play()
+    private int currentTurn;
+
+    public void Play(int currentTurn)
     {
         if (IsPlaying) Stop();
+        this.currentTurn = currentTurn;
         activeTimerCoroutine = StartCoroutine(PlayEnumerator());
     }
 
     private IEnumerator PlayEnumerator()
     {
         IsPlaying = true;
+        var targetTime = Time.realtimeSinceStartup + HandTime;
 
-        var ticksCount = HandTime / Time.fixedDeltaTime;
-        for (var i = 0; i < ticksCount; i++)
+        while (Time.realtimeSinceStartup <= targetTime)
         {
-            var progress = (float)i / ticksCount;
+            var timeLeft = targetTime - Time.realtimeSinceStartup;
+            var progress = timeLeft / HandTime;
+
             Ticked?.Invoke(progress);
 
             yield return new WaitForFixedUpdate();
         }
 
-        Ticked?.Invoke(1);
+        Ticked?.Invoke(0);
 
         //in the new design you don't reach here if cancelled
-        Elapsed?.Invoke();
+        Elapsed?.Invoke(currentTurn);
 
         IsPlaying = false;
     }
+
+    // private IEnumerator PlayEnumerator()
+    // {
+    //     IsPlaying = true;
+    //
+    //     var ticksCount = HandTime / Time.fixedDeltaTime;
+    //     for (var i = 0; i < ticksCount; i++)
+    //     {
+    //         var progress = (float) i / ticksCount;
+    //         Ticked?.Invoke(progress);
+    //
+    //         yield return new WaitForFixedUpdate();
+    //     }
+    //
+    //     Ticked?.Invoke(1);
+    //
+    //     //in the new design you don't reach here if cancelled
+    //     Elapsed?.Invoke();
+    //
+    //     IsPlaying = false;
+    // }
 
     public void Stop()
     {

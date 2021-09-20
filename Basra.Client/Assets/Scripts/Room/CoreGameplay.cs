@@ -13,13 +13,15 @@ public interface ICoreGameplay
     void InitialTurn();
     void NextTurn(bool endPrevTurn = true);
     void BeginGame(List<int> myHand, List<int> groundCards);
-    void Distribute(List<int> handCardIds);
-    void LastDistribute(List<int> handCardIds);
+    UniTask Distribute(List<int> handCardIds);
+    UniTask LastDistribute(List<int> handCardIds);
     UniTask EatLast(int lastEaterTurnId);
+
     void ResumeGame(List<int> myHand, List<int> ground, List<int> handCounts,
         int currentTurn);
 }
 
+[Rpc]
 public class CoreGameplay : ICoreGameplay
 {
     public static ICoreGameplay I;
@@ -29,8 +31,9 @@ public class CoreGameplay : ICoreGameplay
         I = this;
 
         // Initialize().Forget();
-        RoomController.I.Destroyed += OnRoomDestroyed;
-        AssignRpcs();
+        // RoomController.I.Destroyed += OnRoomDestroyed;
+        // AssignRpcs();
+        Controller.I.AddRpcContainer(this);
     }
 
     public async UniTaskVoid Initialize()
@@ -38,11 +41,6 @@ public class CoreGameplay : ICoreGameplay
         await UniTask.DelayFrame(3);
 
         // ThrowClip = await Addressables.LoadAssetAsync<AudioClip>("throwClip");
-    }
-
-    public void OnRoomDestroyed()
-    {
-        Controller.I.RemoveModuleRpcs(nameof(CoreGameplay));
     }
 
     private List<IPlayerBase> Players { get; } = new List<IPlayerBase>();
@@ -112,7 +110,7 @@ public class CoreGameplay : ICoreGameplay
         {
             if (i == RoomSettings.I.MyTurn) continue;
 
-            ((IOppo)Players[i]).Distribute(handCounts[i]);
+            ((IOppo) Players[i]).Distribute(handCounts[i]);
         }
 
         CurrentTurn = currentTurn - 1;
@@ -132,50 +130,56 @@ public class CoreGameplay : ICoreGameplay
 
     #region rpcs
 
-    private void AssignRpcs()
-    {
-        Controller.I.AssignRpc<List<int>>(Distribute, nameof(CoreGameplay));
-        Controller.I.AssignRpc<List<int>>(LastDistribute, nameof(CoreGameplay));
-        Controller.I.AssignRpc<ThrowResult>(MyThrowResult, nameof(CoreGameplay));
-        Controller.I.AssignRpc<ThrowResult>(ForcePlay, nameof(CoreGameplay));
-        Controller.I.AssignRpc<ThrowResult>(CurrentOppoThrow, nameof(CoreGameplay));
-    }
+    // private void AssignRpcs()
+    // {
+    //     Controller.I.AssignRpc<List<int>>(Distribute, nameof(CoreGameplay));
+    //     Controller.I.AssignRpc<List<int>>(LastDistribute, nameof(CoreGameplay));
+    //     Controller.I.AssignRpc<ThrowResult>(MyThrowResult, nameof(CoreGameplay));
+    //     Controller.I.AssignRpc<ThrowResult>(ForcePlay, nameof(CoreGameplay));
+    //     Controller.I.AssignRpc<ThrowResult>(CurrentOppoThrow, nameof(CoreGameplay));
+    // }
 
     private bool isLastDistribute;
 
-    private void DistributeBase(List<int> handCardIds, bool last)
+    private async UniTask DistributeBase(List<int> handCardIds, bool last)
     {
-        UniTask.Create(async () =>
-        {
-            // await UniTask.Delay(1500); //if there's a pending throw and eat
+        // await UniTask.Delay(1500); //if there's a pending throw and eat
 
-            await MyPlayer.Distribute(handCardIds);
+        await MyPlayer.Distribute(handCardIds);
 
-            foreach (var oppo in Oppos) await oppo.Distribute();
+        foreach (var oppo in Oppos) await oppo.Distribute();
 
-            isLastDistribute = last;
-        });
-    }
-    public void Distribute(List<int> handCardIds)
-    {
-        DistributeBase(handCardIds, false);
-    }
-    public void LastDistribute(List<int> handCardIds)
-    {
-        DistributeBase(handCardIds, true);
+        isLastDistribute = last;
     }
 
+    [Rpc]
+    public async UniTask Distribute(List<int> handCardIds)
+    {
+        await DistributeBase(handCardIds, false);
+    }
+
+    [Rpc]
+    public async UniTask LastDistribute(List<int> handCardIds)
+    {
+        await DistributeBase(handCardIds, true);
+    }
+
+    [Rpc]
     public void MyThrowResult(ThrowResult throwResult)
     {
         MyPlayer.MyThrowResult(throwResult);
     }
+
+    [Rpc]
     public void ForcePlay(ThrowResult throwResult)
     {
         MyPlayer.ForceThrow(throwResult);
     }
-    public void CurrentOppoThrow(ThrowResult throwResult)
+
+    [Rpc]
+    public async UniTask CurrentOppoThrow(ThrowResult throwResult)
     {
-        ((IOppo)PlayerInTurn).Throw(throwResult);
+        await ((IOppo) PlayerInTurn).Throw(throwResult);
     }
 
     #endregion

@@ -82,8 +82,6 @@ public class PersonalFullUserInfo : FullUserInfo, INotifyPropertyChanged
         var updateRateInSeconds = 1;
         while (MoneyAimTimePassed < ConstData.MoneyAimTime)
         {
-            Debug.Log("info is changing");
-
             // MoneyAimTimePassed = MoneyAimTimePassed.Value.Add(TimeSpan.FromSeconds(updateRateInSeconds));
             MoneyAimTimePassed += updateRateInSeconds;
 

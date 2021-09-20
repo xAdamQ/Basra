@@ -34,7 +34,7 @@ public class BlockingOperationManager
         }
         catch (BadUserInputException) //todo test if you can get bad user input exc here
         {
-            BlockingPanel.Hide("operation is not allowed");
+            BlockingPanel.Done("operation is not allowed");
             throw;
         }
     }
@@ -59,7 +59,7 @@ public class BlockingOperationManager
         }
         catch (BadUserInputException) //todo test if you can get bad user input exc here
         {
-            BlockingPanel.Hide("operation is not allowed");
+            BlockingPanel.Done("operation is not allowed");
             throw;
         }
     }

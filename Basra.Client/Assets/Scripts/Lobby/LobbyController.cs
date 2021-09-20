@@ -23,6 +23,7 @@ public class LobbyReferences
     public Transform Canvas;
 }
 
+[Rpc]
 public class LobbyController : ILobbyController
 {
     public static LobbyController I;
@@ -36,7 +37,8 @@ public class LobbyController : ILobbyController
 
     private async UniTaskVoid Initialize()
     {
-        Controller.I.OnAppPause += DestroyLobby;
+        Controller.I.AddRpcContainer(this);
+        // Controller.I.OnAppPause += DestroyLobby;
 
         await UniTask.DelayFrame(1);
 
@@ -63,30 +65,31 @@ public class LobbyController : ILobbyController
 
         Background.I.SetForLobby();
 
-        AssignRpcs();
+        // AssignRpcs();
     }
 
-    private void AssignRpcs()
-    {
-        Controller.I.AssignRpc<int, int, List<FullUserInfo>, int>(PrepareRequestedRoomRpc,
-            nameof(LobbyController));
+    // private void AssignRpcs()
+    // {
+    //     Controller.I.AssignRpc<int, int, List<FullUserInfo>, int>(PrepareRequestedRoomRpc,
+    //         nameof(LobbyController));
+    //
+    //     Controller.I.AssignRpc<MinUserInfo>(ChallengeRequest,
+    //         nameof(LobbyController));
+    //
+    //     Controller.I.AssignRpc<bool>(RespondChallenge,
+    //         nameof(LobbyController));
+    //     
+    //     Controller.I.AssignRpc<int>(AddMoney,
+    //         nameof(LobbyController));
+    // }
 
-        Controller.I.AssignRpc<MinUserInfo>(ChallengeRequest,
-            nameof(LobbyController));
-
-        Controller.I.AssignRpc<bool>(RespondChallenge,
-            nameof(LobbyController));
-        
-        Controller.I.AssignRpc<int>(AddMoney,
-            nameof(LobbyController));
-    }
-
+    [Rpc]
     public void AddMoney(int amount)
     {
         AddMoneyPopup.Show(amount)
             .Forget(e => throw e);
     }
-
+    [Rpc]
     public void PrepareRequestedRoomRpc(int betChoice, int capacityChoice,
         List<FullUserInfo> userInfos, int myTurn)
     {
@@ -97,11 +100,13 @@ public class LobbyController : ILobbyController
         RoomController.Create(null).Forget();
     }
 
+    [Rpc]
     public void ChallengeRequest(MinUserInfo senderInfo)
     {
         ChallengeResponsePanel.Show(senderInfo);
     }
 
+    [Rpc]
     public void RespondChallenge(bool response)
     {
         if (!response)
@@ -121,11 +126,11 @@ public class LobbyController : ILobbyController
 
     private void DestroyLobby()
     {
-        Controller.I.OnAppPause -= DestroyLobby;
+        // Controller.I.OnAppPause -= DestroyLobby;
 
         LobbyReferences.I = null;
 
-        Controller.I.RemoveModuleRpcs(GetType().ToString());
+        // Controller.I.RemoveModuleRpcs(GetType().ToString());
         UnityEngine.Object.Destroy(GameObject.Find("Lobby"));
 
         I = null;

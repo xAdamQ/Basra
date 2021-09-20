@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 using System.Text;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using Random = UnityEngine.Random;
 
 public static class Extensions
 {
@@ -13,13 +16,16 @@ public static class Extensions
         list.RemoveAt(randIndex);
         return list[randIndex];
     }
+
     public static T GetRandom<T>(this List<T> list)
     {
-        if (list.Count == 0) throw new System.Exception("you are trying to get a random element from an empty list");
+        if (list.Count == 0)
+            throw new System.Exception("you are trying to get a random element from an empty list");
 
         var randIndex = Random.Range(0, list.Count);
         return list[randIndex];
     }
+
     public static void AddMultiple<T>(this List<T> list, params T[] args)
     {
         list.AddRange(args);
@@ -39,6 +45,7 @@ public static class Extensions
         onComplete(handle.Result);
         Addressables.Release(handle);
     }
+
     public static Vector3 SetY(this Vector3 vector3, float y)
     {
         return new Vector3(vector3.x, y, vector3.z);
@@ -53,7 +60,25 @@ public static class Extensions
             object value = descriptor.GetValue(obj);
             res.Append(name + " <> " + value);
         }
+
         return res.ToString();
     }
 
+    public static Type[] GetParameterTypes(this MethodInfo methodInfo)
+    {
+        var info = methodInfo.GetParameters();
+        var types = new Type[info.Length];
+        for (var i = 0; i < types.Length; i++)
+        {
+            types[i] = info[i].ParameterType;
+        }
+
+        return types;
+    }
+
+    public static async UniTask InvokeAsync(this MethodInfo method, object obj,
+        params object[] parameters)
+    {
+        await (UniTask) method.Invoke(obj, parameters);
+    }
 }

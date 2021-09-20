@@ -11,9 +11,6 @@ public class SignInPanel : MonoBehaviour
 {
     private static SignInPanel i;
 
-    [SerializeField] private ChoiceButton langChoice;
-    [SerializeField] private TMP_Text langText;
-
     public static void Create()
     {
         UniTask.Create(async () =>
@@ -23,24 +20,23 @@ public class SignInPanel : MonoBehaviour
         });
     }
 
-    private void Awake()
-    {
-        langChoice.ChoiceChanged += c => langText.text = c == 0 ? "عربي" : "Enlgish";
-
-        var lang = PlayerPrefs.GetInt("lang");
-        langChoice.SetChoice(lang);
-    }
-
     private void Start()
     {
         HMSAccountManager.Instance.OnSignInSuccess = OnLoginSuccess;
         HMSAccountManager.Instance.OnSignInFailed = OnLoginFailure;
     }
 
+    public void HuaweiSignIn()
+    {
+        BlockingPanel.Show("getting huawei info")
+            .Forget(e => throw e);
+
+        HMSAccountManager.Instance.SignIn();
+    }
+
     private void OnLoginFailure(HMSException exc)
     {
-        Debug.Log("failed huawei login with exception: " + exc);
-        BlockingPanel.Hide("getting huawei info");
+        BlockingPanel.Done("failed huawei login with exception: " + exc);
     }
 
     private void OnLoginSuccess(AuthAccount authAccount)
@@ -48,23 +44,8 @@ public class SignInPanel : MonoBehaviour
         Controller.I.ConnectToServer(huaweiAuthCode: authAccount.AuthorizationCode);
     }
 
-    public void HuaweiSignIn()
-    {
-        PlayerPrefs.SetInt("lang", langChoice.CurrentChoice);
-        PlayerPrefs.Save();
-
-        Translatable.CurrentLanguage = (Language)langChoice.CurrentChoice;
-
-        BlockingPanel.Show("getting huawei info")
-            .Forget(e => throw e);
-
-        HMSAccountManager.Instance.SilentSignIn();
-    }
-
-
     public static void Destroy()
     {
-        if (i)
-            Destroy(i.gameObject);
+        if (i) Destroy(i.gameObject);
     }
 }

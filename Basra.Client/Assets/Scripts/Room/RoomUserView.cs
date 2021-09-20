@@ -23,8 +23,8 @@ public class RoomUserView : MinUserView
 
     public void SetTurnFill(float progress)
     {
-        turnFillImage.fillAmount = 1f - progress;
-        turnFillImage.color = Color.Lerp(TurnFillStartColor, TurnFillEndColor, progress);
+        turnFillImage.fillAmount = progress;
+        turnFillImage.color = Color.Lerp(TurnFillEndColor, TurnFillStartColor, progress);
     }
 
     public override void ShowFullInfo()
@@ -41,6 +41,7 @@ public class RoomUserView : MinUserView
     public class Manager
     {
         public static Manager I;
+
         public Manager()
         {
             I = this;

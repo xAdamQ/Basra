@@ -6,6 +6,8 @@ using BestHTTP.SignalRCore.Messages;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Web;
 using HmsPlugin;
 using HuaweiMobileServices.Id;
@@ -17,7 +19,8 @@ using UnityEngine.SceneManagement;
 
 public interface IController
 {
-    void InitGame(PersonalFullUserInfo myFullUserInfo, ActiveRoomState activeRoomState);
+    void InitGame(PersonalFullUserInfo myFullUserInfo, ActiveRoomState activeRoomState,
+        int messageIndex);
 
     //they are unitasks because they are rpcs
     UniTask<FullUserInfo> GetPublicFullUserInfo(string userId);
@@ -32,21 +35,24 @@ public interface IController
     UniTask Surrender();
 
     void TstStartClient(string id);
+    //
+    // void AssignRpc(Action action, string moduleGroupName);
+    // void AssignRpc<T1>(Action<T1> action, string moduleGroupName);
+    // void AssignRpc<T1, T2>(Action<T1, T2> action, string moduleGroupName);
+    // void AssignRpc<T1, T2, T3>(Action<T1, T2, T3> action, string moduleGroupName);
+    // void AssignRpc<T1, T2, T3, T4>(Action<T1, T2, T3, T4> action, string moduleGroupName);
 
-    void AssignRpc(Action action, string moduleGroupName);
-    void AssignRpc<T1>(Action<T1> action, string moduleGroupName);
-    void AssignRpc<T1, T2>(Action<T1, T2> action, string moduleGroupName);
-    void AssignRpc<T1, T2, T3>(Action<T1, T2, T3> action, string moduleGroupName);
-    void AssignRpc<T1, T2, T3, T4>(Action<T1, T2, T3, T4> action, string moduleGroupName);
+    // void RemoveModuleRpcs(string moduleName);
 
-    void RemoveModuleRpcs(string moduleName);
     UniTask<MinUserInfo> TestWaitWithReturn();
     UniTask<T> InvokeAsync<T>(string method, params object[] args);
     UniTask<T> InvokeAsync<T>(string method);
     void Send(string method, params object[] args);
-    event Action OnAppPause;
+
     void ConnectToServer(string fbigToken = null, string huaweiAuthCode = null,
         string name = null, string pictureUrl = null, bool demo = false);
+
+    void AddRpcContainer(object container);
 }
 
 public class ProjectReferences
@@ -61,6 +67,7 @@ public class ProjectReferences
     public Transform Canvas;
 }
 
+[Rpc]
 public class Controller : MonoBehaviour, IController
 {
     public static IController I { get; set; }
@@ -69,47 +76,52 @@ public class Controller : MonoBehaviour, IController
     {
         I = this;
         HTTPManager.Logger = new MyBestHttpLogger();
+
+        AddRpcContainer(this);
+
+        FetchRpcInfos();
     }
 
-    [ContextMenu("pause")]
-    public void pauseTest()
-    {
-        OnApplicationPause(true);
-    }
-    [ContextMenu("resume")]
-    public void resumeTest()
-    {
-        OnApplicationPause(false);
-    }
+    // [ContextMenu("pause")]
+    // public void pauseTest()
+    // {
+    //     OnApplicationPause(true);
+    // }
+    //
+    // [ContextMenu("resume")]
+    // public void resumeTest()
+    // {
+    //     OnApplicationPause(false);
+    // }
 
-    private void OnApplicationPause(bool pauseStatus)
-    {
-        Debug.Log("app pause: " + pauseStatus);
-
-        if (pauseStatus) //paused
-        {
-            // UniTask.Create(async () =>
-            // {
-            //     await SceneManager.UnloadSceneAsync(0);
-            // });
-
-            // OnAppPause?.Invoke(); //module groups register themselves to die here
-            // hubConnection.CloseAsync();
-            // hubConnection?.StartClose();
-        }
-        else //returned
-        {
-            if (RoomController.I == null) return;
-            //you restart on the room only
-
-            // if (HMSAccountManager.Instance.SigningIn)
-            // return;
-
-            RestartGame();
-        }
-    }
-
-    public event Action OnAppPause;
+    // private void OnApplicationPause(bool pauseStatus)
+    // {
+    //     Debug.Log("app pause: " + pauseStatus);
+    //
+    //     if (pauseStatus) //paused
+    //     {
+    //         // UniTask.Create(async () =>
+    //         // {
+    //         //     await SceneManager.UnloadSceneAsync(0);
+    //         // });
+    //
+    //         // OnAppPause?.Invoke(); //module groups register themselves to die here
+    //         // hubConnection.CloseAsync();
+    //         // hubConnection?.StartClose();
+    //     }
+    //     else //returned
+    //     {
+    //         if (RoomController.I == null) return;
+    //         //you restart on the room only
+    //
+    //         // if (HMSAccountManager.Instance.SigningIn)
+    //         // return;
+    //
+    // RestartGame();
+    //     }
+    // }
+    //
+    // public event Action OnAppPause;
 
     [SerializeField] private GameObject AdPlaceholder;
 
@@ -158,7 +170,7 @@ public class Controller : MonoBehaviour, IController
 #endif
     }
 
-
+    [Rpc]
     public void LevelUp(int newLevel, int moneyReward)
     {
         LevelUpPanel.Create(newLevel, moneyReward).Forget();
@@ -179,6 +191,7 @@ public class Controller : MonoBehaviour, IController
         new BlockingOperationManager();
         await Background.Create();
         await Toast.Create();
+        LangSelector.Create();
     }
 
     public void TstStartClient(string id)
@@ -186,13 +199,17 @@ public class Controller : MonoBehaviour, IController
         ConnectToServer(fbigToken: id, name: "guest", demo: true);
     }
 
-    public void InitGame(PersonalFullUserInfo myFullUserInfo, ActiveRoomState activeRoomState)
+    [Rpc]
+    public void InitGame(PersonalFullUserInfo myFullUserInfo, ActiveRoomState activeRoomState,
+        int messageIndex)
     {
         Debug.Log("InitGame is being called");
 
         Repository.I.PersonalFullInfo = myFullUserInfo;
 
         Repository.I.PersonalFullInfo.DecreaseMoneyAimTimeLeft().Forget();
+
+        this.messageIndex = messageIndex;
 
         LoadAppropriateModules(activeRoomState);
     }
@@ -215,76 +232,11 @@ public class Controller : MonoBehaviour, IController
     {
         Controller.I.SendAsync("ToggleFollow", targetId);
     }
+
     public async UniTask<bool> IsFollowing(string targetId)
     {
         return await Controller.I.InvokeAsync<bool>("IsFollowing", targetId);
     }
-
-    #region rpc works
-
-    private void AssignGeneralRpcs()
-    {
-        hubConnection.On<PersonalFullUserInfo, ActiveRoomState>(nameof(InitGame), InitGame);
-        hubConnection.On<int, int>(nameof(LevelUp), LevelUp);
-    }
-
-    private Dictionary<string, List<string>> RpcsNames = new Dictionary<string, List<string>>();
-
-    private void SaveRpcName(string actionName, string moduleName)
-    {
-        if (RpcsNames.ContainsKey(moduleName))
-            RpcsNames[moduleName].Add(actionName);
-        else
-            RpcsNames.Add(moduleName, new List<string> { actionName });
-    }
-
-    public void AssignRpc(Action action, string moduleGroupName)
-    {
-        var actionName = action.Method.Name;
-
-        hubConnection.On(actionName, action);
-
-        SaveRpcName(actionName, moduleGroupName);
-    }
-    public void AssignRpc<T1>(Action<T1> action, string moduleGroupName)
-    {
-        var actionName = action.Method.Name;
-
-        hubConnection.On(actionName, action);
-
-        SaveRpcName(actionName, moduleGroupName);
-    }
-    public void AssignRpc<T1, T2>(Action<T1, T2> action, string moduleGroupName)
-    {
-        var actionName = action.Method.Name;
-
-        hubConnection.On(actionName, action);
-
-        SaveRpcName(actionName, moduleGroupName);
-    }
-    public void AssignRpc<T1, T2, T3>(Action<T1, T2, T3> action, string moduleGroupName)
-    {
-        var actionName = action.Method.Name;
-
-        hubConnection.On(actionName, action);
-
-        SaveRpcName(actionName, moduleGroupName);
-    }
-    public void AssignRpc<T1, T2, T3, T4>(Action<T1, T2, T3, T4> action, string moduleGroupName)
-    {
-        var actionName = action.Method.Name;
-
-        hubConnection.On(actionName, action);
-
-        SaveRpcName(actionName, moduleGroupName);
-    }
-
-    public void RemoveModuleRpcs(string moduleName)
-    {
-        RpcsNames[moduleName].ForEach(_ => hubConnection.Remove(_));
-    }
-
-    #endregion
 
     #region hub
 
@@ -338,7 +290,7 @@ public class Controller : MonoBehaviour, IController
             ReconnectPolicy = myReconnectPolicy,
         };
 
-        AssignGeneralRpcs();
+        // AssignGeneralRpcs();
 
         //I don't have this term "authentication" despite I make token authentication
         // HubConnection.AuthenticationProvider = new DefaultAccessTokenAuthenticator(HubConnection);
@@ -352,14 +304,20 @@ public class Controller : MonoBehaviour, IController
         BlockingOperationManager.I.Forget(hubConnection.ConnectAsync().AsUniTask());
     }
 
-
     private bool OnMessage(HubConnection arg1, Message msg)
     {
+        if (msg.type == MessageTypes.Invocation)
+        {
 #if !UNITY_WEBGL
-        Debug.Log($"msg is {JsonConvert.SerializeObject(msg, Formatting.Indented)}");
+            Debug.Log(
+                $"msg is {msg.target} {JsonConvert.SerializeObject(msg, Formatting.Indented)}");
 #else
         Debug.Log($"msg is {JsonUtility.ToJson(msg)}");
 #endif
+            HandleInvocationMessage(msg).Forget();
+            return false;
+        }
+
         return true;
     }
 
@@ -369,28 +327,32 @@ public class Controller : MonoBehaviour, IController
 
         SignInPanel.Destroy();
 
+        LangSelector.DestroyModule();
+
         Destroy(FindObjectOfType<TestClientStart>()?.gameObject);
     }
+
     private void OnClosed(HubConnection obj)
     {
         //don't restart game here because this is called only when the connection
         //is gracefully closed
         Debug.Log("OnClosed");
     }
+
     private void OnError(HubConnection arg1, string arg2)
     {
         RestartGame();
         Debug.Log($"OnError: {arg2}");
     }
+
     private void OnReconnecting(HubConnection arg1, string arg2)
     {
         Debug.Log("reconnecting");
     }
 
-    private void RestartGame()
+    [ContextMenu("restart")]
+    public void RestartGame()
     {
-        Debug.Log("restarting game");
-
         UniTask.Create(async () =>
         {
             try
@@ -402,7 +364,7 @@ public class Controller : MonoBehaviour, IController
                 Debug.Log(e);
             }
 
-            SceneManager.LoadSceneAsync(0);
+            await SceneManager.LoadSceneAsync(0);
         }).Forget(e => throw e);
     }
 
@@ -414,19 +376,23 @@ public class Controller : MonoBehaviour, IController
     {
         return await hubConnection.InvokeAsync<FullUserInfo>("GetUserData", userId);
     }
+
     public async UniTask NotifyTurnMiss()
     {
         await hubConnection.SendAsync("MissTurn");
     }
+
     public void ThrowCard(int cardId)
     {
         hubConnection.Send("Throw", cardId).OnError(e => throw e);
     }
+
     public async UniTask SelectItem(ItemType itemType, int id)
     {
         await hubConnection.SendAsync(
             itemType == ItemType.Cardback ? "SelectCardback" : "SelectBackground", id);
     }
+
     public async UniTask BuyItem(ItemType itemType, int id)
     {
         await hubConnection.SendAsync(
@@ -437,6 +403,7 @@ public class Controller : MonoBehaviour, IController
     {
         await hubConnection.SendAsync("RequestRandomRoom", betChoice, capacityChoice);
     }
+
     public async UniTask Surrender()
     {
         await hubConnection.SendAsync("Surrender");
@@ -444,11 +411,84 @@ public class Controller : MonoBehaviour, IController
 
     #endregion
 
+    private readonly List<(MethodInfo info, Type[] types)> rpcInfos =
+        new List<(MethodInfo, Type[])>();
+
+    private void FetchRpcInfos()
+    {
+        //you need instance of each object of the fun when server calls
+        //get the type of each one and pass the right object
+
+        var namespaceTypes = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(a => a.GetTypes())
+            .Where(t => t.IsClass && t.GetCustomAttribute<RpcAttribute>() != null);
+
+        foreach (var type in namespaceTypes)
+        {
+            rpcInfos.AddRange(type.GetMethods()
+                .Where(m => m.GetCustomAttribute<RpcAttribute>() != null)
+                .Select(m => (m, m.GetParameterTypes())));
+        }
+    }
+
+    private readonly Dictionary<Type, object> rpcContainers = new Dictionary<Type, object>();
+
+    public void AddRpcContainer(object container)
+    {
+        var t = container.GetType();
+
+        if (rpcContainers.ContainsKey(t))
+            rpcContainers[t] = container;
+        else
+            rpcContainers.Add(t, container);
+    }
+
+    private readonly List<Message> pendingInvocations = new List<Message>();
+
+    private int messageIndex;
+
+    private bool rpcCalling;
+
+    private async UniTaskVoid HandleInvocationMessage(Message message)
+    {
+        if (message.target != nameof(InitGame)
+            && (int) message.arguments[0] != messageIndex)
+        {
+            pendingInvocations.Add(message);
+            return;
+        }
+
+        await UniTask.WaitUntil(() => !rpcCalling);
+
+        rpcCalling = true;
+
+        var method = rpcInfos.Find(m => m.info.Name == message.target);
+
+        var realArgs = hubConnection.Protocol.GetRealArguments(method.types,
+            message.arguments.Skip(1).ToArray());
+
+        var container = rpcContainers[method.info.DeclaringType!];
+
+        if (method.info.ReturnType == typeof(UniTask))
+            await method.info.InvokeAsync(container, realArgs);
+        else
+            method.info.Invoke(container, realArgs);
+
+        messageIndex++;
+
+        rpcCalling = false;
+
+        if (pendingInvocations.Any(m => (int) m.arguments[0] == messageIndex))
+            HandleInvocationMessage(pendingInvocations
+                    .First(m => (int) m.arguments[0] == messageIndex))
+                .Forget();
+    }
 
     public async UniTask<object> SendAsync(string method, params object[] args)
     {
         return await hubConnection.SendAsync(method, args);
     }
+
     public void Send(string method, params object[] args)
     {
         hubConnection.Send(method, args);
@@ -458,6 +498,7 @@ public class Controller : MonoBehaviour, IController
     {
         return await hubConnection.InvokeAsync<T>(method, args);
     }
+
     public async UniTask<T> InvokeAsync<T>(string method)
     {
         return await hubConnection.InvokeAsync<T>(method);

@@ -3,6 +3,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using System.Linq;
 using Basra.Common;
+using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Engines;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
@@ -21,6 +22,11 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
     private static AudioClip throwClip, turnClip;
     private static bool InitOnce; //be aware this is once in the whole game, even after scene reload
+
+    /// <summary>
+    /// identifier for the turn in the game
+    /// </summary>
+    protected int turnId;
 
     public static int ConvertTurnToPlace(int turn, int myTurn)
     {
@@ -67,7 +73,7 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
     {
         Turn = turn;
 
-        await Extensions.LoadAndReleaseAsset<Sprite>(((CardbackType)selectedBackIndex).ToString(),
+        await Extensions.LoadAndReleaseAsset<Sprite>(((CardbackType) selectedBackIndex).ToString(),
             sprite => BackSprite = sprite);
     }
 
@@ -101,20 +107,19 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
         await Ground.I.EatLast(HandCenter, sequence);
     }
 
-    protected void ThrowBase(ThrowResult result, Sequence animSeq = null, Vector2? meetPoint = null)
+    protected void ThrowBase(ThrowResult result, Sequence animSeq = null,
+        Vector2? meetPoint = null)
     {
-        AudioManager.I.Play(throwClip);
+        AudioManager.I.PlayIfSilent(throwClip);
         animSeq ??= DOTween.Sequence();
 
         var card = HandCards.First(c => c.Front != null && c.Front.Index == result.ThrownCard);
 
         Ground.I.Throw(card, result.EatenCardsIds, animSeq, meetPoint);
-
         var count = result.EatenCardsIds?.Count ?? 0;
 
         HandCards.Remove(card);
         OrganizeHand();
-
         CoreGameplay.I.NextTurn();
     }
 
@@ -134,14 +139,14 @@ public abstract class PlayerBase : MonoBehaviour, IPlayerBase
 
     public virtual void StartTurn()
     {
-        // AudioManager.I.PlayIfSilent(turnClip);
-
-        turnTimer.Play();
+        turnTimer.Play(turnId);
     }
+
     public virtual void EndTurn()
     {
         turnTimer.Stop();
-        RoomUserView.Manager.I.RoomUserViews[Turn].SetTurnFill(1);
+        RoomUserView.Manager.I.RoomUserViews[Turn].SetTurnFill(0);
+        turnId++;
     }
 
     public static async UniTask<PlayerBase> Create(int selectedCardback, int placeIndex, int turn)

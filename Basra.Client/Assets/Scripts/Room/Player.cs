@@ -91,6 +91,7 @@ public class Player : PlayerBase, IPlayer
     {
         base.StartTurn();
 
+
         AudioManager.I.Vibrate();
 
         HandCards.ForEach(c => c.Front.GetComponent<SpriteRenderer>().color = Color.white);
@@ -101,6 +102,7 @@ public class Player : PlayerBase, IPlayer
     public override void EndTurn()
     {
         base.EndTurn();
+
         HandCards.ForEach(c =>
         {
             // c.GetComponent<SpriteRenderer>().color = Color.clear;
@@ -108,8 +110,10 @@ public class Player : PlayerBase, IPlayer
         });
     }
 
-    private void MissTurn()
+    private void MissTurn(int turnIdThen)
     {
+        if (turnId != turnIdThen) return;
+
         IsPlayable = false;
 
         Controller.I.NotifyTurnMiss().Forget(e => throw e);
@@ -125,6 +129,6 @@ public class Player : PlayerBase, IPlayer
 
         var targetPoz = PlaceCard(card, throwSeq);
 
-        ThrowBase(throwResult, throwSeq, targetPoz);
+        ThrowBase(throwResult, animSeq: throwSeq, meetPoint: targetPoz);
     }
 }

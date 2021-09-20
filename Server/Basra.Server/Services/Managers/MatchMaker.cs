@@ -144,7 +144,10 @@ namespace Basra.Server.Services
 
             activeUser.ChallengeRequestTarget = oppoId;
 
-            await _masterHub.Clients.User(oppoId).SendAsync("ChallengeRequest",
+            var oppoAU = _sessionRepo.GetActiveUser(oppoId);
+            //oppo is 100% active at this satage
+
+            await _masterHub.SendOrderedAsync(oppoAU, "ChallengeRequest",
                 Mapper.UserToMinUserInfoFunc(dUser));
 
             return MatchRequestResult.Available;
@@ -177,7 +180,8 @@ namespace Basra.Server.Services
 
             if (!response)
             {
-                await _masterHub.Clients.User(sender).SendAsync("RespondChallenge", false);
+                await _masterHub.SendOrderedAsync(_sessionRepo.GetActiveUser(sender),
+                    "RespondChallenge", false);
                 //otherwise start the room
 
                 CancelChallengeRequest(senderActiveUser);
@@ -227,16 +231,14 @@ namespace Basra.Server.Services
             var fullUsersInfos = users.Select(Mapper.UserToFullUserInfoFunc).ToList();
 
             var turnSortedUsersInfo = room.RoomActors.Join(fullUsersInfos, actor => actor.Id,
-                info => info.Id,
-                (_, info) => info).ToList();
+                info => info.Id, (_, info) => info).ToList();
 
             await _masterRepo.SaveChangesAsync();
 
-            await SendPrepareRoom(room.BetChoice, room.CapacityChoice, turnSortedUsersInfo);
+            await SendPrepareRoom(room, turnSortedUsersInfo);
         }
 
-        private async Task SendPrepareRoom(int betChoice, int capacityChoice,
-            List<FullUserInfo> turnSortedUsersInfo)
+        private async Task SendPrepareRoom(Room room, List<FullUserInfo> turnSortedUsersInfo)
         {
             var tasks = new List<Task>();
 
@@ -247,13 +249,15 @@ namespace Basra.Server.Services
                     otherUser.Friendship =
                         (int)_masterRepo.GetFriendship(userInfo.Id, otherUser.Id);
 
-                var task = _masterHub.Clients.User(turnSortedUsersInfo[i].Id)
-                    //todo -farther investigation- I use user rather than client because conn id
-                    //changes in the same room when he disconnect
-                    .SendAsync("PrepareRequestedRoomRpc", betChoice, capacityChoice,
-                        turnSortedUsersInfo, i);
 
-                tasks.Add(task);
+                if (room.RoomActors[i] is RoomUser ru)
+                {
+                    var task = _masterHub.SendOrderedAsync(ru.ActiveUser, "PrepareRequestedRoomRpc",
+                        room.BetChoice, room.CapacityChoice, turnSortedUsersInfo, i);
+                    //changes in the same room when he disconnect
+
+                    tasks.Add(task);
+                }
             }
 
             await Task.WhenAll(tasks);

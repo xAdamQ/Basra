@@ -108,9 +108,7 @@ namespace Basra.Server.Services
                 roomActor.Hand = room.Deck.CutRange(RoomActor.HandSize);
 
             foreach (var roomUser in room.RoomUsers)
-                await _masterHub.Clients.User(roomUser.Id)
-                    .SendAsync("StartRoomRpc", roomUser.Hand, roomUser.Room.GroundCards);
-            //todo check if the user disconnected this will give error or not
+                await _masterHub.SendOrderedAsync(roomUser.ActiveUser, "StartRoomRpc", roomUser.Hand, roomUser.Room.GroundCards);
         } //the cut part can be tested, but it's relatively easy
 
         private async Task Distribute(Room room)
@@ -121,7 +119,7 @@ namespace Basra.Server.Services
             var callName = room.Deck.Count > 0 ? "Distribute" : "LastDistribute";
 
             foreach (var roomUser in room.RoomUsers)
-                await _masterHub.Clients.User(roomUser.Id).SendAsync(callName, roomUser.Hand);
+                await _masterHub.SendOrderedAsync(roomUser.ActiveUser, callName, roomUser.Hand);
         } //trivial to test
 
         private async Task NextTurn(Room room)
@@ -186,6 +184,14 @@ namespace Basra.Server.Services
             };
         }
 
+        private async Task SendCurrentOppoThrow(RoomActor roomActor, ThrowResult throwResult)
+        {
+            foreach (var otherAU in roomActor.Room.RoomUsers
+                .Where(ru => ru != roomActor).Select(ru => ru.ActiveUser))
+                await _masterHub.SendOrderedAsync(otherAU, "CurrentOppoThrow", throwResult);
+
+        }
+
         public async Task UserPlayRpc(RoomUser roomUser, int cardIndexInHand)
         {
             if (roomUser.TurnId != roomUser.Room.CurrentTurn ||
@@ -202,15 +208,8 @@ namespace Basra.Server.Services
 
             var throwResult = PlayBase(roomUser, cardIndexInHand);
 
-            await Task.WhenAll(
-                _masterHub.Clients.User(roomUser.Id).SendAsync("MyThrowResult", throwResult),
-                _masterHub.Clients.Users(roomUser.Room.RoomUsers.Where(ru => ru != roomUser)
-                        .Select(ru => ru.Id))
-                    .SendAsync("CurrentOppoThrow", throwResult)
-            );
-
-            //todo possible issue: one of the clients takes the the message, the other is experiencing network issue
-            //then next turn won't be called while we are waiting for that user, and the fast user can make action and lead to exc 
+            await _masterHub.SendOrderedAsync(roomUser.ActiveUser, "MyThrowResult", throwResult);
+            await SendCurrentOppoThrow(roomUser, throwResult);
 
             _logger.LogInformation(
                 $"user has played card {cardIndexInHand} with value {throwResult.ThrownCard} userId {roomUser.Id}");
@@ -218,8 +217,8 @@ namespace Basra.Server.Services
             await NextTurn(roomUser.Room);
         }
 
-        public async Task
-            MissTurnRpc(RoomUser roomUser) //the difference is that rpc contains validation
+        public async Task MissTurnRpc(RoomUser roomUser)
+        //the difference is that rpc contains validation
         {
             if (roomUser.TurnId != roomUser.Room.CurrentTurn)
                 //this check is done by the domain, but i think it should be done like this because we already have the turn stuff here
@@ -249,18 +248,14 @@ namespace Basra.Server.Services
 
             var throwResult = PlayBase(roomUser, randomCardIndex);
 
-            var tasks = new List<Task>();
 
             if (!roomUser.ActiveUser.IsDisconnected)
-                tasks.Add(_masterHub.Clients.User(roomUser.Id)
-                    .SendAsync("ForcePlay", throwResult));
+                await _masterHub.SendOrderedAsync(roomUser.ActiveUser, "ForcePlay", throwResult);
 
             //todo then you have to do the same assertion on this!
-            tasks.Add(_masterHub.Clients
-                .Users(roomUser.Room.RoomUsers.Where(ru => ru != roomUser).Select(ru => ru.Id))
-                .SendAsync("CurrentOppoThrow", throwResult));
 
-            await Task.WhenAll(tasks);
+            await SendCurrentOppoThrow(roomUser, throwResult);
+
 
             await NextTurn(roomUser.Room);
         }
@@ -273,10 +268,7 @@ namespace Basra.Server.Services
 
             var throwResult = PlayBase(roomBot, randomCardIndex);
 
-            await _masterHub.Clients
-                .Users(roomBot.Room.RoomUsers.Select(ru =>
-                    ru.Id)) //send to all room users, no exception because you're a bot
-                .SendAsync("CurrentOppoThrow", throwResult);
+            await SendCurrentOppoThrow(roomBot, throwResult);
 
             await NextTurn(roomBot.Room);
             _logger.LogInformation($"bot {roomBot.Id} has played card {randomCardIndex}");
@@ -389,9 +381,11 @@ namespace Basra.Server.Services
             if (!EmojiIds.Contains(msgId) && !TextIds.Contains(msgId))
                 throw new BadUserInputException("message Id is not valid");
 
-            var oppoIds = roomUser.Room.RoomUsers.Where(u => u != roomUser).Select(u => u.Id);
-            await _masterHub.Clients.Users(oppoIds)
-                .SendAsync("ShowMessage", roomUser.TurnId, msgId);
+            var oppos = roomUser.Room.RoomUsers.
+                Where(u => u != roomUser).Select(u => u.ActiveUser);
+
+            foreach (var oppo in oppos)
+                await _masterHub.SendOrderedAsync(oppo, "ShowMessage", roomUser.TurnId, msgId);
         }
 
 

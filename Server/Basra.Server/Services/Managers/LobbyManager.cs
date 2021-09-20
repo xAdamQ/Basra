@@ -211,7 +211,7 @@ namespace Basra.Server.Services
 
             await _masterRepo.SaveChangesAsync();
 
-            await _masterHub.Clients.User(activeUser.Id).SendAsync("AddMoney", amount);
+            await _masterHub.SendOrderedAsync(activeUser, "AddMoney", amount);
         }
 
         public static bool VerifyIAPSign(string content, string sign, string pubKey)

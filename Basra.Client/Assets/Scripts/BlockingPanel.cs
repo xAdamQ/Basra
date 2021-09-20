@@ -46,19 +46,17 @@ public class BlockingPanel : MonoBehaviour
         i.dismissButton.gameObject.SetActive(false);
     }
 
+    public static void Done(string message)
+    {
+        i.messageText.text = message;
+        i.dismissButton.gameObject.SetActive(true);
+    }
+    
     //you shouldn't hide manually if you have cancellation action
     //cancel itself hide
-    public static void Hide(string message = null)
+    public static void Hide()
     {
-        if (string.IsNullOrEmpty(message))
-        {
-            if (i) //this line enables you to call hide aggressively
-                Destroy(i.gameObject);
-        }
-        else
-        {
-            i.messageText.text = message;
-            i.dismissButton.gameObject.SetActive(true);
-        }
+        if (i) //this line enables you to call hide aggressively
+            Destroy(i.gameObject);
     }
 }
