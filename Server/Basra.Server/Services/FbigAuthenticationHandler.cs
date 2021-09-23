@@ -117,19 +117,25 @@ namespace Basra.Server.Services
                 {
                     if (string.IsNullOrEmpty(figToken)) //hauwei
                     {
-                        var token = await GetTokenByHuaweiAuthCode(huaweiAuthCode);
+                        _logger.LogInformation("hauwei login with token: " + figToken);
 
-                        if (token == null)
-                            return AuthenticateResult.Fail(
-                                "huawei auth failed with given auth code");
+                        try
+                        {
+                            var token = await GetTokenByHuaweiAuthCode(huaweiAuthCode);
 
-                        var userData = await GetUserDatByToken(token);
+                            var userData = await GetUserDatByToken(token);
 
-                        user = await _fbigSecurityManager.SignInAsync(userData.openId,
-                            userData.name, userData.picUrl);
+                            user = await _fbigSecurityManager.SignInAsync(userData.openId,
+                                userData.name, userData.picUrl);
+                        }
+                        catch (HuaweiApiFailure exc)
+                        {
+                            return AuthenticateResult.Fail(exc.Message);
+                        }
                     }
                     else //real fig
                     {
+
                         if (!_fbigSecurityManager.ValidateToken(figToken, out var playerId))
                             return AuthenticateResult.Fail("Unauthorized");
 
@@ -193,6 +199,9 @@ namespace Basra.Server.Services
 
             dynamic obj = JObject.Parse(result);
 
+            if (obj.access_token == null)
+                throw new HuaweiApiFailure("couldn't huawei token by the given code, with response: " + result);
+
             return obj.access_token;
         }
 
@@ -214,7 +223,16 @@ namespace Basra.Server.Services
 
             dynamic obj = JObject.Parse(result);
 
+            if (obj.openID == null)
+                throw new HuaweiApiFailure("openID found null, with response: " + result);
+
             return (obj.displayName, obj.headPictureURL, obj.openID);
+        }
+
+        [System.Serializable]
+        public class HuaweiApiFailure : System.Exception
+        {
+            public HuaweiApiFailure(string message) : base(message) { }
         }
     }
 }

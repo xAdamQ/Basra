@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -14,6 +16,8 @@ public class BlockingPanel : MonoBehaviour
     [SerializeField] private Image waitImage;
 
     private static BlockingPanel i;
+
+    private static TweenerCore<Quaternion, Vector3, QuaternionOptions> animTween;
 
     public static async UniTask Show(string message = null, Action dismissButtonAction = null)
     {
@@ -37,7 +41,7 @@ public class BlockingPanel : MonoBehaviour
 
         i.messageText.text = message ?? "";
 
-        i.waitImage.transform.DORotate(Vector3.forward * 180, 2f)
+        animTween = i.waitImage.transform.DORotate(Vector3.forward * 180, 2f)
             .SetLoops(9999, LoopType.Yoyo);
     }
 
@@ -48,10 +52,11 @@ public class BlockingPanel : MonoBehaviour
 
     public static void Done(string message)
     {
+        animTween.Kill();
         i.messageText.text = message;
         i.dismissButton.gameObject.SetActive(true);
     }
-    
+
     //you shouldn't hide manually if you have cancellation action
     //cancel itself hide
     public static void Hide()

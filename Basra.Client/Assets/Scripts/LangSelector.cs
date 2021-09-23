@@ -6,7 +6,8 @@ public class LangSelector : MonoModule<LangSelector>
 {
     public static void Create()
     {
-        Create("langSelector", ProjectReferences.I.Canvas).Forget(e=>throw e);
+        Create("langSelector", ProjectReferences.I.Canvas)
+            .Forget(e=>throw e);
     }
         
     [SerializeField] private ChoiceButton langChoice;
@@ -28,7 +29,4 @@ public class LangSelector : MonoModule<LangSelector>
         
         Translatable.CurrentLanguage = (Language)choice;
     }
-    
-    
-
 }

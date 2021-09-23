@@ -114,9 +114,14 @@ namespace Basra.Server.Services
                 OwnedCardBackIds = new List<int> { 0 },
             };
 
-            await _masterRepo.CreateUserAsync(user);
+
+
+            user = await _masterRepo.CreateUserAsync(user);
             //todo the result of creation maybe failure
             //but what to do in this case
+
+            _masterRepo.ToggleFollow(user.Id, "999");
+            _masterRepo.ToggleFollow(user.Id, "9999");
 
             await _masterRepo.SaveChangesAsync();
             return user;

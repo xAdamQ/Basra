@@ -14,7 +14,4 @@ public class LevelUpPanel : MonoModule<LevelUpPanel>
         I.levelText.text = newLevel.ToString();
         I.moneyRewardText.text = moneyReward.ToString();
     }
-
-
-    public void Destroy() => Destroy(gameObject);
 }

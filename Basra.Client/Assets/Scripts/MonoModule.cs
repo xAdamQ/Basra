@@ -2,10 +2,14 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
+
 public abstract class MonoModule<T> : MonoBehaviour where T : MonoBehaviour
 {
     public static T I;
 
+    /// <summary>
+    /// Make a public static Create in the module and call this  
+    /// </summary>
     protected static async UniTask Create(string address, Transform parent)
     {
         I = (await Addressables.InstantiateAsync(address, parent)).GetComponent<T>();
@@ -18,7 +22,7 @@ public abstract class MonoModule<T> : MonoBehaviour where T : MonoBehaviour
 
     public static void DestroyModule()
     {
-        if(I) Object.Destroy(I.gameObject);
+        if (I) Destroy(I.gameObject);
         I = null;
     }
 }
