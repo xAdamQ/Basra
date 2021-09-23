@@ -36,27 +36,6 @@ namespace Basra.Server.Services
             _logger = logger;
         }
 
-
-        protected override Task HandleChallengeAsync(AuthenticationProperties properties)
-        {
-            _logger.LogInformation("handling challenge: " +
-                                   JsonConvert.SerializeObject(properties));
-            return base.HandleChallengeAsync(properties);
-        }
-
-        protected override Task HandleForbiddenAsync(AuthenticationProperties properties)
-        {
-            _logger.LogInformation("handling forbidden: " +
-                                   JsonConvert.SerializeObject(properties));
-            return base.HandleForbiddenAsync(properties);
-        }
-
-        protected override Task InitializeHandlerAsync()
-        {
-            _logger.LogInformation("init hanlder: ");
-            return base.InitializeHandlerAsync();
-        }
-
         /// <summary>
         /// gets string after 6 chars (bearer)
         /// exceptions: token header doesn't exist - does't have 6 chars (for bearer {so it can be any word with 6 char!})
@@ -117,7 +96,7 @@ namespace Basra.Server.Services
                 {
                     if (string.IsNullOrEmpty(figToken)) //hauwei
                     {
-                        _logger.LogInformation("hauwei login with token: " + figToken);
+                        _logger.LogInformation("hauwei login with token: " + huaweiAuthCode);
 
                         try
                         {
