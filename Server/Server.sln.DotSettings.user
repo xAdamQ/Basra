@@ -4,12 +4,18 @@
     &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.RoomManagerTests&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.FinalizeManagerTests.FinalizeGame_RightWinner&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.FinalizeManagerTests.CalcScore&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.ValidateFbAccToken&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.ValidateFbAccToken_ShoudUserInputFail&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.ValidateFbAccToken_ShoudMyServerFail&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.TestGetFbProfile_ShouldWork&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=524679c4_002D5386_002D449f_002D8107_002D38e1b54e3645/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Reconnect_ShouldGetRoomStates" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.RoomManagerTests.PrintCardsValuesOfIds&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.RoomManagerTests.EatTest&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.ValidateFbAccToken&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.TestGetFbProfile_ShouldWork&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Cardback/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

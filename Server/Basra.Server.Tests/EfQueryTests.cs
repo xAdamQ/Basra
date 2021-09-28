@@ -18,16 +18,16 @@ namespace Basra.Server.Tests
             _testOutputHelper = testOutputHelper;
         }
 
-        private MasterContext GetMasterContext2()
-        {
-            var options2 = new DbContextOptionsBuilder<MasterContext>().UseMySql(
-                "Server=localhost; Port=3306; Uid=root; Pwd=23437075; Database=Basra;",
-                new MySqlServerVersion(new Version(8, 0, 21)),
-                mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)
-            ).Options;
-
-            return new MasterContext(options2);
-        }
+        // private MasterContext GetMasterContext2()
+        // {
+        //     var options2 = new DbContextOptionsBuilder<MasterContext>().UseMySql(
+        //         "Server=localhost; Port=3306; Uid=root; Pwd=23437075; Database=Basra;",
+        //         new MySqlServerVersion(new Version(8, 0, 21)),
+        //         mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)
+        //     ).Options;
+        //
+        //     return new MasterContext(options2);
+        // }
 
         private MasterContext GetMasterContext()
         {

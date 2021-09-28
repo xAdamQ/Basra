@@ -1,8 +1,7 @@
-using System;
+#if HMS
 using Cysharp.Threading.Tasks;
 using HmsPlugin;
 using HuaweiMobileServices.IAP;
-using UnityEngine;
 
 public class IapShop : MonoModule<IapShop>
 {
@@ -32,3 +31,4 @@ public class IapShop : MonoModule<IapShop>
         HMSIAPManager.Instance.BuyProduct(productId);
     }
 }
+#endif

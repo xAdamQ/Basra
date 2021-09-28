@@ -1,3 +1,6 @@
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 using Basra.Common;
 using BestHTTP;
 using BestHTTP.SignalRCore;
@@ -9,13 +12,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using Facebook.Unity;
+#if HMS
 using HmsPlugin;
 using HuaweiMobileServices.Id;
 using HuaweiMobileServices.Utils;
+#endif
+#if UNITY_ANDROID
 using Newtonsoft.Json;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
+#endif
 
 public interface IController
 {
@@ -32,25 +37,15 @@ public interface IController
     UniTask BuyItem(ItemType itemType, int id);
 
     UniTask RequestRandomRoom(int betChoice, int capacityChoice);
-    UniTask Surrender();
 
     void TstStartClient(string id);
-    //
-    // void AssignRpc(Action action, string moduleGroupName);
-    // void AssignRpc<T1>(Action<T1> action, string moduleGroupName);
-    // void AssignRpc<T1, T2>(Action<T1, T2> action, string moduleGroupName);
-    // void AssignRpc<T1, T2, T3>(Action<T1, T2, T3> action, string moduleGroupName);
-    // void AssignRpc<T1, T2, T3, T4>(Action<T1, T2, T3, T4> action, string moduleGroupName);
 
-    // void RemoveModuleRpcs(string moduleName);
-
-    UniTask<MinUserInfo> TestWaitWithReturn();
     UniTask<T> InvokeAsync<T>(string method, params object[] args);
-    UniTask<T> InvokeAsync<T>(string method);
     void Send(string method, params object[] args);
 
     void ConnectToServer(string fbigToken = null, string huaweiAuthCode = null,
-        string name = null, string pictureUrl = null, bool demo = false);
+        string facebookAccToken = null, string name = null,
+        string pictureUrl = null, bool demo = false);
 
     void AddRpcContainer(object container);
 }
@@ -82,62 +77,25 @@ public class Controller : MonoBehaviour, IController
         FetchRpcInfos();
     }
 
-    // [ContextMenu("pause")]
-    // public void pauseTest()
-    // {
-    //     OnApplicationPause(true);
-    // }
-    //
-    // [ContextMenu("resume")]
-    // public void resumeTest()
-    // {
-    //     OnApplicationPause(false);
-    // }
-
-    // private void OnApplicationPause(bool pauseStatus)
-    // {
-    //     Debug.Log("app pause: " + pauseStatus);
-    //
-    //     if (pauseStatus) //paused
-    //     {
-    //         // UniTask.Create(async () =>
-    //         // {
-    //         //     await SceneManager.UnloadSceneAsync(0);
-    //         // });
-    //
-    //         // OnAppPause?.Invoke(); //module groups register themselves to die here
-    //         // hubConnection.CloseAsync();
-    //         // hubConnection?.StartClose();
-    //     }
-    //     else //returned
-    //     {
-    //         if (RoomController.I == null) return;
-    //         //you restart on the room only
-    //
-    //         // if (HMSAccountManager.Instance.SigningIn)
-    //         // return;
-    //
-    // RestartGame();
-    //     }
-    // }
-    //
-    // public event Action OnAppPause;
-
-    [SerializeField] private GameObject AdPlaceholder;
+    [SerializeField] private GameObject adPlaceholder;
 
     public async UniTaskVoid Start()
     {
         await InitModules();
+#if GMS
+        FB.Init(OnInitComplete);
+#endif
 
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if HMS && !UNITY_EDITOR
         AdPlaceholder.SetActive(!HMSAdsKitManager.Instance.IsBannerAdLoaded);
         HMSAdsKitManager.Instance.OnBannerLoadEvent += () => AdPlaceholder.SetActive(false);
-
-        SignInPanel.Create();
+        SignInPanel.Create().Forget();
+        LangSelector.Create();
 #endif
 
 #if UNITY_EDITOR
-        TestClientStart.Create();
+        // TestClientStart.Create();
+        // LangSelector.Create();
 #endif
 
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -145,6 +103,7 @@ public class Controller : MonoBehaviour, IController
         {
             Debug.Log("seems like you're in the demo not fig");
             TestClientStart.Create();
+            LangSelector.Create();
             return;
         }
 
@@ -170,14 +129,19 @@ public class Controller : MonoBehaviour, IController
 #endif
     }
 
-    [Rpc]
-    public void LevelUp(int newLevel, int moneyReward)
+#if GMS
+    private void OnInitComplete()
     {
-        LevelUpPanel.Create(newLevel, moneyReward).Forget();
-        // Repository.I.PersonalFullInfo.Money += moneyReward;
-        //both are added because the whole personal info object is updated 
-    }
+        Debug.Log(
+            $"OnInitCompleteCalled IsLoggedIn={FB.IsLoggedIn} IsInitialized={FB.IsInitialized}" +
+            $" and the AccessToken.CurrentAccessToken is {AccessToken.CurrentAccessToken}");
 
+        if (FB.IsLoggedIn)
+            ConnectToServer(facebookAccToken: AccessToken.CurrentAccessToken.TokenString);
+        else
+            SignInPanel.Create().Forget();
+    }
+#endif
 
     private async UniTask InitModules()
     {
@@ -191,7 +155,6 @@ public class Controller : MonoBehaviour, IController
         new BlockingOperationManager();
         await Background.Create();
         await Toast.Create();
-        LangSelector.Create();
     }
 
     public void TstStartClient(string id)
@@ -235,27 +198,31 @@ public class Controller : MonoBehaviour, IController
 
     public async UniTask<bool> IsFollowing(string targetId)
     {
-        return await Controller.I.InvokeAsync<bool>("IsFollowing", targetId);
+        return await InvokeAsync<bool>("IsFollowing", targetId);
     }
 
     #region hub
 
     private HubConnection hubConnection;
 
-    [SerializeField] private int selctedAddress;
+    [SerializeField] private int selectedAddress;
     [SerializeField] private string[] addresses;
-    private string address => addresses[selctedAddress] + "/connect";
+    private string address => addresses[selectedAddress] + "/connect";
 
     private readonly IProtocol protocol = new JsonProtocol(new LitJsonEncoder());
     private readonly MyReconnectPolicy myReconnectPolicy = new MyReconnectPolicy();
 
-    //I use event funtions because awaiting returns hubconn and this is useless
+    //I use event functions because awaiting returns hubconn and this is useless
     public void ConnectToServer(string fbigToken = null, string huaweiAuthCode = null,
-        string name = null, string pictureUrl = null, bool demo = false)
+        string facebookAccToken = null, string name = null, string pictureUrl = null,
+        bool demo = false)
     {
-        Debug.Log("connecting with token " + fbigToken);
+        Debug.Log("connecting to server");
 
         var query = HttpUtility.ParseQueryString(string.Empty);
+
+        if (facebookAccToken != null)
+            query["fb_access_token"] = facebookAccToken;
 
         if (fbigToken != null)
             query["access_token"] = fbigToken;
@@ -312,7 +279,7 @@ public class Controller : MonoBehaviour, IController
             Debug.Log(
                 $"msg is {msg.target} {JsonConvert.SerializeObject(msg, Formatting.Indented)}");
 #else
-        Debug.Log($"msg is {JsonUtility.ToJson(msg)}");
+            Debug.Log($"msg is {JsonUtility.ToJson(msg)}");
 #endif
             HandleInvocationMessage(msg).Forget();
             return false;
@@ -325,7 +292,7 @@ public class Controller : MonoBehaviour, IController
     {
         Debug.Log("connected to server");
 
-        SignInPanel.Destroy();
+        SignInPanel.DestroyModule();
 
         LangSelector.DestroyModule();
 
@@ -404,15 +371,28 @@ public class Controller : MonoBehaviour, IController
         await hubConnection.SendAsync("RequestRandomRoom", betChoice, capacityChoice);
     }
 
-    public async UniTask Surrender()
+
+    public async UniTask<object> SendAsync(string method, params object[] args)
     {
-        await hubConnection.SendAsync("Surrender");
+        return await hubConnection.SendAsync(method, args);
+    }
+
+    public void Send(string method, params object[] args)
+    {
+        hubConnection.Send(method, args);
+    }
+
+    public async UniTask<T> InvokeAsync<T>(string method, params object[] args)
+    {
+        return await hubConnection.InvokeAsync<T>(method, args);
     }
 
     #endregion
 
-    private readonly List<(MethodInfo info, Type[] types)> rpcInfos =
-        new List<(MethodInfo, Type[])>();
+    #region rpc with reflections
+
+    private readonly Dictionary<string, (MethodInfo info, Type[] types)> rpcInfos =
+        new Dictionary<string, (MethodInfo info, Type[] types)>();
 
     private void FetchRpcInfos()
     {
@@ -425,9 +405,12 @@ public class Controller : MonoBehaviour, IController
 
         foreach (var type in namespaceTypes)
         {
-            rpcInfos.AddRange(type.GetMethods()
-                .Where(m => m.GetCustomAttribute<RpcAttribute>() != null)
-                .Select(m => (m, m.GetParameterTypes())));
+            foreach (var method in type.GetMethods())
+            {
+                var attr = method.GetCustomAttribute<RpcAttribute>();
+                if (attr == null) continue;
+                rpcInfos.Add(attr.RpcName ?? method.Name, (method, method.GetParameterTypes()));
+            }
         }
     }
 
@@ -462,12 +445,12 @@ public class Controller : MonoBehaviour, IController
 
         rpcCalling = true;
 
-        var method = rpcInfos.Find(m => m.info.Name == message.target);
+        var method = rpcInfos[message.target];
 
         var realArgs = hubConnection.Protocol.GetRealArguments(method.types,
             message.arguments.Skip(1).ToArray());
 
-        var container = rpcContainers[method.info.DeclaringType!];
+        var container = method.info.IsStatic ? null : rpcContainers[method.info.DeclaringType!];
 
         if (method.info.ReturnType == typeof(UniTask))
             await method.info.InvokeAsync(container, realArgs);
@@ -484,28 +467,5 @@ public class Controller : MonoBehaviour, IController
                 .Forget();
     }
 
-    public async UniTask<object> SendAsync(string method, params object[] args)
-    {
-        return await hubConnection.SendAsync(method, args);
-    }
-
-    public void Send(string method, params object[] args)
-    {
-        hubConnection.Send(method, args);
-    }
-
-    public async UniTask<T> InvokeAsync<T>(string method, params object[] args)
-    {
-        return await hubConnection.InvokeAsync<T>(method, args);
-    }
-
-    public async UniTask<T> InvokeAsync<T>(string method)
-    {
-        return await hubConnection.InvokeAsync<T>(method);
-    }
-
-    public async UniTask<MinUserInfo> TestWaitWithReturn()
-    {
-        return await hubConnection.InvokeAsync<MinUserInfo>("TestReturnObject");
-    }
+    #endregion
 }

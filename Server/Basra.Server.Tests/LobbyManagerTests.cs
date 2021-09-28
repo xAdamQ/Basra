@@ -10,6 +10,7 @@ using Hangfire;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Text.Json;
+using Microsoft.AspNetCore.SignalR;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -18,7 +19,8 @@ namespace Basra.Server.Tests
     public class LobbyManagerTests
     {
         //create editable instance int terms of mocking
-        private LobbyManager GetMockedLobby(Mock<ISessionRepo> sessionRepo = null, Mock<IMasterRepo> masterRepo = null,
+        private LobbyManager GetMockedLobby(Mock<ISessionRepo> sessionRepo = null,
+            Mock<IMasterRepo> masterRepo = null,
             Mock<IRequestCache> requestCache = null)
         {
             sessionRepo ??= new Mock<ISessionRepo>();
@@ -29,10 +31,12 @@ namespace Basra.Server.Tests
             sessionRepo.SetReturnsDefault(new Room(0, 0));
             sessionRepo.SetReturnsDefault(new RoomUser());
 
-            return new LobbyManager(masterRepo.Object, new Mock<IBackgroundJobClient>().Object);
+            return new LobbyManager(masterRepo.Object, new Mock<IBackgroundJobClient>().Object,
+                new Mock<IHubContext<MasterHub>>().Object);
         }
 
         private readonly ITestOutputHelper _testOutputHelper;
+
         public LobbyManagerTests(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
@@ -147,6 +151,7 @@ namespace Basra.Server.Tests
             //watchout!! changed
             // await Assert.ThrowsAsync<BadUserInputException>(() => lobbyManager.BuyCardBack(0));
         }
+
         [Fact]
         public void BuyCardback_ShouldFailAlreadyBought()
         {
@@ -155,7 +160,7 @@ namespace Basra.Server.Tests
             {
                 Id = "tstId",
                 Money = 999999,
-                OwnedCardBackIds = new List<int>() { 0, 1, 2 }
+                OwnedCardBackIds = new List<int>() {0, 1, 2}
             }));
 
             var lobbyManager = GetMockedLobby(requestCache: requestCacheMock);
@@ -163,6 +168,7 @@ namespace Basra.Server.Tests
             //watchout!! changed
             // await Assert.ThrowsAsync<BadUserInputException>(() => lobbyManager.BuyCardBack(1));
         }
+
         [Fact]
         public void BuyCardback_ShouldSucceedAndTakeMoney()
         {
@@ -171,7 +177,7 @@ namespace Basra.Server.Tests
             {
                 Id = "tstId",
                 Money = 250,
-                OwnedCardBackIds = new List<int>() { 0, 2 }
+                OwnedCardBackIds = new List<int>() {0, 2}
             };
             requestCacheMock.Setup(m => m.GetUser()).Returns(Task.FromResult(user));
 
@@ -182,7 +188,7 @@ namespace Basra.Server.Tests
 
             _testOutputHelper.WriteLine(JsonSerializer.Serialize(user));
             Assert.Equal(185, user.Money);
-            Assert.Equal(new List<int> { 0, 2, 1 }, user.OwnedCardBackIds);
+            Assert.Equal(new List<int> {0, 2, 1}, user.OwnedCardBackIds);
         }
 
         [Fact]

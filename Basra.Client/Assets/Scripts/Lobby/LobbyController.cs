@@ -8,7 +8,8 @@ public interface ILobbyController
 {
     void PrepareRequestedRoomRpc(int betChoice, int capacityChoice, List<FullUserInfo> userInfos,
         int myTurn);
-    event System.Action Destroyed;
+
+    event Action Destroyed;
 }
 
 public class LobbyReferences
@@ -61,27 +62,12 @@ public class LobbyController : ILobbyController
 
         await Shop.Create(LobbyReferences.I.Canvas, ItemType.Background);
 
+#if HMS
         IapShop.Create();
+#endif
 
         Background.I.SetForLobby();
-
-        // AssignRpcs();
     }
-
-    // private void AssignRpcs()
-    // {
-    //     Controller.I.AssignRpc<int, int, List<FullUserInfo>, int>(PrepareRequestedRoomRpc,
-    //         nameof(LobbyController));
-    //
-    //     Controller.I.AssignRpc<MinUserInfo>(ChallengeRequest,
-    //         nameof(LobbyController));
-    //
-    //     Controller.I.AssignRpc<bool>(RespondChallenge,
-    //         nameof(LobbyController));
-    //     
-    //     Controller.I.AssignRpc<int>(AddMoney,
-    //         nameof(LobbyController));
-    // }
 
     [Rpc]
     public void AddMoney(int amount)
@@ -89,6 +75,7 @@ public class LobbyController : ILobbyController
         AddMoneyPopup.Show(amount)
             .Forget(e => throw e);
     }
+
     [Rpc]
     public void PrepareRequestedRoomRpc(int betChoice, int capacityChoice,
         List<FullUserInfo> userInfos, int myTurn)
@@ -130,7 +117,6 @@ public class LobbyController : ILobbyController
 
         LobbyReferences.I = null;
 
-        // Controller.I.RemoveModuleRpcs(GetType().ToString());
         UnityEngine.Object.Destroy(GameObject.Find("Lobby"));
 
         I = null;

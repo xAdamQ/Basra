@@ -16,8 +16,26 @@ namespace Basra.Server.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Basra.Server.ExternalId", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("MainId")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExternalIds");
+                });
 
             modelBuilder.Entity("Basra.Server.User", b =>
                 {
@@ -38,12 +56,12 @@ namespace Basra.Server.Migrations
                     b.Property<int>("EatenCardsCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Email")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
                     b.Property<bool>("EnableOpenMatches")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Fbid")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
 
                     b.Property<DateTime?>("LastMoneyAimRequestTime")
                         .HasColumnType("datetime2");
@@ -114,7 +132,6 @@ namespace Basra.Server.Migrations
                             Draws = 3,
                             EatenCardsCount = 0,
                             EnableOpenMatches = false,
-                            Fbid = "0",
                             Level = 13,
                             MaxWinStreak = 0,
                             Money = 22250,
@@ -219,7 +236,6 @@ namespace Basra.Server.Migrations
                             Draws = 1,
                             EatenCardsCount = 0,
                             EnableOpenMatches = false,
-                            Fbid = "1",
                             Level = 43,
                             MaxWinStreak = 0,
                             Money = 89000,
@@ -246,7 +262,6 @@ namespace Basra.Server.Migrations
                             Draws = 37,
                             EatenCardsCount = 0,
                             EnableOpenMatches = false,
-                            Fbid = "2",
                             Level = 139,
                             MaxWinStreak = 0,
                             Money = 8500,
@@ -273,7 +288,6 @@ namespace Basra.Server.Migrations
                             Draws = 1,
                             EatenCardsCount = 0,
                             EnableOpenMatches = false,
-                            Fbid = "3",
                             Level = 4,
                             MaxWinStreak = 0,
                             Money = 3,

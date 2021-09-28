@@ -75,7 +75,7 @@ namespace Basra.Server
             //.AddUserManager<UserManager<Identity.User>>()
             //.AddEntityFrameworkStores<Identity.IdentityConetxt>();
 
-            services.AddScoped<FbigSecurityManager>();
+            services.AddScoped<SecurityManager>();
 
 
             // services.AddAuthentication(options =>
@@ -106,8 +106,8 @@ namespace Basra.Server
             //     options.DefaultScheme = FbigAuthenticationHandler.PROVIDER_NAME;
             // });
 
-            services.AddAuthentication(FbigAuthenticationHandler.PROVIDER_NAME)
-                .AddScheme<FbigAuthenticationSchemeOptions, FbigAuthenticationHandler>(FbigAuthenticationHandler.PROVIDER_NAME, null);
+            services.AddAuthentication(MasterAuthenticationHandler.PROVIDER_NAME)
+                .AddScheme<MasterAuthenticationSchemeOptions, MasterAuthenticationHandler>(MasterAuthenticationHandler.PROVIDER_NAME, null);
 
             services.AddCors();
             services.AddControllers();

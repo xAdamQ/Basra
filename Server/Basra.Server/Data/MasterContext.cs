@@ -19,6 +19,7 @@ namespace Basra.Server
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserRelation> UserRelations { get; set; }
+        public DbSet<ExternalId> ExternalIds { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -57,7 +58,7 @@ namespace Basra.Server
             SetMaxLength(modelBuilder);
 
             modelBuilder.Entity<UserRelation>()
-                .HasKey(r => new { r.FollowerId, r.FollowingId });
+                .HasKey(r => new {r.FollowerId, r.FollowingId});
 
             #region pathetic tries
 
@@ -126,6 +127,7 @@ namespace Basra.Server
 
             SeedData(modelBuilder);
         }
+
         private void SetMaxLength(ModelBuilder modelBuilder)
         {
             var stringProps = modelBuilder.Model.GetEntityTypes().SelectMany(t => t.GetProperties())
@@ -136,11 +138,12 @@ namespace Basra.Server
 
             modelBuilder.Entity<User>().Property(u => u.PictureUrl).HasMaxLength(256);
 
-            //2343 move fbigid to other table
-            modelBuilder.Entity<User>().Property(u => u.Fbid).HasMaxLength(256);
-
             modelBuilder.Entity<User>().Property(u => u.Id).HasMaxLength(64);
+
+            modelBuilder.Entity<ExternalId>().Property(id => id.Id).HasMaxLength(256);
+            modelBuilder.Entity<ExternalId>().Property(id => id.MainId).HasMaxLength(64);
         }
+
         private void IntListConversion(ModelBuilder modelBuilder)
         {
             Expression<Func<List<int>, List<int>, bool>> equalsExpression =
@@ -173,23 +176,23 @@ namespace Basra.Server
             modelBuilder.Entity<User>().Property(u => u.OwnedTitleIds)
                 .HasConversion(intListConverter, intListToStringComparer);
         }
+
         private void SeedData(ModelBuilder modelBuilder)
         {
             var user0 = new User()
             {
                 Id = "0",
-                Fbid = "0",
                 PlayedRoomsCount = 3,
                 WonRoomsCount = 4,
                 Name = "hany",
-                OwnedBackgroundIds = new List<int> { 1, 3 },
-                OwnedTitleIds = new List<int> { 2, 4 },
+                OwnedBackgroundIds = new List<int> {1, 3},
+                OwnedTitleIds = new List<int> {2, 4},
                 PictureUrl = "https://pbs.twimg.com/profile_images/592734306725933057/s4-h_LQC.jpg",
                 Draws = 3,
                 Level = 13,
                 Money = 22250,
                 XP = 806,
-                OwnedCardBackIds = new List<int>() { 0, 2 },
+                OwnedCardBackIds = new List<int>() {0, 2},
                 RequestedMoneyAidToday = 2,
                 LastMoneyAimRequestTime = null,
                 SelectedCardback = 2,
@@ -198,15 +201,14 @@ namespace Basra.Server
             var bot999 = new User()
             {
                 Id = "999",
-                Fbid = null,
                 PlayedRoomsCount = 9,
                 WonRoomsCount = 2,
                 Name = "botA",
                 PictureUrl =
                     "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
-                OwnedBackgroundIds = new List<int> { 0, 3 },
-                OwnedTitleIds = new List<int> { 1 },
-                OwnedCardBackIds = new List<int> { 8 },
+                OwnedBackgroundIds = new List<int> {0, 3},
+                OwnedTitleIds = new List<int> {1},
+                OwnedCardBackIds = new List<int> {8},
                 Draws = 2,
                 Level = 7,
                 Money = 1000,
@@ -218,14 +220,13 @@ namespace Basra.Server
             var bot9999 = new User()
             {
                 Id = "9999",
-                Fbid = null,
                 PlayedRoomsCount = 11,
                 WonRoomsCount = 3,
                 Name = "botB",
                 PictureUrl = "https://pbs.twimg.com/profile_images/592734306725933057/s4-h_LQC.jpg",
-                OwnedBackgroundIds = new List<int> { 3 },
-                OwnedTitleIds = new List<int> { 0, 1 },
-                OwnedCardBackIds = new List<int> { 0, 8 },
+                OwnedBackgroundIds = new List<int> {3},
+                OwnedTitleIds = new List<int> {0, 1},
+                OwnedCardBackIds = new List<int> {0, 8},
                 Draws = 2,
                 Level = 8,
                 Money = 1100,
@@ -237,15 +238,14 @@ namespace Basra.Server
             var bot99999 = new User()
             {
                 Id = "99999",
-                Fbid = null,
                 PlayedRoomsCount = 11,
                 WonRoomsCount = 3,
                 Name = "botC",
                 PictureUrl =
                     "https://d3g9pb5nvr3u7.cloudfront.net/authors/57ea8955d8de1e1602f67ca0/1902081322/256.jpg",
-                OwnedBackgroundIds = new List<int> { 3 },
-                OwnedTitleIds = new List<int> { 0, 1 },
-                OwnedCardBackIds = new List<int> { 0, 8 },
+                OwnedBackgroundIds = new List<int> {3},
+                OwnedTitleIds = new List<int> {0, 1},
+                OwnedCardBackIds = new List<int> {0, 8},
                 Draws = 2,
                 Level = 8,
                 XP = 44,
@@ -264,19 +264,18 @@ namespace Basra.Server
                     new()
                     {
                         Id = "1",
-                        Fbid = "1",
                         PlayedRoomsCount = 7,
                         WonRoomsCount = 11,
                         Name = "samy",
-                        OwnedBackgroundIds = new List<int> { 0, 9 },
-                        OwnedTitleIds = new List<int> { 11, 6 },
+                        OwnedBackgroundIds = new List<int> {0, 9},
+                        OwnedTitleIds = new List<int> {11, 6},
                         PictureUrl =
                             "https://d3g9pb5nvr3u7.cloudfront.net/authors/57ea8955d8de1e1602f67ca0/1902081322/256.jpg",
                         Draws = 1,
                         Level = 43,
                         Money = 89000,
                         XP = 1983,
-                        OwnedCardBackIds = new List<int>() { 0, 1, 2 },
+                        OwnedCardBackIds = new List<int>() {0, 1, 2},
                         RequestedMoneyAidToday = 0,
                         LastMoneyAimRequestTime = null,
                         SelectedCardback = 1,
@@ -284,13 +283,12 @@ namespace Basra.Server
                     new()
                     {
                         Id = "2",
-                        Fbid = "2",
                         PlayedRoomsCount = 973,
                         WonRoomsCount = 192,
                         Name = "anni",
-                        OwnedBackgroundIds = new List<int> { 10, 8 },
-                        OwnedTitleIds = new List<int> { 1, 3 },
-                        OwnedCardBackIds = new List<int> { 4, 9 },
+                        OwnedBackgroundIds = new List<int> {10, 8},
+                        OwnedTitleIds = new List<int> {1, 3},
+                        OwnedCardBackIds = new List<int> {4, 9},
                         PictureUrl =
                             "https://pbs.twimg.com/profile_images/633661532350623745/8U1sJUc8_400x400.png",
                         Draws = 37,
@@ -304,15 +302,14 @@ namespace Basra.Server
                     new()
                     {
                         Id = "3",
-                        Fbid = "3",
                         PlayedRoomsCount = 6,
                         WonRoomsCount = 2,
                         Name = "ali",
                         PictureUrl =
                             "https://pbs.twimg.com/profile_images/723902674970750978/p8JWhWxP_400x400.jpg",
-                        OwnedBackgroundIds = new List<int> { 10, 8 },
-                        OwnedTitleIds = new List<int> { 1, 3 },
-                        OwnedCardBackIds = new List<int> { 2, 4, 8 },
+                        OwnedBackgroundIds = new List<int> {10, 8},
+                        OwnedTitleIds = new List<int> {1, 3},
+                        OwnedCardBackIds = new List<int> {2, 4, 8},
                         Draws = 1,
                         Level = 4,
                         Money = 3,

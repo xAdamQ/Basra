@@ -16,7 +16,7 @@ namespace Basra.Server
         Task<string> GetNameOfUserAsync(string id);
 
         // bool GetUserActiveState(string id);
-        Task<User> GetUserByFbidAsync(string fbid);
+        Task<User> GetUserByEIdAsync(string eId, int eIdType);
 
         Task<User> GetUserByIdAsyc(string id);
 
@@ -45,6 +45,7 @@ namespace Basra.Server
         void ToggleFollow(string userId, string targetId);
         bool IsFollowing(string userId, string targetId);
         FriendShip GetFriendship(string userId, string targetId);
+        Task CreateExternalId(ExternalId externalId);
     }
 
     /// <summary>
@@ -67,6 +68,11 @@ namespace Basra.Server
 
         #region user
 
+        public async Task CreateExternalId(ExternalId externalId)
+        {
+            await _context.AddAsync(externalId);
+        }
+
         public async Task<User> CreateUserAsync(User user)
         {
             await _context.AddAsync(user);
@@ -74,9 +80,12 @@ namespace Basra.Server
             return user;
         }
 
-        public async Task<User> GetUserByFbidAsync(string fbid)
+        public async Task<User> GetUserByEIdAsync(string eId, int eIdType)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Fbid == fbid);
+            return await _context.Users.Join(
+                _context.ExternalIds.Where(id => id.Type == eIdType),
+                u => u.Id, id => id.MainId,
+                (u, _) => u).FirstOrDefaultAsync();
         }
 
         public async Task<User> GetUserByIdAsyc(string id)
@@ -97,26 +106,12 @@ namespace Basra.Server
             return await _context.Users.Where(u => u.Id == id).Select(u => u.Name).FirstAsync();
         }
 
-        //todo should test query
-        // public List<DisplayUser> GetRoomDisplayUsersAsync(Room room)
-        // {
-        //     // return _context.Entry(pendingRoom)
-        //     //     .Reference(pr => pr.Room)
-        //     //     .Query()
-        //     //     .SelectMany(c => c.RoomUsers)
-        //     //     .Select(ru => ru.User)
-        //     //     .Select(DisplayUser.Projection)
-        //     //     .ToList();
-        //
-        //     var userIds = room.RoomUsers.Select(ru => ru.UserId);
-        //     return _context.Users.Where(u => userIds.Contains(u.Id)).Select(DisplayUser.Projection).ToList();
-        // }
-
         public async Task<FullUserInfo> GetFullUserInfoAsync(string id)
         {
             return await _context.Users.Where(_ => _.Id == id)
                 .Select(Mapper.UserToFullUserInfoProjection).FirstAsync();
         }
+
         public async Task<List<FullUserInfo>> GetFullUserInfoListAsync(IEnumerable<string> ids)
         {
             return await _context.Users.Where(u => ids.Contains(u.Id)).Take(ids.Count())
@@ -131,9 +126,9 @@ namespace Basra.Server
         public void ToggleFollow(string userId, string targetId)
         {
             if (IsFollower(userId, targetId)) //unfollow
-                _context.Remove(new UserRelation { FollowerId = userId, FollowingId = targetId });
+                _context.Remove(new UserRelation {FollowerId = userId, FollowingId = targetId});
             else //follow
-                _context.Add(new UserRelation { FollowerId = userId, FollowingId = targetId });
+                _context.Add(new UserRelation {FollowerId = userId, FollowingId = targetId});
         }
 
         /// <summary>
@@ -179,6 +174,7 @@ namespace Basra.Server
 
             return await myFollowingInfo.ToListAsync();
         }
+
         public async Task<List<MinUserInfo>> GetFollowersAsync(string userId)
         {
             var relationsWhereIFolllow = _context.UserRelations.Where(u => u.FollowingId == userId);

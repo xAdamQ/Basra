@@ -10,8 +10,6 @@ namespace Basra.Server
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
-        public string Fbid { get; set; }
-
         public int PlayedRoomsCount { get; set; }
         public int WonRoomsCount { get; set; }
         public int Draws { get; set; }
@@ -22,6 +20,8 @@ namespace Basra.Server
 
         public string PictureUrl { get; set; }
 
+        public string Email { get; set; }
+
         //states
         public int EatenCardsCount { get; set; }
         public int WinStreak { get; set; }
@@ -29,7 +29,6 @@ namespace Basra.Server
         public int BasraCount { get; set; }
         public int BigBasraCount { get; set; }
         public int TotalEarnedMoney { get; set; }
-
 
         public int Level { get; set; }
         public int XP { get; set; }

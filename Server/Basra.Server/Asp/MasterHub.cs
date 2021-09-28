@@ -49,11 +49,6 @@ namespace Basra.Server
 
             if (_sessionRepo.IsUserActive(Context.UserIdentifier))
             {
-                if (ActiveUser.IsDisconnected == false)
-                    throw new BadUserInputException(
-                        "user is connected already and trying to connect again");
-                //todo i think the auth handler should be responsible for this part, should be terminated faster
-
                 activeRoomState = await _roomManager.GetFullRoomState(RoomUser);
 
                 ActiveUser.IsDisconnected = false;

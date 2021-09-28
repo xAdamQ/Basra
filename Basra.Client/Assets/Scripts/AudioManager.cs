@@ -60,6 +60,8 @@ public class AudioManager : MonoModule<AudioManager>
 
     public void Vibrate()
     {
+#if UNITY_ANDROID
         Handheld.Vibrate();
+#endif
     }
 }
