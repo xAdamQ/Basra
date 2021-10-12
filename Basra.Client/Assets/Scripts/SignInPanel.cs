@@ -1,9 +1,6 @@
-#if UNITY_ANDROID
-using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
+using UnityEngine.UI;
 
 #if HMS
 using HmsPlugin;
@@ -13,7 +10,7 @@ using HuaweiMobileServices.Utils;
 
 #if GMS
 using Facebook.Unity;
-using UnityEngine.UI;
+using System.Collections.Generic;
 #endif
 
 public class SignInPanel : MonoModule<SignInPanel>
@@ -100,4 +97,3 @@ public class SignInPanel : MonoModule<SignInPanel>
     }
 #endif
 }
-#endif

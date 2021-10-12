@@ -1,6 +1,3 @@
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
 using Basra.Common;
 using BestHTTP;
 using BestHTTP.SignalRCore;
@@ -12,7 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web;
-using Facebook.Unity;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 #if HMS
 using HmsPlugin;
 using HuaweiMobileServices.Id;
@@ -20,6 +19,9 @@ using HuaweiMobileServices.Utils;
 #endif
 #if UNITY_ANDROID
 using Newtonsoft.Json;
+#endif
+#if GMS
+using Facebook.Unity;
 #endif
 
 public interface IController
@@ -82,28 +84,24 @@ public class Controller : MonoBehaviour, IController
     public async UniTaskVoid Start()
     {
         await InitModules();
+
+        SignInPanel.Create().Forget();
+        LangSelector.Create();
+
 #if GMS
         FB.Init(OnInitComplete);
 #endif
 
-#if HMS && !UNITY_EDITOR
+#if HMS
         AdPlaceholder.SetActive(!HMSAdsKitManager.Instance.IsBannerAdLoaded);
         HMSAdsKitManager.Instance.OnBannerLoadEvent += () => AdPlaceholder.SetActive(false);
-        SignInPanel.Create().Forget();
-        LangSelector.Create();
 #endif
 
-#if UNITY_EDITOR
-        // TestClientStart.Create();
-        // LangSelector.Create();
-#endif
-
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL
         if (JsManager.IsFigSdkInit() == 0)
         {
             Debug.Log("seems like you're in the demo not fig");
-            TestClientStart.Create();
-            LangSelector.Create();
+            //TestClientStart.Create();
             return;
         }
 
@@ -128,6 +126,7 @@ public class Controller : MonoBehaviour, IController
         //the decision is not final anyway
 #endif
     }
+
 
 #if GMS
     private void OnInitComplete()
@@ -207,7 +206,11 @@ public class Controller : MonoBehaviour, IController
 
     [SerializeField] private int selectedAddress;
     [SerializeField] private string[] addresses;
-    private string address => addresses[selectedAddress] + "/connect";
+
+    private string getAddress()
+    {
+        return JsManager.BackendAddress() ?? addresses[selectedAddress] + "/connect";
+    }
 
     private readonly IProtocol protocol = new JsonProtocol(new LitJsonEncoder());
     private readonly MyReconnectPolicy myReconnectPolicy = new MyReconnectPolicy();
@@ -239,7 +242,7 @@ public class Controller : MonoBehaviour, IController
             query["demo"] = "1";
 
 
-        var uriBuilder = new UriBuilder(address)
+        var uriBuilder = new UriBuilder(getAddress())
         {
             Query = query.ToString()
         };
@@ -291,6 +294,7 @@ public class Controller : MonoBehaviour, IController
     private void OnConnected(HubConnection obj)
     {
         Debug.Log("connected to server");
+
 
         SignInPanel.DestroyModule();
 
@@ -435,7 +439,7 @@ public class Controller : MonoBehaviour, IController
     private async UniTaskVoid HandleInvocationMessage(Message message)
     {
         if (message.target != nameof(InitGame)
-            && (int) message.arguments[0] != messageIndex)
+            && (int)message.arguments[0] != messageIndex)
         {
             pendingInvocations.Add(message);
             return;
@@ -461,9 +465,9 @@ public class Controller : MonoBehaviour, IController
 
         rpcCalling = false;
 
-        if (pendingInvocations.Any(m => (int) m.arguments[0] == messageIndex))
+        if (pendingInvocations.Any(m => (int)m.arguments[0] == messageIndex))
             HandleInvocationMessage(pendingInvocations
-                    .First(m => (int) m.arguments[0] == messageIndex))
+                    .First(m => (int)m.arguments[0] == messageIndex))
                 .Forget();
     }
 

@@ -1,10 +1,9 @@
-using UnityEngine;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 public class JsManager : MonoBehaviour
 {
-
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL
 
     [DllImport("__Internal")]
     private static extern void Hello();
@@ -36,6 +35,9 @@ public class JsManager : MonoBehaviour
 
     [DllImport("__Internal")]
     public static extern int IsFigSdkInit();
+
+    [DllImport("__Internal")]
+    public static extern string BackendAddress();
 
     [System.Obsolete]
     void Start()
