@@ -26,15 +26,17 @@ namespace Basra.Server.Services
         //it defines who can use the token and the token maker
         private readonly IConfiguration _configuration;
         private readonly IMasterRepo _masterRepo;
+        private ILogger<SecurityManager> _logger;
 
         private readonly string
             figAppSecret,
             fbAppToken;
 
-        public SecurityManager(IConfiguration configuration, IMasterRepo masterRepo)
+        public SecurityManager(IConfiguration configuration, IMasterRepo masterRepo, ILogger<SecurityManager> logger)
         {
             _configuration = configuration;
             _masterRepo = masterRepo;
+            _logger = logger;
 
             figAppSecret = _configuration["Secrets:AppSecret"];
             fbAppToken = _configuration["Secrets:FbAppToken"];
@@ -100,6 +102,8 @@ namespace Basra.Server.Services
             pictureUrl)
         {
             var user = await _masterRepo.GetUserByEIdAsync(eId, eIdType);
+
+            _logger.LogInformation($"{eId} -- {name} -- {user == null}");
 
             if (user == null)
                 return await SignUpAsync(eId, eIdType, name, pictureUrl);
