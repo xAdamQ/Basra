@@ -83,7 +83,7 @@ namespace Basra.Server
         public async Task<User> GetUserByEIdAsync(string eId, int eIdType)
         {
             return await _context.Users.Join(
-                _context.ExternalIds.Where(id => id.Type == eIdType),
+                _context.ExternalIds.Where(id => id.Type == eIdType && id.MainId == eId),
                 u => u.Id, id => id.MainId,
                 (u, _) => u).FirstOrDefaultAsync();
         }

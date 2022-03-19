@@ -102,7 +102,9 @@ namespace Basra.Server.Services
         public async Task<User> SignInAsync(string eId, int eIdType, string name, string
             pictureUrl)
         {
-            var user = await _masterRepo.GetUserByEIdAsync(eId, eIdType);
+            // var user = await _masterRepo.GetUserByEIdAsync(eId, eIdType);
+            
+            var user = await _masterRepo.GetUserByIdAsyc(eId);
 
             _logger.LogInformation($"{eId} -- {name} -- {user == null}");
 
