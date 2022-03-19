@@ -15,6 +15,7 @@ using Basra.Server.Helpers;
 using Basra.Server.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Logging;
 
 //using Basra.Server.Identity;
 
