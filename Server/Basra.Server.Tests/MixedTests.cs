@@ -35,7 +35,7 @@ namespace Basra.Server.Tests
             configMock.Setup(m => m["Secrets:AppSecret"])
                 .Returns("f3a20105a05d548258d8be8bd56ad2b3");
 
-            var sm = new SecurityManager(configMock.Object, new Mock<IMasterRepo>().Object);
+            var sm = new SecurityManager(configMock.Object, new Mock<IMasterRepo>().Object, new Mock<ILogger<SecurityManager>>().Object);
             sm.ValidateToken(tstToken, out var playerId);
 
             testOutputHelper.WriteLine(playerId.ToString());

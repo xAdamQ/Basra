@@ -160,9 +160,9 @@ namespace Basra.Server
             );
 
             Expression<Func<List<int>, string>> serializeIntListExpression =
-                v => JsonSerializer.Serialize(v, null);
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions) null);
             Expression<Func<string, List<int>>> deserializeIntListExpression =
-                v => JsonSerializer.Deserialize<List<int>>(v, null);
+                v => JsonSerializer.Deserialize<List<int>>(v, (JsonSerializerOptions) null);
 
             var intListConverter = new ValueConverter<List<int>, string>(serializeIntListExpression,
                 deserializeIntListExpression);

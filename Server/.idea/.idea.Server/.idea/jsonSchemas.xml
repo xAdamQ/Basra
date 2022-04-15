@@ -14,6 +14,9 @@
                   <Item>
                     <option name="path" value="Basra.Server/appsettings.Development.json" />
                   </Item>
+                  <Item>
+                    <option name="path" value="Basra.Server/appsettings.json" />
+                  </Item>
                 </list>
               </option>
             </SchemaInfo>

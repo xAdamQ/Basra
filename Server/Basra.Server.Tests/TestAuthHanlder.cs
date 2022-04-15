@@ -80,7 +80,8 @@ namespace Basra.Server.Tests
             config.Setup(c => c["Secrets:FbAppToken"])
                 .Returns("GG|146449481020082|6w6LKOzaov1bwO2NVC6kd-oK9lM");
 
-            var sm = new SecurityManager(config.Object, new Mock<IMasterRepo>().Object);
+            var sm = new SecurityManager(config.Object, new Mock<IMasterRepo>().Object,
+                new Mock<ILogger<SecurityManager>>().Object);
 
             var token =
                 "GGQVliU3lnMGQ4OUxueUs1T0ZAycmk3R0M2QVp1d2lsNEVMSVVkWTJzVDE3RVF3bFBISEZAOOWJHMEFqMmN3c1BKNzlpaHUyZAUJjcTVXV3lvaXRjWi1raTgxYkJKMjJEdjd0a0p4UU5zd0prbm41SjZAQVXFmeXYxclVTeXZA6c2lUbjNNMEw2ZAEVzVnlNS1lhRTI5cHpELXNWS0l0bGVVNzVJOFlKZAwZDZD";
@@ -99,7 +100,8 @@ namespace Basra.Server.Tests
             config.Setup(c => c["Secrets:FbAppToken"])
                 .Returns("GG|146449481020082|6w6LKOzaov1bwO2NVC6kd-oK9lM");
 
-            var sm = new SecurityManager(config.Object, new Mock<IMasterRepo>().Object);
+            var sm = new SecurityManager(config.Object, new Mock<IMasterRepo>().Object,
+                new Mock<ILogger<SecurityManager>>().Object);
 
             var token = "some_wrong_token";
 
@@ -116,7 +118,8 @@ namespace Basra.Server.Tests
             config.Setup(c => c["Secrets:FbAppToken"])
                 .Returns("some_wrong_app_token");
 
-            var sm = new SecurityManager(config.Object, new Mock<IMasterRepo>().Object);
+            var sm = new SecurityManager(config.Object, new Mock<IMasterRepo>().Object,
+                new Mock<ILogger<SecurityManager>>().Object);
 
             var token =
                 "GGQVliU3lnMGQ4OUxueUs1T0ZAycmk3R0M2QVp1d2lsNEVMSVVkWTJzVDE3RVF3bFBISEZAOOWJHMEFqMmN3c1BKNzlpaHUyZAUJjcTVXV3lvaXRjWi1raTgxYkJKMjJEdjd0a0p4UU5zd0prbm41SjZAQVXFmeXYxclVTeXZA6c2lUbjNNMEw2ZAEVzVnlNS1lhRTI5cHpELXNWS0l0bGVVNzVJOFlKZAwZDZD";
@@ -131,7 +134,7 @@ namespace Basra.Server.Tests
         public async Task TestGetFbProfile_ShouldWork()
         {
             var sm = new SecurityManager(new Mock<IConfiguration>().Object,
-                new Mock<IMasterRepo>().Object);
+                new Mock<IMasterRepo>().Object, new Mock<ILogger<SecurityManager>>().Object);
 
             var token =
                 "GGQVliU3lnMGQ4OUxueUs1T0ZAycmk3R0M2QVp1d2lsNEVMSVVkWTJzVDE3RVF3bFBISEZAOOWJHMEFqMmN3c1BKNzlpaHUyZAUJjcTVXV3lvaXRjWi1raTgxYkJKMjJEdjd0a0p4UU5zd0prbm41SjZAQVXFmeXYxclVTeXZA6c2lUbjNNMEw2ZAEVzVnlNS1lhRTI5cHpELXNWS0l0bGVVNzVJOFlKZAwZDZD";

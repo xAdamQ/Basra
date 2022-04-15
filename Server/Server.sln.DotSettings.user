@@ -1,21 +1,16 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0429310c_002D6f30_002D4649_002Db292_002D7174d70da230/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.RoomManagerTests&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.FinalizeManagerTests.FinalizeGame_RightWinner&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.FinalizeManagerTests.CalcScore&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.ValidateFbAccToken&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.ValidateFbAccToken_ShoudUserInputFail&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.ValidateFbAccToken_ShoudMyServerFail&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.TestGetFbProfile_ShouldWork&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0429310c_002D6f30_002D4649_002Db292_002D7174d70da230/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net6.0::Basra.Server.Tests.Integration.IntegrationTests.TestFirstDistribute&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=524679c4_002D5386_002D449f_002D8107_002D38e1b54e3645/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Reconnect_ShouldGetRoomStates" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.RoomManagerTests.PrintCardsValuesOfIds&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.RoomManagerTests.EatTest&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.ValidateFbAccToken&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.TestGetFbProfile_ShouldWork&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=524679c4_002D5386_002D449f_002D8107_002D38e1b54e3645/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Reconnect_ShouldGetRoomStates" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.RoomManagerTests.PrintCardsValuesOfIds&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.RoomManagerTests.EatTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.ValidateFbAccToken&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.TestAuthHanlder.TestGetFbProfile_ShouldWork&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4979F339-58FF-4A67-A40C-B4E94453F9C5::net5.0::Basra.Server.Tests.Integration.IntegrationTests.TestFirstDistribute&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Cardback/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
