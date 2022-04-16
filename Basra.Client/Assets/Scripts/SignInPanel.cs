@@ -27,6 +27,13 @@ public class SignInPanel : MonoModule<SignInPanel>
 #if GMS
         I.huaweiButton.gameObject.SetActive(false);
 #endif
+
+#if !HMS&&!GMS
+        I.huaweiButton.gameObject.SetActive(false);
+        I.facebookButton.gameObject.SetActive(false);
+
+        TestClientStart.Create();
+#endif
     }
 
     private void Start()

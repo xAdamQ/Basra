@@ -17,6 +17,7 @@ using HmsPlugin;
 using HuaweiMobileServices.Id;
 using HuaweiMobileServices.Utils;
 #endif
+
 #if UNITY_ANDROID
 using Newtonsoft.Json;
 #endif
@@ -115,8 +116,8 @@ public class Controller : MonoBehaviour, IController
             ConnectToServer(fbigToken: fbigUserData.Token);
 
         Repository.I.TopFriends = JsonUtility.FromJson<List<FbigFriend>>(JsManager.GetFriends())
-        .Select(f => new MinUserInfo { Id = f.Id, Name = f.Name, PictureUrl = f.PictureUrl })
-        .ToArray();
+            .Select(f => new MinUserInfo {Id = f.Id, Name = f.Name, PictureUrl = f.PictureUrl})
+            .ToArray();
 
         Debug.Log("friends are: " + JsManager.GetFriends());
         Debug.Log("friends loaded: " + JsonUtility.ToJson(Repository.I.TopFriends));
@@ -209,7 +210,7 @@ public class Controller : MonoBehaviour, IController
 
     private string getAddress()
     {
-        return JsManager.BackendAddress() ?? addresses[selectedAddress] + "/connect";
+        return addresses[selectedAddress] + "/connect";
     }
 
     private readonly IProtocol protocol = new JsonProtocol(new LitJsonEncoder());
@@ -439,7 +440,7 @@ public class Controller : MonoBehaviour, IController
     private async UniTaskVoid HandleInvocationMessage(Message message)
     {
         if (message.target != nameof(InitGame)
-            && (int)message.arguments[0] != messageIndex)
+            && (int) message.arguments[0] != messageIndex)
         {
             pendingInvocations.Add(message);
             return;
@@ -465,9 +466,9 @@ public class Controller : MonoBehaviour, IController
 
         rpcCalling = false;
 
-        if (pendingInvocations.Any(m => (int)m.arguments[0] == messageIndex))
+        if (pendingInvocations.Any(m => (int) m.arguments[0] == messageIndex))
             HandleInvocationMessage(pendingInvocations
-                    .First(m => (int)m.arguments[0] == messageIndex))
+                    .First(m => (int) m.arguments[0] == messageIndex))
                 .Forget();
     }
 

@@ -540,6 +540,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1507591452}
   m_Father: {fileID: 0}
@@ -744,6 +745,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -761,13 +763,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   adPlaceholder: {fileID: 2004286372}
-  selectedAddress: 4
+  selectedAddress: 5
   addresses:
   - http://192.168.1.11:8080
   - http://localhost:5000
   - https://tstappname.azurewebsites.net
   - http://basraas.azurewebsites.net
   - http://192.168.1.4:8080
+  - http://164.92.143.59:8080
 --- !u!1 &1507591450
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,6 +894,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 829971098}
   m_RootOrder: 0
@@ -923,6 +927,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 353151562}
   m_Father: {fileID: 888730444}
