@@ -12,17 +12,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e449006-4b33-468a-a3f1-b36fa9dfdfce" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Server/.idea/jsonSchemas.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Server/.idea/jsonSchemas.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Basra.Client/Assets/Best HTTP/Plugins/WebGL/BestHTTP_WebSocket.jslib" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Client/Assets/Best HTTP/Plugins/WebGL/BestHTTP_WebSocket.jslib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Basra.Client/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Client/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Basra.Client/ProjectSettings/RiderScriptEditorPersistedState.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Basra.Client/ProjectSettings/RiderScriptEditorPersistedState.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Server/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server.Tests/Basra.Server.Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server.Tests/Basra.Server.Tests.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server.Tests/MixedTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server.Tests/MixedTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server.Tests/TestAuthHanlder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server.Tests/TestAuthHanlder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/Basra.Server.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Basra.Server.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/Data/MasterContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Data/MasterContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basra.Server/Exceptions/BadUserInputException.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Exceptions/BadUserInputException.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeneralTests/GeneralTests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/GeneralTests/GeneralTests.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Server.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TesterClient/TesterClient.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TesterClient/TesterClient.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Basra.Server/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Basra.Server/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,21 +99,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.49377123" />
-    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="TODO_SCOPE" value="All Places" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Client_TDD/Assets/Scripts/ConstData.cs" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Basra.Server">
     <configuration default="true" type="CompoundRunConfigurationType">
       <toRun name="TesterClient" type="DotNetProject" />
@@ -278,6 +265,7 @@
       <workItem from="1631029599798" duration="6905000" />
       <workItem from="1632765684953" duration="4359000" />
       <workItem from="1632784956190" duration="7221000" />
+      <workItem from="1652217442415" duration="1336000" />
     </task>
     <servers />
   </component>
